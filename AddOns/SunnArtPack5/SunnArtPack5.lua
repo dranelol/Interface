@@ -1,0 +1,9 @@
+SunnArt.options.args.theme.values["SunnArtPack5\\frozen"]="Frozen"
+SunnArt.options.args.theme.values["SunnArtPack5\\purple"]="Purple"
+SunnArt.options.args.theme.values["SunnArtPack5\\purpleglow"]="Purple Glow"
+SunnArt.options.args.theme.values["SunnArtPack5\\redglow"]="Red Glow"
+SunnArt.options.args.theme.values["SunnArtPack5\\console"]="Console"
+SunnArt.overlap["SunnArtPack5\\console"]=9.37
+SunnArt.options.args.theme.values["SunnArtPack5\\starburst"]="Starburst"
+SunnArt.options.args.theme.values["SunnArtPack5\\icymail"]="Icy Mail"
+SunnArt.options.args.theme.values["SunnArtPack5\\leaves"]="Leaves"

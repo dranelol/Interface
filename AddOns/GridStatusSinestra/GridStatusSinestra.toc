@@ -1,0 +1,15 @@
+﻿## Interface: 40000
+## Title: GridStatusSinestra
+## Notes: Adds a countdown for Sinestra's Wrack.
+## Author: evildead & Pastamancer updated/repurposed by Raegx
+## Version: 0.1
+## Dependencies: Grid
+## X-Category: Raid
+## X-GridStatusModule: GridStatusSinestra
+## X-Curse-Packaged-Version: v1.1
+## X-Curse-Project-Name: GridStatusSinestra
+## X-Curse-Project-ID: gridstatussinestra
+## X-Curse-Repository-ID: wow/gridstatussinestra/mainline
+
+
+GridStatusSinestra.lua

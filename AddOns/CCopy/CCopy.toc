@@ -1,0 +1,22 @@
+## Interface: 40000
+## Title: CCopy
+## Notes: Small addon to copy chat lines.
+## Notes-deDE: Ein kleines Addon um einzelne Zeilen aus dem Chat zu kopieren.
+## Author: Borlox
+## X-Email: borlox@worldofwar.de
+## Version: 1.4 
+## X-Category: Chat/Communication
+## LoadManagers: AddonLoader
+## X-LoadOn-Always: delayed
+## OptionalDeps: Ace3
+## X-Embeds: Ace3
+## X-Curse-Packaged-Version: 1.4
+## X-Curse-Project-Name: CCopy
+## X-Curse-Project-ID: ccopy
+## X-Curse-Repository-ID: wow/ccopy/mainline
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+Core.lua

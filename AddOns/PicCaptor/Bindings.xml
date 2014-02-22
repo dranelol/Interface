@@ -1,0 +1,11 @@
+<Bindings>
+  <Binding name="PICCAPTOR1" description="PicCaptor Capture #1" header="PicCaptor">
+    PicCaptor_Capture1();
+  </Binding>
+  <Binding name="PICCAPTOR2" description="PicCaptor Capture #2" header="PicCaptor">
+    PicCaptor_Capture2();
+  </Binding>
+  <Binding name="PICCAPTOR3" description="PicCaptor Capture #3" header="PicCaptor">
+    PicCaptor_Capture3();
+  </Binding>
+</Bindings>

@@ -1,0 +1,16 @@
+## Interface: 30000
+## Title: ItemTooltipIcons
+## Version: 2.0.0
+## Author: Saeris
+## SavedVariables: ItemTooltipIcons_Config
+
+## Notes: Adds item icons to item tooltips.
+
+NicheDevTools\NicheDevTools_RegisterSlashCommand.lua
+NicheDevTools\NicheDevTools_UseWorldFrameForVariablesLoaded.lua
+
+ItemTooltipIcons_Base.lua
+ItemTooltipIcons_Localization_enUS.lua
+ItemTooltipIcons_Config.lua
+ItemTooltipIcons_Tooltips.lua
+ItemTooltipIcons_Init.lua

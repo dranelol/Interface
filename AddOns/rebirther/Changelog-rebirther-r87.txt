@@ -1,0 +1,20 @@
+------------------------------------------------------------------------
+r87 | maat | 2013-03-05 15:51:49 +0000 (Tue, 05 Mar 2013) | 7 lines
+Changed paths:
+   M /trunk/rebirther.lua
+   M /trunk/rebirther.toc
+
+bump toc
+update for GetRaidDifficulty change 
+use INCOMING_RESURRECT_CHANGED to track resurrections used, this should be lot more reliable
+
+
+
+
+------------------------------------------------------------------------
+r86 | Maat | 2012-11-19 18:20:50 +0000 (Mon, 19 Nov 2012) | 1 line
+Changed paths:
+   M /trunk/rebirther.lua
+
+keep track of if an encounter is in progress where it actually can keep track of it
+------------------------------------------------------------------------

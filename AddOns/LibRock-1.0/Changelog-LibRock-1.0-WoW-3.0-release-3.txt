@@ -1,0 +1,1157 @@
+------------------------------------------------------------------------
+r296 | arrowmaster | 2009-01-30 16:36:13 +0000 (Fri, 30 Jan 2009) | 1 line
+Changed paths:
+   A /tags/WoW-3.0-release-3 (from /trunk:295)
+
+Tagging as WoW-3.0-release-3
+------------------------------------------------------------------------
+r295 | shefki | 2008-12-15 12:09:06 +0000 (Mon, 15 Dec 2008) | 2 lines
+Changed paths:
+   M /trunk/LibRock-1.0.lua
+
+Stop forcing garbage collection ever.
+
+------------------------------------------------------------------------
+r294 | arrowmaster | 2008-11-13 04:23:09 +0000 (Thu, 13 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/LibRock-1.0.lua
+
+Fix a stupid bug thats probably been around forever, caused by having AceLibrary but not AceOO-2.0
+------------------------------------------------------------------------
+r292 | shefki | 2008-10-16 08:26:12 +0000 (Thu, 16 Oct 2008) | 2 lines
+Changed paths:
+   M /trunk/LibRock-1.0.lua
+
+- Fix error with URL frame not passing all the arguments to StaticPopup_EditBoxOnTextChanged.
+
+------------------------------------------------------------------------
+r290 | stanzilla | 2008-10-14 16:39:21 +0000 (Tue, 14 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/LibRock-1.0.toc
+
+Update TOC for WotLK
+------------------------------------------------------------------------
+r289 | nevcairiel | 2008-10-09 21:53:28 +0000 (Thu, 09 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/LibRock-1.0.lua
+
+WoWAce Post-Processing: Virtually inflate Library Revision numbers for proper upgrade path
+------------------------------------------------------------------------
+r288 | root | 2008-09-29 21:46:00 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   A /trunk/.pkgmeta
+
+Facilitate WowAce-on-CurseForge transition
+------------------------------------------------------------------------
+r286 | root | 2008-09-29 20:58:18 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   D /tmp/trunk/LibRock-1.0
+   A /trunk (from /tmp/trunk/LibRock-1.0:285)
+
+Importing old repo data under /trunk
+------------------------------------------------------------------------
+r282 | arrowmaster | 2008-04-01 07:16:23 +0000 (Tue, 01 Apr 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.toc
+
+.You are not a special or unique snowflake. Get back in line and use the 'Lib: ...' title format like everybody else to save the sanity of those of us looking through an alpha sorted addon list
+------------------------------------------------------------------------
+r281 | helium | 2008-03-28 08:28:38 +0000 (Fri, 28 Mar 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.toc
+
+LibRock-1.0:
+- TOC 20400
+------------------------------------------------------------------------
+r279 | ckknight | 2008-03-01 17:57:51 +0000 (Sat, 01 Mar 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - support LibStub-based mixins that have rawget(library, "Embed") which is a function on em.
+ROCK-136
+------------------------------------------------------------------------
+r278 | pb_ee1 | 2008-02-15 10:25:45 +0000 (Fri, 15 Feb 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0
+
+LibRock-1.0:
+- Adding tsvn:logtemplate, i said -_-'
+------------------------------------------------------------------------
+r277 | pb_ee1 | 2008-02-15 10:24:03 +0000 (Fri, 15 Feb 2008) | 3 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0:
+- coller -> collez
+- Adding tsvn:logtemplate
+------------------------------------------------------------------------
+r276 | pettigrow | 2008-02-15 10:13:24 +0000 (Fri, 15 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0: frFR Update
+------------------------------------------------------------------------
+r275 | ckknight | 2008-02-13 06:32:54 +0000 (Wed, 13 Feb 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+.LibRock-1.0 - don't use negative reversion numbers because the LibStub patch for supporting that was never accepted.
+------------------------------------------------------------------------
+r274 | cwdg | 2008-01-29 05:02:10 +0000 (Tue, 29 Jan 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0:
+Update zhCN local 
+------------------------------------------------------------------------
+r273 | helium | 2008-01-28 10:03:15 +0000 (Mon, 28 Jan 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0: updated zhTW localization
+------------------------------------------------------------------------
+r272 | kurax | 2008-01-28 03:29:41 +0000 (Mon, 28 Jan 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0: Updated zhCN locale
+------------------------------------------------------------------------
+r271 | ckknight | 2007-11-18 09:02:15 +0000 (Sun, 18 Nov 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.toc
+   M /tmp/trunk/LibRock-1.0/lib.xml
+
+LibRock-1.0 - 
+------------------------------------------------------------------------
+r270 | silviu | 2007-11-15 10:07:23 +0000 (Thu, 15 Nov 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.toc
+
+LibRock-1.0: Bump toc to 20300
+------------------------------------------------------------------------
+r269 | funkydude | 2007-11-09 06:45:26 +0000 (Fri, 09 Nov 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.toc
+   M /tmp/trunk/LibRock-1.0/lib.xml
+
+.trunk: revert back to having LibStub in toc's so we don't load 5 billion copies when we have addons with embeds. Authors, if you use a library that uses LibStub, embed the LibStub tag version with it, not the trunk. Carto/CowTip/FuBar/PitBull have been changed accordingly.
+------------------------------------------------------------------------
+r268 | ammo | 2007-11-07 09:36:46 +0000 (Wed, 07 Nov 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.toc
+   M /tmp/trunk/LibRock-1.0/lib.xml
+
+LibRock-1.0: fix LibStub being loaded properly from the lib.xml instead of the .toc, should fix issues iwth people running embedded
+
+------------------------------------------------------------------------
+r267 | funkydude | 2007-11-07 00:51:32 +0000 (Wed, 07 Nov 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.toc
+   A /tmp/trunk/LibRock-1.0/LibStub
+   A /tmp/trunk/LibRock-1.0/LibStub/LibStub.lua
+
+.trunk: Fix various libraries to use LibStub properly
+------------------------------------------------------------------------
+r266 | pettigrow | 2007-10-25 17:31:49 +0000 (Thu, 25 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0: frFR Update
+------------------------------------------------------------------------
+r265 | sayclub | 2007-10-23 09:43:26 +0000 (Tue, 23 Oct 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 :
+- Updated localization koKR
+------------------------------------------------------------------------
+r264 | helium | 2007-10-22 09:28:33 +0000 (Mon, 22 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0: updated zhTW localization
+------------------------------------------------------------------------
+r263 | ananhaid | 2007-10-08 03:01:52 +0000 (Mon, 08 Oct 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0
+- zhCN Rogue Translate
+------------------------------------------------------------------------
+r262 | andyca | 2007-10-08 01:57:38 +0000 (Mon, 08 Oct 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0- update zhTW localization
+
+------------------------------------------------------------------------
+r261 | ckknight | 2007-10-07 22:42:08 +0000 (Sun, 07 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - remove needless sanity checks.
+------------------------------------------------------------------------
+r260 | ckknight | 2007-10-05 21:54:39 +0000 (Fri, 05 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add sanity checks back in
+------------------------------------------------------------------------
+r259 | ckknight | 2007-10-05 20:15:31 +0000 (Fri, 05 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add some more checks.
+------------------------------------------------------------------------
+r258 | cwdg | 2007-10-05 19:02:16 +0000 (Fri, 05 Oct 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0: 
+-Update zhCN local
+------------------------------------------------------------------------
+r257 | ckknight | 2007-10-04 23:59:41 +0000 (Thu, 04 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add some more checks.
+------------------------------------------------------------------------
+r256 | ckknight | 2007-10-04 23:41:11 +0000 (Thu, 04 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - continuing the arduous game of cat and mouse.
+------------------------------------------------------------------------
+r255 | ckknight | 2007-10-04 23:27:22 +0000 (Thu, 04 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - fix IsAddOnEnabled reference.
+------------------------------------------------------------------------
+r254 | ckknight | 2007-10-04 23:06:46 +0000 (Thu, 04 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add another check.
+------------------------------------------------------------------------
+r253 | ckknight | 2007-10-04 22:56:03 +0000 (Thu, 04 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - make the scrooge check more intelligent.
+------------------------------------------------------------------------
+r252 | ckknight | 2007-10-04 22:46:23 +0000 (Thu, 04 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add in checks
+------------------------------------------------------------------------
+r251 | kaelten | 2007-10-04 21:37:19 +0000 (Thu, 04 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0: whoops typo.
+------------------------------------------------------------------------
+r250 | kaelten | 2007-10-04 21:05:13 +0000 (Thu, 04 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0: removed lockup hack here as well.
+------------------------------------------------------------------------
+r249 | ckknight | 2007-10-04 01:08:03 +0000 (Thu, 04 Oct 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add in a simple sanity check system.
+------------------------------------------------------------------------
+r248 | ckknight | 2007-09-25 18:47:54 +0000 (Tue, 25 Sep 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.toc
+
+.Lib* - upgrade TOC to 20200
+
+------------------------------------------------------------------------
+r247 | ckknight | 2007-09-21 00:27:06 +0000 (Fri, 21 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - fix bug in :GetLocalizedCategory
+------------------------------------------------------------------------
+r246 | ckknight | 2007-09-21 00:09:48 +0000 (Fri, 21 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add some argument checking to mixin checking methods.
+------------------------------------------------------------------------
+r245 | ckknight | 2007-09-20 04:51:29 +0000 (Thu, 20 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - fix deDE categories.
+------------------------------------------------------------------------
+r244 | ckknight | 2007-09-19 22:38:06 +0000 (Wed, 19 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add issue tracker button and donation button
+------------------------------------------------------------------------
+r243 | ckknight | 2007-09-19 00:27:27 +0000 (Wed, 19 Sep 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - bugfix.
+Note: whoopsie-doodle.
+------------------------------------------------------------------------
+r242 | ckknight | 2007-09-19 00:19:54 +0000 (Wed, 19 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - fix some error messages to be more descriptive.
+------------------------------------------------------------------------
+r241 | ckknight | 2007-09-18 23:42:52 +0000 (Tue, 18 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - fix a weird issue if something messes up in LibStub (negative versions again)
+------------------------------------------------------------------------
+r240 | ckknight | 2007-09-18 20:11:34 +0000 (Tue, 18 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add some fixes to handle the core LibRock-1.0 library creation.
+------------------------------------------------------------------------
+r239 | ckknight | 2007-09-18 02:37:11 +0000 (Tue, 18 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add options to the group LibRockConfig-1.0 already created instead of creating a new one.
+------------------------------------------------------------------------
+r238 | ckknight | 2007-09-17 22:22:48 +0000 (Mon, 17 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - put in an extra check to make sure that OnEnable cannot be called before OnInitialize.
+------------------------------------------------------------------------
+r237 | ckknight | 2007-09-17 04:55:35 +0000 (Mon, 17 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add another check for an impossible case that might happen.
+------------------------------------------------------------------------
+r236 | ckknight | 2007-09-17 04:52:41 +0000 (Mon, 17 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - possible bugfix/improvement
+------------------------------------------------------------------------
+r235 | ckknight | 2007-09-15 02:02:14 +0000 (Sat, 15 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add :GetLocalizedCategory("name")
+------------------------------------------------------------------------
+r234 | ckknight | 2007-09-14 19:44:27 +0000 (Fri, 14 Sep 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - ROCK-11
+- add check to :Embed to make sure a table is fed in.
+------------------------------------------------------------------------
+r233 | ckknight | 2007-09-14 02:53:07 +0000 (Fri, 14 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - raise the URL copy frame to FULLSCREEN_DIALOG
+------------------------------------------------------------------------
+r232 | ckknight | 2007-09-13 06:01:22 +0000 (Thu, 13 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add check to :GetContractFunctions to make sure a namespace is supplied.
+------------------------------------------------------------------------
+r231 | ckknight | 2007-09-13 05:01:20 +0000 (Thu, 13 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - optimization with contracts.
+------------------------------------------------------------------------
+r230 | ckknight | 2007-09-12 02:45:04 +0000 (Wed, 12 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - revert last commit
+------------------------------------------------------------------------
+r229 | ckknight | 2007-09-12 02:41:49 +0000 (Wed, 12 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - small optimization
+------------------------------------------------------------------------
+r228 | ckknight | 2007-09-12 02:37:44 +0000 (Wed, 12 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - bugfix
+------------------------------------------------------------------------
+r227 | ckknight | 2007-09-12 02:33:42 +0000 (Wed, 12 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - optimization in runMainAddonLoadedChunk (thanks, JoshBorke)
+------------------------------------------------------------------------
+r226 | ckknight | 2007-09-12 02:16:17 +0000 (Wed, 12 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add a check to :GetRecyclingFunctions to not give improper namespaces.
+------------------------------------------------------------------------
+r225 | ckknight | 2007-09-12 01:57:02 +0000 (Wed, 12 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - optimization (thanks, JoshBorke)
+------------------------------------------------------------------------
+r224 | ckknight | 2007-09-11 19:25:24 +0000 (Tue, 11 Sep 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - fix checking of the current addon with LibRockModuleCore-1.0.
+- make sure that if addons are loaded in PLAYER_LOGIN, to not mess things up royally by calling OnEnable early.
+------------------------------------------------------------------------
+r223 | ckknight | 2007-09-10 00:05:15 +0000 (Mon, 10 Sep 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add support so that AceOO-2.0 mixins can be mixed into Rock addons.
+e.g. local MyAddon = Rock:NewAddon("MyAddon", "AceConsole-2.0"); MyAddon:Print("Stuffs") all works good now.
+------------------------------------------------------------------------
+r222 | ckknight | 2007-09-09 23:31:27 +0000 (Sun, 09 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - if :Embed is called on an object that has a mixins table, add the mixin to said table.
+------------------------------------------------------------------------
+r221 | ckknight | 2007-09-08 05:28:01 +0000 (Sat, 08 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - remove the need for the objectToMixin table, rely on mixinToObject table instead.
+------------------------------------------------------------------------
+r220 | ckknight | 2007-09-04 00:55:46 +0000 (Tue, 04 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add rock icon to LibRockConfig-1.0 menu.
+------------------------------------------------------------------------
+r219 | ckknight | 2007-09-04 00:49:19 +0000 (Tue, 04 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - make addon access/checking case-insensitive, for consistency.
+------------------------------------------------------------------------
+r218 | ckknight | 2007-09-04 00:45:49 +0000 (Tue, 04 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - library access/checking is no longer case-sensitive. e.g. Rock("librockevent-1.0") is the same as Rock("LibRockEvent-1.0").
+------------------------------------------------------------------------
+r217 | ckknight | 2007-09-03 20:30:02 +0000 (Mon, 03 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - add a note to the documentation about how recycling large tables is bad for karma.
+------------------------------------------------------------------------
+r216 | ckknight | 2007-09-03 03:50:22 +0000 (Mon, 03 Sep 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.toc
+
+.LibRock*-1.0 - remove stray "" at the end of lua files. (Thank you, Windows).
+LibRock-1.0 - make !BugGrabber and !Swatter optional deps, so they load before.
+------------------------------------------------------------------------
+r215 | ckknight | 2007-09-03 02:03:17 +0000 (Mon, 03 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - upgrade to LibStub r2
+------------------------------------------------------------------------
+r214 | ckknight | 2007-09-02 19:45:48 +0000 (Sun, 02 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/lib.xml
+
+.LibRock*-1.0 - fix lib.xml
+------------------------------------------------------------------------
+r213 | ckknight | 2007-09-02 09:44:50 +0000 (Sun, 02 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+LibRock-1.0 - set an Autodoc namespace
+------------------------------------------------------------------------
+r212 | ckknight | 2007-09-02 09:30:05 +0000 (Sun, 02 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/LibRock-1.0/LibRock-1.0.lua
+
+.LibRock*-1.0 - touching files so the wiki will update
+------------------------------------------------------------------------
+r202 | ckknight | 2007-09-02 06:31:12 +0000 (Sun, 02 Sep 2007) | 1 line
+Changed paths:
+   D /tmp/branches/Joker/ckknight/LibRock-1.0
+   A /tmp/trunk/LibRock-1.0 (from /tmp/branches/Joker/ckknight/LibRock-1.0:201)
+
+LibRock-1.0 - moving to trunk
+------------------------------------------------------------------------
+r201 | ckknight | 2007-09-02 06:13:23 +0000 (Sun, 02 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibRock-1.0/LibRock-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRock-1.0/lib.xml
+   M /tmp/branches/Joker/ckknight/LibRockComm-1.0/LibRockComm-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockComm-1.0/lib.xml
+   M /tmp/branches/Joker/ckknight/LibRockConfig-1.0/LibRockConfig-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockConfig-1.0/lib.xml
+   M /tmp/branches/Joker/ckknight/LibRockConsole-1.0/LibRockConsole-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockConsole-1.0/lib.xml
+   M /tmp/branches/Joker/ckknight/LibRockDB-1.0/LibRockDB-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockDB-1.0/lib.xml
+   M /tmp/branches/Joker/ckknight/LibRockEvent-1.0/LibRockEvent-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockEvent-1.0/lib.xml
+   M /tmp/branches/Joker/ckknight/LibRockHook-1.0/LibRockHook-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockHook-1.0/lib.xml
+   M /tmp/branches/Joker/ckknight/LibRockLocale-1.0/LibRockLocale-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockLocale-1.0/lib.xml
+   M /tmp/branches/Joker/ckknight/LibRockModuleCore-1.0/LibRockModuleCore-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockModuleCore-1.0/lib.xml
+   M /tmp/branches/Joker/ckknight/LibRockTimer-1.0/LibRockTimer-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockTimer-1.0/lib.xml
+
+Rock - add lib.xml to all libraries.
+------------------------------------------------------------------------
+r200 | ckknight | 2007-09-02 05:55:01 +0000 (Sun, 02 Sep 2007) | 1 line
+Changed paths:
+   D /tmp/branches/Joker/ckknight/JokerTest
+   D /tmp/branches/Joker/ckknight/LibJoker-1.0
+   D /tmp/branches/Joker/ckknight/LibJokerComm-1.0
+   D /tmp/branches/Joker/ckknight/LibJokerConfig-1.0
+   D /tmp/branches/Joker/ckknight/LibJokerConsole-1.0
+   D /tmp/branches/Joker/ckknight/LibJokerDB-1.0
+   D /tmp/branches/Joker/ckknight/LibJokerEvent-1.0
+   D /tmp/branches/Joker/ckknight/LibJokerHook-1.0
+   D /tmp/branches/Joker/ckknight/LibJokerLocale-1.0
+   D /tmp/branches/Joker/ckknight/LibJokerModuleCore-1.0
+   D /tmp/branches/Joker/ckknight/LibJokerTimer-1.0
+   A /tmp/branches/Joker/ckknight/LibRock-1.0 (from /tmp/branches/Joker/ckknight/LibJoker-1.0:197)
+   D /tmp/branches/Joker/ckknight/LibRock-1.0/LibJoker-1.0.lua
+   D /tmp/branches/Joker/ckknight/LibRock-1.0/LibJoker-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRock-1.0/LibRock-1.0.lua (from /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua:199)
+   A /tmp/branches/Joker/ckknight/LibRock-1.0/LibRock-1.0.toc (from /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.toc:197)
+   A /tmp/branches/Joker/ckknight/LibRockComm-1.0 (from /tmp/branches/Joker/ckknight/LibJokerComm-1.0:197)
+   D /tmp/branches/Joker/ckknight/LibRockComm-1.0/LibJokerComm-1.0.lua
+   D /tmp/branches/Joker/ckknight/LibRockComm-1.0/LibJokerComm-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockComm-1.0/LibRockComm-1.0.lua (from /tmp/branches/Joker/ckknight/LibJokerComm-1.0/LibJokerComm-1.0.lua:199)
+   A /tmp/branches/Joker/ckknight/LibRockComm-1.0/LibRockComm-1.0.toc (from /tmp/branches/Joker/ckknight/LibJokerComm-1.0/LibJokerComm-1.0.toc:197)
+   A /tmp/branches/Joker/ckknight/LibRockConfig-1.0 (from /tmp/branches/Joker/ckknight/LibJokerConfig-1.0:197)
+   D /tmp/branches/Joker/ckknight/LibRockConfig-1.0/LibJokerConfig-1.0.lua
+   D /tmp/branches/Joker/ckknight/LibRockConfig-1.0/LibJokerConfig-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockConfig-1.0/LibRockConfig-1.0.lua (from /tmp/branches/Joker/ckknight/LibJokerConfig-1.0/LibJokerConfig-1.0.lua:199)
+   A /tmp/branches/Joker/ckknight/LibRockConfig-1.0/LibRockConfig-1.0.toc (from /tmp/branches/Joker/ckknight/LibJokerConfig-1.0/LibJokerConfig-1.0.toc:197)
+   A /tmp/branches/Joker/ckknight/LibRockConsole-1.0 (from /tmp/branches/Joker/ckknight/LibJokerConsole-1.0:197)
+   D /tmp/branches/Joker/ckknight/LibRockConsole-1.0/LibJokerConsole-1.0.lua
+   D /tmp/branches/Joker/ckknight/LibRockConsole-1.0/LibJokerConsole-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockConsole-1.0/LibRockConsole-1.0.lua (from /tmp/branches/Joker/ckknight/LibJokerConsole-1.0/LibJokerConsole-1.0.lua:199)
+   A /tmp/branches/Joker/ckknight/LibRockConsole-1.0/LibRockConsole-1.0.toc (from /tmp/branches/Joker/ckknight/LibJokerConsole-1.0/LibJokerConsole-1.0.toc:197)
+   A /tmp/branches/Joker/ckknight/LibRockDB-1.0 (from /tmp/branches/Joker/ckknight/LibJokerDB-1.0:197)
+   D /tmp/branches/Joker/ckknight/LibRockDB-1.0/LibJokerDB-1.0.lua
+   D /tmp/branches/Joker/ckknight/LibRockDB-1.0/LibJokerDB-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockDB-1.0/LibRockDB-1.0.lua (from /tmp/branches/Joker/ckknight/LibJokerDB-1.0/LibJokerDB-1.0.lua:199)
+   A /tmp/branches/Joker/ckknight/LibRockDB-1.0/LibRockDB-1.0.toc (from /tmp/branches/Joker/ckknight/LibJokerDB-1.0/LibJokerDB-1.0.toc:197)
+   A /tmp/branches/Joker/ckknight/LibRockEvent-1.0 (from /tmp/branches/Joker/ckknight/LibJokerEvent-1.0:197)
+   D /tmp/branches/Joker/ckknight/LibRockEvent-1.0/LibJokerEvent-1.0.lua
+   D /tmp/branches/Joker/ckknight/LibRockEvent-1.0/LibJokerEvent-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockEvent-1.0/LibRockEvent-1.0.lua (from /tmp/branches/Joker/ckknight/LibJokerEvent-1.0/LibJokerEvent-1.0.lua:199)
+   A /tmp/branches/Joker/ckknight/LibRockEvent-1.0/LibRockEvent-1.0.toc (from /tmp/branches/Joker/ckknight/LibJokerEvent-1.0/LibJokerEvent-1.0.toc:197)
+   A /tmp/branches/Joker/ckknight/LibRockHook-1.0 (from /tmp/branches/Joker/ckknight/LibJokerHook-1.0:197)
+   D /tmp/branches/Joker/ckknight/LibRockHook-1.0/LibJokerHook-1.0.lua
+   D /tmp/branches/Joker/ckknight/LibRockHook-1.0/LibJokerHook-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockHook-1.0/LibRockHook-1.0.lua (from /tmp/branches/Joker/ckknight/LibJokerHook-1.0/LibJokerHook-1.0.lua:199)
+   A /tmp/branches/Joker/ckknight/LibRockHook-1.0/LibRockHook-1.0.toc (from /tmp/branches/Joker/ckknight/LibJokerHook-1.0/LibJokerHook-1.0.toc:197)
+   A /tmp/branches/Joker/ckknight/LibRockLocale-1.0 (from /tmp/branches/Joker/ckknight/LibJokerLocale-1.0:197)
+   D /tmp/branches/Joker/ckknight/LibRockLocale-1.0/LibJokerLocale-1.0.lua
+   D /tmp/branches/Joker/ckknight/LibRockLocale-1.0/LibJokerLocale-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockLocale-1.0/LibRockLocale-1.0.lua (from /tmp/branches/Joker/ckknight/LibJokerLocale-1.0/LibJokerLocale-1.0.lua:199)
+   A /tmp/branches/Joker/ckknight/LibRockLocale-1.0/LibRockLocale-1.0.toc (from /tmp/branches/Joker/ckknight/LibJokerLocale-1.0/LibJokerLocale-1.0.toc:197)
+   A /tmp/branches/Joker/ckknight/LibRockModuleCore-1.0 (from /tmp/branches/Joker/ckknight/LibJokerModuleCore-1.0:197)
+   D /tmp/branches/Joker/ckknight/LibRockModuleCore-1.0/LibJokerModuleCore-1.0.lua
+   D /tmp/branches/Joker/ckknight/LibRockModuleCore-1.0/LibJokerModuleCore-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockModuleCore-1.0/LibRockModuleCore-1.0.lua (from /tmp/branches/Joker/ckknight/LibJokerModuleCore-1.0/LibJokerModuleCore-1.0.lua:199)
+   A /tmp/branches/Joker/ckknight/LibRockModuleCore-1.0/LibRockModuleCore-1.0.toc (from /tmp/branches/Joker/ckknight/LibJokerModuleCore-1.0/LibJokerModuleCore-1.0.toc:197)
+   A /tmp/branches/Joker/ckknight/LibRockTimer-1.0 (from /tmp/branches/Joker/ckknight/LibJokerTimer-1.0:197)
+   D /tmp/branches/Joker/ckknight/LibRockTimer-1.0/LibJokerTimer-1.0.lua
+   D /tmp/branches/Joker/ckknight/LibRockTimer-1.0/LibJokerTimer-1.0.toc
+   A /tmp/branches/Joker/ckknight/LibRockTimer-1.0/LibRockTimer-1.0.lua (from /tmp/branches/Joker/ckknight/LibJokerTimer-1.0/LibJokerTimer-1.0.lua:199)
+   A /tmp/branches/Joker/ckknight/LibRockTimer-1.0/LibRockTimer-1.0.toc (from /tmp/branches/Joker/ckknight/LibJokerTimer-1.0/LibJokerTimer-1.0.toc:197)
+   A /tmp/branches/Joker/ckknight/RockTest (from /tmp/branches/Joker/ckknight/JokerTest:197)
+   D /tmp/branches/Joker/ckknight/RockTest/JokerTest.lua
+   D /tmp/branches/Joker/ckknight/RockTest/JokerTest.toc
+   A /tmp/branches/Joker/ckknight/RockTest/RockTest.lua (from /tmp/branches/Joker/ckknight/JokerTest/JokerTest.lua:197)
+   A /tmp/branches/Joker/ckknight/RockTest/RockTest.toc (from /tmp/branches/Joker/ckknight/JokerTest/JokerTest.toc:197)
+
+Joker - rename to Rock. Will be moving to trunk soon.
+------------------------------------------------------------------------
+r197 | ckknight | 2007-08-31 05:24:11 +0000 (Fri, 31 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - fix donation frame
+------------------------------------------------------------------------
+r195 | ckknight | 2007-08-30 07:26:37 +0000 (Thu, 30 Aug 2007) | 2 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add a report issue button, as dictated by X-IssueTracker.
+- X-IssueTracker is in the form of either "website:linkhere" or "wowace:jira_project_id". e.g. 10001 links to the Jira Evaluation project.
+------------------------------------------------------------------------
+r194 | ckknight | 2007-08-30 07:00:28 +0000 (Thu, 30 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add donation button to options. Some code borrowed from Prat, most from AceAddon-2.0.
+------------------------------------------------------------------------
+r185 | ckknight | 2007-08-28 01:48:05 +0000 (Tue, 28 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add a check to :GetLibraryVersion() to make sure self isn't a bad value.
+------------------------------------------------------------------------
+r183 | ckknight | 2007-08-27 07:12:09 +0000 (Mon, 27 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - bugfix (change global self to Joker)
+------------------------------------------------------------------------
+r182 | ckknight | 2007-08-27 06:44:07 +0000 (Mon, 27 Aug 2007) | 6 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - merge in the current LibStub (with a minor of 0, so it can be upgraded) to near the top of the file.
+- make LibJoker-1.0 registered with LibStub.
+- register all libraries with LibStub instead of internally with LibJoker-1.0.
+- all library functions will technically work with non-Joker libraries now. (:HasLibrary, :GetLibrary)
+- add unit test to check for LibStub support
+- :OnLibraryLoad is properly called on Joker libraries when a non-Joker library is loaded.
+------------------------------------------------------------------------
+r180 | ckknight | 2007-08-26 04:51:10 +0000 (Sun, 26 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add fake localization to the enable toggle for addons.
+------------------------------------------------------------------------
+r178 | ckknight | 2007-08-26 00:22:58 +0000 (Sun, 26 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - make the configuration show a reload button that becomes enabled if an option changes, instead of automatically reloading at times.
+------------------------------------------------------------------------
+r177 | ckknight | 2007-08-25 06:33:43 +0000 (Sat, 25 Aug 2007) | 3 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - make contracts run conditionally, off by default
+- add option to turn contracts on/off.
+- bugfix with the unit test config.
+------------------------------------------------------------------------
+r176 | ckknight | 2007-08-25 06:15:01 +0000 (Sat, 25 Aug 2007) | 2 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - remove /jokerunit slash command, instead added a proper config system with LibJokerConfig-1.0.
+- :NewLibrary no longer takes mixins, that can be done manually if need be.
+------------------------------------------------------------------------
+r173 | ckknight | 2007-08-24 02:46:28 +0000 (Fri, 24 Aug 2007) | 2 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerDB-1.0/LibJokerDB-1.0.lua
+
+LibJokerDB-1.0 - make sure things don't fall apart when db.raw is accessed before ADDON_LOADED
+LibJoker-1.0 - add some checks to the contract system.
+------------------------------------------------------------------------
+r171 | ckknight | 2007-08-24 02:15:33 +0000 (Fri, 24 Aug 2007) | 3 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerComm-1.0/LibJokerComm-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerConsole-1.0/LibJokerConsole-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerDB-1.0/LibJokerDB-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerEvent-1.0/LibJokerEvent-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerHook-1.0/LibJokerHook-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerLocale-1.0/LibJokerLocale-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerModuleCore-1.0/LibJokerModuleCore-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerTimer-1.0/LibJokerTimer-1.0.lua
+
+LibJoker-1.0 - add :GetContractFunctions("namespace", ...)
+- make all libraries use the contract functions instead of doing it in the normal function itself.
+- options to disable the contracts from running will be added in a bit.
+------------------------------------------------------------------------
+r169 | ckknight | 2007-08-23 00:54:00 +0000 (Thu, 23 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - only save data about addons/libraries currently being created (by :NewAddon or :NewLibrary) at the end of the method, thus preventing a race condition created when addons are loaded in the middle of those methods (due to automatic mixin loading).
+------------------------------------------------------------------------
+r167 | ckknight | 2007-08-22 02:43:19 +0000 (Wed, 22 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - make the active option have an order of 1 (top).
+------------------------------------------------------------------------
+r165 | ckknight | 2007-08-21 23:11:04 +0000 (Tue, 21 Aug 2007) | 2 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - bugfix
+- export the option to enable/disable an addon.
+------------------------------------------------------------------------
+r163 | ckknight | 2007-08-21 22:05:33 +0000 (Tue, 21 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - allow :HasAddon to accept a table to check.
+------------------------------------------------------------------------
+r161 | ckknight | 2007-08-21 04:52:32 +0000 (Tue, 21 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - change the metadata __mode for the objectToMixin table, preventing an issue.
+------------------------------------------------------------------------
+r155 | ckknight | 2007-08-20 09:02:33 +0000 (Mon, 20 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - random bugfixings.
+------------------------------------------------------------------------
+r132 | ckknight | 2007-08-15 10:19:22 +0000 (Wed, 15 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - fix docs for :IterateObjectMixins
+------------------------------------------------------------------------
+r130 | ckknight | 2007-08-15 09:07:41 +0000 (Wed, 15 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add a unit test ensuring that :OnLibraryLoad is only called the first time a library is loaded.
+------------------------------------------------------------------------
+r129 | ckknight | 2007-08-14 03:17:37 +0000 (Tue, 14 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add more provisions to unit test checking, so that tests are thrown away sooner if the situation can be decided sooner.
+------------------------------------------------------------------------
+r127 | ckknight | 2007-08-08 03:16:09 +0000 (Wed, 08 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - make the lib name checker a little more lenient.
+------------------------------------------------------------------------
+r126 | ckknight | 2007-08-07 21:44:07 +0000 (Tue, 07 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - fix a comment
+------------------------------------------------------------------------
+r125 | ckknight | 2007-08-07 19:53:30 +0000 (Tue, 07 Aug 2007) | 8 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add "unpackListAndDel", "unpackSetAndDel", "unpackDictAndDel" to recycling functions which are, respectively, inverses of "newList", "newSet", and "newDict".
+unpackListAndDel(newList(...)) => ...
+unpackSetAndDel(newSet(...)) => ...
+unpackDictAndDel(newDict(...)) => ...
+newList(unpackListAndDel(t)) => t
+newSet(unpackSetAndDel(t)) => t
+newDict(unpackDictAndDel(t)) => t
+
+------------------------------------------------------------------------
+r122 | ckknight | 2007-08-07 19:36:06 +0000 (Tue, 07 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - deprecated :ManualEnable/:ManualDisable in favor of a global :RecheckEnabledStates
+------------------------------------------------------------------------
+r117 | ckknight | 2007-08-07 17:58:19 +0000 (Tue, 07 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - load LibJokerComm-1.0 if available
+------------------------------------------------------------------------
+r114 | ckknight | 2007-08-05 07:42:34 +0000 (Sun, 05 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - fix :OnUnembed call
+------------------------------------------------------------------------
+r113 | ckknight | 2007-08-05 06:25:45 +0000 (Sun, 05 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add in :IsActive()/:ToggleActive([state]) checks for a database to save in.
+------------------------------------------------------------------------
+r112 | ckknight | 2007-08-03 22:26:35 +0000 (Fri, 03 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerConsole-1.0/LibJokerConsole-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerEvent-1.0/LibJokerEvent-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerHook-1.0/LibJokerHook-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerLocale-1.0/LibJokerLocale-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerModuleCore-1.0/LibJokerModuleCore-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerTimer-1.0/LibJokerTimer-1.0.lua
+
+LibJoker-1.0 - rename :GetRecycleFunctions => :GetRecyclingFunctions
+------------------------------------------------------------------------
+r111 | ckknight | 2007-08-03 22:05:43 +0000 (Fri, 03 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - also collect garbage at the OnUpdate catch
+------------------------------------------------------------------------
+r110 | ckknight | 2007-08-03 22:04:31 +0000 (Fri, 03 Aug 2007) | 3 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - use a more sophisticated debugstack hack to figure the current addon folder.
+- keep track of addons' folders and which folders are loaded.
+- cleanup any leftover libraries/addons in OnUpdate if they're not caught in ADDON_LOADED/PLAYER_LOGIN
+------------------------------------------------------------------------
+r106 | ckknight | 2007-08-02 20:52:59 +0000 (Thu, 02 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - if ADDON_LOADED occurs and it's post-PLAYER_LOGIN, collect garbage
+------------------------------------------------------------------------
+r105 | ckknight | 2007-08-02 20:34:54 +0000 (Thu, 02 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - fix error message in :FinalizeLibrary
+------------------------------------------------------------------------
+r104 | ckknight | 2007-08-02 20:31:48 +0000 (Thu, 02 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - remove asserts from __removeLibrary
+------------------------------------------------------------------------
+r103 | ckknight | 2007-08-02 20:29:12 +0000 (Thu, 02 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - now if a library is created within a unit test, it will be removed from memory right after.
+------------------------------------------------------------------------
+r98 | ckknight | 2007-08-02 01:34:37 +0000 (Thu, 02 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add documentation to :IsActive() and :ToggleActive([state])
+------------------------------------------------------------------------
+r97 | ckknight | 2007-08-02 01:22:16 +0000 (Thu, 02 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - API update
+------------------------------------------------------------------------
+r95 | ckknight | 2007-08-02 01:15:34 +0000 (Thu, 02 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - collect garbage between each unit test
+------------------------------------------------------------------------
+r93 | ckknight | 2007-08-02 00:49:41 +0000 (Thu, 02 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - in del(t), check if t exists.
+------------------------------------------------------------------------
+r92 | ckknight | 2007-08-01 23:54:17 +0000 (Wed, 01 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add note to :GetUID() about it being unsafe across sessions.
+------------------------------------------------------------------------
+r87 | ckknight | 2007-08-01 04:57:07 +0000 (Wed, 01 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - fix coloring for /jokerunit
+------------------------------------------------------------------------
+r84 | ckknight | 2007-08-01 04:48:49 +0000 (Wed, 01 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - optimization
+------------------------------------------------------------------------
+r83 | ckknight | 2007-08-01 03:57:07 +0000 (Wed, 01 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - bugfixes with unit tests.
+------------------------------------------------------------------------
+r82 | ckknight | 2007-08-01 03:54:26 +0000 (Wed, 01 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - cache globals.
+------------------------------------------------------------------------
+r81 | ckknight | 2007-08-01 03:52:50 +0000 (Wed, 01 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - if unit tests aren't going to be run, delete the functions asap.
+------------------------------------------------------------------------
+r80 | ckknight | 2007-08-01 03:51:24 +0000 (Wed, 01 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - if libraries specify the unit tests, only run if the libraries are in standalone form. Embeds shouldn't be running unit tests.
+------------------------------------------------------------------------
+r79 | ckknight | 2007-08-01 03:48:46 +0000 (Wed, 01 Aug 2007) | 3 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.toc
+
+LibJoker-1.0 - unit testing is now off by default.
+- unit testing is controlled by /jokerunit and the results are stored in a saved variable.
+- unit testing only works if LibJoker-1.0 is a standalone.
+------------------------------------------------------------------------
+r78 | ckknight | 2007-08-01 03:26:04 +0000 (Wed, 01 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add another unit test
+------------------------------------------------------------------------
+r77 | ckknight | 2007-08-01 03:12:52 +0000 (Wed, 01 Aug 2007) | 3 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add two more unit tests
+- add output for unit tests (green for pass, red for fail, details the failures)
+- fix some bugs as a result of the unit tests.
+------------------------------------------------------------------------
+r76 | ckknight | 2007-08-01 02:16:25 +0000 (Wed, 01 Aug 2007) | 2 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add method :AddUnitTest, currently unit tests are always run, but this will change later (enable by slash command or somesuch).
+- added a unit test to check recycling functions.
+------------------------------------------------------------------------
+r69 | ckknight | 2007-07-31 23:56:18 +0000 (Tue, 31 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - fake commit
+------------------------------------------------------------------------
+r68 | ckknight | 2007-07-31 23:48:05 +0000 (Tue, 31 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - fake commit
+------------------------------------------------------------------------
+r62 | ckknight | 2007-07-31 17:43:49 +0000 (Tue, 31 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - added :IsActive() and :ToggleActive([state]) to addons. Doesn't hook up to a database yet.
+------------------------------------------------------------------------
+r60 | ckknight | 2007-07-31 17:26:49 +0000 (Tue, 31 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - remove redundant code with recycling.
+------------------------------------------------------------------------
+r58 | ckknight | 2007-07-31 08:21:26 +0000 (Tue, 31 Jul 2007) | 5 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - expose .addon_mt.
+- fix a bug in newList(...)
+- make it so mixins can't be double-specified.
+- add :IsLibraryMixin("name"), checks if a library is a proper mixin or not.
+- add :ManualEnable and :ManualDisable, internal methods.
+------------------------------------------------------------------------
+r57 | ckknight | 2007-07-30 02:22:45 +0000 (Mon, 30 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - addons can't have underscores in their names, as that will be how modules define their parent namespaces.
+------------------------------------------------------------------------
+r53 | ckknight | 2007-07-29 23:09:25 +0000 (Sun, 29 Jul 2007) | 4 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - rearrange file a bit
+- use recycling for tables
+- add an Unembed process, which will be called when you upgrade a library, all mixins that it has embedded into it will be Unembedded.
+- export the :Unembed method.
+------------------------------------------------------------------------
+r52 | ckknight | 2007-07-29 21:53:25 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - don't enable or try to load non-LoD libs.
+------------------------------------------------------------------------
+r49 | ckknight | 2007-07-29 21:18:45 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - cache some globals, fix a typo.
+------------------------------------------------------------------------
+r48 | ckknight | 2007-07-29 21:01:56 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - check that libraries have been finalized before ADDON_LOADED.
+------------------------------------------------------------------------
+r47 | ckknight | 2007-07-29 20:44:29 +0000 (Sun, 29 Jul 2007) | 2 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - some bugfixes. Only load libraries whose major version matches the addon name, don't do any toc metadata checking for that.
+- also load LibJokerEvent-1.0 if possible
+------------------------------------------------------------------------
+r45 | ckknight | 2007-07-29 18:38:49 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - instead of using OnExternalLibraryLoad, just call it OnLibraryLoad.
+------------------------------------------------------------------------
+r44 | ckknight | 2007-07-29 18:36:34 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - trigger events "AddonInitialized" and "AddonEnabled" when those occur and LibJokerEvent-1.0 is available.
+------------------------------------------------------------------------
+r43 | ckknight | 2007-07-29 18:28:56 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - fire :OnExternalLibraryLoad on previously finalized libraries, so they can check the existence of other libraries.
+------------------------------------------------------------------------
+r42 | ckknight | 2007-07-29 18:26:27 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - call :OnInitialize and :OnEnable on addons
+------------------------------------------------------------------------
+r41 | ckknight | 2007-07-29 17:44:14 +0000 (Sun, 29 Jul 2007) | 2 lines
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerEvent-1.0/LibJokerEvent-1.0.lua
+   M /tmp/branches/Joker/ckknight/LibJokerTimer-1.0/LibJokerTimer-1.0.lua
+
+.LibJoker-1.0 - add :FinalizeLibrary("major") as a way to show that the library is complete. Kinda wish this wasn't required, though, but it's the only way I can think of without relying on ADDON_LOADED, which could theoretically happen after one of the libraries is mixed in.
+
+------------------------------------------------------------------------
+r33 | ckknight | 2007-07-29 09:22:01 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add :GetUID(), which other libraries and addons can use to ensure they have a proper UID throughout the whole addon sphere (instead of potentially one library's uids being the same as another library's uids).
+------------------------------------------------------------------------
+r32 | ckknight | 2007-07-29 07:51:16 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibPoker-1.0 - make :Embed({}) return the table given.
+------------------------------------------------------------------------
+r31 | ckknight | 2007-07-29 07:22:29 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - add more documentation
+------------------------------------------------------------------------
+r30 | ckknight | 2007-07-29 06:46:11 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - fix typo
+------------------------------------------------------------------------
+r29 | ckknight | 2007-07-29 06:45:00 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua
+
+LibJoker-1.0 - allow addons that don't match "^Lib[A-Z]" instead of just "^Lib".
+------------------------------------------------------------------------
+r28 | ckknight | 2007-07-29 06:37:41 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   D /tmp/branches/Joker/ckknight/LibJoker-1.0/Joker.lua
+   D /tmp/branches/Joker/ckknight/LibJoker-1.0/Joker.toc
+   A /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.lua (from /tmp/branches/Joker/ckknight/LibJoker-1.0/Joker.lua:27)
+   A /tmp/branches/Joker/ckknight/LibJoker-1.0/LibJoker-1.0.toc (from /tmp/branches/Joker/ckknight/LibJoker-1.0/Joker.toc:27)
+
+Joker-1.0 - rename to LibJoker-1.0, force libraries to start with Lib and end with the version sequence. Also force addons to not start with Lib.
+------------------------------------------------------------------------
+r27 | ckknight | 2007-07-29 06:26:47 +0000 (Sun, 29 Jul 2007) | 2 lines
+Changed paths:
+   A /tmp/branches/Joker/ckknight/LibJoker-1.0 (from /tmp/trunk/Joker:26)
+   D /tmp/trunk/Joker
+
+.Joker - move to branches, rename LibJoker-1.0
+
+------------------------------------------------------------------------
+r25 | ckknight | 2007-07-29 06:05:52 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/Joker/Joker.lua
+
+Joker - add methods :IterateMixinObjects("mixinName"), :IterateObjectMixins(object), and :DoesObjectUseMixin(object, "mixinName")
+------------------------------------------------------------------------
+r24 | ckknight | 2007-07-29 05:45:24 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/Joker/Joker.lua
+
+Joker - fix the docs a bit
+------------------------------------------------------------------------
+r23 | ckknight | 2007-07-29 05:38:53 +0000 (Sun, 29 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/Joker/Joker.lua
+
+Joker - add recycling mechanisms, see wiki for details.
+------------------------------------------------------------------------
+r22 | ckknight | 2007-07-28 19:18:28 +0000 (Sat, 28 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/Joker/Joker.lua
+
+Joker - change the Autodocs because they can't take function declarations inside them.
+------------------------------------------------------------------------
+r21 | ckknight | 2007-07-28 19:08:31 +0000 (Sat, 28 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/Joker/Joker.lua
+
+Joker - document using Autodoc format
+------------------------------------------------------------------------
+r20 | ckknight | 2007-07-28 18:31:18 +0000 (Sat, 28 Jul 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/Joker/Joker.lua
+
+Joker - bugfix with library names.
+- inject :GetLibraryVersion() onto libraries (like how AceLibrary does it, only in a significantly less hackish way)
+------------------------------------------------------------------------
+r19 | ckknight | 2007-07-28 02:36:58 +0000 (Sat, 28 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/Joker/Joker.lua
+
+Joker - bugfix, cache globals.
+------------------------------------------------------------------------
+r18 | ckknight | 2007-07-28 02:26:28 +0000 (Sat, 28 Jul 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/Joker/Joker.lua
+
+Joker - give addons a metatable that has a __tostring metamethod.
+------------------------------------------------------------------------
+r17 | ckknight | 2007-07-28 02:09:37 +0000 (Sat, 28 Jul 2007) | 5 lines
+Changed paths:
+   A /tmp/trunk/Joker
+   A /tmp/trunk/Joker/Joker.lua
+   A /tmp/trunk/Joker/Joker.toc
+
+Joker - initial import
+- this is a pet project that most sane people shouldn't deal with.
+- this is an addon development framework similar to Ace2, only very stripped down.
+- remember that this is an intellectual exercise and is not meant to be used in the wild.
+
+------------------------------------------------------------------------

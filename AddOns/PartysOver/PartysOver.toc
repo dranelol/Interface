@@ -1,0 +1,10 @@
+## Interface: 30100
+## Title: Partys Over
+## Notes: Hides Party Frames
+## Author: ZHaDoom 
+## X-eMail: ZHaDoom @ gmail DOT com
+## X-Donate: PayPal:ZHaDoom @ gmail DOT com
+## X-Category: Interface Enhancements
+## Version: 1.1.0
+
+PartysOver.lua

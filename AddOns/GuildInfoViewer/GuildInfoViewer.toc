@@ -1,0 +1,8 @@
+## Interface: 30000
+## Title: GuildInfoViewer
+## Version: 2.0.0
+## Author: Saeris
+
+## Notes: Allows the user to view officer notes and the guild configuration panel, regardless of actual permissions.
+
+GuildInfoViewer.lua

@@ -1,0 +1,25 @@
+------------------------------------------------------------------------
+r45 | baps | 2010-06-24 04:35:57 +0000 (Thu, 24 Jun 2010) | 1 line
+Changed paths:
+   A /tags/v1.0 (from /trunk:44)
+
+Tagging as v1.0
+------------------------------------------------------------------------
+r44 | baps | 2010-06-24 04:30:52 +0000 (Thu, 24 Jun 2010) | 1 line
+Changed paths:
+   M /trunk/GridSideIndicators.toc
+
+Update version to 1.0
+------------------------------------------------------------------------
+r43 | kunda | 2010-04-28 22:56:49 +0000 (Wed, 28 Apr 2010) | 1 line
+Changed paths:
+   M /trunk/GridSideIndicators.lua
+   M /trunk/GridSideIndicatorsLocale-deDE.lua
+   M /trunk/GridSideIndicatorsLocale-enUS.lua
+   M /trunk/GridSideIndicatorsLocale-frFR.lua
+   M /trunk/GridSideIndicatorsLocale-koKR.lua
+   M /trunk/GridSideIndicatorsLocale-zhCN.lua
+   M /trunk/GridSideIndicatorsLocale-zhTW.lua
+
+localization update
+------------------------------------------------------------------------

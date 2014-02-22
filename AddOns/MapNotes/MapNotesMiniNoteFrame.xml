@@ -1,0 +1,215 @@
+<!--
+
+  Loading order is:
+      MapNotesTemplates.xml
+      MapNotesEditFrame.xml
+    * MapNotesMiniNoteFrame.xml
+      MapNotesOptionsFrame.xml
+      MapNotesSendFrame.xml
+
+  Contains the following:
+
+    Definitions:
+      MapNotesPOIButtonTemplate
+      WorldMapMapNotesMiscTemplate
+      MN_MiniNotePOITemplate
+
+    Declarations:
+      MapNotes_WorldMapPlayerButton
+      MapNotesPOItloc
+      MapNotesPOIparty
+      MN_MiniNotePOI
+
+-->
+
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+  <Button name="MapNotesPOIButtonTemplate" enableMouse="true" movable="true" virtual="true">
+    <Size x="18" y="18"/>
+    <Anchors>
+      <Anchor point="CENTER"/>
+    </Anchors>
+    <Layers>
+
+      <Layer level="BACKGROUND">
+        <Texture name="$parentMininote" file="Interface\AddOns\MapNotes\MiscGFX\BaW" hidden="true">
+          <Size  x="19" y="19" />
+          <Anchors>
+            <Anchor point="CENTER" />
+          </Anchors>
+        </Texture>
+      </Layer>
+
+      <Layer level="ARTWORK">
+        <Texture name="$parentLastnote" file="Interface\AddOns\MapNotes\MiscGFX\Lastnote" hidden="true">
+          <Size  x="19" y="19" />
+          <Anchors>
+            <Anchor point="CENTER"></Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+
+      <Layer level="OVERLAY">
+        <Texture name="$parentTexture" file="" setAllPoints="true" />
+        <Texture name="$parentHighlight" file="Interface\AddOns\MapNotes\MiscGFX\Highlight" hidden="true">
+          <Size x="22" y="22"/>
+          <Anchors>
+            <Anchor point="CENTER" />
+          </Anchors>
+        </Texture>
+      </Layer>
+
+    </Layers>
+
+    <Scripts>
+      <OnLoad>
+        self:RegisterForClicks("LeftButtonDown", "RightButtonDown");
+      </OnLoad>
+      <OnShow>
+        self:SetFrameLevel(self:GetParent():GetFrameLevel() + 3);
+        self.hAngle = 0;
+        self.s = 0;
+        self.c = 0;
+        self.timer = 0;
+      </OnShow>
+      <OnMouseDown>
+        if (IsControlKeyDown() and IsAltKeyDown() and button == "LeftButton") then
+          self.isMoving = true;
+          MapNotes_RememberPosition(self);
+          self:StartMoving();
+        end
+      </OnMouseDown>
+      <OnMouseUp>
+        if (self.isMoving) then
+          self:StopMovingOrSizing();
+          self.isMoving = false;
+          MapNotes_RepositionNote(self);
+        end
+      </OnMouseUp>
+      <OnEnter function="MN_NoteOnEnter" />
+      <OnLeave>
+        WorldMapTooltip:Hide();
+        MapNotes_WorldMapTooltip:Hide();
+        GameTooltip:Hide();
+      </OnLeave>
+      <OnClick function="MapNotes_Note_OnClick" />
+      <OnUpdate function="MN_NoteUpdate" />
+    </Scripts>
+
+  </Button>
+
+  <Button name="WorldMapMapNotesMiscTemplate" hidden="true" virtual="true">
+    <Size x="18" y="18" />
+    <Anchors>
+      <Anchor point="CENTER" />
+    </Anchors>
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture name="$parentMininote" file="Interface\AddOns\MapNotes\MiscGFX\BaW" hidden="true">
+          <Size x="20" y="20"/>
+          <Anchors>
+            <Anchor point="CENTER" />
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="ARTWORK">
+        <Texture name="$parentTexture" file="" setAllPoints="true" />
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForClicks("LeftButtonDown", "RightButtonDown");
+      </OnLoad>
+      <OnEnter function="MN_NoteOnEnter" />
+      <OnLeave>
+        WorldMapTooltip:Hide();
+        MapNotes_WorldMapTooltip:Hide();
+        GameTooltip:Hide();
+      </OnLeave>
+      <OnClick function="MapNotes_Misc_OnClick" />
+      <OnUpdate function="MN_NoteUpdate" />
+    </Scripts>
+  </Button>
+
+<!-- Could try this as a normal frame with OnMouseDown events and a normal texture layer definition -->
+  <Button name="MN_MiniNotePOITemplate" enableMouse="true" clampedToScreen="true" parent="Minimap" virtual="true">
+    <Size x="20" y="20" />
+    <Scripts>
+      <OnLoad>
+        self:SetFrameLevel(5);
+        self.timeSinceLastUpdate = 0;
+<!--        self:RegisterForClicks("LeftButtonUp", "RightButtonUp");    -->
+      </OnLoad>
+      <OnShow>
+        self.timeSinceLastUpdate = 0;
+      </OnShow>
+      <OnUpdate function="POI_OnUpdate" />
+      <OnEnter function="MN_NoteOnEnter" />
+      <OnLeave>
+        GameTooltip:Hide();
+      </OnLeave>
+      <OnMouseUp function="MapNotes_MiniNote_OnClick" />
+    </Scripts>
+    <NormalTexture name="$parentTexture" file=""/>
+  </Button>
+
+  <!-- enable clicking through hidden player frame that triggers tooltip-->
+  <!-- *** This appears not to do anything - investigate -->
+  <Button name="MapNotes_WorldMapPlayerButton" parent="WorldMapPlayer">
+    <Size x="16" y="16"/>
+    <Anchors>
+      <Anchor point="CENTER"/>
+    </Anchors>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForClicks("LeftButtonDown", "RightButtonDown");
+      </OnLoad>
+      <OnEnter>
+        WorldMapPlayer:GetScript("OnEnter")(WorldMapPlayer);
+      </OnEnter>
+      <OnLeave>
+        WorldMapPlayer:GetScript("OnLeave")(WorldMapPlayer);
+      </OnLeave>
+      <OnClick>
+        MapNotes_WorldMapButton_OnClick(WorldMapButton, button);
+      </OnClick>
+    </Scripts>
+  </Button>
+
+<!-- for tloc function -->
+  <Button name="MapNotesPOItloc" inherits="WorldMapMapNotesMiscTemplate" parent="WorldMapButton">
+    <Scripts>
+      <OnShow>
+        self:SetFrameLevel(self:GetParent():GetFrameLevel() + 3);
+        self:SetID(0);
+        self.hAngle = 0;
+        self.s = 0;
+        self.c = 0;
+        self.timer = 0;
+      </OnShow>
+    </Scripts>
+  </Button>
+
+  <Button name="MapNotesPOIparty" inherits="WorldMapMapNotesMiscTemplate" parent="WorldMapButton">
+    <Scripts>
+      <OnShow>
+        self:SetFrameLevel(self:GetParent():GetFrameLevel() + 3);
+        self:SetID(-1);
+        self.hAngle = 0;
+        self.s = 0;
+        self.c = 0;
+        self.timer = 0;
+      </OnShow>
+    </Scripts>
+  </Button>
+
+<!-- Adds the MiniNote POI to MiniMapFrame -->
+  <Button name="MN_MiniNotePOI" inherits="MN_MiniNotePOITemplate" hidden="true" toplevel="true">
+    <Anchors>
+      <Anchor point="CENTER" relativeTo="MinimapBackdrop" relativePoint="TOPLEFT" x="-51" y="60" />
+    </Anchors>
+  </Button>
+
+</Ui>

@@ -1,0 +1,12 @@
+## Interface: 50001
+## Title: MapNotesIconLib |c0000FF00(v1.04.50001)|r
+## Author: Cortello
+## eMail: cortello@gmx.com
+## Version: 1.04.50001
+## Notes: Provides a much larger selection of Icons for use with MapNotes, plus a framework for adding further Icon Libraries
+## RequiredDeps: MapNotes
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: MNIL_Data
+
+MapNotesIconLib.xml

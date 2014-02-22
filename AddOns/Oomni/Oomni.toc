@@ -1,0 +1,6 @@
+## Interface: 20000
+## Title: Oomni |cff00ff00v1.0|r
+## Notes: Fancy things with addons
+## Dependencies:
+Oomni.lua
+Oomni.xml

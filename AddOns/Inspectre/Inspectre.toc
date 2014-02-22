@@ -1,0 +1,10 @@
+## Interface: 30000
+## Title: Inspectre
+## Version: 2.0.0
+## Author: Saeris
+## LoadOnDemand: 1
+## LoadWith: Blizzard_InspectUI
+
+## Notes: Allows you to continue inspecting a target even after they have departed.
+
+Inspectre.lua

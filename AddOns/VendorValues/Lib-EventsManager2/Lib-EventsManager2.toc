@@ -1,0 +1,9 @@
+## Interface: 30000
+## Title: Lib-EventsManager2
+## Version: 2.0.0
+## Author: Saeris
+## LoadOnDemand: 1
+
+## Notes: A library to manage events, both Blizzard and custom.
+
+EventsManager2.lua

@@ -1,0 +1,25 @@
+------------------------------------------------------------------------
+r43 | egingell | 2012-10-31 20:45:16 +0000 (Wed, 31 Oct 2012) | 1 line
+Changed paths:
+   A /tags/v201210311445 (from /trunk:42)
+
+-- Tagging
+------------------------------------------------------------------------
+r42 | egingell | 2012-10-31 20:44:50 +0000 (Wed, 31 Oct 2012) | 1 line
+Changed paths:
+   M /trunk/NoBoPWarning.lua
+
+-- In group mechanics.
+------------------------------------------------------------------------
+r40 | egingell | 2012-10-26 22:17:13 +0000 (Fri, 26 Oct 2012) | 1 line
+Changed paths:
+   M /trunk/NoBoPWarning.lua
+
+-- GetNumPartyMembers() was removed from the API.
+------------------------------------------------------------------------
+r38 | egingell | 2012-10-25 06:33:49 +0000 (Thu, 25 Oct 2012) | 1 line
+Changed paths:
+   M /trunk/NoBoPWarning.toc
+
+-- ##Interface: 50001 (I don't normally do this, but I think it's time I did one.) Please note that this is *only* an Interface ding. I have not confirmed whether it works in the current WoW version.
+------------------------------------------------------------------------

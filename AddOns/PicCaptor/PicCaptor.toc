@@ -1,0 +1,7 @@
+## Interface: 40000
+## Title: PicCaptor
+## Author: pyius
+## Notes: Advanced Screenshot
+## Version: 1.1
+PicCaptor.lua
+Bindings.xml

@@ -1,0 +1,10 @@
+
+--==-- GuildInfoViewer Version History --==--
+
+2.0.0 (Jan 6, 2009):
+	New:
+		- Updated for WotLK.
+
+
+1.0.0 (Jul 21, 2008):
+	- Initial release.

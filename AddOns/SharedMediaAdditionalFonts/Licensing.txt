@@ -1,0 +1,62 @@
+Please refer to the corresponding license for the fonts below.
+
+Licenses\CreativeCommons-NonCommercial-ShareAlike-1.0.txt
+ * Waltograph UI
+
+Licenses\GreyWold WebWorks Free Fonts.txt
+ * Mystik Orbs
+
+Licenses\Liberation(tm)-Fonts.txt
+ * Liberation Sans
+ * Liberation Serif
+
+Licenses\Owen Turley Licensing.rtf
+ * Solange
+
+Licenses\Ubuntu Font Licence v1.0.txt
+ * Ubuntu Condensed
+ * Ubuntu Light
+
+Licenses\SIL Open Font License.txt
+ * Yanone Kaffeesatz
+
+////////////////////////
+
+The following fonts do not have a specific license bundled with
+them, but are rather available under a well-known license.
+
+Free to use for non-commercial purposes
+ * trashco
+
+Free for personal use
+ * Collegiate
+ * SF Diego Sans
+
+Freeware
+ * Arm Wrestler
+ * Boris Black Bloxx
+ * Boris Black Bloxx Dirty
+ * Disko
+
+Public domain
+ * Pokemon Solid
+ * Star Cine
+
+Donationware
+ * Rock Show Whiplash - http://www.dafont.com/rock-show-whiplash.font
+
+////////////////////////
+
+The following fonts are either unclearly licensed or may require a license
+to be used. Please refer to their corresponding websites for more information.
+Do not use a font of which you don't possess an appropriate license.
+
+Note that you may already own the rights of using some of the fonts below
+by simply owning a copy of your operating system (i.e. Windows, Mac, ...).
+
+ * Alba Super - http://www.fontbros.com/support_license.php
+ * Bright Ideas
+ * Diogenes
+ * Fraktura Spamless - http://www.stereo-type.net/
+ * Impact - http://www.microsoft.com/typography/fonts/font.aspx?FMID=1582
+ * X360 - http://www.gxl.fr/

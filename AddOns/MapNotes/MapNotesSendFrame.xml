@@ -1,0 +1,134 @@
+<!--
+
+  Loading order is:
+      MapNotesTemplates.xml
+      MapNotesEditFrame.xml
+      MapNotesMiniNoteFrame.xml
+      MapNotesOptionsFrame.xml
+    * MapNotesSendFrame.xml
+
+  Contains the following:
+
+    Declarations:
+      MapNotesSendFrame
+
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+  <Frame name="MapNotesSendFrame" inherits="MapNotes_FrameTemplate">
+    <Size x="450" y="180" />
+    <Anchors>
+      <Anchor point="CENTER"/>
+    </Anchors>
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString inherits="GameFontGreenLarge" text="MAPNOTES_SEND_MENU">
+          <Anchors>
+            <Anchor point="TOP" relativeTo="MapNotesSendFrame" x="0" y="-8" />
+          </Anchors>
+        </FontString>
+      </Layer>
+      <Layer level="OVERLAY">
+        <FontString name="MapNotes_SendFrame_Title" inherits="GameFontNormal" text="MAPNOTES_SEND_TITLE" justifyH="LEFT">
+          <Size x="222" y="20" />
+          <Anchors>
+            <Anchor point="TOPLEFT" x="22" y="-22" />
+          </Anchors>
+        </FontString>
+        <FontString name="MapNotes_SendFrame_Tip" inherits="GameFontNormalSmall" text="MAPNOTES_SEND_TIP" justifyH="LEFT">
+          <Size x="400" y="32" />
+          <Anchors>
+            <Anchor point="TOPLEFT" x="22" y="-36" />
+          </Anchors>
+        </FontString>
+        <FontString name="MapNotes_SendFrame_Player" inherits="GameFontNormalSmall" text="MAPNOTES_SEND_PLAYER" justifyH="LEFT">
+          <Size x="222" y="16" />
+          <Anchors>
+            <Anchor point="TOPLEFT" x="22" y="-65" />
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+
+      <Button name="MapNotesChangeSendFrame" inherits="MapNotes_ButtonTemplate" text="MAPNOTES_SLASHCOMMAND">
+        <Anchors>
+          <Anchor point="CENTER" relativePoint="BOTTOM" x="-103" y="30" />
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOption");
+            MapNotes_ShowSendFrame(MapNotes_ToggleSendValue);
+          </OnClick>
+        </Scripts>
+      </Button>
+
+      <Button name="$parentCancel" inherits="MapNotes_CancelButtonTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MapNotesChangeSendFrame" x="20" y="0" />
+        </Anchors>
+      </Button>
+
+      <Button name="MapNotesSendPlayer" inherits="MapNotes_ButtonTemplate" text="MAPNOTES_SENDTOPLAYER">
+        <Anchors>
+          <Anchor point="CENTER" relativePoint="BOTTOM" relativeTo="MapNotesChangeSendFrame" x="0" y="37" />
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            if ( MapNotes_SendWideEditBox:GetText() ~= "" ) then
+              PlaySound("igMainMenuOption");
+              MapNotes_SendNote(1);
+            end
+          </OnClick>
+        </Scripts>
+      </Button>
+
+      <EditBox name="MapNotes_SendWideEditBox" historyLines="0" letters="255">
+        <Size x="400" y="64" />
+        <Anchors>
+          <Anchor point="TOPLEFT" x="24" y="-63" />
+        </Anchors>
+        <HitRectInsets>
+          <AbsInset left="0" right="0" top="-22" bottom="22"/>
+        </HitRectInsets>
+        <Scripts>
+          <OnLoad>
+            MapNotes_SendWideEditBox:SetText("");
+          </OnLoad>
+          <OnEscapePressed>
+            MapNotesSendFrame:Hide();
+          </OnEscapePressed>
+          <OnShow>
+            self:SetFrameLevel( self:GetParent():GetFrameLevel() + 2 );
+          </OnShow>
+        </Scripts>
+        <FontString inherits="ChatFontNormal" />
+      </EditBox>
+
+      <Frame>
+        <Size x="420" y="30" />
+        <Anchors>
+          <Anchor point="CENTER" relativeTo="MapNotes_SendWideEditBox"/>
+        </Anchors>
+        <Backdrop bgFile="" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+          <BackgroundInsets left="0" right="0" top="0" bottom="0" />
+          <TileSize val="16" />
+          <EdgeSize val="16" />
+        </Backdrop>
+      </Frame>
+
+    </Frames>
+    <Scripts>
+      <OnShow>
+        MapNotes_NormaliseScale(self);
+      </OnShow>
+      <OnLoad>
+--      MapNotes_OnLoad(); -- Now called on ADDON_LOADED
+        self:SetBackdropColor(0,0,0,1);
+      </OnLoad>
+    </Scripts>
+  </Frame>
+  
+</Ui>

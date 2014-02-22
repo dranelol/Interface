@@ -1,0 +1,15 @@
+tag 1.2-beta1
+f9568aad877f6cce9c7044d7c4d1e8624b87b598
+borlox <kuchen_@gmx.de>
+2009-08-06 14:14:26 +0200
+
+1. beta for CCopy-1.2.
+Features:
+- better handling of escape sequences (e.g raid target icons)
+
+
+--------------------
+
+borlox:
+	- - raid icons are now replaced by there {rt*} text bit
+	- no unescaped messages should get sended any longer

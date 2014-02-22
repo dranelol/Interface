@@ -1,0 +1,19 @@
+tag v1.0
+cd1a97970ba64b40efe86b4dd7115dc4b870e92a
+Raegx <raegx.priest@gmail.com>
+2011-02-08 23:55:51 -0500
+
+Initial Release
+
+
+--------------------
+
+Raegx:
+	- .pkgmeta file
+	- adding
+	- ....again trying
+	- Hopefully fixing this broke folder system
+	- delelted ,pkgmeta...comma instead of a period
+	- fixing pkgmeta
+	- Test
+	- initial

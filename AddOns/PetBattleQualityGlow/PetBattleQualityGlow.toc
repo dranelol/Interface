@@ -1,0 +1,7 @@
+## Interface: 50001
+## Title: Pet Battle Quality Glow
+## Author: Tia Lynn
+## Notes: Puts a Quality/Rarity Glow around Enemy Pet Unit Frames and Color Codes the Enemy Pet Name on the Pet Battle Frame and Enemy Pet Tooltip
+## Version: 1.0.3
+
+PetBattleQualityGlow.lua

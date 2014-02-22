@@ -1,0 +1,256 @@
+<Ui>
+  <Frame name="OomniMain" parent="UIParent" enableMouse="true" movable="true">
+    <Size>
+      <AbsDimension x="400" y="400"/>
+    </Size>
+    <Anchors>
+      <Anchor point="CENTER"/>
+    </Anchors>
+    <Scripts>
+      <OnLoad>
+        Oomni_Init()
+      </OnLoad>
+	<OnMouseDown>
+        self:StartMoving();
+	</OnMouseDown>
+	<OnMouseUp>
+	  self:StopMovingOrSizing();
+	</OnMouseUp>
+    </Scripts>
+    <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+      <BackgroundInsets>
+        <AbsInset left="4" right="4" top="4" bottom="4" />
+      </BackgroundInsets>
+      <TileSize>
+        <AbsValue val="16" />
+      </TileSize>
+      <EdgeSize>
+        <AbsValue val="16" />
+      </EdgeSize>
+    </Backdrop>
+    <Layers>
+      	<Layer level="ARTWORK">
+			<FontString name="Oomni_Title" inherits="ChatFontNormal" text="|cff00ff00Oomni|r Addon Manager">
+			<Anchors>
+			<Anchor point="TOP">
+			<Offset>
+			<AbsDimension x="0" y="-15"/>
+			</Offset>
+			</Anchor>
+			</Anchors>
+			</FontString>
+
+			<FontString name="Oomni_Stats1" inherits="ChatFontNormal" text="Addons">
+			<Anchors>
+			<Anchor point="TOPLEFT">
+			<Offset>
+			<AbsDimension x="10" y="-250"/>
+			</Offset>
+			</Anchor>
+			</Anchors>
+			</FontString>
+		</Layer>
+    </Layers>
+    <Frames>
+	<Button name="$parentButtonClose" inherits="OptionsButtonTemplate" text="Close">
+	<Anchors>
+	 <Anchor point="BOTTOMRIGHT">
+	  <Offset>
+	   <AbsDimension x="-12" y="15"/>
+	  </Offset>
+	 </Anchor>
+	</Anchors>
+	<Scripts>
+	 <OnClick> OomniMain:Hide(); OomniMenu:Hide(); </OnClick>
+	</Scripts>
+	</Button>
+
+	<Button name="Oomni_NewPreset" inherits="OptionsButtonTemplate" text="New Preset">
+	<Anchors>
+	 <Anchor point="BOTTOM">
+	  <Offset>
+	   <AbsDimension x="20" y="15"/>
+	  </Offset>
+	 </Anchor>
+	</Anchors>
+	<Scripts>
+	 <OnClick> Oomni_NewPreset(); </OnClick>
+	 <OnLoad> self:SetWidth(130); </OnLoad>
+	</Scripts>
+	</Button>
+
+	<Button name="Oomni_SaveClose" inherits="OptionsButtonTemplate" text="Save and Reload">
+	<Anchors>
+	 <Anchor point="BOTTOM">
+	  <Offset>
+	   <AbsDimension x="20" y="40"/>
+	  </Offset>
+	 </Anchor>
+	</Anchors>
+	<Scripts>
+	 <OnClick> Oomni_SaveReload(); </OnClick>
+	 <OnLoad> self:SetWidth(130); </OnLoad>
+	</Scripts>
+	</Button>
+
+	<Button name="Oomni_Reset" inherits="OptionsButtonTemplate" text="Reset All">
+	<Anchors>
+	 <Anchor point="BOTTOMRIGHT">
+	  <Offset>
+	   <AbsDimension x="-12" y="40"/>
+	  </Offset>
+	 </Anchor>
+	</Anchors>
+	<Scripts>
+	 <OnClick> Oomni_ResetAll(); </OnClick>
+	</Scripts>
+	</Button>
+
+	<Button name="Oomni_LoD" inherits="OptionsButtonTemplate" text="LoadOnDemand">
+	<Anchors>
+	 <Anchor point="BOTTOM">
+	  <Offset>
+	   <AbsDimension x="-125" y="40"/>
+	  </Offset>
+	 </Anchor>
+	</Anchors>
+	<Scripts>
+	 <OnClick> Oomni_LoD(); </OnClick>
+	 <OnLoad> self:SetWidth(130); </OnLoad>
+	</Scripts>
+	</Button>
+
+	<CheckButton name="OomniAddon1" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-35"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Oomni_EnableDisable(1);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="OomniAddon2" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-55"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Oomni_EnableDisable(2);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="OomniAddon3" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-75"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Oomni_EnableDisable(3);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="OomniAddon4" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-95"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Oomni_EnableDisable(4);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="OomniAddon5" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-115"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Oomni_EnableDisable(5);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="OomniAddon6" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-135"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Oomni_EnableDisable(6);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="OomniAddon7" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-155"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Oomni_EnableDisable(7);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="OomniAddon8" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-175"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Oomni_EnableDisable(8);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="OomniAddon9" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-195"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Oomni_EnableDisable(9);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="OomniAddon10" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-215"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Oomni_EnableDisable(10);</OnClick></Scripts>
+	</CheckButton>
+
+      <ScrollFrame name="OomniBar" inherits="FauxScrollFrameTemplate" hidden="true">
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="0" y="-40"/>
+            </Offset>
+          </Anchor>
+          <Anchor point="RIGHT">
+            <Offset>
+              <AbsDimension x="-30" y="60"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnVerticalScroll>
+            FauxScrollFrame_OnVerticalScroll(self, offset, 16, OomniBar_Update);
+          </OnVerticalScroll>
+          <OnShow>
+            OomniBar_Update()
+          </OnShow>
+        </Scripts>
+      </ScrollFrame>
+
+      <EditBox name="$parentEditBox" letters="80">
+	<Size>
+		<AbsDimension x="120" y="32"></AbsDimension>
+	</Size>
+	<Anchors>
+		<Anchor point="BOTTOMLEFT">
+			<Offset>
+				<AbsDimension x="16" y="8"></AbsDimension>
+			</Offset>
+		</Anchor>
+	</Anchors>
+	<Layers>
+		<Layer level="BACKGROUND">
+			<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+				<Size>
+					<AbsDimension x="75" y="32"></AbsDimension>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT">
+						<Offset>
+							<AbsDimension x="-10" y="0"></AbsDimension>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<TexCoords left="0" right="0.2" top="0" bottom="1.0"></TexCoords>
+			</Texture>
+			<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+				<Size>
+					<AbsDimension x="75" y="32"></AbsDimension>
+				</Size>
+				<Anchors>
+					<Anchor point="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"></AbsDimension>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<TexCoords left="0.7" right="1.0" top="0" bottom="1.0"></TexCoords>
+			</Texture>
+		</Layer>
+	</Layers>
+	<Scripts>
+		<OnLoad>self:SetScript("OnEscapePressed", function(self) OomniMain:Hide() OomniMenu:Hide() end)</OnLoad>
+	</Scripts>
+	<FontString inherits="ChatFontNormal"></FontString>
+      </EditBox>
+
+    </Frames>
+  </Frame>
+</Ui>

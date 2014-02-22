@@ -1,0 +1,63 @@
+## Interface: 50400
+## Title: PetJournal Enhanced
+## Notes: Displays the rarity of the enemies pets in their tooltip.
+## Author: nullberri
+## Version: 2.9.10
+## LoadOnDemand: 1
+## LoadWith: Blizzard_PetJournal
+## SavedVariables: PetJournalEnhancedDB
+## X-Category: Pet Journal
+## X-Localizations: enUS,deDe,ruRU
+
+
+
+
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+
+libs\AceAddon-3.0\AceAddon-3.0.xml
+libs\AceGUI-3.0\AceGUI-3.0.xml
+libs\AceDB-3.0\AceDB-3.0.xml
+libs\AceEvent-3.0\AceEvent-3.0.xml
+libs\LibPetJournal-2.0\LibPetJournal-2.0.lua
+libs\AceConfig-3.0\AceConfig-3.0.xml
+libs\AceLocale-3.0\AceLocale-3.0.xml
+libs\LibPetBreedInfo-1.0\LibPetBreedInfo-1.0.lua
+
+#no dep
+PetJournalEnhanced.lua
+local-enUS.lua
+
+local-ptBR.lua
+local-frFR.lua
+local-deDE.lua
+#itIT
+local-koKR.lua
+local-esMX.lua
+local-ruRU.lua
+local-zhCN.lua
+#esES
+local-zhTW.lua
+local-zhCN.lua
+
+modules\StaticData.lua
+modules\config.lua
+
+#dep: StaticData
+modules\ZoneFiltering.lua
+
+#dep: Config
+modules\UniqueCount.lua
+
+#dep: ZoneFiltering
+modules\Sorting.lua
+
+#dep: Config, Sorting
+modules\DropdownMenu.lua
+
+#dep: Config, Sorting, DropDown
+modules\HookedFunctions.lua
+
+
+
+

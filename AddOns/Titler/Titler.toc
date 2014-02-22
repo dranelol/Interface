@@ -1,0 +1,8 @@
+## Interface: 30000
+## Title: Titler
+## Author: pyius
+## Notes: Fun with Titles!!
+##SavedVariablesPerCharacter: TitlerAuto, TitlerInt, savedb
+## Version: 1.22
+Titler.lua
+Titler.xml

@@ -1,0 +1,11 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\..\FrameXML\UI.xsd">
+	<Script file="ItemPrice-1.1\LibStub\LibStub.lua"/>
+	<Script file="ItemPrice-1.1\ItemPrice-1.1.lua"/>
+	
+	<Script file="NicheDevTools\NicheDevTools_ParsingTooltip.lua"/>
+	
+	<Script file="ItemVendorPricesDB2_Base.lua"/>
+	<Script file="ItemVendorPricesDB2_DataManip.lua"/>
+	<Script file="ItemVendorPricesDB2_Init.lua"/>
+</Ui>

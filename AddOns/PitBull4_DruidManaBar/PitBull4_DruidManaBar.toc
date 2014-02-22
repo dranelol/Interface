@@ -1,0 +1,29 @@
+## Interface: 50400
+## Title: PitBull4 |r[|cffeda55fDruid/Monk mana bar|r]
+## Title-deDE: PitBull4 |r[|cffeda55fDruiden/Mönch Manaleiste|r]
+## Title-esES: PitBull4 |r[|cffeda55fBarra de maná para Druída|r]
+## Title-frFR: PitBull4 |r[|cffeda55fBarre de mana du Druide/Moine|r]
+## Title-koKR: PitBull4 |r[|cffeda55f드루이드 마나바|r]
+## Title-ruRU: PitBull4 |r[|cffeda55fПолоса маны друида/монаха|r]
+## Title-zhCN: PitBull4 |r[|cffeda55f德鲁伊/武僧 法力条|r]
+## Title-zhTW: PitBull4 |r[|cffeda55f德魯伊法力條|r]
+## Notes: Show the mana bar when a druid is in cat or bear form or a mistweaver monk is in stance of the fierce tiger.
+## Notes-deDE: Zeigt die Manaleiste, wenn ein Druide in Katzen- oder Bärenform ist, oder ein Nebelwirker-Mönch in 'Der wilde Tiger' Haltung ist.
+## Notes-esES: Muestra la barra de maná cuando el druída está en forma de felino u oso.
+## Notes-frFR: Affiche la barre de mana lorsqu'un druide est en forme de félin ou d'ours ou que le moine tisse-brume est en posture du tigre féroce
+## Notes-koKR: 드루이드의 곰 또는 표범 변신 시 마나를 표시합니다.
+## Notes-ruRU: Показывает полосу маны друида в формах кота или медведя, а также монаха специализации "Ткач туманов" в стойке разъяренного тигра.
+## Notes-zhCN: 德鲁伊在猎豹/熊形态或是织雾武僧在猛虎式时显示法力条。
+## Notes-zhTW: 德魯伊在獵豹或熊形態或是織霧武僧在猛虎式時顯示法力條。
+## Author: ckknight
+## DefaultState: enabled
+## LoadOnDemand: 1
+## Dependencies: PitBull4
+## Version: v4.0.0-beta48
+## X-PitBull4-Condition: return select(2, UnitClass("player")) == "DRUID" or select(2, UnitClass("player")) == "MONK"
+## X-Curse-Packaged-Version: v4.0.0-beta48
+## X-Curse-Project-Name: PitBull Unit Frames 4.0
+## X-Curse-Project-ID: pitbull4
+## X-Curse-Repository-ID: wow/pitbull4/mainline
+
+load.xml

@@ -1,0 +1,10 @@
+## Interface: 30000
+## Title: Lib-ItemVendorPricesDB2
+## Version: 2.2.0
+## Author: Saeris
+## LoadOnDemand: 1
+## OptionalDeps: Lib-EventsManager2
+
+## Notes: A library which catalogues vendor price data about all observed items, for use in other addons.
+
+ItemVendorPricesDB2_Loader.xml

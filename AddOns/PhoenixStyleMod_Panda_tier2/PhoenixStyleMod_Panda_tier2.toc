@@ -1,0 +1,34 @@
+﻿## Interface: 50400
+## Title: Phoenix|cff7fff7fStyle|r - Pandaria module, tier 2
+## Title-ruRU: Phoenix|cff7fff7fStyle|r - модуль Пандарии, тир 2
+## Author: Shurshik
+## Notes: PhoenixStyle`s module
+## Notes-ruRU: Модуль для аддона Феникс Стайл
+## Dependencies: PhoenixStyle
+## LoadOnDemand: 1
+## SavedVariablesPerCharacter: psraidoptionsonp2,psraidoptionschatp2
+Localization\localization-enEN.lua
+Localization\localization-ruRU.lua
+Localization\localization-deDE.lua
+Localization\localization-frFR.lua
+Localization\localization-esES.lua
+Localization\localization-esMX.lua
+Localization\localization-koKR.lua
+Localization\localization-zhTW.lua
+Localization\localization-zhCN.lua
+PhoenixStyleMod_Panda_tier2.lua
+PhoenixStyleMod_Panda_tier2.xml
+Damage_show.lua
+Megaera.lua
+CouncilOfElders.lua
+Horridon.lua
+Jin'rokh.lua
+Tortos.lua
+Ji-Kun.lua
+Durumu.lua
+Primordius.lua
+DarkAnimus.lua
+IronQon.lua
+TwinConsorts.lua
+LeiShen.lua
+Ra-den.lua

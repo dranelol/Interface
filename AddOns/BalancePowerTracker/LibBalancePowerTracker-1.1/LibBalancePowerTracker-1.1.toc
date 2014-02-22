@@ -1,0 +1,7 @@
+## Interface: 50001
+## Title: LibBalancePowerTracker 1.1
+## Version: 1.1.3
+## Author: Kurohoshi (EU-Minahonda)
+## Notes: Moonkin Eclipse energy tracker library.
+
+LibBalancePowerTracker-1.1.lua

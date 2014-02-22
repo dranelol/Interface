@@ -1,0 +1,29 @@
+## Interface: 50400
+## Title: PitBull4 |r[|cffeda55fTotems|r]
+## Title-deDE: PitBull4 |r[|cffeda55fTotems|r]
+## Title-esES: PitBull4 |r[|cffeda55fTotems|r]
+## Title-frFR: PitBull4 |r[|cffeda55fTotems|r]
+## Title-koKR: PitBull4 |r[|cffeda55f토템|r]
+## Title-ruRU: PitBull4 |r[|cffeda55fТотемы|r]
+## Title-zhCN: PitBull4 |r[|cffeda55f图腾|r]
+## Title-zhTW: PitBull4 |r[|cffeda55f圖騰|r]
+## Notes: Show which Totems are dropped and the time left until they expire.
+## Notes-deDE: Zeige an welche Totems gesetzt wurden und die Zeit bis diese verfallen.
+## Notes-esES: Muestra que Totems se han lanzado y el tiempo restante antes de espirar.
+## Notes-frFR: Affiche quels totems ont été posés et le temps restant avant qu'ils n'expirent.
+## Notes-koKR: Show which Totems are dropped and the time left until they expire.
+## Notes-ruRU: Показывает, какие тотемы выставлены, и сколько времени осталось до их исчезновения.
+## Notes-zhCN: 显示放置的图腾以及其剩余时间
+## Notes-zhTW: 顯示放下了哪些圖騰以及其剩餘時間。
+## Author: ckknight
+## DefaultState: enabled
+## LoadOnDemand: 1
+## Dependencies: PitBull4
+## Version: v4.0.0-beta48
+## X-PitBull4-Condition: return select(2, UnitClass("player")) == "SHAMAN" or select(2, UnitClass("player")) == "DRUID" or select(2,UnitClass("player")) == "DEATHKNIGHT" or select(2,UnitClass("player")) == "MONK" or select(2,UnitClass("player")) == "MAGE"
+## X-Curse-Packaged-Version: v4.0.0-beta48
+## X-Curse-Project-Name: PitBull Unit Frames 4.0
+## X-Curse-Project-ID: pitbull4
+## X-Curse-Repository-ID: wow/pitbull4/mainline
+
+load.xml

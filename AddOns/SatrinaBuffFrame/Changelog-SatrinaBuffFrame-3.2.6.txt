@@ -1,0 +1,110 @@
+------------------------------------------------------------------------
+r147 | father0fnine | 2012-09-12 04:56:09 +0000 (Wed, 12 Sep 2012) | 1 line
+Changed paths:
+   A /tags/3.2.6 (from /trunk:146)
+
+Tagging as 3.2.6
+------------------------------------------------------------------------
+r146 | father0fnine | 2012-09-12 04:54:15 +0000 (Wed, 12 Sep 2012) | 1 line
+Changed paths:
+   A /trunk/Libs/AceAddon-3.0
+   A /trunk/Libs/AceAddon-3.0/AceAddon-3.0.lua
+   A /trunk/Libs/AceAddon-3.0/AceAddon-3.0.xml
+   A /trunk/Libs/AceConsole-3.0
+   A /trunk/Libs/AceConsole-3.0/AceConsole-3.0.lua
+   A /trunk/Libs/AceConsole-3.0/AceConsole-3.0.xml
+   A /trunk/Libs/AceDB-3.0
+   A /trunk/Libs/AceDB-3.0/AceDB-3.0.lua
+   A /trunk/Libs/AceDB-3.0/AceDB-3.0.xml
+   A /trunk/Libs/AceEvent-3.0
+   A /trunk/Libs/AceEvent-3.0/AceEvent-3.0.lua
+   A /trunk/Libs/AceEvent-3.0/AceEvent-3.0.xml
+   A /trunk/Libs/AceTimer-3.0
+   A /trunk/Libs/AceTimer-3.0/AceTimer-3.0.lua
+   A /trunk/Libs/AceTimer-3.0/AceTimer-3.0.xml
+   A /trunk/Libs/CallbackHandler-1.0
+   A /trunk/Libs/CallbackHandler-1.0/CallbackHandler-1.0.lua
+   A /trunk/Libs/CallbackHandler-1.0/CallbackHandler-1.0.xml
+   A /trunk/Libs/LibSharedMedia-3.0
+   A /trunk/Libs/LibSharedMedia-3.0/LibSharedMedia-3.0.lua
+   A /trunk/Libs/LibSharedMedia-3.0/lib.xml
+   A /trunk/Libs/LibStub
+   A /trunk/Libs/LibStub/.pkgmeta
+   A /trunk/Libs/LibStub/LibStub.lua
+   A /trunk/Libs/LibStub/LibStub.toc
+   A /trunk/Libs/LibStub/tests
+   A /trunk/Libs/LibStub/tests/test.lua
+   A /trunk/Libs/LibStub/tests/test2.lua
+   A /trunk/Libs/LibStub/tests/test3.lua
+   A /trunk/Libs/LibStub/tests/test4.lua
+   A /trunk/Media
+   A /trunk/Media/SBFSounds.lua
+   A /trunk/Media/boing.wav
+   A /trunk/SBFCombatLog.lua
+
+Uploading new files
+------------------------------------------------------------------------
+r145 | father0fnine | 2012-09-12 04:52:12 +0000 (Wed, 12 Sep 2012) | 1 line
+Changed paths:
+   M /trunk/Locales/Localisation.enUS.lua
+   M /trunk/Locales/Localisation.zhCN.lua
+   M /trunk/SBF.xml
+   M /trunk/SBFBuff.lua
+   M /trunk/SBFButtonFacade.lua
+   M /trunk/SBFElements.lua
+   M /trunk/SBFEnchant.lua
+   M /trunk/SBFFilters.lua
+   M /trunk/SBFFrame.lua
+   M /trunk/SBFResources.lua
+   M /trunk/SBFSavedVar.lua
+   M /trunk/SBFTotems.lua
+   M /trunk/SBFTracking.lua
+   M /trunk/SBFUtil.lua
+   M /trunk/SatrinaBuffFrame.lua
+   M /trunk/SatrinaBuffFrame.toc
+
+Uploading changed SBF base files
+------------------------------------------------------------------------
+r144 | father0fnine | 2012-09-12 04:51:42 +0000 (Wed, 12 Sep 2012) | 1 line
+Changed paths:
+   D /trunk/SBFcyCircled.lua
+
+Deleting removed files
+------------------------------------------------------------------------
+r143 | father0fnine | 2012-09-12 04:50:52 +0000 (Wed, 12 Sep 2012) | 1 line
+Changed paths:
+   A /trunk/SBFOptions/Locales/Localisation.koKR.lua
+   A /trunk/SBFOptions/ProfileTab.lua
+
+Uploading new SBFOptions files
+------------------------------------------------------------------------
+r142 | father0fnine | 2012-09-12 04:50:09 +0000 (Wed, 12 Sep 2012) | 1 line
+Changed paths:
+   M /trunk/SBFOptions/BarTab.lua
+   M /trunk/SBFOptions/CountTab.lua
+   M /trunk/SBFOptions/ExpiryTab.lua
+   M /trunk/SBFOptions/FilterTab.lua
+   M /trunk/SBFOptions/FlowTab.lua
+   M /trunk/SBFOptions/GeneralTab.lua
+   M /trunk/SBFOptions/GlobalTab.lua
+   M /trunk/SBFOptions/IconTab.lua
+   M /trunk/SBFOptions/LayoutTab.lua
+   M /trunk/SBFOptions/Libs/LibColourFrame-1.0/LibColourFrame-1.0.lua
+   M /trunk/SBFOptions/Libs/LibColourFrame-1.0/LibColourFrame-1.0.toc
+   M /trunk/SBFOptions/Libs/LibScrollingDropDown-1.0/LibScrollingDropDown-1.0.lua
+   M /trunk/SBFOptions/Libs/LibScrollingDropDown-1.0/LibScrollingDropDown-1.0.toc
+   M /trunk/SBFOptions/Locales/Localisation.enUS.lua
+   M /trunk/SBFOptions/Locales/Localisation.ruRU.lua
+   M /trunk/SBFOptions/Locales/Localisation.zhCN.lua
+   M /trunk/SBFOptions/Locales/Localisation.zhTW.lua
+   M /trunk/SBFOptions/NameTab.lua
+   M /trunk/SBFOptions/RoundedDropDown.lua
+   M /trunk/SBFOptions/RoundedDropDown.xml
+   M /trunk/SBFOptions/SBFOptions.toc
+   M /trunk/SBFOptions/SatrinaBuffFrameOptions.lua
+   M /trunk/SBFOptions/SatrinaBuffFrameOptions.xml
+   M /trunk/SBFOptions/SpellTab.lua
+   M /trunk/SBFOptions/TimerTab.lua
+
+Uploading Changed SBFOptions files
+------------------------------------------------------------------------

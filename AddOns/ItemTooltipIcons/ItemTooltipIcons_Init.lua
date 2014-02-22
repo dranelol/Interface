@@ -1,0 +1,2 @@
+
+ItemTooltipIcons.t_Init();

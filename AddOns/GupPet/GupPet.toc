@@ -1,0 +1,24 @@
+## Interface: 50100
+## Title: GupPet
+## Author: Gup
+## Version: 2.104
+## Notes: 
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariablesPerCharacter: GUPPET_SAVEDDATA, GUPPET_SAVEDLOCATIONS, GUPPET_OPTIONS 
+
+localization.lua
+
+GupPet_Interface_IngameButtons.xml
+GupPet_Interface.lua
+GupPet_Interface_IngameButtons.lua 
+
+Gup_MountData.lua
+GupPet_Data.lua
+
+GupP_Mount.lua
+GupPet_Companion.lua
+GupPet_AutoCompanion.lua
+
+GupPet.lua
+GupPet.xml

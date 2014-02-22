@@ -1,0 +1,35 @@
+Importing and exporting can be done with LunarSphere.
+
+======================
+How to Export Data:
+======================
+
+Simply use an "Export" feature inside LunarSphere (such as the script library exporting feature) to load up the database with new data. When you log out of World of Warcraft, head to your SavedVariables folder:
+
+..\World of Warcraft\WTF\Account\(YOUR ACCOUNT NAME)\SavedVariables
+
+Inside this folder, look for the "LunarSphereExporter.lua" file and drag it somewhere or copy it. This file has the database we're interested in. You can upload it somewhere, email it to someone, whatever you want. In order to use the exported data, move on to the next section:
+
+======================
+How to Import Data:
+======================
+
+Once you have acquired the "LunarSphereExporter.lua" file from someone or somewhere, simply copy it into your LunarSphere folder in your addons folder:
+
+..\World of Warcraft\Interface\Addons\LunarSphere
+
+Fresh installations of LunarSphere will already have this file in there, but it will be 0 bytes in size and empty. Simply copy over that file with this new copy. If the file doesn't already exist in the folder, it was probably already deleted, so copying it over is fine.
+
+Load up WOW and log in. Find the area you wish to do the importing (such as the library importing feature) and click the import button. If LunarSphere finds data it can import, it will automatically start the process (which is very quick) and output a message with the import results in your chat window.
+
+After you are done importing the file, it is recommended that you delete it from the LunarSphere folder. While it exists in the folder, it will always be loaded up into memory, even if you have no intention of importing it. You've been warned :)
+
+======================
+Remember:
+======================
+
+The "LunarSphereExporter.lua" file in your LunarSphere folder is never updated when you export data. You need to always go and grab the NEW database from your SavedVariables folder.
+
+Happy importing/exporting!
+
+-Moongaze

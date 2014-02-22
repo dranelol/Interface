@@ -1,0 +1,27 @@
+------------------------------------------------------------------------
+r39 | sabindeus | 2012-08-28 05:51:26 +0000 (Tue, 28 Aug 2012) | 1 line
+Changed paths:
+   A /tags/2.1.4 (from /trunk:38)
+
+Tagging as 2.1.4
+------------------------------------------------------------------------
+r38 | sabindeus | 2012-08-28 05:50:38 +0000 (Tue, 28 Aug 2012) | 2 lines
+Changed paths:
+   M /trunk/TurnIn.lua
+   M /trunk/TurnIn.toc
+
+updated TOC
+fixed gossip selection bug
+------------------------------------------------------------------------
+r36 | sabindeus | 2012-08-27 23:41:42 +0000 (Mon, 27 Aug 2012) | 6 lines
+Changed paths:
+   M /trunk/TurnIn.lua
+   M /trunk/TurnIn.toc
+
+fixed long standing fontstring alpha bug
+fixed calls to getgossip...quests for 5.0
+fixed repeated npc interact bug on QUEST_PROGRESS for 5.0
+updated TOC
+
+
+------------------------------------------------------------------------

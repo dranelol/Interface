@@ -1,0 +1,7 @@
+
+--==-- InspectDetails Functionality Description --==--
+
+Addon type: Interface
+Libraries used: none
+
+This addon adds detailed guild and title information to the inspect window.

@@ -1,0 +1,52 @@
+﻿## Interface: 50300
+# X-Compatible-With: 40200
+## Title: Sinestra Wrack Helper
+## X-Curse-Packaged-Version: 2.4.1
+## X-Curse-Project-Name: Sinestra Wrack Helper
+## X-Curse-Project-ID: sinestra-wrack-helper
+## X-Curse-Repository-ID: wow/sinestra-wrack-helper/mainline
+
+## Version: 2.4.1
+## Author: Cybeloras of Detheroc/Mal'Ganis
+## Notes: Helps you keep track of when wrack needs to be dispelled off of raid members in the Sinestra Encounter.
+## SavedVariables: SinestraWrackHelperDB
+## OptionalDeps: LibStub, Ace3, AceGUI-3.0-SharedMediaWidgets, LibSharedMedia-3.0
+## X-Embeds: LibStub, Ace3, AceGUI-3.0-SharedMediaWidgets, LibSharedMedia-3.0
+## X-Category: Combat
+
+## LoadManagers: AddonLoader
+## X-LoadOn-Slash: /swh, /sinestrawh, /sinestrawrackhelper
+## X-LoadOn-Events: ZONE_CHANGED_NEW_AREA, ZONE_CHANGED_INDOORS, ZONE_CHANGED
+## X-LoadOn-ZONE_CHANGED_NEW_AREA: if not SWH_LBZ then local Z=LibStub and LibStub("LibBabble-Zone-3.0",true)SWH_LBZ=Z and Z:GetLookupTable()or setmetatable({},{__index=function(t,k)return k end})end if GetRealZoneText()==SWH_LBZ["The Bastion of Twilight"] then AddonLoader:LoadAddOn("SinestraWrackHelper")end
+## X-LoadOn-ZONE_CHANGED_INDOORS: if not SWH_LBZ then local Z=LibStub and LibStub("LibBabble-Zone-3.0",true)SWH_LBZ=Z and Z:GetLookupTable()or setmetatable({},{__index=function(t,k)return k end})end if GetRealZoneText()==SWH_LBZ["The Bastion of Twilight"] then AddonLoader:LoadAddOn("SinestraWrackHelper")end
+## X-LoadOn-ZONE_CHANGED: if not SWH_LBZ then local Z=LibStub and LibStub("LibBabble-Zone-3.0",true)SWH_LBZ=Z and Z:GetLookupTable()or setmetatable({},{__index=function(t,k)return k end})end if GetRealZoneText()==SWH_LBZ["The Bastion of Twilight"] then AddonLoader:LoadAddOn("SinestraWrackHelper")end
+## X-LoadOn-Execute: if not SWH_LBZ then local Z=LibStub and LibStub("LibBabble-Zone-3.0",true)SWH_LBZ=Z and Z:GetLookupTable()or setmetatable({},{__index=function(t,k)return k end})end if GetRealZoneText()==SWH_LBZ["The Bastion of Twilight"] then AddonLoader:LoadAddOn("SinestraWrackHelper")end
+## X-LoadOn-InterfaceOptions: Sinestra Wrack Helper
+
+Lib\LibStub\LibStub.lua
+Lib\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Lib\AceAddon-3.0\AceAddon-3.0.xml
+Lib\AceConsole-3.0\AceConsole-3.0.xml
+Lib\AceEvent-3.0\AceEvent-3.0.xml
+Lib\AceTimer-3.0\AceTimer-3.0.xml
+Lib\AceLocale-3.0\AceLocale-3.0.xml
+Lib\AceDB-3.0\AceDB-3.0.xml
+Lib\LibSharedMedia-3.0\lib.xml
+Lib\LibBabble-Zone-3.0\lib.xml
+Lib\AceGUI-3.0\AceGUI-3.0.xml
+Lib\AceGUI-3.0-SharedMediaWidgets\widget.xml
+Lib\AceConfig-3.0\AceConfig-3.0.xml
+Lib\AceDBOptions-3.0\AceDBOptions-3.0.xml
+
+Localization\enUS.lua
+Localization\deDE.lua
+Localization\esES.lua
+Localization\esMX.lua
+Localization\frFR.lua
+Localization\koKR.lua
+Localization\ruRU.lua
+Localization\zhCN.lua
+Localization\zhTW.lua
+
+SinestraWrackHelper.lua
+SinestraWrackHelper.xml

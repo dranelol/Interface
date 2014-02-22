@@ -1,0 +1,78 @@
+
+--==-- EventsManager2 Functionality Description --==--
+
+Addon type: Library
+Libraries used: none
+
+This embeddable addon is a library that allows for event management. It is intended for use
+by developers to do two things: increase efficiency by sharing a single event dispatch frame,
+and allow elegant inter-addon communication via an event-based architecture.
+
+
+Here is the API, for developers:
+
+EventsManager2 can handle both default Blizzard events and custom addon events. The latter must
+simply be added to the library's list before they can have callbacks registered for them.
+
+EventsManager2.RegisterForEvent(funcObj[, funcKey], event[, sendFuncObj][, sendEvent])
+	Registers a callback, to be called whenever the given event occurs.
+	Arguments:
+		funcObj - The function or table that acts as a handler for the callback.
+		[funcKey] - If funcObj is a table, funcKey must result in a function when used as an index into
+			funcObj (func = funcObj[funcKey]). If given as nil, it defaults to ("OnEvent_" .. event).
+		event - The name of the event, a string, to register for.
+		[sendFuncObj] - If true, the callback will be given funcObj as the first argument. Defaults to false.
+		[sendEvent] - If true, the callback will be given the event as the first argument, or the second if
+			funcObj is being sent as well. Defaults to false.
+	Note that if you register for an event while that event is being dispatched, the new callback will
+	not be called until the next time the event is dispatched. Also note that if funcObj is a table, it can
+	only be registered with one funcKey per event at any given time.
+
+isRegistered, funcKey, sendFuncObj, sendEvent = EventsManager2.IsRegisteredForEvent(funcObj, event)
+	Returns whether a callback known by the given funcObj is registered for the given event, and also
+	the details of that callback if so. Calling RegisterForEvent() with a particular funcObj for a given event twice
+	with different details will generate an error, but simply calling it twice with identical details will not error.
+	Similarly, calling UnregisterForEvent() will not error just because the funcObj was not registered.
+
+EventsManager2.UnregisterForEvent(funcObj, event)
+	Unregisters a callback, given its funcObj and the event. The library will automatically unregister
+	all callbacks for a custom event when it is removed. It was also automatically unregister callbacks
+	for the Blizzard events VARIABLES_LOADED and PLAYER_LOGIN.
+
+EventsManager2.UnregisterForAllEvents(funcObj)
+	Unregisters all callbacks which use the given funcObj.
+
+isAvailable, isOnceOnly = EventsManager2.IsCustomEventAvailable(event)
+	Returns information about a custom event and its availability.
+
+EventsManager2.AddCustomEvent(event, isOnceOnly)
+	Adds a custom event, which can be triggered by client addons by calling DispatchCustomEvent().
+	The given event must be a string, and it must not already represent a Blizzard event. The isOnceOnly
+	value should be true or false (it defaults to false), to specify whether this event is a one-time-only
+	occurance. If it is once-only, it is automatically removed after being dispatched once. Try prefixing
+	the event with the name of your addon to ensure uniqueness. This function triggers EventsManager2's
+	own custom event, called EventsManager2_CUSTOM_EVENT_ADDED, with arguments being the event
+	and the isOnceOnly value.
+
+EventsManager2.RemoveCustomEvent(event)
+	Removes a custom event that was added previously, also unregistering any callbacks which were
+	registered for it. This function triggers EventsManager2's own custom event, called
+	EventsManager2_CUSTOM_EVENT_REMOVED, with arguments being the event and the isOnceOnly
+	value.
+
+EventsManager2.DispatchCustomEvent(event, ...)
+	Dispatches the given custom event with the given list of arguments to all callbacks registered for
+	the event. If the event is once-only, this function automatically calls RemoveCustomEvent(event).
+
+minor, subminor = EventsManager2.GetVersion()
+	Returns the minor and subminor components of the currently running version of the addon. This is
+	the 2 and 3, respectively, of a number like 1.2.3. This is useful if you are depending on the non-embedded
+	version of the library.
+
+To embed the library into your addon, place the Lib-EventsManager2 directory into your addon's directory.
+Then, add the line PATH\EventsManager2.lua at the top of the file list in your .toc file, such as
+Lib-EventsManager2\EventsManager2.lua.
+
+To run the library non-embedded, require it by listing it in the RequiredDeps line of your .toc file. Then, tell
+users to ensure that they always have the latest version installed. To check the running version from your
+addon, call the API function EventsManager2.GetVersion().

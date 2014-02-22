@@ -1,0 +1,35 @@
+﻿## Interface: 50400
+## Title: Phoenix|cff7fff7fStyle|r - Pandaria module, tier 3
+## Title-ruRU: Phoenix|cff7fff7fStyle|r - модуль Пандарии, тир 3
+## Author: Shurshik
+## Notes: PhoenixStyle`s module
+## Notes-ruRU: Модуль для аддона Феникс Стайл
+## Dependencies: PhoenixStyle
+## LoadOnDemand: 1
+## SavedVariablesPerCharacter: psraidoptionsonp3,psraidoptionschatp3
+Localization\localization-enEN.lua
+Localization\localization-ruRU.lua
+Localization\localization-deDE.lua
+Localization\localization-frFR.lua
+Localization\localization-esES.lua
+Localization\localization-esMX.lua
+Localization\localization-koKR.lua
+Localization\localization-zhTW.lua
+Localization\localization-zhCN.lua
+PhoenixStyleMod_Panda_tier3.lua
+PhoenixStyleMod_Panda_tier3.xml
+Damage_show.lua
+Immerseus.lua
+TheFallenProtectors.lua
+Norushen.lua
+ShaOfPride.lua
+Galakras.lua
+IronJuggernaut.lua
+Kor'kronDarkShaman.lua
+GeneralNazgrim.lua
+Malkorok.lua
+SpoilsOfPandaria.lua
+ThokTheBloodthirsty.lua
+SiegecrafterBlackfuse.lua
+ParagonsOfTheKlaxxi.lua
+GarroshHellscream.lua

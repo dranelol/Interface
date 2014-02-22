@@ -1,0 +1,25 @@
+﻿## Interface: 50400
+## Title: Raid|cff7fff7fSlack|rCheck
+## Title-ruRU: Raid|cff7fff7fSlack|rCheck
+## Author: Shurshik
+## Version: 1.49
+## Notes: /rsc or /raidslackcheck for more info
+## Notes-ruRU: /rsc или /слак - для открытия инфо
+## URL: http://blacklotus.ru/
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: rscignorezone6,rsctableannounce,rscchatrep,rscraidlrep,rsccolornick,rscwhomustbufflist,rscbuffschat,rscbuffcheckb2,rscbuffwhichtrack2,rscbufftimers,rscflaskcheckb,rscflaskchat, rscpotionscombatsaves,rscminflaskgood,rsconlyfrombosssave,rscraidrostertable,rscpotioninfotable,rscchoosepotion,rscbossnamestable,rscpotionnotincombat,rschealstoneused,rschealstoneused2,rscflaskcheckfoodadd,rscflaskcheckfoodadd2
+Localization\localization-enEN.lua
+Localization\localization-ruRU.lua
+Localization\localization-deDE.lua
+Localization\localization-frFR.lua
+Localization\localization-esES.lua
+Localization\localization-esMX.lua
+Localization\localization-koKR.lua
+Localization\localization-zhTW.lua
+Localization\localization-zhCN.lua
+Localization\localization-ptBR.lua
+RaidSlackCheck.lua
+RaidSlackCheck.xml
+buffrebith.lua
+flaskcheck.lua

@@ -1,0 +1,10 @@
+<Bindings>
+	<Binding name="CLICK APMStartPostButton:RightButton" description="APM_POST" header="APM_HEADER">
+	</Binding>
+	<Binding name="CLICK APMStartCancelButton:RightButton" description="APM_CANCEL">
+	</Binding>
+	<Binding name="CLICK AuctionProfitMasterPostButton:RightButton" description="APM_POST_ITEM">
+	</Binding>
+	<Binding name="CLICK AuctionProfitMasterCancelButton:RightButton" description="APM_CANCEL_ITEM">
+	</Binding>
+</Bindings>

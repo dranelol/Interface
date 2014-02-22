@@ -1,0 +1,14 @@
+## Interface: 30300
+## Title: Quick Auctions Poster
+## Notes: This addon will continue posting with Quick Auctions after the first scan is done.
+## Author: Zerotorescue
+## Version: v1.0.1
+## Dependencies: QuickAuctions
+## X-Curse-Packaged-Version: v1.0.1
+## X-Curse-Project-Name: Quick Auctions Poster
+## X-Curse-Project-ID: quick-auctions-poster
+## X-Curse-Repository-ID: wow/quick-auctions-poster/mainline
+
+embeds.xml
+
+Core.lua

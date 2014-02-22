@@ -1,0 +1,17 @@
+## Interface: 50001
+## Title: EGLoader
+#@debug@
+# ## Title: |cffff0088EBG|r EGLoader
+#@end-debug@
+## Notes: Loads all of my OnDemand Addons when needed. Despite what Curse says, this is not "required" for any of them.
+## Author: egingell
+## Version: v201210250037
+## X-Curse-Packaged-Version: v201210250037
+## X-Curse-Project-Name: EGLoader
+## X-Curse-Project-ID: egloader
+## X-Curse-Repository-ID: wow/egloader/mainline
+
+main.lua
+BigSpender.lua
+OneSpiritResWarning.lua
+SmartEnchant.lua

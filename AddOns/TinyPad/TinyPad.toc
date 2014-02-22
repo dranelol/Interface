@@ -1,0 +1,6 @@
+## Interface: 40300
+## Title: TinyPad
+## Notes: Notepad mod
+## Author: Gello
+## SavedVariables: TinyPadPages, TinyPadSettings
+TinyPad.xml

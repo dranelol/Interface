@@ -1,0 +1,871 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+ http://wowprogramming.com/FrameXML/UI.xsd">
+  <Script file="MizusRaidTracker_Options.lua"/>
+  <Frame name="MRT_Options_MainPanel">
+    <Layers>
+      <Layer level="OVERLAY">
+        <FontString name="$parent_Title" inherits="GameFontNormalLarge">
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset x="20" y="-20"></Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_Description" inherits="GameFontWhite">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parent_Title" relativePoint="BOTTOMLEFT">
+              <Offset y="-10"></Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <CheckButton name="$parent_Enabled_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parent_Description" relativePoint="BOTTOMLEFT">
+            <Offset y="-20"></Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+      <CheckButton name="$parent_Debug_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parent_Enabled_CB" relativePoint="BOTTOMLEFT">
+            <Offset y="-5"></Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+      <EditBox name="$parent_SlashCmd_EB" inherits="InputBoxTemplate" hidden="false" autoFocus="false" letters="50" enableKeyboard="true" enableMouse="true">
+        <Size x="200" y="26"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_Debug_CB">
+            <Offset x="5" y="-20"/>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite" justifyH="LEFT" text="SlashCmdTitle - FIXME!">
+              <Anchors>
+                <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+                  <Offset x="-5"/>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Scripts>
+          <OnEnter>MRT_Options_SetTT(self, "MP_SlashCmd");</OnEnter>
+          <OnLeave>MRT_Options_HideTT();</OnLeave>
+        </Scripts>
+        <FontString inherits="ChatFontNormal"/>
+      </EditBox>
+      <CheckButton name="$parent_MinimapIcon_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_SlashCmd_EB" x="-5" y="-30"/>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite" text="Show minimap icon (L)">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+      <CheckButton name="$parent_Prunning_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_MinimapIcon_CB" x="0" y="-20"/>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite" text="Automatically delete raids older than (L)">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+      <Slider name="$parent_Prunning_Slider" enableMouse="true" valueStep="1" orientation="HORIZONTAL" defaultValue="90" minValue="30" maxValue="120">
+        <Size x="200" y="20"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parent_Prunning_CB" relativePoint="BOTTOMLEFT" y="-5"/>
+        </Anchors>
+        <Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+          <EdgeSize>
+            <AbsValue val="8"/>
+          </EdgeSize>
+          <TileSize>
+            <AbsValue val="8"/>
+          </TileSize>
+          <BackgroundInsets>
+            <AbsInset left="3" right="3" top="6" bottom="6"/>
+          </BackgroundInsets>
+        </Backdrop>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString name="$parentValue" inherits="GameFontWhite" text="xx days (L)">
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT">
+                  <Offset x="10"/>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Scripts>
+		 <OnValueChanged>
+           if not self._onsetting then
+             self._onsetting = true
+             self:SetValue(self:GetValue())
+             self._onsetting = false
+           else return end             
+          </OnValueChanged>
+          <OnMouseDown>self:SetScript("OnUpdate", function() MRT_Options_MP_Prunning_Slider(self); end)</OnMouseDown>
+          <OnMouseUp>self:SetScript("OnUpdate", nil)</OnMouseUp>
+        </Scripts>
+        <ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+          <Size>
+            <AbsDimension x="32" y="32" />
+          </Size>
+        </ThumbTexture>
+      </Slider>
+    </Frames>
+    <Scripts>
+      <OnLoad>MRT_Options_MainPanel_OnLoad(self);</OnLoad>
+    </Scripts>
+  </Frame>
+  <Frame name="MRT_Options_TrackingPanel">
+    <Layers>
+      <Layer level="OVERLAY">
+        <FontString name="$parent_Title" inherits="GameFontNormalLarge">
+          <Anchors>
+            <Anchor point="TOPLEFT" x="20" y="-20"/>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_Description" inherits="GameFontWhite">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parent_Title" relativePoint="BOTTOMLEFT" x="0" y="-10"/>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <CheckButton name="$parent_CreateNewRaidOnNewZone_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parent_Description" relativePoint="BOTTOMLEFT" y="-20"/>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite" text="CreateNewRaidOnNewZone_CB_Text">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+      <CheckButton name="$parent_Log10MenRaids_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parent_CreateNewRaidOnNewZone_CB" relativePoint="BOTTOMLEFT" y="-5"/>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+      <CheckButton name="$parent_LogLFRRaids_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parent_Log10MenRaids_CB" relativePoint="BOTTOMLEFT" y="-5"/>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+      <CheckButton name="$parent_LogAVRaids_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parent_LogLFRRaids_CB" relativePoint="BOTTOMLEFT" y="-5"/>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+      <CheckButton name="$parent_LogWotLKRaids_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_LogAVRaids_CB" y="-5"/>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite" text="Track WotLK raids (L)">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+      <CheckButton name="$parent_UseServerTime_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parent_LogWotLKRaids_CB" relativePoint="BOTTOMLEFT" y="-25"/>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite" text="FIXME!">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+    </Frames>
+    <Scripts>
+      <OnLoad>MRT_Options_TrackingPanel_OnLoad(self);</OnLoad>
+    </Scripts>
+  </Frame>
+  <Frame name="MRT_Options_ItemsTrackingPanel">
+    <Layers>
+      <Layer level="OVERLAY">
+        <FontString name="$parent_Title" inherits="GameFontNormalLarge" text="Items tracking options (L)">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent" x="20" y="-20"/>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_OnlyTrackItemsAbove_Text" inherits="GameFontWhite" text="(L)Only track items equal or above Itemlevel">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_Title" x="0" y="-160"/>
+          </Anchors>
+        </FontString>
+        <!--
+          <FontString name="$parent_OnlyTrackItemsBelow_Text" inherits="GameFontWhite" text="(L FIXME!)or equal or below Itemlevel">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_OnlyTrackItemsAbove_Text" x="0" y="-5"/>
+            </Anchors>
+          </FontString>
+        -->
+        <FontString name="$parent_ChooseAutoFocus_Title" inherits="GameFontWhite" text="AutoFocus on loot cost dialog (L)">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_OnlyTrackItemsAbove_Text" x="0" y="-45"/>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Slider name="$parent_MinItemQualityToLog_Slider" enableMouse="true" valueStep="1" orientation="HORIZONTAL" defaultValue="0" minValue="0" maxValue="6">
+        <Size x="200" y="20"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parent_Title" relativePoint="BOTTOMLEFT" y="-50"/>
+        </Anchors>
+        <Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+          <EdgeSize>
+            <AbsValue val="8"/>
+          </EdgeSize>
+          <TileSize>
+            <AbsValue val="8"/>
+          </TileSize>
+          <BackgroundInsets>
+            <AbsInset left="3" right="3" top="6" bottom="6"/>
+          </BackgroundInsets>
+        </Backdrop>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString name="$parentText" inherits="GameFontWhite">
+              <Anchors>
+                <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="TOPLEFT"/>
+              </Anchors>
+            </FontString>
+            <FontString name="$parentValue" inherits="GameFontWhite">
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT">
+                  <Offset x="10"/>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Scripts>
+		 <OnValueChanged>
+           if not self._onsetting then
+             self._onsetting = true
+             self:SetValue(self:GetValue())
+             self._onsetting = false
+           else return end             
+          </OnValueChanged>
+          <OnMouseDown>self:SetScript("OnUpdate", function() MRT_Options_TP_MinItemQualityToLog_Slider(self); end)</OnMouseDown>
+          <OnMouseUp>self:SetScript("OnUpdate", nil)</OnMouseUp>
+        </Scripts>
+        <ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+          <Size>
+            <AbsDimension x="32" y="32" />
+          </Size>
+        </ThumbTexture>
+      </Slider>
+      <CheckButton name="$parent_AskForDKPValue_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parent_MinItemQualityToLog_Slider" relativePoint="BOTTOMLEFT" y="-5"/>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+      <Slider name="$parent_MinItemQualityToGetCost_Slider" enableMouse="true" defaultValue="0" minValue="0" maxValue="6" valueStep="1" orientation="HORIZONTAL">
+        <Size x="200" y="20"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parent_AskForDKPValue_CB" relativePoint="BOTTOMLEFT">
+            <Offset y="-20"/>
+          </Anchor>
+        </Anchors>
+        <Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+          <EdgeSize>
+            <AbsValue val="8"/>
+          </EdgeSize>
+          <TileSize>
+            <AbsValue val="8"/>
+          </TileSize>
+          <BackgroundInsets>
+            <AbsInset left="3" right="3" top="6" bottom="6"/>
+          </BackgroundInsets>
+        </Backdrop>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString name="$parentText" inherits="GameFontWhite">
+              <Anchors>
+                <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="TOPLEFT"/>
+              </Anchors>
+            </FontString>
+            <FontString name="$parentValue" inherits="GameFontWhite">
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT">
+                  <Offset x="10"/>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Scripts>
+         <OnValueChanged>
+           if not self._onsetting then
+             self._onsetting = true
+             self:SetValue(self:GetValue())
+             self._onsetting = false
+           else return end             
+         </OnValueChanged>
+          <OnMouseDown>self:SetScript("OnUpdate", function() MRT_Options_TP_MinItemQualityToGetCost_Slider(self); end)</OnMouseDown>
+          <OnMouseUp>self:SetScript("OnUpdate", nil)</OnMouseUp>
+        </Scripts>
+        <ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+          <Size>
+            <AbsDimension x="32" y="32" />
+          </Size>
+        </ThumbTexture>
+      </Slider>
+      <EditBox name="$parent_OnlyTrackItemsAbove_EB" inherits="InputBoxTemplate" hidden="false" autoFocus="false" letters="5" enableKeyboard="true" enableMouse="true">
+        <Size x="50" y="26"/>
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MRT_Options_ItemsTrackingPanel_OnlyTrackItemsAbove_Text" x="10" y="0"/>
+        </Anchors>
+        <FontString inherits="GameFontWhite"/>
+      </EditBox>
+      <CheckButton name="$parent_UseEPGPValues_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_OnlyTrackItemsAbove_Text" x="0" y="-10"/>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite" text="Use EPGP GP values (L)">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+      <CheckButton name="$parent_IgnoreEnchantingMats_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_ChooseAutoFocus_Title" x="0" y="-52"/>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite" text="Ignore enchanting mats (L)">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+      <CheckButton name="$parent_IgnoreGems_CB" inherits="OptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_IgnoreEnchantingMats_CB" x="0" y="-5"/>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parent_Text" inherits="GameFontWhite" text="Ignore gems (L)">
+              <Anchors>
+                <Anchor point="LEFT" relativePoint="RIGHT"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </CheckButton>
+    </Frames>
+    <Scripts>
+      <OnLoad>MRT_Options_ItemsTrackingPanel_OnLoad(self);</OnLoad>
+    </Scripts>
+  </Frame>
+  <Frame name="MRT_Options_AttendancePanel_ScrollFrame_Parent">
+    <Frames>
+      <ScrollFrame name="MRT_Options_AttendancePanel_ScrollFrame" inherits="UIPanelScrollFrameTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent" x="0" y="-5"/>
+          <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent" x="0" y="5"/>
+          <Anchor point="RIGHT" relativePoint="RIGHT" relativeTo="$parent" x="-28"/>
+        </Anchors>
+        <ScrollChild>
+          <Frame name="MRT_Options_AttendancePanel">
+            <Size x="350" y="490"/>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString name="$parent_Title" inherits="GameFontNormalLarge">
+                  <Anchors>
+                    <Anchor point="TOPLEFT">
+                      <Offset x="20" y="-20"></Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+                <FontString name="$parent_Description" inherits="GameFontWhite">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent_Title" relativePoint="BOTTOMLEFT">
+                      <Offset y="-10"></Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Frames>
+              <CheckButton name="$parent_GroupRestriction" inherits="OptionsCheckButtonTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="$parent_Description" relativePoint="BOTTOMLEFT" x="0" y="-20"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite">
+                      <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+              </CheckButton>
+              <CheckButton name="$parent_OfflinePlayers" inherits="OptionsCheckButtonTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="$parent_GroupRestriction" relativePoint="BOTTOMLEFT">
+                    <Offset x="0" y="-5"/>
+                  </Anchor>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite">
+                      <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+              </CheckButton>
+              <CheckButton name="$parent_GA_CB" inherits="OptionsCheckButtonTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="$parent_OfflinePlayers" relativePoint="BOTTOMLEFT" y="-20"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite">
+                      <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+              </CheckButton>
+              <CheckButton name="$parent_GA_NoAuto_CB" inherits="OptionsCheckButtonTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_GA_CB" x="16" y="-5"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite" text="GA_Auto_CB_FIXME!">
+                      <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+              </CheckButton>
+              <CheckButton name="$parent_GA_UseTrigger_CB" inherits="OptionsCheckButtonTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_GA_NoAuto_CB" x="0" y="-5"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite" text="Use trigger instead of character name (FIXME!)">
+                      <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+              </CheckButton>
+              <EditBox name="$parent_GA_Trigger_EB" inherits="InputBoxTemplate" hidden="false" autoFocus="false" letters="50" enableKeyboard="true" enableMouse="true">
+                <Size x="200" y="26"/>
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_GA_UseTrigger_CB" x="5" y="-20"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite" justifyH="LEFT" text="Trigger: (L)">
+                      <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="-5" y="0"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+                <FontString inherits="ChatFontNormal"/>
+              </EditBox>
+              <Slider name="$parent_GADuration_Slider" enableMouse="true" defaultValue="0" minValue="1" maxValue="5" valueStep="1" orientation="HORIZONTAL">
+                <Size x="200" y="20"/>
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="$parent_GA_Trigger_EB" relativePoint="BOTTOMLEFT">
+                    <Offset x="-21" y="-20"/>
+                  </Anchor>
+                </Anchors>
+                <Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+                  <EdgeSize>
+                    <AbsValue val="8"/>
+                  </EdgeSize>
+                  <TileSize>
+                    <AbsValue val="8"/>
+                  </TileSize>
+                  <BackgroundInsets>
+                    <AbsInset left="3" right="3" top="6" bottom="6"/>
+                  </BackgroundInsets>
+                </Backdrop>
+                <Layers>
+                  <Layer level="ARTWORK">
+                    <FontString name="$parentText" inherits="GameFontWhite">
+                      <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="TOPLEFT"/>
+                      </Anchors>
+                    </FontString>
+                    <FontString name="$parentValue" inherits="GameFontWhite">
+                      <Anchors>
+                        <Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT">
+                          <Offset x="10"/>
+                        </Anchor>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+                <Scripts>
+			 <OnValueChanged>
+			   if not self._onsetting then
+				 self._onsetting = true
+				 self:SetValue(self:GetValue())
+				 self._onsetting = false
+			   else return end             
+			  </OnValueChanged>
+                  <OnMouseDown>self:SetScript("OnUpdate", function() MRT_Options_AP_GADuration_Slider(); end)</OnMouseDown>
+                  <OnMouseUp>self:SetScript("OnUpdate", nil)</OnMouseUp>
+                </Scripts>
+                <ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+                  <Size>
+                    <AbsDimension x="32" y="32" />
+                  </Size>
+                </ThumbTexture>
+              </Slider>
+              <CheckButton name="$parent_GA_UseCustomText_CB" inherits="OptionsCheckButtonTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_GADuration_Slider" x="0" y="-10"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite" text="Use custom guild attendance text (L)">
+                      <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+              </CheckButton>
+              <ScrollFrame name="$parent_GA_CustomText_EB_Scrollframe" inherits="UIPanelScrollFrameTemplate">
+                <Size x="300" y="80"/>
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_GA_UseCustomText_CB" x="5" y="-25"/>
+                </Anchors>
+                <Backdrop bgFile="Interface\Common\Common-Input-Border-M" tile="true">
+                  <Color r="0.0" b="0.0" g="0.0" a="1.0"/>
+                  <BackgroundInsets left="-5" right="-26" top="-5" bottom="-5"/>
+                </Backdrop>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="MRT_Options_AttendancePanel_GA_CustomText_EB_Title" inherits="GameFontWhite" justifyH="LEFT" text="Custom guild attendance text: (L)">
+                      <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="-5" y="5"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+                <ScrollChild>
+                  <EditBox name="MRT_Options_AttendancePanel_GA_CustomText_EB" hidden="false" autoFocus="false" multiLine="true" enableKeyboard="true" letters="1023" countInvisibleLetters="true">
+                    <Size x="300" y="80"/>
+                    <Scripts>
+                      <OnEnter>MRT_Options_SetTT(self, "AP_GA_CustomText");</OnEnter>
+                      <OnLeave>MRT_Options_HideTT();</OnLeave>
+                    </Scripts>
+                    <FontString inherits="ChatFontNormal"/>
+                  </EditBox>
+                </ScrollChild>
+              </ScrollFrame>
+              <Frame name="$parent_GA_CustomText_EB_Scrollframe_Background">
+                <Size x="336" y="90"/>
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent_GA_CustomText_EB_Scrollframe" x="-8" y="5"/>
+                </Anchors>
+                <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+                  <EdgeSize val="16"/>
+                  <TileSize val="16"/>
+                  <BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+                </Backdrop>
+              </Frame>
+            </Frames>
+          </Frame>
+        </ScrollChild>
+      </ScrollFrame>
+    </Frames>
+    <Scripts>
+      <OnLoad>MRT_Options_AttendancePanel_OnLoad(self);</OnLoad>
+    </Scripts>
+  </Frame>
+  <Frame name="MRT_Options_ExportPanel_ScrollFrame_Parent">
+    <Frames>
+      <ScrollFrame name="MRT_Options_ExportPanel_ScrollFrame" inherits="UIPanelScrollFrameTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent" x="0" y="-5"/>
+          <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent" x="0" y="5"/>
+          <Anchor point="RIGHT" relativePoint="RIGHT" relativeTo="$parent" x="-28"/>
+        </Anchors>
+        <ScrollChild>
+          <Frame name="MRT_Options_ExportPanel">
+            <Size x="350" y="450"/>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString name="$parent_Title" inherits="GameFontNormalLarge">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" x="20" y="-15"/>
+                  </Anchors>
+                </FontString>
+                <FontString name="$parent_ChooseExport_Title" inherits="GameFontWhite">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent_Title" relativePoint="BOTTOMLEFT" x="0" y="-10"/>
+                  </Anchors>
+                </FontString>
+                <FontString name="$parent_XMLExport_Title" inherits="GameFontNormal" text="All XML-Exportformats - FIXME!">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_ChooseExport_Title" x="0" y="-80"/>
+                  </Anchors>
+                </FontString>
+                <FontString name="$parent_CTRTExport_Title" inherits="GameFontNormal">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent_XMLExport_Title" relativePoint="BOTTOMLEFT" x="0" y="-40"/>
+                  </Anchors>
+                </FontString>
+                <FontString name="$parent_EQDKPExport_Title" inherits="GameFontNormal" text="EQDKP-Plus XML settings - FIXME!">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_CTRTExport_Title" x="0" y="-70"/>
+                  </Anchors>
+                </FontString>
+                <FontString name="$parent_TextExport_Title" inherits="GameFontNormal">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent_EQDKPExport_Title" relativePoint="BOTTOMLEFT" x="0" y="-40"/>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Frames>
+              <CheckButton name="$parent_EnglishExport_CB" inherits="OptionsCheckButtonTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_ChooseExport_Title" x="0" y="-40"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite" justifyH="LEFT" text="Export raid zones and boss names in english (L)">
+                      <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+              </CheckButton>
+              <CheckButton name="$parent_IgnorePerBossAttendance_CB" inherits="OptionsCheckButtonTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="$parent_XMLExport_Title" relativePoint="BOTTOMLEFT" x="0" y="-5"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite" justifyH="LEFT" text="FIXME!">
+                      <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+                <Scripts>
+                  <OnClick>MRT_Options_ExportPanel_RLIPerBossAttendanceFix_CB:SetChecked(false);MRT_Options_ExportPanel_EQDKP_RLIPerBossAttendanceFix_CB:SetChecked(false);</OnClick>
+                </Scripts>
+              </CheckButton>
+              <CheckButton name="$parent_RLIPerBossAttendanceFix_CB" inherits="OptionsCheckButtonTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_CTRTExport_Title" x="0" y="-5"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite" justifyH="LEFT" text="Enable attendance fix for the EQDKP RLI 0.5.x (FIXME!)">
+                      <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+                <Scripts>
+                  <OnClick>MRT_Options_ExportPanel_IgnorePerBossAttendance_CB:SetChecked(false);</OnClick>
+                  <OnEnter>MRT_Options_SetTT(self, "EP_RLIAttendanceFix");</OnEnter>
+                  <OnLeave>MRT_Options_HideTT();</OnLeave>
+                </Scripts>
+              </CheckButton>
+              <CheckButton name="$parent_AddPoorItemToEachBoss_CB" inherits="OptionsCheckButtonTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="$parent_RLIPerBossAttendanceFix_CB" relativePoint="BOTTOMLEFT" x="0" y="-5"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite" justifyH="LEFT">
+                      <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+                <Scripts>
+                  <OnEnter>MRT_Options_SetTT(self, "EP_AddPoorItem");</OnEnter>
+                  <OnLeave>MRT_Options_HideTT();</OnLeave>
+                </Scripts>
+              </CheckButton>
+              <CheckButton name="$parent_EQDKP_RLIPerBossAttendanceFix_CB" inherits="OptionsCheckButtonTemplate">
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_EQDKPExport_Title" x="0" y="-5"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite" justifyH="LEFT" text="Enable attendance fix for the EQDKP RLI 0.5.x (FIXME!)">
+                      <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+                <Scripts>
+                  <OnClick>MRT_Options_ExportPanel_IgnorePerBossAttendance_CB:SetChecked(false);</OnClick>
+                  <OnEnter>MRT_Options_SetTT(self, "EP_RLIAttendanceFix");</OnEnter>
+                  <OnLeave>MRT_Options_HideTT();</OnLeave>
+                </Scripts>
+              </CheckButton>
+              <EditBox name="$parent_SetDateFormat_EB" inherits="InputBoxTemplate" hidden="false" autoFocus="false" letters="50" enableKeyboard="true" enableMouse="true">
+                <Size x="200" y="26"/>
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativeTo="$parent_TextExport_Title" relativePoint="BOTTOMLEFT" x="5" y="-20"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite" justifyH="LEFT">
+                      <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="-5" y="0"/>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+                <Scripts>
+                  <OnEnter>MRT_Options_SetTT(self, "EP_DateTimeTT");</OnEnter>
+                  <OnLeave>MRT_Options_HideTT();</OnLeave>
+                </Scripts>
+                <FontString inherits="ChatFontNormal"/>
+              </EditBox>
+              <EditBox name="$parent_Currency_EB" inherits="InputBoxTemplate" hidden="false" autoFocus="false" letters="100" enableKeyboard="true" enableMouse="true">
+                <Size x="200" y="26"/>
+                <Anchors>
+                  <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_SetDateFormat_EB" x="0" y="-20"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <FontString name="$parent_Text" inherits="GameFontWhite" justifyH="LEFT" text="Currency - FIXME!">
+                      <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+                          <Offset x="-5"/>
+                        </Anchor>
+                      </Anchors>
+                    </FontString>
+                  </Layer>
+                </Layers>
+                <FontString inherits="ChatFontNormal"/>
+              </EditBox>
+            </Frames>
+          </Frame>
+        </ScrollChild>
+      </ScrollFrame>
+    </Frames>
+    <Scripts>
+      <OnLoad>MRT_Options_ExportPanel_OnLoad(self);</OnLoad>
+    </Scripts>
+  </Frame>
+  <GameTooltip name="MRT_Options_TT" inherits="GameTooltipTemplate" parent="UIParent" hidden="false"></GameTooltip>
+</Ui>

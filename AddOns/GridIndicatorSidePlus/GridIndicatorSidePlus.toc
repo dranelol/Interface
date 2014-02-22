@@ -1,0 +1,21 @@
+## Interface: 50300
+## Title: GridIndicatorSidePlus
+## Notes: Adds 3 indicators to each side (top, bottom, left and right).
+## Notes-deDE: Fügt 3 Indikatoren an jeder Seite (oben, unten, links und rechts) hinzu.
+## Notes-zhCN: 在每条侧边加入额外的3个指示（上部、下部、左部和右部）。
+## Notes-zhTW: 在每條側邊加入額外的3個提示器（上部、下部、左部與右部）。
+## Author: kunda
+## Version: 50300-2
+## Dependencies: Grid
+## X-Curse-Packaged-Version: 50300-2
+## X-Curse-Project-Name: GridIndicatorSidePlus
+## X-Curse-Project-ID: grid-indicator-side-plus
+## X-Curse-Repository-ID: wow/grid-indicator-side-plus/mainline
+
+GridIndicatorSidePlus-localization-enUS.lua
+GridIndicatorSidePlus-localization-deDE.lua
+GridIndicatorSidePlus-localization-koKR.lua
+GridIndicatorSidePlus-localization-zhCN.lua
+GridIndicatorSidePlus-localization-zhTW.lua
+
+GridIndicatorSidePlus.lua

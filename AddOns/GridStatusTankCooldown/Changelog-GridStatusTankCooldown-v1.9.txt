@@ -1,0 +1,16 @@
+------------------------------------------------------------------------
+r51 | slaren | 2012-12-21 19:01:15 +0000 (Fri, 21 Dec 2012) | 1 line
+Changed paths:
+   A /tags/v1.9 (from /trunk:50)
+
+Tagging as v1.9
+------------------------------------------------------------------------
+r50 | slaren | 2012-12-21 19:00:33 +0000 (Fri, 21 Dec 2012) | 3 lines
+Changed paths:
+   M /trunk/GridStatusTankCooldown.lua
+   M /trunk/GridStatusTankCooldown.toc
+
+- Updated spell list (contributions made by Penguinz0r and Hillmire)
+- Updated .toc version
+
+------------------------------------------------------------------------

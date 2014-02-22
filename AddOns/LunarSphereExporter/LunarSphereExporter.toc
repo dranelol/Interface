@@ -1,0 +1,10 @@
+## Interface: 50001
+## Title: LunarSphere Data Exporter v.1.10
+## Version: 1.10
+## Notes: Handles the exporting of data from LunarSphere so other users can import said data.
+## Author: Moongaze (Twisting Nether)
+## Dependencies: LunarSphere
+## LoadOnDemand: 1
+## SavedVariables: LunarSphereExport
+
+LunarSphereExport.lua

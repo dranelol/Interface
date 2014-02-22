@@ -1,0 +1,29 @@
+## Interface: 40000
+## Title: Sunn - Viewport Art |cff7fff7f -Ace3-|r
+## Notes: Allows you to modify the size of the rendered 3D area of the screen with textured bars in the non-rendered areas
+## Author: Sunn (DraenorEU)
+## Version: 3.48
+## SavedVariables: SunnArt3DB
+## OptionalDeps: Ace3
+## DefaultState: Enabled
+## X-Date: 2010-10-30T01:58:54Z
+## X-Embeds: Ace3
+## X-Category: Interface Enhancements
+## X-eMail: sunn@uksf.com
+## X-Curse-Packaged-Version: 3.48
+## X-Curse-Project-Name: Sunn - Viewport Art
+## X-Curse-Project-ID: sunn-viewport-art
+## X-Curse-Repository-ID: wow/sunn-viewport-art/mainline
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+Locales\Locales.xml
+
+SunnArt_Core.lua
+
+SunnArt_Defaults.lua
+SunnArt_Options.lua
+
+CustomTheme.lua

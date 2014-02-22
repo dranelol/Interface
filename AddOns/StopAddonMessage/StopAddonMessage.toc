@@ -1,0 +1,27 @@
+## Interface: 40100
+## X-Compatible-With: 40200
+## Title: StopAddonMessage
+## Version: 1.7.0
+## Notes: Allows you to prevent addons from sending and receiving messages.
+## Author: Cyprias
+## SavedVariables: SAM_DB
+## X-Curse-Packaged-Version: 1.7.0
+## X-Curse-Project-Name: StopAddonMessage
+## X-Curse-Project-ID: stopaddonmessage
+## X-Curse-Repository-ID: wow/stopaddonmessage/mainline
+
+## X-Bitcoin: 1ERfbhT8B45GHeGUjequYisC9Q2sufxv5q
+## X-Website: http://wow.curse.com/downloads/wow-addons/details/stopaddonmessage.aspx
+## X-Donate: https://www.paypal.com/cgi-bin/webscr?hosted_button_id=VG3UNPDU69AG6&item_name=StopAddonMessage+%28from+in+game%29&cmd=_s-xclick
+## X-License: GNU General Public License version 3 (GPLv3)
+
+## LoadManagers: AddonLoader
+## X-LoadOn-Always: true
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+locales.xml
+Prefixes.lua
+core.lua

@@ -1,0 +1,130 @@
+v1.4
+*Fixed an issue that was causing the post frame to act strangely.
+*Changed the default undercut from 0c to 1c.
+*Changed all the locale files to AceLocale
+*Fixed a bug where posting was getting stuck on some gems.
+
+v1.3
+*Added tooltips to the icons in the post frame.
+*Changed the default values for fallback / threshold to avoid errors.
+*The summary window should now work correctly in all languages.
+*Fixed a bug where having multiple itemIDs of the same gem in your bag was causing problems when posting.
+*"Nothing to cancel" will be added to the chat frame and log when there is nothing to cancel.
+*Moved the "APM" button on the tradeskill frames so it doesn't conflict with other addons (hopefully).
+*Many minor bug fixes and improvements.
+
+v1.2
+*Doubled the width of the "Group Name" box to make it easier to enter longer names.
+*Added a small API for accessing the craft queue as well as one for emptying it.
+*Added a text message if you don't have anything to send and use the auto-send mail feature.
+*Fixed an issue where gems were not being correctly counted from the player's inventory.
+
+v1.1.10
+*Implemented a better fix for posting / canceling of gems as well.
+*The summary window should now add the correct items to the craft queue.
+
+v1.1.9
+*Took out some bad code / fixed a few bugs.
+
+v1.1.8
+*More bug fixes having to do with gems and posting / canceling.
+
+v1.1.7
+*Finally fixed the issue with canceling / posting of gems.
+
+v1.1.6
+*Made improvements to the undercutting code to hopefully prevent players from undercutting themselves (especially on gems).
+
+v1.1.5
+*APM will now more accurately tell you when auctions have finished cancelling.
+*Fixed some bugs with the summary window / craft queue.
+*Put the double-clicking to enter custom quantity feature back into the summary window.
+*Fixed a bug where some auctions were occasionally being ignored when undercutting / posting.
+*Double clicking on an item in the summary window will now increment / decrement by 5 at a time.
+
+v1.1.4
+*Fixed a bug that was causing an lua error when using the "Post Auction" button.
+*The "Post Auction X / Y" should now have more accurate and stable values for X and Y.
+*Added an option for using the "Per Auction" as a cap. If you don't have enough of an item it will post what you have.
+*Removed some unused options.
+*Hopefully fixed the itemID issue with the summary window / craft queue. This issue will gradually disappear as the old gems are used up.
+*The buttons on the auction house window should now correctly re-enable when a summary scan completes.
+
+v1.1.3
+*Took out some debugging code that was spamming the chat log with "update". SORRY!
+
+v1.1.2
+*Completely replaced the "Post Auction" button to be more useful.
+*Fixed a bug in the TOC that was causing the addon not to load for some people.
+*Few minor bug fixes.
+
+v1.1.1
+*Buttons should now unlock properly after a cancel scan where nothing was canceled.
+*Few minor bug fixes.
+
+v1.1
+*The same item should no longer show up multiple times in the summary window.
+*Fix for the issues caused by gems having multiple itemIDs.
+*Fixed the issued where the numbers over the "status" button were not correct.
+*The "Post Auction" button will now show information similar to the "Cancel Auction" button.
+*The auto-mail features is now started using a button on the 'Send Mail' tab of the mail frame. This was unavoidable due to a change in the latest patch.
+*Glyph of Arcane Brilliance should now behave correctly in the craft queue.
+*APM should no long cancel the wrong items after running a cancel scan if something changed in the AH during the scan.
+
+v1.0.11
+*Fixed bindings for Post and Cancel
+
+v1.0.10
+*Named the post and Cancel scan start buttons so they can be macro'd.
+*Increased the maximum number of an item you can post from 50 to 500.
+*You can now set the keybindings for Post/Cancel/Post Auction/Cancel Auction buttons in the game's keybinding settings.
+*Many other bug fixes and minor improvements.
+
+v1.0.9
+*Fixed the positioning of the "APM"/"Buy" buttons on the tradeskill window.
+*Added the "Potions" category to the summary window.
+*Items should no longer show up more than once in the summary window.
+*Fixed a bug caused by using a macro to click the cancel button after the cancel scan is complete.
+
+v1.0.8
+*Scans should no longer get stuck on some items.
+
+v1.0.7
+*Wait until the log says "Finished cancelling X auctions." before closing the AH!
+*Added a small delay to the "Cancel X / Y" button to help with the above issue.
+*Fixed a bug that was preventing any key presses while the summary window was open.
+*Many other small changes and bug fixes.
+
+v1.0.6
+*More minor fixes and tweaks.
+*Attempted to make the post button more reliable.
+
+v1.0.5
+*Fixed a bug with the posting button being permanently greyed out.
+*You can now post while scanning instead of having to wait till the end.
+*APM should no longer run try and cancel immediately after posting.
+*Many other minor bug fixes and improvements!
+
+v1.0.4
+*Many more bug fixes and improvements.
+*Canceling should now work far better.
+*Fixed some issues with auto-looting mail.
+*Fixed an issue with itemLinks
+*There should be less random log text floating around.
+
+v1.0.3
+*Fixed the numbers that show up ontop of the buttons when canceling / posting.
+*Fixed the GetSafeLink function to work with the new itemString values in 4.0.1. 
+
+v1.0.2
+*Implemented a button for canceling.
+*Improved the posting code.
+
+v1.0.1
+*Implemented a button in hopes of fixing the hardware event requirement for posting.
+*The following script can be used in a macro in place of clicking the button: /click AuctionProfitMasterPostButton
+
+v1.0
+*First release version of Auction Profit Master
+*This addon is formerly Quick Auctions 3; now with a new author (Sapu94).
+*Thank you to Shadowed for all his amazing work with Quick Auctions.

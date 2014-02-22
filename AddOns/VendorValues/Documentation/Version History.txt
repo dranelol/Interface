@@ -1,0 +1,139 @@
+
+--==-- VendorValues Version History --==--
+
+5.0.2 (Feb 3, 2009):
+	Optimized:
+		- Now uses a newer version of the ItemVendorPricesDB library which uses fewer resources.
+
+
+5.0.1 (Dec 25, 2008):
+	Fixed:
+		- Refixed the bug in the default UI that caused Recipe-type items to have their vendor value
+			added to the tooltip twice.
+
+
+5.0.0 (Dec 16, 2008):
+	New:
+		- Rewritten for WotLK.
+
+
+4.1.1 (Jul 22, 2008):
+	- Updated embedded libraries to fix an error at load.
+	
+	- Fixed a conflict with a newer version of ConfigManager1 that would cause the separator to reset
+		at login to being shown.
+
+
+4.1.0 (Apr 19, 2008):
+	- Fixed a bug where, if the tooltip was set to an item that wasn't yet cached, two lines of the tooltip
+		would be improperly hidden.
+	
+	- Now uses ConfigManager1.
+	
+	- Miscellaneous code style updates.
+
+
+4.0.1 (Jan 28, 2008):
+	- Now uses version 1.2.0 of the TooltipItemQuantities1 library, which adds support for quantity
+		information on guild bank item tooltips.
+
+
+4.0.0 (Jan 19, 2008):
+	- Rewritten for efficiency.
+	
+	- Now uses new library system.
+	
+	- Added :UpdateQuantity() method for clients with custom buttons with item tooltips.
+	
+	- Now uses the generic GetSellValue() developer-defined method to get vendor prices, instead
+		of using a specific vendor price addon. Regardless, ItemDB_VendorPrices1 is still included in
+		the distribution, since it participates in propagating the aforementioned function.
+
+
+3.0.0 (6/24/07):
+	- Rewritten to use the OnTooltipSetItem widget handler for GameTooltip objects, combined
+		with the TooltipItemQuantities1 library, to improve efficiency.
+
+
+2.1.0 (6/12/07):
+	- Restructured all tooltip-individual data to reside within a table called VendorValues in the
+		given tooltip, to avoid using so much of the tooltip object's base namespace. As a result
+		of this, for example, the tooltip:VendorValues_AddVendorPrice() method is now instead
+		accessed as tooltip.VendorValues:AddVendorPrice().
+
+
+2.0.0 (6/7/07):
+	- Rewritten to use the ItemsDB_VendorPrices library instead of maintaining its own database.
+	
+	- Now uses the EventsManager library to handle events.
+	
+	- Now uses the :GetItem() method on GameTooltip objects to obtain the link for the item being
+		displayed, instead of using unique functions to do that within each individual hooked method.
+		This increases efficiency and maintainability by reducing complexity.
+
+
+1.4.2 (2/5/07):
+	- Fixed an error that occurred when clicking on links in chat.
+
+
+1.4.1 (2/1/07):
+	- No longer attempts to send data messages through the guild addon channel when you are not in a guild.
+	
+	- Fixed a bug where the hidden parsing tooltip would occasionally erroneously not be hidden and appear
+		at the top left corner of the screen.
+	
+	- Now forcibly hooks ChatFrame_MessageEventHandler to ensure that no data from the hidden channel
+		is displayed. This is inefficient, but as of 2.0.6 it is the only way to block the channel with certainty.
+
+
+1.4.0 (1/29/07):
+	- Now broadcasts through the built-in guild addon data channel when broadcasting is enabled, in addition
+		to the existing method of a hidden global chat channel.
+	
+	- Fixed a bug where the hidden global chat channel was not actually being hidden upon first login.
+	
+	- Updated TOC number to 20003.
+
+
+1.3.0 (1/7/07):
+	- Added about 2,000 more items to the static database.
+	
+	- Imported the new, more efficient vendor price parsing code from LootLink 7.8.3.
+
+
+1.2.0 (12/28/06):
+	- Fixed a bug where price data from the hidden channel could overwrite your existing data. Values from
+		the channel will now only be stored if you have no value at all for the given item in your database.
+		This is to prevent the proliferation of invalid values by spoofers.
+	
+	- As a result of the above, there is a new slash command option to accept data from specific players whom
+		you have deemed trustworthy. Type "/veva trust [name]" to toggle trusting data from player [name].
+	
+	- Expanded the premade database from ~4,000 items to ~11,000 items, presumably thanks to "Colalight".
+	
+	- Fixed an error that sometimes popped up while parsing vendor prices, which occurred as a result of a
+		Blizzard bug wherein tooltips do not create their needed FontString text lines until the tooltip is shown.
+
+
+1.1.0 (12/26/06):
+	- Changed the name of the hidden chat channel from "vendorvaluesdata" to "lootlinkdatasharing", which is
+		the channel that LootLink uses now.
+	
+	- Imported the new, more efficient, more accurate vendor price parsing algorithm which appears in versions
+		7.3.0 and later of my (Saeris's) LootLink, as well as the functionality changes from versions 7.6.0 and later,
+		which are described below.
+	
+	- The vendor price line of the tooltip will now always be visible, and will display "<none>" for items which
+		have been confirmed unsellable, or "<unknown>" for items with no known sell value.
+	
+	- As a corollary to the above, the Tooltips_AddVendorPrice method now returns two values: the
+		monetary value which was added to the tooltip (either the amount of copper as an integer, false
+		for unsellable, or nil for unknown), and the FontString object in the tooltip which contains the text
+		which was just added.
+	
+	- Fixed a bug where the money frame of GameTooltip would remain colored non-white even after VendorValues
+		was finished using it to display stored vendor price.
+
+
+1.0.0 (12/12/06):
+	- Initial release.

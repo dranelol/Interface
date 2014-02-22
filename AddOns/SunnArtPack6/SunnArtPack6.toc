@@ -1,0 +1,16 @@
+## Interface: 50400
+## Author: Sunn (DraenorEU)
+## Title: Sunn - Art Pack 6
+## Notes: Textures for Sunn - Viewport Art (SunnArt)
+## Thanks to Alfuin on Argent Dawn (EU) for Nutribe
+## Thanks to Finwe on Arathor (EU) for Finwe
+## Thanks to Ballermagix on Mug'thol (US) for Frost Spire
+## Version: 1.14
+## DefaultState: Enabled
+## Dependencies: SunnArt
+## X-eMail: sunn@uksf.com
+## X-Curse-Packaged-Version: 1.14
+## X-Curse-Project-Name: Sunn - Viewport Art Pack 6
+## X-Curse-Project-ID: sunn-viewport-art-pack-6
+## X-Curse-Repository-ID: wow/sunn-viewport-art-pack-6/mainline
+SunnArtPack6.lua

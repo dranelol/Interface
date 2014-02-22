@@ -1,0 +1,12 @@
+## Interface: 30000
+## Title: InspectDetails
+## Version: 2.0.0
+## Author: Saeris
+## LoadOnDemand: 1
+## LoadWith: Blizzard_InspectUI
+
+## Notes: Adds detailed guild and title information to the inspect window.
+
+NicheDevTools\NicheDevTools_ParsingTooltip.lua
+
+InspectDetails.lua

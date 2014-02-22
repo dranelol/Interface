@@ -1,0 +1,10 @@
+## Interface: 30000
+## Title: Endeavours NotePad
+## Notes: A little NotePad for saving text between sessions.
+## Author: Endeavour Nevermore Yvaine [EU] Arthas
+## SavedVariables: EndeNPadDB
+## Version: 2.5
+## X-Website: http://my.curse.com/downloads/wow-addons/details/enotepad.aspx
+
+embeds.xml
+Core.lua

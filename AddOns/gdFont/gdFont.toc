@@ -1,0 +1,7 @@
+## Interface: 20003
+## Title: Good Damage Font 2.0
+## DefaultState: Enabled
+## Author: Kaytiecakes (Original: saccamano)
+## Version: 2.0
+## Notes: Changes the standard WoW damage font.
+gdFont.lua 

@@ -1,0 +1,15 @@
+﻿<Bindings>
+  <!-- User interface key bindings -->
+  <Binding name="MN_TARGET_NEW" description="QuickNote/TargetNote" header="MAPNOTES">
+    MapNotes_Slash_MNTarget("");
+  </Binding>
+  <Binding name="MN_TARGET_MERGE" description="Merge Target Note">
+    MapNotes_Slash_MNMerge("");
+  </Binding>
+  <Binding name="MN_TOGGLE_MINIS" description="Toggle Mininotes">
+    MapNotes_TotallyMini();
+  </Binding>
+  <Binding name="MN_MINIMAP_STYLE" description="Cycle through Minimap Styles">
+    MN_CustomMinimapCycler();
+  </Binding>
+</Bindings>

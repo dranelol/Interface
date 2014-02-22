@@ -1,0 +1,8 @@
+## Interface: 30000
+## Title: Lib-ItemVendorPricesDB2 SavedVariables
+## Version: n/a
+## Author: Saeris
+## LoadOnDemand: 1
+## SavedVariables: ItemVendorPricesDB2_Errata
+
+## Notes: Placeholder for saved variables for the ItemVendorPricesDB2 library.

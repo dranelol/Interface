@@ -1,0 +1,141 @@
+<!--
+
+  Loading order is:
+      MapNotesTemplates.xml
+      MapNotesEditFrame.xml
+      MapNotesMiniNoteFrame.xml
+      MapNotesOptionsFrame.xml
+    * MapNotesCoordinatesFrames.xml
+      MapNotesSendFrame.xml
+
+  Contains the following:
+
+    Declarations:
+      MN_MapCoords
+      MN_MinimapCoordsFrame
+
+-->
+
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+  <Frame name="MN_MapCoords" movable="true" toplevel="true" hidden="true" parent="WorldMapButton"> <!-- Try ...Frame instead of ...Button parent -->
+    <Size>
+      <AbsDimension x="90" y="32"/>
+    </Size>
+
+<!--
+    <Anchors>
+      <Anchor point="CENTER" relativeTo="WorldMapButton" relativePoint="BOTTOMLEFT" >
+        <Offset>
+          <AbsDimension x="16" y="532"/>
+        </Offset>
+      </Anchor>
+    </Anchors>
+-->
+
+    <Anchors>
+      <Anchor point="TOPLEFT">
+        <Offset>
+          <AbsDimension x="4" y="-4"/>
+        </Offset>
+      </Anchor>
+    </Anchors>
+
+    <Layers>
+      <Layer level="ARTWORK">
+
+        <FontString name="MN_MapCoordsText" inherits="GameFontNormalLarge" hidden="false" justifyH="CENTER" justifyV="MIDDLE" >
+          <Color r="1.0" g="1.0" b="1.0"/>
+        </FontString>
+
+        <FontString name="MN_CoordsSizingText" inherits="GameFontNormalLarge" text="100.00, 100.00" hidden="true" />
+
+      </Layer>
+    </Layers>
+
+    <Frames>
+      <Frame name="MN_MapCoordsMovementFrame" hidden="true" setAllPoints="true" enableMouse="true" movable="true">
+        <Scripts>
+          <OnShow>
+            self:SetFrameLevel(MN_MapCoords:GetFrameLevel() + 1);
+          </OnShow>
+          <OnMouseDown>
+            MN_MapCoords.isMoving = true;
+            MN_RememberCoordsPos();
+            MN_MapCoords:StartMoving();
+          </OnMouseDown>
+          <OnMouseUp>
+            if ( MN_MapCoords.isMoving ) then
+              MN_MapCoords:StopMovingOrSizing();
+              MN_MapCoords.isMoving = false;
+              MN_RememberCoordsPos();
+            end
+          </OnMouseUp>
+        </Scripts>
+      </Frame>
+    </Frames>
+
+    <Scripts>
+      <OnShow>
+        self:SetFrameStrata("TOOLTIP");
+        MN_MapCoordsText:SetAllPoints();
+      </OnShow>
+      <OnUpdate>
+        MN_MapCoords_OnUpdate(self, elapsed);
+      </OnUpdate>
+    </Scripts>
+
+    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+      <BackgroundInsets>
+        <AbsInset left="5" right="5" top="5" bottom="5"/>
+      </BackgroundInsets>
+      <TileSize>
+        <AbsValue val="16"/>
+      </TileSize>
+      <EdgeSize>
+        <AbsValue val="16"/>
+      </EdgeSize>
+    </Backdrop>
+
+  </Frame>
+
+  <Button name="MN_MinimapCoordsFrame" clampedToScreen="true" frameStrata="LOW" enableMouse="true" movable="true" hidden="true" parent="UIParent">
+    <Size x="90" y="28"/>
+    <Anchors>
+      <Anchor point="TOP" relativeTo="MinimapCluster" relativePoint="BOTTOM" x="8" y="16"/>
+    </Anchors>
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString name="$parentText" inherits="GameFontNormal" text="Player" hidden="false" justifyH="CENTER" justifyV="BOTTOM" >
+          <Anchors>
+            <Anchor point="LEFT" x="6" y="0"/>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnUpdate function="MN_MinimapCoords_OnUpdate" />
+      <OnMouseDown>
+        HideDropDownMenu(1);
+        if (button == "LeftButton") then
+          self:StartMoving();
+        else
+          MN_MinimapCoords_OnClick();
+        end
+      </OnMouseDown>
+      <OnMouseUp>
+        if (button == "LeftButton") then
+          self:StopMovingOrSizing();
+        end
+      </OnMouseUp>
+    </Scripts>
+    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+      <BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+      <TileSize val="16"/>
+      <EdgeSize val="16"/>
+    </Backdrop>
+  </Button>
+
+</Ui>

@@ -1,0 +1,14 @@
+v1.1
+
+- updated TOC
+  - to reflect changes made by me and not the original author
+
+
+v1.0
+
+- updated TOC
+  - AddonLoader setting: Load on group only.
+  - Interface: 40000 - now its not "outdated"
+
+- updated pkgmeta to reflect new libs
+  - it will pack the libs latest release from SVN everytime

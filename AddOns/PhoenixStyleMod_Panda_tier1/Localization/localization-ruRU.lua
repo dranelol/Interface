@@ -1,0 +1,68 @@
+﻿if GetLocale() == "ruRU" then
+
+
+function pslocalepanda1()
+
+pscmrlastmoduleloadtxtp1		= "Рейды Пандарии, патч 1"
+pszzpandabossname31         = "Каменные стражи"
+pszzpandabossname34         = "Короли призраков"
+pszzpandabossname36         = "Воля императора"
+pszzpandabossname41         = "Вечные защитники"
+
+
+pszzpandanotcounttick1  = "Не считать первый тик от"
+pszzpandaaddopttxt1     = "(если взрыв задел более 1 человека)"
+pszzpandaaddopttxt2     = "инфо об уроне и лечении Живым Янтарем после его смерти"
+pszzpandaaddopttxt3     = "кто взорвал"
+pszzpandaaddopttxt4     = "Лечение по янтарю"
+pszzpandaaddopttxt5     = "Инфо о каждом |sid130395|id"
+pszzpandaaddopttxt6     = "Сколько тиков |sid130395|id прошло не под яшмовым дебафом (без первых 3 сек)"
+pszzpandaaddopttxt7     = "Тиков не под яшмой"
+pszzpandaaddopttxt8     = "Время с цепями"
+pszzpandaaddopttxt9     = "Полученный урон"
+pszzpandaaddopttxt10    = "Урон от |s4id130395|id (не под яшмой, без 3 сек)"
+pszzpandaaddopttxt11    = "Сколько тиков |sid116040|id или |sid116365|id получено, когда был |sid115856|id"
+pszzpandaaddopttxt12    = "Тиков получено вне"
+pszzpandaaddopttxt13	  = "Сообщать инфо если кто умер от"
+pszzpandaaddopttxt14    = "игроков умерло от"
+pszzpandaaddopttxt15    = "НЕТ урона"
+pszzpandaaddopttxt16    = "только 2 и 3"
+pszzpandaaddopttxt17    = "Урон рейду"
+pszzpandaaddopttxt18    = "инфо по снятию дебафа"
+pszzpandaaddopttxt19    = "Нанесенный урон"
+pszzpandaaddopttxt20    = "Время с"
+pszzpandaaddopttxt21    = "если получило более 1 игрока"
+pszzpandaaddopttxt22    = "Лишние"
+pszzpandaaddopttxt23    = "умер БЕЗ"
+pszzpandaaddopttxt24    = "Игроки с баффом рядом (м)"
+pszzpandaaddopttxt25    = "БЕЗ"
+pszzpandaaddopttxt26    = "вместо"
+pszzpandaaddopttxt27    = "Слишком близко:"
+pszzpandaaddopttxt28    = "Кто получил урон:"
+pszzpandaaddopttxt29    = "Инфо о %s (если более 300K урона было нанесено рейду)"
+pszzpandaaddopttxt30    = "фаза"
+pszzpandaaddopttxt31    = "(если получило более %s игроков)"
+pszzpandaaddopttxt32    = "отображать кто был самым быстрым спринтером на последней фазе"
+pszzpandaaddopttxt33    = "Самые быстрые спринтеры были"
+pszzpandaaddopttxt34    = "на"
+pszzpandaaddopttxt35    = "Снял"
+pszzpandaaddopttxt36    = "Отлечено"
+pszzpandaaddopttxt37    = "Если босс с наименьшим ХП был отлечен с помощью |sid117283|id - отобразить инфо"
+pszzpandaaddopttxt38    = "Сообщать если босс получил урон от |sid123012|id"
+pszzpandaaddopttxt39    = "НЕТ ДИСПЕЛА"
+pszzpandaaddopttxt40    = "Макс. стаков %s"
+pszzpandaaddopttxt41    = "Урон в босса на фазах |sid123461|id"
+pszzpandaaddopttxt42    = "Кто сбил |sid122224|id (уроном)"
+pszzpandaaddopttxt43    = "сбил"
+pszzpandaaddopttxt44    = "его контролил"
+pszzpandaaddopttxt45    = "Общее лечение по игроку с |sid121949|id бафом (объем - раз)"
+pszzpandaaddopttxt46    = "Лечение по |sid121949|id (объем - раз)"
+pszzpandaaddopttxt47    = "Общий урон по игрокам с |sid122370|id бафом"
+pszzpandaaddopttxt48    = "Топ урона по игрокам с |sid122370|id"
+pszzpandaaddopttxt49    = "Сообщать урон по игрокам с баффом |sid122370|id как только он снимается"
+pszzpandaaddopttxt50    = "Сообщать кто рассеил |sid122370|id"
+
+end
+
+
+end

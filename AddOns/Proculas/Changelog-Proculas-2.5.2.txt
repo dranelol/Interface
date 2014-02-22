@@ -1,0 +1,8 @@
+2013-09-18  Xocide  <xocide@proculas.com>
+
+[1c968170e2f6] [2.5.2]
+* Proculas.toc:
+
+Update TOC file.
+
+

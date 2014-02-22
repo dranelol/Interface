@@ -1,0 +1,18 @@
+﻿## Interface: 30300
+## Title: PitBull |r[|cffeda55fRangeCheck|r]
+## Notes: Range checking for PitBull unit frames
+## Notes-koKR: PitBull 유닛 프레임을 위해 사정 거리를 확인합니다.
+## Author: AP
+## Version: 0.2
+## X-Category: Combat
+## OptionalDeps: Ace2
+## X-Embeds: Ace2
+## Dependencies: PitBull
+## DefaultState: enabled
+## LoadOnDemand: 1
+## X-Curse-Packaged-Version: v3.2.16
+## X-Curse-Project-Name: PitBull Unit Frames 3.0
+## X-Curse-Project-ID: pit-bull
+## X-Curse-Repository-ID: wow/pit-bull/mainline
+
+RangeCheck.lua

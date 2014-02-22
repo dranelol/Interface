@@ -1,0 +1,38 @@
+
+--==-- Addon Type System (as of November 10th, 2008) --==--
+
+This addon uses a system in which there are three distinct types of addons.
+
+Interface: These addons actually provide functionality to the user. They may be entirely self-
+contained, or they may make use of library-type and plugin-type addons. Interface-type addons
+always appear with this directory path:
+	<game directory>/Interface/AddOns/<interface name>/
+
+Library: These addons exist simply to provide functionality to other addons of any type, and
+as their type name suggests, they may be shared between multiple other addons as a single,
+efficient source of the aforementioned functionality. For convenience, all library-type addons
+are prefixed with "Lib" to identify them from the other types of addons. Libraries may appear
+either included with the addons that use them (often in a subdirectory called "libs" or "Libraries")
+or as a normal addon, with directory paths like these:
+	<game directory>/Interface/AddOns/<library name>/
+	<game directory>/Interface/AddOns/<interface or plugin using the library>/libs/<library name>/
+	<game directory>/Interface/AddOns/<interface or plugin using the library>/<library name>/
+If they are included, the user does not need to worry about versions (since each addon includes
+the version it needs, and libraries are backwards compatible); if they are installed as normal
+addons, the user is responsible for ensuring that the installed version of the library is up to date.
+Library addons may have their major version suffixed to their name, such as "Library3" for a
+library of version 3.x.x, in cases where backwards compatibility cannot be maintained across
+major versions. This allows the older version of the library to remain installed and providing
+functionality even when a newer version is also present.
+
+Plugin: These addons are generally optional, and "plug in" to interface-type addons to provide
+additional functionality. Most interface-type addons which use plugins will not actually provide
+any significant functionality on their own. Generally, plugins will include the name of their parent
+interface addon in their own name to help identify them. Plugin-type addons may appear with
+these directory paths like these:
+	<game directory>/Interface/AddOns/<plugin name>/
+	<game directory>/Interface/AddOns/<parent interface name>/Plugins/<plugin name>/
+	<game directory>/Interface/AddOns/<parent interface name>/<plugin name>/
+
+An addon's type and any libraries it uses are listed at the top of its functionality description
+text file.

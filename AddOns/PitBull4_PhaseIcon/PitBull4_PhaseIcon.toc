@@ -1,0 +1,29 @@
+## Interface: 50400
+## Title: PitBull4 |r[|cffeda55fPhase icon|r]
+## Title-deDE: PitBull4 |r[|cffeda55fPhase icon|r]
+## Title-esES: PitBull4 |r[|cffeda55fPhase icon|r]
+## Title-frFR: PitBull4 |r[|cffeda55fPhase icon|r]
+## Title-koKR: PitBull4 |r[|cffeda55fPhase icon|r]
+## Title-ruRU: PitBull4 |r[|cffeda55fPhase icon|r]
+## Title-zhCN: PitBull4 |r[|cffeda55fPhase icon|r]
+## Title-zhTW: PitBull4 |r[|cffeda55fPhase icon|r]
+## Notes: Show an icon on the unit frame if the unit is out of phase with you.
+## Notes-deDE: Show an icon on the unit frame if the unit is out of phase with you.
+## Notes-esES: Show an icon on the unit frame if the unit is out of phase with you.
+## Notes-frFR: Show an icon on the unit frame if the unit is out of phase with you.
+## Notes-koKR: Show an icon on the unit frame if the unit is out of phase with you.
+## Notes-ruRU: Show an icon on the unit frame if the unit is out of phase with you.
+## Notes-zhCN: Show an icon on the unit frame if the unit is out of phase with you.
+## Notes-zhTW: Show an icon on the unit frame if the unit is out of phase with you.
+## Author: Shefki
+## DefaultState: enabled
+## LoadOnDemand: 1
+## Dependencies: PitBull4
+## Version: v4.0.0-beta48
+## X-PitBull4-Condition: return select(4,GetBuildInfo()) >= 40000
+## X-Curse-Packaged-Version: v4.0.0-beta48
+## X-Curse-Project-Name: PitBull Unit Frames 4.0
+## X-Curse-Project-ID: pitbull4
+## X-Curse-Repository-ID: wow/pitbull4/mainline
+
+load.xml

@@ -1,0 +1,29 @@
+## Interface: 50400
+## Title: PitBull4 |r[|cffeda55fEclipse|r]
+## Title-deDE: PitBull4 |r[|cffeda55fEclipse|r]
+## Title-esES: PitBull4 |r[|cffeda55fEclipse|r]
+## Title-frFR: PitBull4 |r[|cffeda55fEclipse|r]
+## Title-koKR: PitBull4 |r[|cffeda55f일월식|r]
+## Title-ruRU: PitBull4 |r[|cffeda55fЗатмение|r]
+## Title-zhCN: PitBull4 |r[|cffeda55f月蚀|r]
+## Title-zhTW: PitBull4 |r[|cffeda55f蝕星蔽月|r]
+## Notes: Show Druid Eclipse Bar.
+## Notes-deDE: Eclipse-Leiste für Druiden anzeigen.
+## Notes-esES: Show Druid Eclipse Bar.
+## Notes-frFR: Affiche la barre d'éclipse du druide.
+## Notes-koKR: 드루이드 일월식 바
+## Notes-ruRU: Отображать панель Затмения друидов.
+## Notes-zhCN: 显示德鲁伊的月蚀状态条
+## Notes-zhTW: 顯示德魯伊蝕星蔽月條。
+## Author: Shefki
+## DefaultState: enabled
+## LoadOnDemand: 1
+## Dependencies: PitBull4
+## Version: v4.0.0-beta48
+## X-PitBull4-Condition: return select(2, UnitClass("player")) == "DRUID" and PowerBarColor["ECLIPSE"]
+## X-Curse-Packaged-Version: v4.0.0-beta48
+## X-Curse-Project-Name: PitBull Unit Frames 4.0
+## X-Curse-Project-ID: pitbull4
+## X-Curse-Repository-ID: wow/pitbull4/mainline
+
+load.xml

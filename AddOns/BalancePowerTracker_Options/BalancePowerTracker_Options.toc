@@ -1,0 +1,14 @@
+## Interface: 50001
+## Title: BalancePowerTracker_Options
+## Version: 1.1.2
+## Author: Kurohoshi (EU-Minahonda)
+## Notes: BPT's Options. /bpt or /balancepowertracker to show.
+## LoadOnDemand: 1
+## Dependencies: BalancePowerTracker
+
+Libs\Ace3\LibStub\LibStub.lua
+Libs\Ace3\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\Ace3\AceGUI-3.0\AceGUI-3.0.xml
+Libs\Ace3\AceConfig-3.0\AceConfig-3.0.xml
+
+BalancePowerTracker_Options.lua

@@ -1,0 +1,15 @@
+<Bindings>
+	<Binding name="ARTPAD_SHOW" header="ARTPAD">
+		ArtPad.mainFrame:Show();
+	</Binding>
+	<Binding name="ARTPAD_HIDE">
+		ArtPad.mainFrame:Hide();
+	</Binding>
+	<Binding name="ARTPAD_TOGGLE">
+		if ArtPad.mainFrame:IsShown() then
+			ArtPad.mainFrame:Hide();
+		else
+			ArtPad.mainFrame:Show();
+		end;
+	</Binding>
+</Bindings>

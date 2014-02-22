@@ -1,0 +1,356 @@
+﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+<Frame name="rscframe">
+
+	<Scripts>
+	<OnLoad>rsc_onload()</OnLoad>
+	<OnEvent>rsc_OnEvent(self,event,...)</OnEvent>
+	<OnUpdate>rsc_OnUpdate(GetTime())</OnUpdate>
+	</Scripts>
+	</Frame>
+
+<Frame name="rscmain" hidden="true" toplevel="true" virtual="true" frameStrata="DIALOG" movable="true" enableMouse="true" parent="UIParent">
+	<Size x="750" y="500"/>
+	<Anchors>
+		<Anchor point="CENTER"/>
+	</Anchors>
+
+
+<Scripts>
+	<OnMouseDown>rscmain1:StartMoving()</OnMouseDown>
+	<OnMouseUp>rscmain1:StopMovingOrSizing()</OnMouseUp>
+	<OnDragStop>rscmain1:StopMovingOrSizing()</OnDragStop>
+	<OnShow>rsc_showoptions()</OnShow>
+	</Scripts>
+</Frame>
+
+
+
+<Frame name="rscmain1" hidden="true" inherits="rscmain">
+	<Size x="750" y="500"/>
+	<Anchors>
+	<Anchor point="LEFT"/>
+	</Anchors>
+
+<frames>
+
+
+<Frame name="rscmain3" hidden="true">
+
+	<Size x="750" y="500"/>
+	<Anchors>
+	<Anchor point="CENTER"></Anchor>
+	</Anchors>
+	<Layers>
+<Layer level="ARTWORK">
+<FontString name="$parent_Text" inherits="GameFontNormal" text="   RaidSlackCheck">
+	<Anchors><Anchor point="LEFT" relativePoint="TOPLEFT"/></Anchors>
+	</FontString>
+	</Layer>
+	</Layers>
+	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+	<TileSize>
+	<AbsValue val="32"/>
+	</TileSize>
+	<EdgeSize>
+	<AbsValue val="32"/>
+	</EdgeSize>
+	<BackgroundInsets>
+	<AbsInset left="11" right="12" top="12" bottom="11"/>
+	</BackgroundInsets>
+	</Backdrop>
+<frames>
+<CheckButton name="$parent_CheckButton1" inherits="OptionsCheckButtonTemplate">
+	<Size x="25" y="25"/>
+	<Anchors>
+	<Anchor point="TOPLEFT">
+	<Offset x="550" y="-170"/>
+	</Anchor>
+	</Anchors>
+	<Scripts>
+	<OnLoad>getglobal(rscmain3_CheckButton1:GetName().."Text"):SetText(rsclocrlslak)</OnLoad>
+	<OnClick>rscchange()</OnClick>
+	</Scripts>
+	</CheckButton>
+<CheckButton name="$parent_CheckButton2" inherits="OptionsCheckButtonTemplate">
+	<Size x="25" y="25"/>
+	<Anchors>
+	<Anchor point="TOPLEFT">
+	<Offset x="550" y="-100"/>
+	</Anchor>
+	</Anchors>
+	<Scripts>
+	<OnLoad>getglobal(rscmain3_CheckButton2:GetName().."Text"):SetText(rscloccolor)</OnLoad>
+	<OnClick>rscchange2()</OnClick>
+	</Scripts>
+	</CheckButton>
+<CheckButton name="$parent_CheckButton3" inherits="OptionsCheckButtonTemplate">
+	<Size x="25" y="25"/>
+	<Anchors>
+	<Anchor point="TOPLEFT">
+	<Offset x="550" y="-120"/>
+	</Anchor>
+	</Anchors>
+	<Scripts>
+	<OnLoad>getglobal(rscmain3_CheckButton3:GetName().."Text"):SetText(rsconlybossfigtloc)</OnLoad>
+	<OnClick>rscchange3()</OnClick>
+	</Scripts>
+	</CheckButton>
+<Button name="$parent_Buttonrezet" inherits="UIPanelButtonTemplate" text="rscbuttonreset">
+	<Size x="120" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="50" y="-15"/></Anchor></Anchors>
+	<Scripts><OnClick>rscrezetpot()</OnClick></Scripts>
+	</Button>
+<Button name="$parent_Buttonprepot" inherits="UIPanelButtonTemplate" text="rscprepots">
+	<Size x="150" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="547" y="-75"/></Anchor></Anchors>
+	<Scripts><OnClick>openrscchoosbattle(1)</OnClick></Scripts>
+	</Button>
+<Button name="$parent_Button10" inherits="UIPanelButtonTemplate" text="rsclocpot11">
+	<Size x="150" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="547" y="-240"/></Anchor></Anchors>
+	<Scripts><OnClick>rscrepnopot()</OnClick></Scripts>
+	</Button>
+<Button name="$parent_Button20" inherits="UIPanelButtonTemplate" text="rsclocpot2">
+	<Size x="150" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="547" y="-280"/></Anchor></Anchors>
+	<Scripts><OnClick>rscrepnochossedpot()</OnClick></Scripts>
+	</Button>
+
+<Button name="$parent_Button11" inherits="UIPanelButtonTemplate" text="rsclocpot10">
+	<Size x="150" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="547" y="-280"/></Anchor></Anchors>
+	<Scripts><OnClick>rscrepnopot2()</OnClick></Scripts>
+	</Button>
+<Button name="$parent_ButtonHS" inherits="UIPanelButtonTemplate" text="rscwhousehstext">
+	<Size x="170" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="547" y="-400"/></Anchor></Anchors>
+	<Scripts><OnClick>rscwhousedhsreport()</OnClick></Scripts>
+	</Button>
+<Button name="$parent_ButtonHS2" inherits="UIPanelButtonTemplate" text="rscwhousehstext2">
+	<Size x="170" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="547" y="-360"/></Anchor></Anchors>
+	<Scripts><OnClick>rscwhousedhsreport2()</OnClick></Scripts>
+	</Button>
+
+<Button name="$parent_Button30" inherits="UIPanelButtonTemplate" text="rsclocpot10">
+	<Size x="150" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="547" y="-275"/></Anchor></Anchors>
+	<Scripts><OnClick>rscrepnortafretcom1()</OnClick></Scripts>
+	</Button>
+<Button name="$parent_Button40" inherits="UIPanelButtonTemplate" text="rsclocpot11">
+	<Size x="150" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="547" y="-315"/></Anchor></Anchors>
+	<Scripts><OnClick>rscrepnortafretcom2()</OnClick></Scripts>
+	</Button>
+
+<ScrollingMessageFrame name="rscreportframe1" enableKeyboard="true" fade="false" maxLines="37">
+	<Size x="80" y="470"/>
+	<Anchors>
+	<Anchor point="TOPLEFT">
+	<Offset x="12" y="-10"/>
+	</Anchor>
+	</Anchors>
+	<FontString font="Fonts\FRIZQT__.TTF" justifyV="TOP" justifyH="LEFT">
+	<FontHeight>
+	<AbsValue val="12" />
+	</FontHeight>
+	<Color r="1" g="1" b="1" />
+	<Shadow>
+	<Color r="0" g="0" b="0" />
+	<Offset>
+	<AbsDimension x="1" y="-1" />
+	</Offset>
+	</Shadow>
+	</FontString>
+	<TextInsets>
+	<AbsInset left="7" right="0" top="0" bottom="0" />
+	</TextInsets>
+</ScrollingMessageFrame>
+
+<ScrollingMessageFrame name="rscreportframe2" enableKeyboard="true" fade="false" maxLines="37">
+	<Size x="500" y="470"/>
+	<Anchors>
+	<Anchor point="TOPLEFT">
+	<Offset x="76" y="-10"/>
+	</Anchor>
+	</Anchors>
+	<Scripts>
+	<OnHyperlinkClick>SetItemRef(link,text,button);</OnHyperlinkClick>
+	</Scripts>
+	<FontString font="Fonts\FRIZQT__.TTF" justifyV="TOP" justifyH="LEFT">
+	<FontHeight>
+	<AbsValue val="12" />
+	</FontHeight>
+	<Color r="1" g="1" b="1" />
+	<Shadow>
+	<Color r="0" g="0" b="0" />
+	<Offset>
+	<AbsDimension x="1" y="-1" />
+	</Offset>
+	</Shadow>
+	</FontString>
+	<TextInsets>
+	<AbsInset left="7" right="0" top="0" bottom="0" />
+	</TextInsets>
+</ScrollingMessageFrame>
+
+<ScrollingMessageFrame name="rscreportframe3" enableKeyboard="true" fade="false" maxLines="37">
+	<Size x="400" y="470"/>
+	<Anchors>
+	<Anchor point="TOPLEFT">
+	<Offset x="175" y="-10"/>
+	</Anchor>
+	</Anchors>
+	<Scripts>
+	<OnHyperlinkClick>SetItemRef(link,text,button);</OnHyperlinkClick>
+	</Scripts>
+	<FontString font="Fonts\FRIZQT__.TTF" justifyV="TOP" justifyH="LEFT">
+	<FontHeight>
+	<AbsValue val="12" />
+	</FontHeight>
+	<Color r="1" g="1" b="1" />
+	<Shadow>
+	<Color r="0" g="0" b="0" />
+	<Offset>
+	<AbsDimension x="1" y="-1" />
+	</Offset>
+	</Shadow>
+	</FontString>
+	<TextInsets>
+	<AbsInset left="7" right="0" top="0" bottom="0" />
+	</TextInsets>
+</ScrollingMessageFrame>
+
+
+
+
+</frames>
+	</Frame>
+
+
+<Frame name="rscmain4" hidden="true">
+
+	<Size x="750" y="500"/>
+	<Anchors>
+	<Anchor point="CENTER"></Anchor>
+	</Anchors>
+	<Layers>
+<Layer level="ARTWORK">
+<FontString name="$parent_Text" inherits="GameFontNormal" text="   RaidSlackCheck">
+	<Anchors><Anchor point="LEFT" relativePoint="TOPLEFT"/></Anchors>
+	</FontString>
+	</Layer>
+	</Layers>
+	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+	<TileSize>
+	<AbsValue val="32"/>
+	</TileSize>
+	<EdgeSize>
+	<AbsValue val="32"/>
+	</EdgeSize>
+	<BackgroundInsets>
+	<AbsInset left="11" right="12" top="12" bottom="11"/>
+	</BackgroundInsets>
+	</Backdrop>
+<frames>
+<Button name="$parent_Button1" inherits="UIPanelButtonTemplate" text="button1">
+	<Size x="150" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="20" y="-20"/></Anchor></Anchors>
+	<Scripts><OnClick>rscupdateflask()</OnClick></Scripts>
+	</Button>
+<Button name="$parent_Button2" inherits="UIPanelButtonTemplate" text="button2">
+	<Size x="150" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="20" y="-50"/></Anchor></Anchors>
+	<Scripts><OnClick>rscsendflaskmanual()</OnClick></Scripts>
+	</Button>
+<Slider name="$parent_min" inherits="OptionsSliderTemplate">
+	<Anchors><Anchor point="TOPLEFT"><Offset x="20" y="-220" /></Anchor></Anchors>
+	<Scripts><OnValueChanged>rscsliderflaskchan()</OnValueChanged></Scripts>
+	</Slider>
+<Button name="$parent_Buttonz1" inherits="UIPanelButtonTemplate" text="rsc old">
+	<Size x="140" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="457" y="-134"/></Anchor></Anchors>
+	<Scripts><OnClick>rsczoneflaskch(1)</OnClick></Scripts>
+	</Button>
+<Button name="$parent_Buttonz2" inherits="UIPanelButtonTemplate" text="rsc old">
+	<Size x="140" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="457" y="-160"/></Anchor></Anchors>
+	<Scripts><OnClick>rsczoneflaskch(2)</OnClick></Scripts>
+	</Button>
+<Button name="$parent_Buttonz3" inherits="UIPanelButtonTemplate" text="rsc old">
+	<Size x="140" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="597" y="-134"/></Anchor></Anchors>
+	<Scripts><OnClick>rsczoneflaskch(3)</OnClick></Scripts>
+	</Button>
+<Button name="$parent_Buttonz4" inherits="UIPanelButtonTemplate" text="rsc old">
+	<Size x="140" y="26"/><Anchors><Anchor point="TOPLEFT"><Offset x="597" y="-160"/></Anchor></Anchors>
+	<Scripts><OnClick>rsczoneflaskch(4)</OnClick></Scripts>
+	</Button>
+</frames>
+	</Frame>
+
+<Frame name="rscmain5" hidden="true">
+
+	<Size x="750" y="500"/>
+	<Anchors>
+	<Anchor point="CENTER"></Anchor>
+	</Anchors>
+	<Layers>
+<Layer level="ARTWORK">
+<FontString name="$parent_Text" inherits="GameFontNormal" text="   RaidSlackCheck">
+	<Anchors><Anchor point="LEFT" relativePoint="TOPLEFT"/></Anchors>
+	</FontString>
+	</Layer>
+	</Layers>
+	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+	<TileSize>
+	<AbsValue val="32"/>
+	</TileSize>
+	<EdgeSize>
+	<AbsValue val="32"/>
+	</EdgeSize>
+	<BackgroundInsets>
+	<AbsInset left="11" right="12" top="12" bottom="11"/>
+	</BackgroundInsets>
+	</Backdrop>
+<frames>
+<Slider name="$parent_Timer1" inherits="OptionsSliderTemplate">
+	<Anchors><Anchor point="TOPLEFT"><Offset x="525" y="-90" /></Anchor></Anchors>
+	<Scripts><OnValueChanged>rscslider51()</OnValueChanged></Scripts>
+	</Slider>
+<Slider name="$parent_Timer2" inherits="OptionsSliderTemplate">
+	<Anchors><Anchor point="TOPLEFT"><Offset x="525" y="-130" /></Anchor></Anchors>
+	<Scripts><OnValueChanged>rscslider52()</OnValueChanged></Scripts>
+	</Slider>
+
+</frames>
+	</Frame>
+
+<Button name="$parent_Button1" inherits="UIPanelCloseButton">
+	<Anchors>
+	<Anchor point="TOPRIGHT">
+	<Offset x="-2" y="-3"/>
+	</Anchor>
+	</Anchors>
+	<Scripts>
+	<OnClick>rsc_buttonclose()</OnClick>
+	</Scripts>
+	</Button>
+
+
+<Button name="$parent_Button11" inherits="UIPanelButtonTemplate" text="psfpotchecklocal">
+	<Size x="190" y="26"/><Anchors><Anchor point="BOTTOMLEFT"><Offset x="25" y="-20"/></Anchor></Anchors>
+	<Scripts><OnClick>rscwindow1()</OnClick></Scripts>
+	</Button>
+
+<Button name="$parent_Button12" inherits="UIPanelButtonTemplate" text="psfpotchecklocalt2">
+	<Size x="190" y="26"/><Anchors><Anchor point="BOTTOMLEFT"><Offset x="280" y="-20"/></Anchor></Anchors>
+	<Scripts><OnClick>rscwindow2()</OnClick></Scripts>
+	</Button>
+
+<Button name="$parent_Button13" inherits="UIPanelButtonTemplate" text="psfpotchecklocalt3">
+	<Size x="190" y="26"/><Anchors><Anchor point="BOTTOMLEFT"><Offset x="535" y="-20"/></Anchor></Anchors>
+	<Scripts><OnClick>rscwindow3()</OnClick></Scripts>
+	</Button>
+
+
+
+
+</frames>
+	</Frame>
+
+ 
+
+
+
+
+
+
+
+</Ui>

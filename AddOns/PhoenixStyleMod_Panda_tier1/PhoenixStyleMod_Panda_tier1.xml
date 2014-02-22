@@ -1,0 +1,13 @@
+﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+<Frame name="PhoenixStyleMod_Panda1">
+	<Scripts>
+	<OnLoad>psloadpanda1()</OnLoad>
+	<OnEvent>if thisaddonwork and pstemporarystop==nil then psoneventpanda1(self,event,...) end</OnEvent>
+	<OnUpdate>if thisaddonwork and pstemporarystop==nil then psonupdatepanda1(GetTime()) end</OnUpdate>
+	</Scripts>
+</Frame>
+
+
+
+
+</Ui>

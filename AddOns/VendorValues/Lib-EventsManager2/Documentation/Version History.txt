@@ -1,0 +1,72 @@
+
+--==-- EventsManager2 Version History --==--
+
+2.0.0 (Nov 12, 2008):
+	New:
+		- Rewritten for simplicity and efficiency.
+
+
+1.4.3 (Sep 2, 2008):
+	- The OnEvent script handler now points directly to the DispatchEvent function, removing
+		the wasteful wrapper, increasing efficiency.
+	
+	- Improved efficiency of CreateHandlerData() when dealing with non-standard key names or
+		extra arguments.
+
+
+1.4.2 (Jul 21, 2008):
+	- Fixed a missing "local" declaration that could slow down event dispatch.
+
+
+1.4.1 (Jul 12, 2008):
+	- Removed post-default-event unregistration check (meant to unregister one-time default
+		events from the scripts frame) since this logic is handled during event dispatch, making
+		the check redundant.
+
+
+1.4.0 (May 15, 2008):
+	- No longer prints errors to the chat frame. Instead, they are propagated normally, using a way
+		around the fact that the error() function never returns.
+
+
+1.3.0 (May 3, 2008):
+	- Clients registering table-based handlers with non-default keys (not of the form "OnEvent_" .. event),
+		or registering with extra arguments, will now have a special optimized wrapper function created for
+		them. In addition, all other handlers are now stored as booleans or integers. These changes drastically
+		improve dispatch time and minorly reduce memory usage. A new API function, CreateHandlerData(), is
+		available to obtain these new values for use with RegisterForEvent() as the second argument. Clients
+		which register and unregister the same handler frequently can hold onto and reuse the value if speed
+		during registration is a concern.
+	
+	- Removed the ability for clients to trigger default UI events. All external calls to DispatchEvent()
+		now verify that the given event is a custom event.
+	
+	- All errors during registration/unregistration will now show as originating from the calling code.
+	
+	- Now uses LibStub as a load manager.
+
+
+1.2.1 (Mar 5, 2008):
+	- Miscellaneous code style updates.
+
+
+1.2.0 (Feb 3, 2008):
+	- Added the ability to send extra arguments with a registered event handler. These arguments
+		take priority over the event's arguments and the sendEvent option, but not over the sendHandler
+		option.
+	
+	- Removed the big list of events in DefaultEvents.lua. Instead, the validity of events is now determined
+		dynamically by checking to see whether a frame accepts it as a valid argument to :RegisterEvent().
+	
+	- Removed EventsManager1_EVENT_REGISTERED and EventsManager1_EVENT_UNREGISTERED custom
+		events.
+	
+	- Removed return value from EventsManager1.DispatchEvent().
+
+
+1.1.0 (Dec 23, 2007):
+	- Various efficiency improvements.
+
+
+1.0.0 (Nov 13, 2007):
+	- Initial release.

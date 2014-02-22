@@ -1,0 +1,148 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+	<Frame name="EnchantingShufflerOpts" movable="true" enableMouse="true" hidden="true">
+		<Size x="200" y="150"/>
+		<TitleRegion setAllPoints="true" />
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="16"/>
+			</EdgeSize>
+			<TileSize>
+					<AbsValue val="32"/>
+			</TileSize>
+			<BackgroundInsets>
+					<AbsInset left="5" right="5" top="5" bottom="5"/>
+			</BackgroundInsets>
+		</Backdrop>
+
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+
+		<Layers>
+			<Layer>
+			<!-- TITLE TEXTURE -->
+				<Texture name="$parentTitleBorder" file="Interface\DialogFrame\UI-DialogBox-Header">
+				  <Size>
+					<AbsDimension x="165" y="32" />
+				  </Size>
+				  <Anchors>
+					<Anchor point="TOP">
+					  <Offset>
+						<AbsDimension x="0" y="11" />
+					  </Offset>
+					</Anchor>
+				  </Anchors>
+				  <TexCoords left="0.2" right="0.8" top="0" bottom="0.6" />
+				</Texture>
+			<!--Create Title for frame-->
+				<FontString name="TITLE" font="GameFontNormal" text="Enchanting Shuffler: Options">
+				  <Size>
+					<AbsDimension x="140" y="0" />
+				  </Size>
+				  <Anchors>
+					<Anchor point="TOP">
+					  <Offset>
+						<AbsDimension x="0" y="0" />
+					  </Offset>
+					</Anchor>
+				  </Anchors>
+				  <FontHeight>
+					<AbsValue val="12" />
+				  </FontHeight>
+				  <Color r="1" g="0.8196079" b="0" />
+				  <Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+					  <AbsDimension x="1" y="-1" />
+					</Offset>
+				  </Shadow>
+				</FontString>
+			</Layer>
+		</Layers>
+			<!--- button's -->
+			<Frames>
+				<Button name="$parentButtonClose" inherits="OptionsButtonTemplate" text="X">
+					<Size>
+						<AbsDimension x="20" y="20"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+					<Scripts>
+						<OnClick>
+							EnchantingShufflerOpts:Hide();
+							EnchantingShufflerOpts_Opened = "No"
+						</OnClick>
+					</Scripts>
+				</Button>
+			</Frames>
+		<Frames>
+		<!--- Trade Skill Master checkbutton -->
+			<CheckButton name="$parent_TSMCheckButton" inherits="OptionsCheckButtonTemplate" checked="false">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="40" y="-20"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString name="$parentText" font="GameFontNormal" text="TradeSkillMaster">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+									<Offset x="1" y="0"/>
+								</Anchor>
+							</Anchors>
+							<FontHeight>
+								<AbsValue val="10"/>
+							</FontHeight>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						EnchantingShufflerCheckBoxChecker("TradeSkillMaster")
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+		<!--- Auctionator -->
+			<CheckButton name="$parent_AuctionatorCheckButton" inherits="OptionsCheckButtonTemplate" checked="false">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="40" y="-40"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString name="$parentText" font="GameFontNormal" text="Auctionator">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+									<Offset x="1" y="0"/>
+								</Anchor>
+							</Anchors>
+							<FontHeight>
+								<AbsValue val="10"/>
+							</FontHeight>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						EnchantingShufflerCheckBoxChecker("Auctionator")
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+		</Frames>
+		<Scripts>
+			<OnShow>
+				ESDBPSelector()
+				ESDatabaseSelection()
+			</OnShow>
+		</Scripts>
+   </Frame>
+</Ui>

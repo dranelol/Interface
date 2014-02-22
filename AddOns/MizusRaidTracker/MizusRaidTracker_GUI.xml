@@ -1,0 +1,596 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+ http://wowprogramming.com/FrameXML/UI.xsd">
+  <Script file="MizusRaidTracker_GUI.lua"/>
+  <EditBox name="MRT_GUI_Editbox_Template" inherits="InputBoxTemplate" virtual="true" historyLines="0" enableKeyboard="true" enableMouse="true" letters="400">
+    <Size x="250" y="32"/>
+    <Layers>
+      <Layer level="OVERLAY">
+        <FontString name="$parent_Text" inherits="ChatFontNormal" text="FIXME!">
+          <Anchors>
+            <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+              <Offset x="-8" y="0"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <FontString inherits="ChatFontNormal"/>
+  </EditBox>
+  <Button name="MRT_GUI_Button_Template" inherits="GameMenuButtonTemplate" virtual="true" hidden="false" text="FIXME!">
+    <Size x="85" y="22"/>
+  </Button>
+  <Button name="MRT_GUI_DropDownButtonTemplate" virtual="true" hidden="false">
+    <Size x="24" y="24"/>
+    <NormalTexture name="$parentNormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">
+      <Size>
+        <AbsDimension x="24" y="24"/>
+      </Size>
+      <Anchors>
+        <Anchor point="RIGHT"/>
+      </Anchors>
+    </NormalTexture>
+    <PushedTexture name="$parentPushedTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down">
+      <Size>
+        <AbsDimension x="24" y="24"/>
+      </Size>
+      <Anchors>
+        <Anchor point="RIGHT"/>
+      </Anchors>
+    </PushedTexture>
+    <HighlightTexture name="$parentHighlightTexture" file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD">
+      <Size>
+        <AbsDimension x="24" y="24"/>
+      </Size>
+      <Anchors>
+        <Anchor point="RIGHT"/>
+      </Anchors>
+    </HighlightTexture>
+  </Button>
+  <Frame name="MRT_GUI_OneRowDialog" toplevel="true" hidden="true" enableMouse="true" enableKeyboard="true" movable="true" parent="UIParent">
+    <Size x="366" y="154"/>
+    <Anchors>
+      <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$parent"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <TileSize val="32"/>
+      <EdgeSize val="32"/>
+      <BackgroundInsets left="11" right="12" top="12" bottom="11"/>
+    </Backdrop>
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parent_HeaderTexture" file="Interface\DialogFrame\UI-DialogBox-Header">
+          <Size x="300" y="64"/>
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset x="0" y="12"/>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+        <FontString name="$parent_Title" inherits="GameFontNormal" text="FIXME!">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset x="0" y="-2"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Button name="$parent_OKButton" inherits="MRT_GUI_Button_Template">
+        <Anchors>
+          <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent">
+            <Offset x="66" y="32"/>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="$parent_CancelButton" inherits="MRT_GUI_Button_Template">
+        <Anchors>
+          <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$parent">
+            <Offset x="-66" y="32"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_GUI_HideDialogs();</OnClick>
+        </Scripts>
+      </Button>
+      <EditBox name="$parent_EB1" inherits="MRT_GUI_Editbox_Template">
+        <Anchors>
+          <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent">
+            <Offset x="0" y="-52"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnEscapePressed>MRT_GUI_HideDialogs();</OnEscapePressed>
+        </Scripts>
+      </EditBox>
+    </Frames>
+  </Frame>
+  <Frame name="MRT_GUI_TwoRowDialog" toplevel="true" hidden="true" enableMouse="true" enableKeyboard="true" movable="true" parent="UIParent">
+    <Size x="366" y="218"/>
+    <Anchors>
+      <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$parent"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <TileSize val="32"/>
+      <EdgeSize val="32"/>
+      <BackgroundInsets left="11" right="12" top="12" bottom="11"/>
+    </Backdrop>
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parent_HeaderTexture" file="Interface\DialogFrame\UI-DialogBox-Header">
+          <Size x="300" y="64"/>
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset x="0" y="12"/>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+        <FontString name="$parent_Title" inherits="GameFontNormal" text="FIXME!">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset x="0" y="-2"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Button name="$parent_OKButton" inherits="MRT_GUI_Button_Template">
+        <Anchors>
+          <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent">
+            <Offset x="66" y="32"/>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="$parent_CancelButton" inherits="MRT_GUI_Button_Template">
+        <Anchors>
+          <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$parent">
+            <Offset x="-66" y="32"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_GUI_HideDialogs();</OnClick>
+        </Scripts>
+      </Button>
+      <EditBox name="$parent_EB1" inherits="MRT_GUI_Editbox_Template">
+        <Anchors>
+          <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent">
+            <Offset x="0" y="-52"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnEscapePressed>MRT_GUI_HideDialogs();</OnEscapePressed>
+          <OnTabPressed>MRT_GUI_TwoRowDialog_EB2:SetFocus();</OnTabPressed>
+        </Scripts>
+      </EditBox>
+      <EditBox name="$parent_EB2" inherits="MRT_GUI_Editbox_Template">
+        <Anchors>
+          <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent_EB1">
+            <Offset x="0" y="-64"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnEscapePressed>MRT_GUI_HideDialogs();</OnEscapePressed>
+          <OnTabPressed>MRT_GUI_TwoRowDialog_EB1:SetFocus();</OnTabPressed>
+        </Scripts>
+      </EditBox>
+    </Frames>
+  </Frame>
+  <Frame name="MRT_GUI_ThreeRowDialog" toplevel="true" hidden="true" enableMouse="true" movable="true" enableKeyboard="true" parent="UIParent">
+    <Size x="366" y="282"/>
+    <Anchors>
+      <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$parent"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <TileSize val="32"/>
+      <EdgeSize val="32"/>
+      <BackgroundInsets left="11" right="12" top="12" bottom="11"/>
+    </Backdrop>
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parent_HeaderTexture" file="Interface\DialogFrame\UI-DialogBox-Header">
+          <Size x="300" y="64"/>
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset x="0" y="12"/>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+        <FontString name="$parent_Title" inherits="GameFontNormal" text="FIXME!">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset x="0" y="-2"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Button name="$parent_OKButton" inherits="MRT_GUI_Button_Template">
+        <Anchors>
+          <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent">
+            <Offset x="66" y="32"/>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="$parent_CancelButton" inherits="MRT_GUI_Button_Template">
+        <Anchors>
+          <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$parent">
+            <Offset x="-66" y="32"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_GUI_HideDialogs();</OnClick>
+        </Scripts>
+      </Button>
+      <EditBox name="$parent_EB1" inherits="MRT_GUI_Editbox_Template">
+        <Anchors>
+          <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent">
+            <Offset x="0" y="-52"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnEscapePressed>MRT_GUI_HideDialogs();</OnEscapePressed>
+          <OnTabPressed>MRT_GUI_ThreeRowDialog_EB2:SetFocus();</OnTabPressed>
+        </Scripts>
+      </EditBox>
+      <EditBox name="$parent_EB2" inherits="MRT_GUI_Editbox_Template">
+        <Anchors>
+          <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent_EB1">
+            <Offset x="0" y="-64"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnEscapePressed>MRT_GUI_HideDialogs();</OnEscapePressed>
+          <OnTabPressed>MRT_GUI_ThreeRowDialog_EB3:SetFocus();</OnTabPressed>
+        </Scripts>
+      </EditBox>
+      <EditBox name="$parent_EB3" inherits="MRT_GUI_Editbox_Template">
+        <Anchors>
+          <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent_EB2">
+            <Offset x="0" y="-64"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnEscapePressed>MRT_GUI_HideDialogs();</OnEscapePressed>
+          <OnTabPressed>MRT_GUI_ThreeRowDialog_EB1:SetFocus();</OnTabPressed>
+        </Scripts>
+      </EditBox>
+    </Frames>
+  </Frame>
+  <Frame name="MRT_GUI_FourRowDialog" toplevel="true" hidden="true" enableMouse="true" movable="true" enableKeyboard="true" parent="UIParent">
+    <Size x="366" y="346"/>
+    <Anchors>
+      <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$parent"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <TileSize val="32"/>
+      <EdgeSize val="32"/>
+      <BackgroundInsets left="11" right="12" top="12" bottom="11"/>
+    </Backdrop>
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parent_HeaderTexture" file="Interface\DialogFrame\UI-DialogBox-Header">
+          <Size x="300" y="64"/>
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset x="0" y="12"/>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+        <FontString name="$parent_Title" inherits="GameFontNormal" text="FIXME!">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset x="0" y="-2"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Button name="$parent_OKButton" inherits="MRT_GUI_Button_Template">
+        <Anchors>
+          <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent">
+            <Offset x="66" y="32"/>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="$parent_CancelButton" inherits="MRT_GUI_Button_Template">
+        <Anchors>
+          <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$parent">
+            <Offset x="-66" y="32"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_GUI_HideDialogs();</OnClick>
+        </Scripts>
+      </Button>
+      <EditBox name="$parent_EB1" inherits="MRT_GUI_Editbox_Template">
+        <Anchors>
+          <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent">
+            <Offset x="0" y="-52"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnEscapePressed>MRT_GUI_HideDialogs();</OnEscapePressed>
+          <OnTabPressed>MRT_GUI_FourRowDialog_EB2:SetFocus();</OnTabPressed>
+        </Scripts>
+      </EditBox>
+      <EditBox name="$parent_EB2" inherits="MRT_GUI_Editbox_Template">
+        <Size x="226" y="32"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent_EB1" x="0" y="-64"/>
+        </Anchors>
+        <Scripts>
+          <OnEscapePressed>MRT_GUI_HideDialogs();</OnEscapePressed>
+          <OnTabPressed>MRT_GUI_FourRowDialog_EB3:SetFocus();</OnTabPressed>
+        </Scripts>
+      </EditBox>
+      <EditBox name="$parent_EB3" inherits="MRT_GUI_Editbox_Template">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent_EB2" x="0" y="-64"/>
+        </Anchors>
+        <Scripts>
+          <OnEscapePressed>MRT_GUI_HideDialogs();</OnEscapePressed>
+          <OnTabPressed>MRT_GUI_FourRowDialog_EB4:SetFocus();</OnTabPressed>
+        </Scripts>
+      </EditBox>
+      <EditBox name="$parent_EB4" inherits="MRT_GUI_Editbox_Template">
+        <Anchors>
+          <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent_EB3">
+            <Offset x="0" y="-64"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnEscapePressed>MRT_GUI_HideDialogs();</OnEscapePressed>
+          <OnTabPressed>MRT_GUI_FourRowDialog_EB1:SetFocus();</OnTabPressed>
+        </Scripts>
+      </EditBox>
+      <Button name="$parent_DropDownButton" inherits="MRT_GUI_DropDownButtonTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent_EB2"/>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_GUI_PlayerDropDownList_Toggle();</OnClick>
+        </Scripts>
+      </Button>
+    </Frames>
+  </Frame>
+  <Frame name="MRT_GUIFrame" toplevel="true" enableMouse="true" movable="true" parent="UIParent" hidden="true">
+    <Size x="800" y="606"/>
+    <Anchors>
+      <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$parent"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <BackgroundInsets left="11" right="12" top="12" bottom="11"/>
+      <TileSize val="32"/>
+      <EdgeSize val="32"/>
+    </Backdrop>
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parent_HeaderTexture" file="Interface\DialogFrame\UI-DialogBox-Header">
+          <Size x="300" y="64"/>
+          <Anchors>
+            <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent">
+              <Offset x="0" y="12"/>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+        <FontString name="$parent_Title" inherits="GameFontNormal">
+          <Anchors>
+            <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent">
+              <Offset x="0" y="-2"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_RaidLogTitle" inherits="GameFontNormal">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+              <Offset x="30" y="-30"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_RaidBosskillsTitle" inherits="GameFontNormal">
+          <Anchors>
+            <Anchor point="LEFT" relativePoint="LEFT" relativeTo="$parent_RaidLogTitle">
+              <Offset x="275" y="0"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_RaidAttendeesTitle" inherits="GameFontNormal">
+          <Anchors>
+            <Anchor point="LEFT" relativePoint="LEFT" relativeTo="$parent_RaidBosskillsTitle">
+              <Offset x="265" y="0"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_BossLootTitle" inherits="GameFontNormal">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_RaidBosskillsTitle">
+              <Offset x="-60" y="-275"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_BossAttendeesTitle" inherits="GameFontNormal">
+          <Anchors>
+            <Anchor point="LEFT" relativePoint="LEFT" relativeTo="$parent_BossLootTitle">
+              <Offset x="405" y="0"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Button name="$parent_RaidLog_Export_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_RaidExportComplete();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "Raid_Export");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_RaidLog_Delete_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_RaidDelete();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "Raid_Delete");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_RaidLog_ExportNormal_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_RaidExportNormal();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "Raid_ExportN");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_RaidLog_ExportHeroic_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_RaidExportHard();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "Raid_ExportH");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_RaidBosskills_Add_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_BossAdd();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "Boss_Add");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_RaidBosskills_Delete_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_BossDelete();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "Boss_Delete");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_RaidBosskills_Export_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_BossExport();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "Boss_Export");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_RaidAttendees_Add_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_RaidAttendeeAdd();</OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parent_RaidAttendees_Delete_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_RaidAttendeeDelete();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "RA_Delete");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_BossLoot_Add_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_LootAdd();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "Loot_Add");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_BossLoot_Modify_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_LootModify();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "Loot_Modify");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_BossLoot_Delete_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_LootDelete();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "Loot_Delete");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_BossAttendees_Add_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_BossAttendeeAdd();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "BA_Add");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_BossAttendees_Delete_Button" inherits="MRT_GUI_Button_Template">
+        <Scripts>
+          <OnClick>MRT_GUI_BossAttendeeDelete();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "BA_Delete");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_TakeSnapshot_Button" inherits="MRT_GUI_Button_Template">
+        <Size x="180" y="22"/>
+        <Scripts>
+          <OnClick>MRT_GUI_TakeSnapshot();</OnClick>
+          <OnEnter>MRT_GUI_SetTT(self, "TakeSnapshot");</OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_StartNewRaid_Button" inherits="MRT_GUI_Button_Template" text="(L) StartRaid">
+        <Size x="180" y="22"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_TakeSnapshot_Button" x="0" y="-15"/>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_GUI_StartNewRaid();</OnClick>
+          <OnEnter></OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_MakeAttendanceCheck_Button" inherits="MRT_GUI_Button_Template" text="(L) Make guild attendance check">
+        <Size x="180" y="22"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_StartNewRaid_Button" x="0" y="-5"/>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_GUI_MakeAttendanceCheck();</OnClick>
+          <OnEnter></OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_EndCurrentRaid_Button" inherits="MRT_GUI_Button_Template" text="FIXME: EndRaid">
+        <Size x="180" y="22"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_MakeAttendanceCheck_Button" x="0" y="-5"/>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_GUI_EndCurrentRaid();</OnClick>
+          <OnEnter></OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_ResumeLastRaid_Button" inherits="MRT_GUI_Button_Template" text="Resume last raid (L)">
+        <Size x="180" y="22"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_EndCurrentRaid_Button" x="0" y="-15"/>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_GUI_ResumeLastRaid();</OnClick>
+          <OnEnter></OnEnter>
+          <OnLeave>MRT_GUI_HideTT();</OnLeave>
+        </Scripts>
+      </Button>
+      <Button name="$parent_CloseButton" inherits="UIPanelCloseButton">
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" relativeTo="$parent"></Anchor>
+        </Anchors>
+      </Button>
+    </Frames>
+    <Scripts>
+      <OnLoad>self:RegisterForDrag("LeftButton");</OnLoad>
+      <OnDragStart>self:StartMoving();</OnDragStart>
+      <OnDragStop>self:StopMovingOrSizing();</OnDragStop>
+    </Scripts>
+  </Frame>
+  <GameTooltip name="MRT_GUI_ItemTT" inherits="GameTooltipTemplate" parent="UIParent" hidden="false"/>
+  <GameTooltip name="MRT_GUI_TT" inherits="GameTooltipTemplate" parent="UIParent" hidden="false"/>
+</Ui>

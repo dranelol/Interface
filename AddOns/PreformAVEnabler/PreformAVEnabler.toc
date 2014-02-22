@@ -1,0 +1,25 @@
+## Interface: 50001
+## Title: Preform AV Enabler
+## Notes: Synchronized solo queuing of battlegrounds
+## Notes-deDE: Automatisiert synchronisiertes Betreten des Alteractals
+## Author: Torrid
+## SavedVariables: PreformAVEnablerConfig
+## Version: 3.04
+
+localizations\localization.en.lua
+localizations\localization.esES.lua
+localizations\localization.frFR.lua
+localizations\localization.deDE.lua
+localizations\localization.zhTW.lua
+localizations\localization.zhCN.lua
+localizations\localization.koKR.lua
+localizations\localization.ruRU.lua
+localizations\localization.ptBR.lua
+localizations\localization.esMX.lua
+localizations\localization.itIT.lua
+Constants.lua
+Core.lua
+Config.lua
+OpCodes.lua
+RaidFrame.lua
+RaidFrame.xml

@@ -1,0 +1,45 @@
+------------------------------------------------------------------------
+r49 | sunn | 2010-10-15 12:38:56 +0000 (Fri, 15 Oct 2010) | 1 line
+Changed paths:
+   A /tags/3.47 (from /trunk:48)
+
+SunnArt: Tagged for Release
+------------------------------------------------------------------------
+r48 | sunn | 2010-10-15 12:37:32 +0000 (Fri, 15 Oct 2010) | 2 lines
+Changed paths:
+   M /trunk/Locales/Locale_enUS.lua
+   M /trunk/SunnArt_Core.lua
+
+SunnArt: Added check for incompatible SunShafts settings.
+Changed "fixwater" command to "fixvp" which now also disabled sunshafts as well as high detail water effects when viewport is enabled.
+------------------------------------------------------------------------
+r46 | sunn | 2010-10-14 11:52:09 +0000 (Thu, 14 Oct 2010) | 1 line
+Changed paths:
+   M /trunk/SunnArt_Core.lua
+
+SunnArt: version update
+------------------------------------------------------------------------
+r45 | sunn | 2010-10-14 11:51:01 +0000 (Thu, 14 Oct 2010) | 2 lines
+Changed paths:
+   M /trunk/Locales/Locale_enUS.lua
+   M /trunk/SunnArt_Core.lua
+
+SunnArt: Added a warning message when you try to enable the viewport features with water effects turned up.
+Added "fixwater" chat command to set water details to "Fair" when viewport is enabled.
+------------------------------------------------------------------------
+r43 | sunn | 2010-10-12 22:18:03 +0000 (Tue, 12 Oct 2010) | 1 line
+Changed paths:
+   M /trunk/SunnArt.toc
+
+SunnArt: 4.0.1 TOC Update
+------------------------------------------------------------------------
+r42 | sunn | 2010-09-12 15:45:07 +0000 (Sun, 12 Sep 2010) | 4 lines
+Changed paths:
+   M /trunk/SunnArt.toc
+   M /trunk/SunnArt_Core.lua
+
+SunnArt: Cataclysm Compatible
+Provisionally tagged as 3.45
+X-Compatible-With: 40000
+
+------------------------------------------------------------------------

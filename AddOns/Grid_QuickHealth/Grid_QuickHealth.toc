@@ -1,0 +1,21 @@
+## Interface: 50001
+## Title: Grid_QuickHealth
+## Notes: Makes grid QuickHealth aware
+## Notes-deDE: Schnellere Aktualisierung der Gesundheitsanzeigen mit QuickHealth
+## Author: Cncfanatics, Tifi, onyXMaster
+## X-Embeds: LibQuickHealth-2.0
+## Dependencies: Grid
+## OptionalDeps: LibQuickHealth-2.0
+## X-Donate: PayPal: diego.duclos@gmail.com
+## X-Email: diego.duclos@gmail.com
+## X-Curse-Packaged-Version: r36
+## X-Curse-Project-Name: Grid_QuickHealth
+## X-Curse-Project-ID: project-14141
+## X-Curse-Repository-ID: wow/project-14141/mainline
+## X-Curse-Packaged-Version: 5.0.4-release
+## X-Curse-Project-Name: Grid_QuickHealth
+## X-Curse-Project-ID: project-14141
+## X-Curse-Repository-ID: wow/project-14141/mainline
+
+libs\LibQuickHealth-2.0\LibQuickHealth-2.0.xml
+Grid_QuickHealth.lua

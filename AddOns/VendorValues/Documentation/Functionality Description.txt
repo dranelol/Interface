@@ -1,0 +1,13 @@
+
+--==-- VendorValues Functionality Description --==--
+
+Addon type: Interface
+Libraries used:
+	ItemVendorPricesDB2 (embedded)
+	TooltipItemQuantities2 (embedded)
+
+This addon displays in the standard and static tooltips the vendor prices of any items which you have
+brought to a merchant or which are in the default database, which consists of approximately 31,000
+items (almost every item in the game as of 3.0.3). Type "/veva" for configuration options, including the
+text, color, and visibility of the tooltip's money line prefix, and whether or not to include a separator
+line between the price line and the rest of the tooltip.

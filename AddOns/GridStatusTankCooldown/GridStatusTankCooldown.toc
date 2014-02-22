@@ -1,0 +1,14 @@
+## Interface: 50100
+## Title: GridStatusTankCooldown
+## Notes: Adds a status to Grid for tanking survival cooldowns
+## Author: Slaren
+## Version: v1.9
+## Dependencies: Grid
+## Grid Author: Pastamancer & Maia
+## X-Curse-Packaged-Version: v1.9
+## X-Curse-Project-Name: GridStatusTankCooldown
+## X-Curse-Project-ID: gridstatustankcooldown
+## X-Curse-Repository-ID: wow/gridstatustankcooldown/mainline
+
+SpellsWidget.lua
+GridStatusTankCooldown.lua

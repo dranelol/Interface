@@ -1,0 +1,16 @@
+## Interface: 50001
+## Title: NoBoPWarning
+#@debug@
+# ## Title: |cffff0088EBG|r NoBoPWarning
+#@end-debug@
+## Notes: Don't warn me about BoP items when I'm soloing!
+## SavedVariables: NoBoPWarning_Enabled, NoBoPWarning_FixRollFrames, NoBoPWarning_Debug
+## OptionalDeps: AutoBindOnPickup
+## Version: v201210311445
+## Author: egingell
+## X-Curse-Packaged-Version: v201210311445
+## X-Curse-Project-Name: NoBoPWarning
+## X-Curse-Project-ID: no-bo-pwarning
+## X-Curse-Repository-ID: wow/no-bo-pwarning/mainline
+
+NoBoPWarning.lua

@@ -1,0 +1,17 @@
+------------------------------------------------------------------------
+r101 | cyprias | 2011-07-14 20:16:20 +0000 (Thu, 14 Jul 2011) | 2 lines
+Changed paths:
+   A /tags/1.7.0 (from /trunk:99)
+
+Tagged as 1.7.0
+- Updated toc for 4.2. 
+------------------------------------------------------------------------
+r99 | cyprias | 2011-07-14 20:02:03 +0000 (Thu, 14 Jul 2011) | 1 line
+Changed paths:
+   M /trunk/Prefixes.lua
+   M /trunk/StopAddonMessage.toc
+   M /trunk/core.lua
+   M /trunk/locales/enUS.lua
+
+- Updated toc for 4.2
+------------------------------------------------------------------------

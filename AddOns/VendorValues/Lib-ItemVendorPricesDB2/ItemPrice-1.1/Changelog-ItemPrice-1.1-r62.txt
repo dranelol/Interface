@@ -1,0 +1,38 @@
+------------------------------------------------------------------------
+r62 | arrowmaster | 2008-12-30 21:20:47 +0000 (Tue, 30 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/ItemPrice-1.1.lua
+
+Update with 236 new item prices
+------------------------------------------------------------------------
+r61 | arrowmaster | 2008-12-18 05:03:19 +0000 (Thu, 18 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/ItemPrice-1.1.lua
+
+Testing new .pkgmeta format for externals
+------------------------------------------------------------------------
+r60 | kunda | 2008-12-17 15:59:33 +0000 (Wed, 17 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/ItemPrice-1.1.lua
+
+fix - something was accidentally deleted from the top of ItemPrice-1.1.lua :)
+------------------------------------------------------------------------
+r59 | arrowmaster | 2008-12-16 02:46:01 +0000 (Tue, 16 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/ItemPrice-1.1.lua
+
+Update with 307 new itemprices. Total prices 30448.
+------------------------------------------------------------------------
+r58 | arrowmaster | 2008-12-03 10:50:18 +0000 (Wed, 03 Dec 2008) | 1 line
+Changed paths:
+   M /trunk/ItemPrice-1.1.lua
+
+Update with 553 new item prices
+------------------------------------------------------------------------
+r57 | arrowmaster | 2008-11-24 00:12:48 +0000 (Mon, 24 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/ItemPrice-1.1.lua
+
+Update with 725 new item prices from itemcache.wdb datamining
+------------------------------------------------------------------------

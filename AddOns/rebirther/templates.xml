@@ -1,0 +1,220 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\..\FrameXML\UI.xsd">
+	<Frame name="BarTemplate" virtual="true" parent="$parent" movable="false" hidden="false" enableMouse="true">
+		<Size x="150" y="20" />
+		<Anchors>
+			<Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
+				<Offset x="0" y="0" />
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentTime" parent="$parent" justifyH="Right" justifyV="BOTTOM" inherits="GameFontNormal" font="Fonts\\FRIZQT__.TTF" text="Time">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
+							<Offset x="0" y="0" />
+						</Anchor>
+					</Anchors>
+					<FontHeight x="10" />
+					<Color r="1" g="1" b="1" a="1" />
+				</FontString>
+				<FontString name="$parentName" parent="$parent" justifyH="LEFT" justifyV="BOTTOM" inherits="GameFontNormal" font="Fonts\\FRIZQT__.TTF" text="Name">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
+							<Offset x="0" y="0" />
+						</Anchor>
+					</Anchors>
+					<FontHeight x="14" />
+					<Color r="1" g="1" b="1" a="1" />
+				</FontString>
+				<FontString name="$parentTarget" parent="$parent" hidden="true" justifyH="LEFT" justifyV="BOTTOM" inherits="GameFontNormal" font="Fonts\\FRIZQT__.TTF" text=" (Target)">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentName" relativePoint="BOTTOMRIGHT">
+							<Offset x="0" y="0" />
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentTime" relativePoint="BOTTOMLEFT">
+							<Offset x="0" y="0" />
+						</Anchor>
+					</Anchors>
+					<FontHeight x="10" />
+					<Color r="1" g="1" b="1" a="1" />
+				</FontString>
+				<FontString name="$parentCooldown" parent="$parent" hidden="true" text="" />
+			</Layer>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentBackground" parent="$parent">				
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+							<Offset x="0" y="0" />
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
+							<Offset x="0" y="0" />
+						</Anchor>
+					</Anchors>
+					<Color r="0.5" g="0.5" b="0.5" a="1" />
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture name="$parentTexture" parent="$parent" inherits="$parent" alphaMode="BLEND" file="">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
+							<Offset x="0" y="0" />
+						</Anchor>
+					</Anchors>
+					<VertexColor r="0" g="0.5" b="0" a="1" />
+					<TexCoords left="0" right="1" top="0" bottom="1" />
+					<Animations>
+						<AnimationGroup looping="NONE" parent="$parent">
+							<Animation name="$parentAnimation" parent="$parent" duration="10" maxFramerate="10" smoothing="NONE">
+								<Scripts>
+									<OnPlay>
+										self:GetParent():Play()
+									</OnPlay>
+									<OnLoad>
+										self.timething = _G[self:GetRegionParent():GetParent():GetName().."Time"];
+										self.parent = self:GetRegionParent();
+										self.min = 1;
+										self.max = self.parent:GetParent():GetWidth();
+									</OnLoad>
+									<OnUpdate>
+										--[[
+										local width = self.max - (self.max - self.min) * self:GetProgress();									
+										self.parent:SetWidth(width);
+										self.timething:SetText(SecondsToTime(math.ceil(self:GetDuration() * (1-self:GetProgress())), false, false, 1));
+										self.parent:SetTexCoord(0, (1-self:GetProgress()), 0, 1);
+										]]
+										
+										self.progress = ((GetTime() - self.spelltime) / self:GetDuration())		
+										if self.progress >= 1 then
+											self:Stop()
+										else
+											local width = self.max - (self.max - self.min) * self.progress;										
+											self.parent:SetWidth(width);
+											self.timething:SetText(SecondsToTime(math.ceil(self:GetDuration() * (1-self.progress)), false, false, 1));
+											self.parent:SetTexCoord(0, (1-self.progress), 0, 1);
+										end
+									</OnUpdate>
+									<OnFinished>
+										Rebirther:AnimationFinished(self.parent);										
+										self:GetParent():Stop()
+									</OnFinished>
+									<OnStop>
+										Rebirther:AnimationFinished(self.parent);										
+										self:GetParent():Stop()
+									</OnStop>
+								</Scripts>
+							</Animation>
+						</AnimationGroup>
+						<AnimationGroup looping="NONE">	
+							<Animation name="$parentCasting" parent="$parent" duration="2" maxFramerate="30" smoothing="NONE">
+								<Scripts>
+									<OnPlay>
+										self:GetParent():Play()
+									</OnPlay>
+									<OnLoad>
+										self.timething = _G[self:GetRegionParent():GetParent():GetName().."Time"];
+										self.parent = self:GetRegionParent();
+										self.min = 1;
+										self.max = self.parent:GetParent():GetWidth();
+									</OnLoad>
+									<OnUpdate>
+										local width = self.min + (self.max - self.min) * self:GetProgress();
+										self.parent:SetWidth(width);
+										self.timething:SetText(SecondsToTime(math.ceil(self:GetDuration() * (1-self:GetProgress())), false, false, 1));
+										self.parent:SetTexCoord(0, self:GetProgress(), 0, 1);
+									</OnUpdate>
+									<OnFinished>
+										Rebirther:CastingFinished(self.parent);
+									</OnFinished>
+								</Scripts>
+							</Animation>
+						</AnimationGroup>
+					</Animations>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnMouseWheel>
+				Rebirther:MouseWheel(self, delta);
+			</OnMouseWheel>
+			<OnMouseUp>
+				Rebirther:BarClicked(self, button);
+			</OnMouseUp>
+			<OnSizeChanged>	
+				--[[
+				local width, height = self:GetWidth(), self:GetHeight();
+				local padding = Rebirther:GetPadding();
+				_G[self:GetName().."TextureAnimation"].max = self:GetWidth();
+				_G[self:GetName().."Texture"]:SetSize(width,height-Rebirther.db.profile.bar.spacing);
+				_G[self:GetName().."Background"]:SetSize(width,height);
+				local p, r, rp = _G[self:GetName().."Name"]:GetPoint()
+				_G[self:GetName().."Name"]:SetPoint(p, r, rp, padding, padding)
+				p, r, rp = _G[self:GetName().."Time"]:GetPoint()
+				_G[self:GetName().."Time"]:SetPoint(p, r, rp, -padding, padding)
+				]]
+			</OnSizeChanged>
+		</Scripts>
+	</Frame>		
+	<Frame name="ContainerTemplate" virtual="true" parent="$parent" movable="false" userplaced="false" clampedToScreen="true" hidden="false" enableMouse="true">
+		<Size x="150" y="100" />
+		<Anchors>
+			<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="0" y="0" />
+		</Anchors>
+		<Layers>		
+			<Layer level="BACKGROUND">
+				<Texture name ="$parentBackground" setAllPoints="true">
+					<Color r="0" g="0" b="0" a="0.5" />
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">	
+				<Texture name="$parentIcon" file="" hidden="false">
+					<Size x="28" y="28" />
+					<Anchors>
+						<Anchor point="CENTER" relativePoint="TOPRIGHT">
+							<Offset x="-14" y="0" />
+						</Anchor>
+					</Anchors>
+					<!-- <TexCoords left="0" right="1" top="0" bottom="1"/> --> <!-- With border-->
+					<TexCoords left="0.1" right="0.9" top="0.1" bottom="0.9"/> <!-- Without border -->
+				</Texture>			
+				<FontString name="$parentTitle" text="Title" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="0" y="0" />
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnMouseDown>
+				if ( not Rebirther.db.profile.lock ) then
+					self:SetMovable(true)
+					self:StartMoving();
+				end
+			</OnMouseDown>
+			<OnMouseUp>
+				self:StopMovingOrSizing();
+				self:SetMovable(false)
+				Rebirther:SaveWindowPos();
+			</OnMouseUp>
+			<OnSizeChanged>
+				--[[
+				local width, height = Rebirther.db.profile.bar.width, (Rebirther.db.profile.bar.height + Rebirther.db.profile.bar.spacing)
+				for key,val in pairs({self:GetChildren()}) do
+					val:SetSize(width,height);
+				end
+				]]
+			</OnSizeChanged>
+		</Scripts>
+	</Frame>		
+	<Frame name="ParentFrameTemplate" virtual="true" setAllPoints="true" parent="UIParent" movable="true" hidden="false" enableMouse="false">
+		<Size x="1" y="1" />		
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" x="0" y="0" />
+		</Anchors>
+		<Scripts>
+			<OnUpdate>
+				--Rebirther:OnUpdate(self, elapsed); -- No Longer used
+			</OnUpdate>
+		</Scripts>
+	</Frame>
+</Ui>

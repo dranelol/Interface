@@ -1,0 +1,8 @@
+2013-10-24  elchefe <>  <>
+
+[2872c5260ce9] [v2.23]
+* default.lua:
+
+changed internal version to v2.23
+
+

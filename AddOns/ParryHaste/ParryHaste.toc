@@ -1,0 +1,13 @@
+## Interface: 40300
+## Title: ParryHaste
+## Notes: Announces Parry Haste on specified monsters
+## Author: Karova
+## Version: 0.1
+## SavedVariables: PHasteDB
+## OptionalDeps: Ace3
+## X-Embeds: Ace3
+## X-Category: Interface Enhancements
+
+embeds.xml
+
+Core.lua

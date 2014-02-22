@@ -1,0 +1,10 @@
+
+--==-- Inspectre Functionality Description --==--
+
+Addon type: Interface
+Libraries used: none
+
+This addon allows you to keep inspecting a player even after they've gone out of range
+or you deselect them as your target. Note that this does not allow you to open the inspect
+window from any range, as that is impossible; it merely allows you to keep viewing the
+contents of the window after you have already opened it and the inspectee has departed.

@@ -1,0 +1,20 @@
+------------------------------------------------------------------------
+r75 | kunda | 2013-06-29 13:13:06 +0000 (Sat, 29 Jun 2013) | 1 line
+Changed paths:
+   A /tags/50300-1 (from /trunk:74)
+
+Tagging as 50300-1
+------------------------------------------------------------------------
+r74 | kunda | 2013-06-29 13:12:07 +0000 (Sat, 29 Jun 2013) | 1 line
+Changed paths:
+   M /trunk/GridIndicatorText3.toc
+
+update
+------------------------------------------------------------------------
+r73 | lsjyzjl | 2013-05-19 04:10:42 +0000 (Sun, 19 May 2013) | 1 line
+Changed paths:
+   M /trunk/GridIndicatorText3-localization-zhCN.lua
+   M /trunk/GridIndicatorText3-localization-zhTW.lua
+
+zhCN & zhTW update
+------------------------------------------------------------------------

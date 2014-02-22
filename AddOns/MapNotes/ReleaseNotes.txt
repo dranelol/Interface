@@ -1,0 +1,197 @@
+﻿
+
+Release notes for MapNotes version 6.09.50001 Mists of Pandaria - 4 November 2012
+---------------------------------------------------------------------------------
+
+There were three tickets raised for v6.08 within hours of release. Once of them
+involved non-persistence of MapNotes options across a reload (thanks Dridzt) and
+I thought that so important that I should release a fic as soon as possible.
+
+These are the fixes
+
+- Some of the values set with the Options dialogue were not properly being
+  restored after logging out. This was because of the design of the options
+  data whereby a missing entry indicated that that entry was 'enabled'. I have
+  changed MapNotes so that *all* options how have an entry that says explicitly
+  whether it is enabled or disabled
+
+- Zooming the World Map out to the World view showing the whole of Azeroth caused
+  the addon to crash (thanks sykopat). This was because there is no map information
+  available from either LibMapData for this map, and Astrolabe forces an exception
+  if it is asked to provide it. I have made it impossible to add notes to either
+  the World map or the Cosmic map (Azeroth plus Outland)
+
+- sykopat reported a crash on trying to delete note by creator. I haven't been able
+  to reproduce this, but see that it was executing code in the Yatlas addon that
+  hooked a function in MapNotes code, so the problm may be there instead. I have
+  made the parameter checking more robust and added some diagnostic code to this
+  section
+
+Cortello
+  
+
+Release notes for MapNotes version 6.08.50001 Mists of Pandaria - 3 November 2012
+---------------------------------------------------------------------------------
+
+This is a major release. Many bugs have been fixed and the addon is pretty solid
+once more.
+
+The biggest change is that calculations for the notes is now event driven,
+and only done when something has changed that may affect the note display. The
+way it worked before I inherited the project was that calculations were all done
+on every screen refresh, many times every second. This was using a lot more
+processor time than was necessary and I haven't had the confidence until now that
+I could change this without breaking it. No one should now have any problems with
+frame rate hits from this addon.
+
+I have also made these changes:
+
+- Added the Astrolabe library to provide map coverage where LibMapData fails
+
+- Added support for the new microdungeons. Notes can now be made inside 
+
+- Prevented the AutoMapNote Landmarks from creating notes for landmarks that
+  already have an icon. This is primarily the flight points and the locations
+  in Wintergrasp
+
+- Restored the save/cancel buttons on the note editor frame. This was caused by
+  a change in the name of a button template in the Pandaria release of WoW. The
+  same fix has also restored the `Delete Landmarks` and `Close` buttons on the
+  options dialogue
+
+- Fixed line drawing. This is now available by alt-left-click on two notes on the
+  World Map, or through the right-click menu on a World Map note
+
+- Fixed note deleteion. ctrl-shift-right-double-click now deletes notes as it should
+
+- Correctly assigned initial values to options on a new installation. In particular
+  the notes no longer start out invisible because of a zero alpha setting
+
+- Added mouse wheel support to the slider controls of the options dialogue. Just
+  hover your mouse pointer over the control and roll the mouse wheel - the setting
+  will change accordingly
+
+- Restored the functionality where a party note (ctrl-shift-rightclick on the World
+  Map) is automatically sent to all other members in the party. This hasn't been
+  working since WoW v4.01 which changed things so that an addon has to register 
+  to say which addon messages it wants to r3eceive
+
+- Fixed support for people who like a rotating minimap. Calculations were being
+  done in a mixture of degrees and radians so notes were appearing in odd places
+  on the minimap
+
+- Restored 'Mass Delete by Creator' functionality. This previously worked if you
+  used the enter key, but failed if you used the `Accept` button
+
+- Many internal changes that have no impact on the user interface apart form
+  improving the efficiency of the addon
+
+Please let me know if you have any problems with this version, or have any thoughts
+on what improvements you would like to see. I haven't yet looked properly at the 
+other MapNotes modules (Browser and IconLib) and am sure there are some changes
+needed there.
+
+Cortello
+
+
+Release notes for MapNotes version 6.07.50001 Mists of Pandaria Pre-Patch - 24 September 2012
+---------------------------------------------------------------------------------------------
+
+Updated interface level to 50001 for the subsidiary MapNotes modules
+
+I intend to merge these modules into one so that this sort of problem won't keep 
+recurring
+
+Cortello
+
+
+Release notes for MapNotes version 6.06.50001 Mists of Pandaria Pre-Patch - 24 September 2012
+---------------------------------------------------------------------------------------------
+
+Updated interface level to 50001 for this version of World of Warcraft
+
+Removed dependency on GetNumRaidMembers API call that has been removed from this 
+version
+
+Added the Ace LibMapData to better calculate the map dimensions and keep up with 
+zone changes
+
+Diagnosed excessive CPU use as multiple unnecessary calls to 
+SetMapToCurrentZone. Added null stub declaration as a temporary fix
+
+Diagnosed minimap notes not tracking properly as a confusion over whether map 
+was indoors or outdoors. Forced more frequent reassessment as a temporary fix
+
+Increased minimap note redraw frequency to 50Hz to prevent jerkiness
+
+Please let me know if you get any problems with this version, and enjoy 
+Pandaria!
+
+Cortello
+
+
+Release notes for MapNotes version 6.05.40300 - 06-Dec-2011
+-----------------------------------------------------------
+
+I've put back MapNotesForAtlas as people have asked to test it.
+
+I've also put in the fixes provided for the Bindings.xml file by keyesc.
+Thank you for that!
+
+The old release notes apply. Please let me know as soon as possible if
+there are any issues.
+
+Cortello
+
+Release notes for MapNotes version 6.04.40300 - 05-Dec-2011
+-----------------------------------------------------------
+
+After encouragement to update this addon, I am releasing a beta so that any
+major bugs can be ironed out. This release does little more than update the
+interface number so that it will load without enabling 'Load out of date
+AddOns'. I have also removed the MapNotesForAtlas component as I have no
+evidence that anyone is using it.
+
+As always, PLEASE back up the saved variables file before trying this version,
+and stop WoW completely before you install the new version. This time you
+should also delete the folder called
+
+  World of Warcraft\Interface\AddOns\MapNotesForAtlas
+
+If you have any issues with installation, or any bugs that remain please let me
+know and I will try to fix them promptly. I have been told about very slow
+startup, but have been unable to reproduce it. But bear in mind that several
+addons are still not ready for the 4.3.0 release of WoW and you should test
+with 'Load out of date AddOns' DISABLED for now, and ideally with MapNotes
+running alone if you come across any issues.
+
+I have a fix to make the facility to draw lines between notes work properly,
+and I have done some design for a number of other improvements. But please let
+me know what you want from this addon as I nearly let it drop assuming there
+was no longer any interest. It will do anything and nothing, according to what
+you want!
+
+If you know of any other players who might be interested in this addon then
+please encourage them to try this out and talk to me. A favourite feature is
+the party note (ctrl-shift-rclick on the map) which is automatically set as a
+minimap note for the entire party, and is even useful solo to show a general
+direction to fly without constant reference to the world map.
+
+This note from the previous release also applies.
+
+See you at the Faire :)
+
+Cortello
+
+
+== Map Note Information ==
+
+- Added minimap scaling data for a couple of zones. If you can't make a note
+  visible on the minimap then it is because it has no scaling information for
+  that zone. Please let me know the value of
+
+    /run print(MapNotes.MapKey)
+
+  if this is happening to you somewhere and I will get it fixed
+
+- Shared map note information for all phases of the same zone

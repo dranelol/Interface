@@ -1,0 +1,11 @@
+## Interface: 30000
+## Title: Lib: QTip-1.0
+## Notes: Library providing multi-column tooltips.
+## Author: Torhal, Kaelten, Tristanian, Adirelle
+## Version: @project-version@ 
+## X-Date: @project-date-iso@
+## X-Category: Library, Tooltip
+## X-License: Ace3 BSD-like license
+
+LibStub\LibStub.lua
+lib.xml

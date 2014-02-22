@@ -1,0 +1,15 @@
+
+--==-- InspectDetails Version History --==--
+
+2.0.0 (Jan 6, 2009):
+	New:
+		- Updated for WotLK.
+
+
+1.0.1 (Apr 15, 2008):
+	- Extended the inspect frame's title text from 200 pixels to 250 pixels, which is the true
+		width of the title box.
+
+
+1.0.0 (Apr 9, 2008):
+	- Initial release.

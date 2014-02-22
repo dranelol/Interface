@@ -1,0 +1,24 @@
+## Interface: 40000
+## X-Curse-Packaged-Version: v1.1
+## X-Curse-Project-Name: Kifogas.Txt
+## X-Curse-Project-ID: kifogas-txt
+## X-Curse-Repository-ID: wow/kifogas-txt/mainline
+
+## Title: kifogas.txt
+## Notes: Originaly created by Mr.A from http://frostshock.eu, cloned and maintained by Nordelar @ Vek'nilash
+## Author: Mr.A.
+## Version: Release
+## X-Website: http://frostshock.eu
+## X-Email: liquid@leszarom.hu
+## X-Category: Misc
+
+## SavedVariables: KifogasTxtDB
+
+## LoadManagers: AddonLoader
+## X-LoadOn-Group: true
+
+embeds.xml
+
+Core.lua
+Locale.lua
+tekKonfigAboutPanel.lua

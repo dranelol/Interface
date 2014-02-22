@@ -1,0 +1,9 @@
+
+--==-- ItemTooltipIcons Functionality Description --==--
+
+Addon type: Interface
+Libraries used: none
+
+This addon provides item icons on item tooltips. It is configurable through the "/iti" slash command,
+and configuration options include the size of the icon, where to place the icon, and for which tooltips
+the icon should be shown.

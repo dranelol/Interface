@@ -1,0 +1,34 @@
+## Interface: 30300
+## Title: PitBull 3.0
+## Notes: Unit Frames of awesomeness. Woof. It'll bite your face off.
+## Version: v3.2.16
+## Notes-koKR: 두려움이 없는 유닛 프레임입니다. 훕! 당신의 얼굴을 물어 뜯으려고 합니다.
+## Author: ckknight
+## X-eMail: ckknight AT gmail DOT com
+## X-Website: http://www.wowace.com/
+## X-Category: UnitFrame
+## X-Credits: Kemayo (Portraits), Shefki
+## SavedVariables: PitBullDB
+## OptionalDeps: LibRock-1.0, LibRockLocale-1.0, LibRockConfig-1.0, LibRockDB-1.0, LibRockEvent-1.0, LibRockTimer-1.0, LibRockConsole-1.0, LibRockModuleCore-1.0, LibRockHook-1.0, LibRockComm-1.0, RangeCheck-1.0, LibHealComm-3.0, LibTalentQuery-1.0, LibDogTag-3.0, LibDogTag-Unit-3.0, LibBabble-Zone-3.0
+## X-WoWIPortal: ckknight
+## X-License: GPL v2 or later
+## X-Donate: PayPal:ckknight AT gmail DOT com
+## X-Curse-Packaged-Version: v3.2.16
+## X-Curse-Project-Name: PitBull Unit Frames 3.0
+## X-Curse-Project-ID: pit-bull
+## X-Curse-Repository-ID: wow/pit-bull/mainline
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+PitBull.lua
+PitBull_MetaLayout.lua
+
+Layouts\ABF.lua
+# Layouts\Buu.lua
+# Layouts\Industrial.lua
+# Layouts\oUF.lua
+# Layouts\Seerah.lua
+
+modules.xml

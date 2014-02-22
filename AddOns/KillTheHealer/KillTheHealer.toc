@@ -1,0 +1,8 @@
+## Interface: 40200
+## Title: KillTheHealer
+## Notes: Show the healers!
+## Version: 1.2 Beta
+## Author: Kraftman
+## SavedVariables: KillTheHealer
+
+KillTheHealer.lua

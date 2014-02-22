@@ -1,0 +1,16 @@
+tag v1.1.1
+6dfa6f84b28ca7ae46c50a61bd85acdf38822e8d
+root <root@cfrepos1.curseforge.net>
+2010-03-01 14:38:05 +0000
+
+Tagging as v1.1.1
+
+
+--------------------
+
+Proditor:
+	- Added spell icon to the cast bar.
+	- Added a small lock frame button to the anchor since so many people seem to be unaware of that you can hide it.
+	- Changed minimum priority to 0 when adding spells o the aura tracker.
+	- Made the announcement function a bit smarter.
+	- The enemy frames now has their Alpha lowered to 0.25 if the unit goes into stealth/invisibility and lowered to 0 if the unit leaves the arena.

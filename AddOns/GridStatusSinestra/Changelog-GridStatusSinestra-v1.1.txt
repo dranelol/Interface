@@ -1,0 +1,11 @@
+tag v1.1
+35a18658fb06d7c341ef0ec52c57ba9a6d48921b
+Raegx <raegx.priest@gmail.com>
+2011-02-10 00:29:28 -0500
+
+Cool quote added
+
+
+--------------------
+
+No changelog

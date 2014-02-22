@@ -1,0 +1,122 @@
+------------------------------------------------------------------------
+r740 | StingerSoft | 2014-01-16 10:37:58 +0000 (Thu, 16 Jan 2014) | 1 line
+Changed paths:
+   M /trunk/locales/ruRU.lua
+
+ruRU update
+------------------------------------------------------------------------
+r738 | funkydude | 2014-01-14 13:49:35 +0000 (Tue, 14 Jan 2014) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+
+pkgmeta: Correctly point to the LibCandyBar-3.0 sub directory rather than the trunk.
+------------------------------------------------------------------------
+r737 | nebula169 | 2014-01-01 00:03:56 +0000 (Wed, 01 Jan 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Promote.lua
+
+Promote: get guild rank with :IsGuildMember
+------------------------------------------------------------------------
+r736 | nebula169 | 2013-12-31 00:14:09 +0000 (Tue, 31 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/modules/Promote.lua
+
+Promote: fix promoting by name
+------------------------------------------------------------------------
+r735 | nebula169 | 2013-12-28 10:07:25 +0000 (Sat, 28 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/modules/Promote.lua
+   M /trunk/modules/RoleIcons.lua
+
+nil check name from GetRaidRosterInfo in a couple more places
+------------------------------------------------------------------------
+r734 | nebula169 | 2013-12-27 11:17:48 +0000 (Fri, 27 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/modules/Promote.lua
+
+Promote: fix guild rank promoting
+------------------------------------------------------------------------
+r733 | nebula169 | 2013-12-26 03:33:17 +0000 (Thu, 26 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/modules/Promote.lua
+
+Promote: nil check GetRaidRosterInfo name
+------------------------------------------------------------------------
+r732 | nebula169 | 2013-12-23 08:46:58 +0000 (Mon, 23 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/modules/Invite.lua
+   M /trunk/oRA3.lua
+
+tweaks
+------------------------------------------------------------------------
+r731 | nebula169 | 2013-12-23 08:21:28 +0000 (Mon, 23 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/oRA3.lua
+
+add /ora slash command to open options
+------------------------------------------------------------------------
+r730 | nebula169 | 2013-12-23 08:16:58 +0000 (Mon, 23 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/locales/deDE.lua
+   M /trunk/locales/enUS.lua
+   M /trunk/locales/frFR.lua
+   M /trunk/locales/itIT.lua
+   M /trunk/locales/koKR.lua
+   M /trunk/locales/ruRU.lua
+   M /trunk/locales/zhCN.lua
+   M /trunk/locales/zhTW.lua
+   M /trunk/modules/RoleIcons.lua
+   M /trunk/oRA3.lua
+   M /trunk/oRA3.toc
+
+enable RoleIcons module
+------------------------------------------------------------------------
+r729 | nebula169 | 2013-12-23 06:46:59 +0000 (Mon, 23 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/modules/Promote.lua
+
+Promote: rework to use UnitIsInMyGuild/GetGuildInfo
+------------------------------------------------------------------------
+r727 | funkydude | 2013-12-23 01:39:41 +0000 (Mon, 23 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/modules/Invite.lua
+
+Invite: Evidently apostrophes are not removed.
+------------------------------------------------------------------------
+r726 | funkydude | 2013-12-23 01:14:38 +0000 (Mon, 23 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/modules/Loot.lua
+
+Loot: Delay loot setting, hopefully fixes #154.
+------------------------------------------------------------------------
+r725 | funkydude | 2013-12-23 00:59:43 +0000 (Mon, 23 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/modules/Invite.lua
+
+Invite: Trim apostrophes, hyphens and spaces from BNET realms when performing a BNET invite. This is just a guess as to how Blizzard actually trims server names as there is no available API to use.
+------------------------------------------------------------------------
+r724 | funkydude | 2013-12-23 00:27:04 +0000 (Mon, 23 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/modules/Invite.lua
+   M /trunk/oRA3.lua
+
+Call Ambiguate on all guild names instead of comparing to GetRealmName(), compensates for servers with spaces, hyphens, etc. being trimmed.
+------------------------------------------------------------------------
+r723 | funkydude | 2013-12-22 23:34:05 +0000 (Sun, 22 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/oRA3.lua
+
+Fix realm in the core also.
+------------------------------------------------------------------------
+r722 | funkydude | 2013-12-22 22:55:43 +0000 (Sun, 22 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/modules/Invite.lua
+
+Invite: Don't call UnitFullName to fetch the realm name, which is nil at login, call GetRealmName.
+------------------------------------------------------------------------
+r721 | nebula169 | 2013-12-19 02:05:45 +0000 (Thu, 19 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/modules/Invite.lua
+
+Invite: strip same realm from sender in whisper handler
+------------------------------------------------------------------------

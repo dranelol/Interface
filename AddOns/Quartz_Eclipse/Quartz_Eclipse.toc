@@ -1,0 +1,12 @@
+## Interface: 30200
+## LoadOnDemand: 1
+## Title: Quartz |cff7777ffEclipse|r
+## Notes: Quartz module to display the Eclipse proc, balance t8 proc, and heroism/bloodlust, displayed on the Mirror bar.
+## Author: Baffler
+## Version: 2.1
+## Dependencies: Quartz
+## X-License: GPL v2
+## X-Quartz-Module: Eclipse
+## X-Quartz-RequiredModules: Mirror
+
+main.lua

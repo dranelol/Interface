@@ -1,0 +1,9 @@
+﻿## Interface: 40000
+
+## Title: GridIndicatorSideText
+
+## Version: 1.4.2
+## Author: Szandos
+## Notes: Adds side text to Grid.
+GridIndicatorSideTextLocal-enUS.lua
+GridIndicatorSideText.lua

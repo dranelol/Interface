@@ -1,0 +1,18 @@
+## Interface: 50200
+## Title: Rebirther
+## Notes: Tracks Rebirth and Innervate cooldowns.
+## Author: torkel104 (Edit By LordBurton)
+## Version: r87
+## SavedVariables: RebirtherDB
+## OptionalDeps: SharedMedia
+## X-Curse-Packaged-Version: r87
+## X-Curse-Project-Name: Rebirther
+## X-Curse-Project-ID: rebirther
+## X-Curse-Repository-ID: wow/rebirther/mainline
+
+embeds.xml
+templates.xml
+
+Locales\enUS.lua
+
+Rebirther.lua

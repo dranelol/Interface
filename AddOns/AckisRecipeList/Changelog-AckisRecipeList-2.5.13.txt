@@ -1,0 +1,16 @@
+tag 2.5.13
+b5747dc1b77a1849c050e4d9a5830d8d4862e94c
+Ressy <resa1983@hotmail.com>
+2013-12-19 22:28:04 -0500
+
+2.5.13
+
+
+--------------------
+
+Ressy:
+	- Update Changes document
+	- Update of Trainers and Vendors in Theramore
+	- Updated Enchant Gloves - Advanced Herbalism - mobs which dropped this have been removed from game, Battle.net shows no drops/vendors, so retired
+	- Updated Enchant Gloves - Advanced Herbalism - mobs which dropped this have been removed from game, Battle.net shows no drops/vendors, so retired
+	- Comment from cheburator - fix Swiftstrike Bracers location

@@ -1,0 +1,172 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/FrameXML\UI.xsd">
+	
+	<CheckButton name="LootFilterCheckboxTemplate"
+		inherits="UICheckButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="15" y="15"/>
+		</Size>
+	</CheckButton>
+	
+	<CheckButton name="LootFilterRadioButtonTemplate"
+		inherits="UIRadioButtonTemplate" virtual="true">
+	</CheckButton>
+	
+	<Frame name="LootFilterLineTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="600" y="15"/>
+		</Size>
+		<Scripts>
+			<OnMouseUp> LootFilter.addItemToKeepList(self); </OnMouseUp>
+			<OnEnter> LootFilter.showTooltip(self, "LToolTip1");
+					LootFilter.showItemTooltip(self); </OnEnter>
+			<OnLeave> GameTooltip:Hide(); </OnLeave>
+		</Scripts>
+	</Frame>
+	
+	<Frame name="LootFilterOptionTemplate2" virtual="true">
+		<Size>
+			<AbsDimension x="5" y="5"/>
+		</Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parent_Text" inherits="GameFontNormal"
+					text="Loot Filter">
+					<Anchors>
+						<Anchor point="LEFT">
+							<Offset>
+								<AbsDimension x="20" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<CheckButton name="$parent_Button"
+				inherits="LootFilterCheckboxTemplate">
+				<Anchors>
+					<Anchor point="LEFT">
+						<Offset>
+							<AbsDimension x="1" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> LootFilter.setRadioButtonValue(self); </OnClick>
+				</Scripts>
+			</CheckButton>
+		</Frames>
+		<Scripts>
+			<OnShow> LootFilter.getRadioButtonValue(self); </OnShow>
+		</Scripts>
+	</Frame>
+	<Frame name="LootFilterOptionTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="5" y="5"/>
+		</Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parent_Text" inherits="GameFontNormal"
+					text="Loot Filter">
+					<Anchors>
+						<Anchor point="LEFT">
+							<Offset>
+								<AbsDimension x="20" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<CheckButton name="$parent_Button"
+				inherits="LootFilterRadioButtonTemplate">
+				<Anchors>
+					<Anchor point="LEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> LootFilter.setRadioButtonValue(self); </OnClick>
+				</Scripts>
+			</CheckButton>
+		</Frames>
+		<Scripts>
+			<OnShow> LootFilter.getRadioButtonValue(self); </OnShow>
+		</Scripts>
+	</Frame>
+	
+	<Frame name="LootFilterDKDOptionsTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="5" y="5"/>
+		</Size>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parent_Text" inherits="GameFontNormal"
+					text="Loot Filter">
+					<Anchors>
+						<Anchor point="LEFT">
+							<Offset>
+								<AbsDimension x="60" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<CheckButton name="$parent_Default"
+				inherits="LootFilterRadioButtonTemplate">
+				<Anchors>
+					<Anchor point="LEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> LootFilter.setRadioButtonsValue(self); </OnClick>
+					<OnEnter> LootFilter.showTooltip(self, "LToolTip2"); </OnEnter>
+					<OnLeave> GameTooltip:Hide(); </OnLeave>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parent_Keep"
+				inherits="LootFilterRadioButtonTemplate">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_Default">
+						<Offset>
+							<AbsDimension x="20" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> LootFilter.setRadioButtonsValue(self); </OnClick>
+					<OnEnter> LootFilter.showTooltip(self, "LToolTip3"); </OnEnter>
+					<OnLeave> GameTooltip:Hide(); </OnLeave>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parent_Delete"
+				inherits="LootFilterRadioButtonTemplate">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_Keep">
+						<Offset>
+							<AbsDimension x="20" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> LootFilter.setRadioButtonsValue(self); </OnClick>
+					<OnEnter> LootFilter.showTooltip(self, "LToolTip4"); </OnEnter>
+					<OnLeave> GameTooltip:Hide(); </OnLeave>
+				</Scripts>
+			</CheckButton>
+		</Frames>
+		<Scripts>
+			<OnShow> LootFilter.getRadioButtonsValue(self); </OnShow>
+		</Scripts>
+	</Frame>
+</Ui>

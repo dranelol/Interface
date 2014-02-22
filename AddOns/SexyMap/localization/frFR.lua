@@ -1,0 +1,39 @@
+
+if GetLocale() ~= "frFR" then return end
+local _, sm = ...
+local L = sm.L
+L["1. Background"] = "Arrière-plan "
+L["2. Border"] = "Bordure"
+L["3. Artwork"] = "œuvre" -- Needs review
+L["Addon Buttons"] = "Boutons d'addons" -- Needs review
+L["Allow SexyMap to assume drag ownership for buttons attached to the minimap. Turn this off if you have another mod that you want to use to position your minimap buttons."] = "Autoriser SexyMap à gérer lui même le déplacements des boutons attachés à la mini-carte. Désactivez cette option si vous voulez utiliser un autre addon pour positionner vos boutons de mini-cartes." -- Needs review
+L["Alpha Key (1-bit alpha)"] = "Clé Alpha (alpha d'1 bit)" -- Needs review
+L["Always"] = "Toujours"
+L["Armored Man"] = "L'homme en armure" -- Needs review
+L["Auto Zoom-Out Delay"] = "Délai de dé-Zoom automatique" -- Needs review
+L["Background Color"] = "Couleur de l'arrière-plan " -- Needs review
+L["Background Texture"] = "Texture de l'arrière-plan" -- Needs review
+L["Border Color"] = "Couleurs de la bordure" -- Needs review
+L["Buttons"] = "Boutons" -- Needs review
+L["Calendar"] = "Calendrier" -- Needs review
+L["Circle"] = "Cercle" -- Needs review
+L["Clock"] = "Horloge" -- Needs review
+L["Coordinates"] = "Coordonnées" -- Needs review
+L["Create a new border"] = "Créer une nouvelle bordure" -- Needs review
+L["Delete"] = "Supprimer" -- Needs review
+L["Diamond"] = "Diamant" -- Needs review
+L["Disable (opaque)"] = "Désactiver (opaque)" -- Needs review
+L["Dungeon Difficulty Indicator (When Available)"] = "Indicateur de la difficulté du donjon (quand disponible)" -- Needs review
+L["Dynamic Buttons"] = "Boutons dynamiques" -- Needs review
+L["Enable"] = "Activer" -- Needs review
+L["Enable Coordinates"] = "Activer les coordonnées" -- Needs review
+L["Enable Hudmap"] = "Activer Hudmap" -- Needs review
+L["Faded Circle (Large)"] = "Cercle délavé (Grand)" -- Needs review
+L["Faded Circle (Small)"] = "Cercle délavé (Petit)" -- Needs review
+L["Faded Square"] = "Carré délavé" -- Needs review
+L["Font"] = "Fonte" -- Needs review
+L["Font Color"] = "Couleur de la police" -- Needs review
+L["Font Size"] = "Ampleur de la police" -- Needs review
+L["Force a square texture. Fixed distortion on square textures."] = "Forcer une texture carrée. Reparé déformation des textures carrées." -- Needs review
+
+

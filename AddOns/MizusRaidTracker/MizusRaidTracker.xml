@@ -1,0 +1,285 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+ http://wowprogramming.com/FrameXML/UI.xsd">
+  <Script file="MizusRaidTracker.lua"/>
+  <Script file="MizusRaidTracker_Exports.lua"/>
+  <Frame name="MRT_MainFrame">
+    <Scripts>
+      <OnLoad>MRT_MainFrame_OnLoad(self);</OnLoad>
+      <OnEvent>MRT_OnEvent(self, event, ...);</OnEvent>
+    </Scripts>
+  </Frame>
+  <Frame name="MRT_GetDKPValueFrame" toplevel="true" frameStrata="DIALOG" movable="true" hidden="true" enableMouse="true" parent="UIParent">
+    <Size x="365" y="285"/>
+    <Anchors>
+      <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$parent"></Anchor>
+    </Anchors>
+    <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <TileSize val="32"/>
+      <EdgeSize val="32"/>
+      <BackgroundInsets left="11" right="12" top="12" bottom="11"/>
+    </Backdrop>
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parent_HeaderTexture" file="Interface\DialogFrame\UI-DialogBox-Header">
+          <Size x="300" y="64"/>
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset x="0" y="12"/>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+        <FontString name="$parent_Title" inherits="GameFontNormal">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset x="0" y="-2"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_TextFirstLine" inherits="GameFontNormal" text="FirstLine">
+          <Anchors>
+            <Anchor point="TOP" x="0" y="-32"/>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_TextSecondLine" inherits="GameFontNormal" text="SecondLine">
+          <Anchors>
+            <Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parent_TextFirstLine"/>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_TextThirdLine" inherits="GameFontNormal" text="ThirdLine">
+          <Anchors>
+            <Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parent_TextSecondLine"/>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_CostString" inherits="GameFontWhite" text="Cost - FIXME!">
+          <Anchors>
+            <Anchor point="LEFT" relativePoint="TOPLEFT" relativeTo="$parent" x="50" y="-90"/>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_NoteString" inherits="GameFontWhite" text="Note - FIXME!">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent_CostString" x="0" y="-48"/>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <EditBox name="$parent_EB" inherits="InputBoxTemplate" historyLines="0" enableKeyboard="true" letters="200" autoFocus="false">
+        <Size x="250" y="32"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_CostString" x="8"/>
+        </Anchors>
+        <Scripts>
+          <OnEnterPressed>MRT_DKPFrame_Handler("OK");</OnEnterPressed>
+          <OnEscapePressed>MRT_DKPFrame_Handler("Cancel");</OnEscapePressed>
+          <OnTabPressed>MRT_GetDKPValueFrame_EB2:SetFocus();</OnTabPressed>
+        </Scripts>
+        <FontString inherits="ChatFontNormal"/>
+      </EditBox>
+      <EditBox name="$parent_EB2" inherits="InputBoxTemplate" historyLines="0" enableKeyboard="true" letters="256" autoFocus="false">
+        <Size x="250" y="32"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent_NoteString" x="8"/>
+        </Anchors>
+        <Scripts>
+          <OnEnterPressed>MRT_DKPFrame_Handler("OK");</OnEnterPressed>
+          <OnEscapePressed>MRT_DKPFrame_Handler("Cancel");</OnEscapePressed>
+          <OnTabPressed>MRT_GetDKPValueFrame_EB:SetFocus();</OnTabPressed>
+        </Scripts>
+        <FontString inherits="ChatFontNormal"/>
+      </EditBox>
+      <Button name="$parent_OKButton" hidden="false" inherits="GameMenuButtonTemplate">
+        <Size x="95" y="22"/>
+        <Anchors>
+          <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parent">
+            <Offset x="25" y="62"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_DKPFrame_Handler("OK");</OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parent_CancelButton" hidden="false" inherits="GameMenuButtonTemplate">
+        <Size x="95" y="22"/>
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent_OKButton">
+            <Offset x="15" y="0"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_DKPFrame_Handler("Cancel");</OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parent_DeleteButton" hidden="false" inherits="GameMenuButtonTemplate">
+        <Size x="95" y="22"/>
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent_CancelButton">
+            <Offset x="15" y="0"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_DKPFrame_Handler("Delete");</OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parent_BankButton" hidden="false" inherits="GameMenuButtonTemplate">
+        <Size x="95" y="22"/>
+        <Anchors>
+          <Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parent_CancelButton">
+            <Offset x="0" y="-15"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_DKPFrame_Handler("Bank");</OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parent_DisenchantedButton" hidden="false" inherits="GameMenuButtonTemplate">
+        <Size x="95" y="22"/>
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent_BankButton">
+            <Offset x="15" y="0"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_DKPFrame_Handler("Disenchanted");</OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parent_DropDownButton" hidden="false">
+        <Size x="16" y="16"/>
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parent_TextThirdLine"/>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_GetDKPValueFrame_DropDownList_Toggle();</OnClick>
+        </Scripts>
+        <NormalTexture name="$parentNormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">
+          <Size>
+            <AbsDimension x="16" y="16"/>
+          </Size>
+          <Anchors>
+            <Anchor point="RIGHT"/>
+          </Anchors>
+        </NormalTexture>
+        <PushedTexture name="$parentPushedTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down">
+          <Size>
+            <AbsDimension x="16" y="16"/>
+          </Size>
+          <Anchors>
+            <Anchor point="RIGHT"/>
+          </Anchors>
+        </PushedTexture>
+        <HighlightTexture name="$parentHighlightTexture" file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD">
+          <Size>
+            <AbsDimension x="16" y="16"/>
+          </Size>
+          <Anchors>
+            <Anchor point="RIGHT"/>
+          </Anchors>
+        </HighlightTexture>
+      </Button>
+      <Frame name="$parent_TTArea" hidden="false" enableMouse="true">
+        <Size x="100" y="12"/>
+        <Anchors>
+          <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$parent_TextSecondLine"/>
+        </Anchors>
+        <Scripts>
+          <OnEnter>MRT_Core_TT:SetOwner(self, "ANCHOR_BOTTOMRIGHT"); MRT_Core_TT:SetHyperlink(MRT_GetDKPValueFrame_TextSecondLine:GetText()); MRT_Core_TT:Show();</OnEnter>
+          <OnLeave>MRT_Core_TT:Hide();</OnLeave>
+        </Scripts>
+      </Frame>
+    </Frames>
+    <Scripts>
+      <OnLoad>self:RegisterForDrag("LeftButton");</OnLoad>
+      <OnDragStart>self:StartMoving();</OnDragStart>
+      <OnDragStop>self:StopMovingOrSizing();</OnDragStop>
+    </Scripts>
+  </Frame>
+  <Frame name="MRT_ExportFrame" toplevel="true" frameStrata="DIALOG" movable="true" hidden="true" enableKeyboard="true" enableMouse="true" parent="UIParent">
+    <Size x="450" y="348"/>
+    <Anchors>
+      <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$parent"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <TileSize val="32"/>
+      <EdgeSize val="32"/>
+      <BackgroundInsets left="11" right="12" top="12" bottom="11"/>
+    </Backdrop>
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parent_HeaderTexture" file="Interface\DialogFrame\UI-DialogBox-Header">
+          <Size x="300" y="64"/>
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset x="0" y="12"/>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+        <FontString name="$parent_Title" inherits="GameFontNormal">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset x="0" y="-2"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parent_ExplanationText" inherits="GameFontWhite" justifyH="CENTER" justifyV="MIDDLE" text="MRT_ExportFrame_ExplanationText">
+          <Anchors>
+            <Anchor point="CENTER" relativePoint="BOTTOM" relativeTo="$parent">
+              <Offset x="0" y="100"/>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <ScrollFrame name="$parent_ScrollFrame" inherits="UIPanelScrollFrameTemplate">
+        <Size x="350" y="150"/>
+        <Anchors>
+          <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent">
+            <Offset x="-10" y="-40"/>
+          </Anchor>
+        </Anchors>
+        <ScrollChild>
+          <EditBox name="MRT_ExportFrame_EB" multiLine="true" enableKeyboard="true" letters="0" countInvisibleLetters="true">
+            <Size x="350" y="150"/>
+            <Scripts>
+              <OnEscapePressed>MRT_ExportFrame_Hide();</OnEscapePressed>
+            </Scripts>
+            <FontString inherits="ChatFontNormal"/>            
+          </EditBox>
+        </ScrollChild>
+      </ScrollFrame>
+      <Button name="$parent_OKButton" hidden="false" inherits="GameMenuButtonTemplate">
+        <Size x="95" y="22"/>
+        <Anchors>
+          <Anchor point="BOTTOM" relativePoint="BOTTOM" relativeTo="$parent">
+            <Offset x="0" y="32"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>MRT_ExportFrame_Hide();</OnClick>
+        </Scripts>
+      </Button>
+      <Frame name="$parent_EB_Background">
+        <Size x="386" y="160"/>
+        <Anchors>
+          <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent">
+            <Offset x="0" y="-35"/>
+          </Anchor>
+        </Anchors>
+        <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+          <EdgeSize val="16"/>
+          <TileSize val="16"/>
+          <BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+        </Backdrop>
+      </Frame>
+    </Frames>
+    <Scripts>
+      <OnLoad>self:RegisterForDrag("LeftButton");</OnLoad>
+      <OnDragStart>self:StartMoving();</OnDragStart>
+      <OnDragStop>self:StopMovingOrSizing();</OnDragStop>
+    </Scripts>
+  </Frame>
+  <GameTooltip name="MRT_Core_TT" inherits="GameTooltipTemplate" parent="UIParent" hidden="true"/>
+</Ui>

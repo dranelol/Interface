@@ -1,0 +1,17 @@
+﻿## Interface: 30300
+## Title: PitBull |r[|cffeda55fBarFader|r]
+## Notes: Adds fading this to the health/power bars.
+## Notes-koKR: 생명력/마력 바에 투명도 변경 기능을 추가합니다.
+## Author: JoshBorke and Nymbia
+## Version: 0.1
+## X-Category: Combat
+## Dependencies: PitBull
+## OptionalDeps: PitBull_HealthBar, PitBull_PowerBar
+## LoadOnDemand: 1
+## DefaultState: enabled
+## X-Curse-Packaged-Version: v3.2.16
+## X-Curse-Project-Name: PitBull Unit Frames 3.0
+## X-Curse-Project-ID: pit-bull
+## X-Curse-Repository-ID: wow/pit-bull/mainline
+
+BarFader.lua

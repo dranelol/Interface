@@ -1,0 +1,11 @@
+## Interface: 43000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFVictorySound|r
+## Notes: Plays a song on combat start, and on victory or defeat!  Requires DBM-Core to operate.
+## Version: 1.9
+## LoadOnDemand: 0
+## RequiredDeps: DBM-Core
+## DefaultState: enabled
+## Author: Thomas Prescott
+## SavedVariables: DBM_VictorySound_Settings
+localization.en.lua
+DBM-VictorySound.lua

@@ -1,0 +1,28 @@
+------------------------------------------------------------------------
+r33 | kunda | 2013-07-29 10:48:03 +0000 (Mon, 29 Jul 2013) | 1 line
+Changed paths:
+   A /tags/50300-2 (from /trunk:32)
+
+Tagging as 50300-2
+------------------------------------------------------------------------
+r32 | kunda | 2013-07-29 10:47:24 +0000 (Mon, 29 Jul 2013) | 1 line
+Changed paths:
+   M /trunk/GridIndicatorSidePlus.lua
+   M /trunk/GridIndicatorSidePlus.toc
+
+fix frame level
+------------------------------------------------------------------------
+r30 | kunda | 2013-06-29 13:08:34 +0000 (Sat, 29 Jun 2013) | 1 line
+Changed paths:
+   M /trunk/GridIndicatorSidePlus.toc
+
+update
+------------------------------------------------------------------------
+r29 | lsjyzjl | 2013-05-19 05:04:32 +0000 (Sun, 19 May 2013) | 1 line
+Changed paths:
+   A /trunk/GridIndicatorSidePlus-localization-zhCN.lua
+   A /trunk/GridIndicatorSidePlus-localization-zhTW.lua
+   M /trunk/GridIndicatorSidePlus.toc
+
+Added zhCN & zhTW translations.
+------------------------------------------------------------------------

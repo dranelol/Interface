@@ -1,0 +1,9 @@
+## Interface: 50001
+## Title: GupPet |cffff8000ButtonFacade
+## Notes: Gives the ingame buttons support for ButtonFacade
+## Author: Gup
+## Dependencies: ButtonFacade, GupPet
+## Version: 0.2
+## SavedVariables: BFGPSettingsDB
+
+GupPet_ButtonFacade.lua

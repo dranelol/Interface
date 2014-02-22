@@ -1,0 +1,16 @@
+------------------------------------------------------------------------
+r302 | stassart | 2012-09-02 17:59:42 +0000 (Sun, 02 Sep 2012) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/Core.lua
+   M /trunk/GridStatusRaidDebuff.toc
+   M /trunk/embeds.xml
+
+This is a small addon that tells you to switch to GridStatusRaidDebuff MoP. I see a lot of people still downloading this addon and I thought this might help notify users about the change.
+------------------------------------------------------------------------
+r301 | stassart | 2011-12-11 09:19:02 +0000 (Sun, 11 Dec 2011) | 1 line
+Changed paths:
+   M /trunk/GridStatusRaidDebuff.toc
+
+Grab latest LibBabble libraries for localization updates.
+------------------------------------------------------------------------

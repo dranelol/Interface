@@ -1,0 +1,49 @@
+## Interface: 50400
+## Title: PetBattleTeams
+## Author: Nullberri
+## Version: 3.2.5
+## X-Category: Pet Battles
+## X-Localizations: enUS
+## SavedVariables: PetBattleTeamsDB,PetBattleTeamsSettings
+
+##Libs
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+libs\AceAddon-3.0\AceAddon-3.0.xml
+libs\AceConsole-3.0\AceConsole-3.0.xml
+libs\AceGUI-3.0\AceGUI-3.0.xml
+libs\AceDB-3.0\AceDB-3.0.xml
+libs\LibPetBreedInfo-1.0\LibPetBreedInfo-1.0.lua
+libs\AceConfig-3.0\AceConfig-3.0.xml
+libs\EmbedHandler-1.0\EmbedHandler-1.0.xml
+libs\LibPetJournal-2.0\LibPetJournal-2.0.lua
+
+
+##Main 
+PetBattleTeams.lua
+
+##singleton components 
+modules\TeamManager.lua
+modules\TeamManagerUnitTests.lua
+modules\Tooltip.lua
+modules\Cursor.lua
+modules\GUI\GUI.lua
+modules\Config.lua
+
+##reusable frames
+classes\PetUnitFrame.lua
+classes\TeamFrame.lua
+
+## Partial GUI class implementation 
+## static parts of the PBT UI
+modules\GUI\LockTeamsButton.lua
+modules\GUI\AddTeamButton.lua
+modules\GUI\ReviveButton.lua
+modules\GUI\PetBandageButton.lua
+modules\GUI\ScrollFrame.lua
+modules\GUI\resizer.lua
+modules\GUI\MenuButton.lua
+modules\GUI\MainFrame.lua
+## end GUI 
+
+

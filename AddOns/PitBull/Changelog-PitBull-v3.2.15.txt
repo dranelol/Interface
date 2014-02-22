@@ -1,0 +1,64 @@
+------------------------------------------------------------------------
+r1899 | shefki | 2009-12-12 04:35:25 +0000 (Sat, 12 Dec 2009) | 1 line
+Changed paths:
+   A /tags/v3.2.15 (from /trunk:1898)
+
+Tagging as v3.2.15 now stop bugging me about PB3
+------------------------------------------------------------------------
+r1898 | shefki | 2009-12-12 04:30:30 +0000 (Sat, 12 Dec 2009) | 2 lines
+Changed paths:
+   M /trunk/Aura/PitBull_Aura.toc
+   M /trunk/Banzai/PitBull_Banzai.toc
+   M /trunk/BarFader/PitBull_BarFader.toc
+   M /trunk/CastBar/PitBull_CastBar.toc
+   M /trunk/CombatFader/PitBull_CombatFader.toc
+   M /trunk/CombatIcon/PitBull_CombatIcon.toc
+   M /trunk/CombatText/PitBull_CombatText.toc
+   M /trunk/ComboPoints/PitBull_ComboPoints.toc
+   M /trunk/DruidManaBar/PitBull_DruidManaBar.toc
+   M /trunk/ExperienceBar/PitBull_ExperienceBar.toc
+   M /trunk/HappinessIcon/PitBull_HappinessIcon.toc
+   M /trunk/HealthBar/PitBull_HealthBar.toc
+   M /trunk/HideBlizzard/PitBull_HideBlizzard.toc
+   M /trunk/Highlight/PitBull_Highlight.toc
+   M /trunk/LeaderIcon/PitBull_LeaderIcon.toc
+   M /trunk/MasterLooterIcon/PitBull_MasterLooterIcon.toc
+   M /trunk/PitBull.toc
+   M /trunk/Portrait/PitBull_Portrait.toc
+   M /trunk/PowerBar/PitBull_PowerBar.toc
+   M /trunk/PvPIcon/PitBull_PvPIcon.toc
+   M /trunk/RaidTargetIcon/PitBull_RaidTargetIcon.toc
+   M /trunk/RangeCheck/PitBull_RangeCheck.toc
+   M /trunk/ReadyCheckIcon/PitBull_ReadyCheckIcon.toc
+   M /trunk/ReputationBar/PitBull_ReputationBar.toc
+   M /trunk/RestIcon/PitBull_RestIcon.toc
+   M /trunk/Spark/PitBull_Spark.toc
+   M /trunk/ThreatBar/PitBull_ThreatBar.toc
+   M /trunk/TotemTimers/PitBull_TotemTimers.toc
+   M /trunk/VisualHeal/PitBull_VisualHeal.toc
+   M /trunk/VoiceIcon/PitBull_VoiceIcon.toc
+
+TOC Bumps for 3.3.0
+
+------------------------------------------------------------------------
+r1897 | shefki | 2009-12-12 04:28:21 +0000 (Sat, 12 Dec 2009) | 2 lines
+Changed paths:
+   M /trunk/Aura/Filter.lua
+
+Update the Aura filters, copy and paste job from PitBull4.
+
+------------------------------------------------------------------------
+r1896 | shefki | 2009-12-12 03:23:21 +0000 (Sat, 12 Dec 2009) | 2 lines
+Changed paths:
+   M /trunk/Aura/Filter.lua
+
+Get rid of the error throwing when a spell id is wrong.
+
+------------------------------------------------------------------------
+r1895 | shefki | 2009-08-06 21:49:55 +0000 (Thu, 06 Aug 2009) | 2 lines
+Changed paths:
+   M /trunk/PitBull.toc
+
+Workaround the LoadAddon nonsense by OptionalDeps everything.  Hopefully we can revert this in the future.
+
+------------------------------------------------------------------------

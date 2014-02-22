@@ -1,0 +1,9 @@
+
+--==-- License (as of September 27th, 2008) --==--
+
+This addon may be used or modified in any way which exhibits full compliance with the
+game's Terms of Service (TOS) and End User License Agreement (EULA) or End User Access
+and License Agreement (EUALA), as well as the rules of the website from which the files were
+downloaded. You may redistribute this addon, but only if it is completely unchanged from the
+way it was found in the zip file. If you wish to distribute a modified version, you must first obtain
+permission directly from the author, Saeris.

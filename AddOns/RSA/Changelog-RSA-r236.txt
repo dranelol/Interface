@@ -1,0 +1,96 @@
+------------------------------------------------------------------------
+r236 | jenneth | 2014-01-19 20:31:06 +0000 (Sun, 19 Jan 2014) | 1 line
+Changed paths:
+   M /trunk/Paladin/Paladin.lua
+
+(Paladin) Fixing Prot GoaK double announcement.
+------------------------------------------------------------------------
+r235 | jenneth | 2014-01-04 19:24:34 +0000 (Sat, 04 Jan 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+
+(Profiles) Fixing ticket 265
+------------------------------------------------------------------------
+r233 | jenneth | 2014-01-02 02:13:56 +0000 (Thu, 02 Jan 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Mage/Mage.lua
+   M /trunk/Options/Options.lua
+
+(Mage) Adding Remove Curse (ticket 258), converted spells to the new core.
+------------------------------------------------------------------------
+r232 | jenneth | 2014-01-01 18:51:41 +0000 (Wed, 01 Jan 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options/Options.lua
+   M /trunk/Priest/Priest.lua
+
+(Priest) Adding Angelic Bulwark (ticket 261)
+------------------------------------------------------------------------
+r231 | jenneth | 2014-01-01 17:45:09 +0000 (Wed, 01 Jan 2014) | 1 line
+Changed paths:
+   M /trunk/Hunter/Hunter.lua
+
+(Hunter) Removing unnecessary target parameter from Ancient Hysteria.
+------------------------------------------------------------------------
+r230 | jenneth | 2014-01-01 17:36:42 +0000 (Wed, 01 Jan 2014) | 1 line
+Changed paths:
+   M /trunk/AnnouncementsMonitor.lua
+   M /trunk/Core.lua
+   M /trunk/Druid/Druid.lua
+   M /trunk/Hunter/Hunter.lua
+   M /trunk/Options/Options.lua
+   M /trunk/Rogue/Rogue.lua
+   M /trunk/Shaman/Shaman.lua
+   M /trunk/Warlock/Warlock.lua
+
+(Druid) Adding Mighty Bash (ticket 125), converting some druid spells to the new core, (Hunter) possible fix for Ancient Hysteria (ticket 226)
+------------------------------------------------------------------------
+r229 | jenneth | 2013-12-30 16:38:48 +0000 (Mon, 30 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/AnnouncementsMonitor.lua
+   M /trunk/Core.lua
+   M /trunk/DeathKnight/DeathKnight.lua
+   M /trunk/Druid/Druid.lua
+   M /trunk/Hunter/Hunter.lua
+   M /trunk/Locale-deDE.lua
+   M /trunk/Locale-enUS.lua
+   M /trunk/Locale-esES.lua
+   M /trunk/Locale-koKR.lua
+   M /trunk/Locale-ruRU.lua
+   M /trunk/Locale-zhCN.lua
+   M /trunk/Locale-zhTW.lua
+   M /trunk/Mage/Mage.lua
+   M /trunk/Monk/Monk.lua
+   M /trunk/Options/Options.lua
+   M /trunk/Paladin/Paladin.lua
+   M /trunk/Priest/Priest.lua
+   M /trunk/RSA.toc
+   M /trunk/Rogue/Rogue.lua
+   M /trunk/Shaman/Shaman.lua
+   M /trunk/Warlock/Warlock.lua
+   M /trunk/Warrior/Warrior.lua
+
+(General) Add yell as an option for announcements (ticket 17), needs testing
+------------------------------------------------------------------------
+r228 | jenneth | 2013-12-30 02:07:56 +0000 (Mon, 30 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options/Options.lua
+
+(General) Adding repair bots ticket 264
+------------------------------------------------------------------------
+r227 | jenneth | 2013-12-28 22:27:39 +0000 (Sat, 28 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/Options/Options.lua
+   M /trunk/Warlock/Warlock.lua
+
+(Warlock) Converted most spells to the unified core, added Dark Bargain and Unending Resolve and fixed bugs in Soulstone, Spell Lock and Optical Blast.
+------------------------------------------------------------------------
+r226 | jenneth | 2013-12-08 19:04:46 +0000 (Sun, 08 Dec 2013) | 1 line
+Changed paths:
+   M /trunk/Monk/Monk.lua
+
+(Monk) Possible fix for Spear Hand Strike. (Thanks to Dridzt)
+------------------------------------------------------------------------

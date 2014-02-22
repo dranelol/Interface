@@ -1,0 +1,5 @@
+<Bindings>
+  <Binding name="LFINT_TXT_TOGGLE" header="LFINT_TXT_LOOTFILTER">
+    LootFilter.toggleWindow();
+  </Binding>
+</Bindings>

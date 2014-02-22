@@ -1,0 +1,21 @@
+## Interface: 50300
+## Title: GridStatusShield
+## Notes: Status indicator that shows the remaining of value of Powerword shield.
+## Author: Julith
+## Version: 1.55
+## X-Category: UnitFrame
+## Dependencies: Grid
+## OptionalDeps: Ace3
+## X-Curse-Packaged-Version: v1.55
+## X-Curse-Project-Name: GridStatusShield
+## X-Curse-Project-ID: gsshield
+## X-Curse-Repository-ID: wow/gsshield/mainline
+
+#@no-lib-strip@
+Libs\AceLocale-3.0\AceLocale-3.0.lua
+#@end-no-lib-strip@
+
+enUS.lua
+deDE.lua
+
+GridStatusShield.lua

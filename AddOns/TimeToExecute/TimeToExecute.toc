@@ -1,0 +1,16 @@
+## Interface: 40000
+## Title: TimeToExecute
+## Author: Tifordin
+## Version: 0.2.8
+## Notes: Uses linear regression and a log of hitpoint values to estimate how long a boss has left to die and reach execute range.
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: TimeToExecuteDB
+## X-Curse-Packaged-Version: 0.2.8
+## X-Curse-Project-Name: TimeToExecute
+## X-Curse-Project-ID: timetoexecute
+## X-Curse-Repository-ID: wow/timetoexecute/mainline
+
+embeds.xml
+Localization\enUS.lua
+TimeToExecute.lua

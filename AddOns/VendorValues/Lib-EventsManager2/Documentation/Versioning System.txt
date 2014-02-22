@@ -1,0 +1,20 @@
+
+--==-- Versioning System (as of September 27th, 2008) --==--
+
+This addon adheres to a #.#.# versioning format.
+
+The first number (the 11 in 11.22.33) denotes the current major version. This number is
+incremented when the addon's functionality or style of code changes so significantly
+as to barely resemble previous versions. For library-type addons, which provide
+functionality to client addons, this number is also a guarantee that every release
+within this major version will be backwards compatible with previous releases that
+are also within this major version. In these cases, this number is actually a suffix on the
+library's name. This is done so newer major versions of libraries will not overwrite
+older ones, since those may still be in use by other clients.
+
+The second number (the 22 in 11.22.33) denotes the current minor version. This number
+is incremented when functionality is added, modified, or removed.
+
+The third number (the 33 in 11.22.33) denotes the current subminor version. This number is
+incremented when a release's purpose is to fix bugs or errors, or to increase efficiency
+in some way, or to make a minor cosmetic adjustment.

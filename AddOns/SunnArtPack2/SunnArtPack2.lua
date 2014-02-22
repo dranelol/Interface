@@ -1,0 +1,5 @@
+SunnArt.options.args.theme.values["SunnArtPack2\\blackrock"]="Blackrock"
+SunnArt.options.args.theme.values["SunnArtPack2\\blueglow"]="Blue Glow"
+SunnArt.options.args.theme.values["SunnArtPack2\\burningcrusade"]="Burning Crusade"
+SunnArt.options.args.theme.values["SunnArtPack2\\scarab"]="Scarab"
+SunnArt.options.args.theme.values["SunnArtPack2\\temporal"]="Temporal"

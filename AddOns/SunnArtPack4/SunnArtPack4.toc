@@ -1,0 +1,13 @@
+## Interface: 50400
+## Author: Sunn (DraenorEU)
+## Title: Sunn - Art Pack 4
+## Notes: Textures for Sunn - Viewport Art (SunnArt)
+## Version: 1.14
+## DefaultState: Enabled
+## Dependencies: SunnArt
+## X-eMail: sunn@uksf.com
+## X-Curse-Packaged-Version: 1.14
+## X-Curse-Project-Name: Sunn - Viewport Art Pack 4
+## X-Curse-Project-ID: sunn-viewport-art-pack-4
+## X-Curse-Repository-ID: wow/sunn-viewport-art-pack-4/mainline
+SunnArtPack4.lua

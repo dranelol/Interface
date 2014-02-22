@@ -1,0 +1,66 @@
+------------------------------------------------------------------------
+r659 | oscarucb | 2013-10-28 15:10:24 +0000 (Mon, 28 Oct 2013) | 1 line
+Changed paths:
+   A /tags/5.8.0 (from /trunk:658)
+
+Tagging as 5.8.0
+------------------------------------------------------------------------
+r657 | oscarucb | 2013-10-23 03:01:27 +0000 (Wed, 23 Oct 2013) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+
+raise the minimal re-announce window to 30 sec to prevent duplicate announces even under a max calcdelay()
+
+------------------------------------------------------------------------
+r655 | oscarucb | 2013-10-22 09:04:24 +0000 (Tue, 22 Oct 2013) | 3 lines
+Changed paths:
+   M /trunk/Config.lua
+   M /trunk/Core.lua
+
+remove the confusing prependRBS option
+the announce prefix is there for spam prevention and is not optional
+
+------------------------------------------------------------------------
+r654 | oscarucb | 2013-10-21 04:38:42 +0000 (Mon, 21 Oct 2013) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+
+ticket 390: remove some unnecessary globals
+
+------------------------------------------------------------------------
+r653 | oscarucb | 2013-10-18 09:19:53 +0000 (Fri, 18 Oct 2013) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+
+ticket 388: phrase update
+
+------------------------------------------------------------------------
+r651 | oscarucb | 2013-10-18 02:40:30 +0000 (Fri, 18 Oct 2013) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+
+add a comment
+
+------------------------------------------------------------------------
+r650 | oscarucb | 2013-10-18 02:22:21 +0000 (Fri, 18 Oct 2013) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+
+tweaks to carts and bots
+
+------------------------------------------------------------------------
+r649 | oscarucb | 2013-10-17 21:42:11 +0000 (Thu, 17 Oct 2013) | 9 lines
+Changed paths:
+   M /trunk/Config.lua
+   M /trunk/Core.lua
+
+Re-implementation of raid utility announcements
+Added support for announcing pandaren noodle carts, engineer mail boxes and mage portals
+Make all raid resource announcements smarter:
+ zone sensitivity, other addon detection, cancelled cast prevention, ungrouped resources
+ spell link based detection
+Misc cosmetic announce improvements:
+ RBS prefix, always include spell links, shorten cross-realm player names
+Announce-related options have been reset
+
+------------------------------------------------------------------------

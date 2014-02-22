@@ -1,0 +1,23 @@
+## Interface: 40000
+## Title: Pirate Speak |c0000FF00 V2.2.1 (English)|r
+## Version: v2.2.1
+## Notes: Makes you speak like a pirate. Type: /pspeak for options
+## Author: imyself (Imyself - Echo Isle/US-Alliance)
+## X-Website: http://www.savvyguild.com/
+## X-Category: Chat/Communication
+## X-Curse-Packaged-Version: 2.2.1
+## X-Curse-Project-Name: Pirate Speak
+## X-Curse-Project-ID: pirate-speak
+## X-Curse-Repository-ID: wow/pirate-speak/mainline
+## OptionalDeps:
+## Dependencies:
+## SavedVariablesPerCharacter: pirate_talk_on, pirate_strict_on
+## SavedVariables: speakDB
+
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+
+
+PirateSpeak.lua

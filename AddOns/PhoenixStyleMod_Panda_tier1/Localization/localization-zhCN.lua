@@ -1,0 +1,67 @@
+﻿if GetLocale() == "zhCN" then
+
+
+function pslocalepanda1()
+
+
+	pszzpandaaddopttxt1 = "(如果超过1个玩家触发它)"
+	pszzpandaaddopttxt10 = "受伤源自|s4id130395|id (错误石化阶段, 不计算前3秒)"
+	pszzpandaaddopttxt11 = "当|sid115856|id开启时受到多少次|sid116040|id或|sid116365|id的伤害"
+	pszzpandaaddopttxt12 = "没有避免伤害的次数"
+	pszzpandaaddopttxt13 = "报告信息如果有人死于"
+	pszzpandaaddopttxt14 = "名玩家已死于"
+	pszzpandaaddopttxt15 = "没有分担伤害"
+	pszzpandaaddopttxt16 = "仅第二和第三次"
+	pszzpandaaddopttxt17 = "对团队造成伤害"
+	pszzpandaaddopttxt18 = "移除减益信息"
+	pszzpandaaddopttxt19 = "造成的伤害"
+	pszzpandaaddopttxt2 = "活化琥珀死亡后伤害和治疗的相关信息"
+	pszzpandaaddopttxt20 = "影响的时间"
+	pszzpandaaddopttxt21 = "如果超过一个玩家受到影响"
+	pszzpandaaddopttxt22 = "多余"
+	pszzpandaaddopttxt23 = "死亡时并没有"
+	pszzpandaaddopttxt24 = "玩家位于噪音取消附近(码)"
+	pszzpandaaddopttxt25 = "并没有"
+	pszzpandaaddopttxt26 = "而不是"
+	pszzpandaaddopttxt27 = "过于靠近:"
+	pszzpandaaddopttxt28 = "谁受到了伤害:"
+	pszzpandaaddopttxt29 = "%s的有关信息(如果对团队造成超过30万以上的伤害)"
+	pszzpandaaddopttxt3 = "谁引发的爆炸"
+	pszzpandaaddopttxt30 = "阶段"
+	pszzpandaaddopttxt31 = "(如果超过%s个玩家受到影响)"
+	pszzpandaaddopttxt32 = "显示谁是在最后阶段跑的最快的人"
+	pszzpandaaddopttxt33 = "跑的最快的人"
+	pszzpandaaddopttxt34 = "位于"
+	pszzpandaaddopttxt35 = "驱散"
+	pszzpandaaddopttxt36 = "治疗了"
+	pszzpandaaddopttxt37 = "如果首领在最低血量时受到|sid117283|id的治疗- 显示其信息"
+	pszzpandaaddopttxt38 = "报告如果首领已受到|sid123012|id的伤害"
+	pszzpandaaddopttxt39 = "没有驱散"
+	pszzpandaaddopttxt4 = "治疗了琥珀(s)"
+	pszzpandaaddopttxt40 = "堆叠最多次数的%s"
+	pszzpandaaddopttxt41 = "在|sid123461|id阶段造成最高伤害的人"
+	pszzpandaaddopttxt42 = "谁打破了|sid122224|id的效果 (带有伤害)"
+	pszzpandaaddopttxt43 = "打破了"
+	pszzpandaaddopttxt44 = "被控制"
+	pszzpandaaddopttxt45 = "对带有|sid121949|id效果玩家的总治疗量 (治疗量和次数)"
+	pszzpandaaddopttxt46 = "|sid121949|id的总治疗量 (治疗量 - 次数)"
+	pszzpandaaddopttxt47 = "对带有|sid122370|id效果玩家造成的总伤害"
+	pszzpandaaddopttxt48 = "对带有|sid122370|id效果玩家造成最高伤害的"
+	pszzpandaaddopttxt49 = "报告带有|sid122370|id效果至它结束时对玩家造成的伤害"
+	pszzpandaaddopttxt5 = "所有关于|sid130395|id的信息"
+	pszzpandaaddopttxt50 = "报告谁驱散了|sid122370|id"
+	pszzpandaaddopttxt6 = "不是红玉而在其他石化阶段受到多少次|sid130395|id的伤害 (不计算前3秒)"
+	pszzpandaaddopttxt7 = "错误石化时的次数"
+	pszzpandaaddopttxt8 = "锁链持续的时间"
+	pszzpandaaddopttxt9 = "受到伤害"
+	pszzpandabossname31 = "石头守卫"
+	pszzpandabossname34 = "先王之魂"
+	pszzpandabossname36 = "皇帝的意志"
+	pszzpandabossname41 = "无尽守护者"
+	pszzpandanotcounttick1 = "不计算第一跳"
+
+
+
+end
+
+end

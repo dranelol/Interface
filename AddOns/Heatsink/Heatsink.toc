@@ -1,0 +1,33 @@
+## Interface: 50200
+## Title: Heatsink
+## Notes: Cooldown tracker with bar display
+## Author: durcyn
+## X-Credits: Evl for the original Hourglass, Nirek & Mist for their enhancements, Rabbit and Ammo for LCB-3, Antiarc for LibICD.
+## SavedVariables: HeatsinkDB
+## OptionalDeps: Ace3, AceGUI-3.0-SharedMediaWidgets, LibCandyBar-3.0, LibSharedMedia-3.0, LibInternalCooldowns-1.0
+## X-Curse-Packaged-Version: 50200-05
+## X-Curse-Project-Name: Heatsink
+## X-Curse-Project-ID: heatsink
+## X-Curse-Repository-ID: wow/heatsink/mainline
+ 
+#@no-lib-strip@
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+libs\AceAddon-3.0\AceAddon-3.0.xml
+libs\AceGUI-3.0\AceGUI-3.0.xml
+libs\AceConfig-3.0\AceConfig-3.0.xml
+libs\AceDB-3.0\AceDB-3.0.xml
+libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
+libs\AceConsole-3.0\AceConsole-3.0.xml
+libs\AceEvent-3.0\AceEvent-3.0.xml
+libs\AceTimer-3.0\AceTimer-3.0.xml
+libs\AceBucket-3.0\AceBucket-3.0.xml
+libs\AceLocale-3.0\AceLocale-3.0.xml
+libs\LibSharedMedia-3.0\lib.xml
+libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
+libs\LibCandyBar-3.0\bars.lua
+libs\LibInternalCooldowns-1.0\lib.xml
+#@end-no-lib-strip@
+
+Locale\Locale.xml
+Heatsink.lua

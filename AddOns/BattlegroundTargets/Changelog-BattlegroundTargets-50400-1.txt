@@ -1,0 +1,39 @@
+------------------------------------------------------------------------
+r215 | kunda | 2013-09-11 14:35:20 +0000 (Wed, 11 Sep 2013) | 1 line
+Changed paths:
+   A /tags/50400-1 (from /trunk:214)
+
+Tagging as 50400-1
+------------------------------------------------------------------------
+r214 | kunda | 2013-09-11 14:33:23 +0000 (Wed, 11 Sep 2013) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets.lua
+   M /trunk/BattlegroundTargets.toc
+
+update
+------------------------------------------------------------------------
+r212 | kunda | 2013-08-26 18:16:56 +0000 (Mon, 26 Aug 2013) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets-localized-carrier.lua
+   M /trunk/BattlegroundTargets.toc
+
+deDE WSG/TP pattern update
+------------------------------------------------------------------------
+r211 | kunda | 2013-08-25 10:22:49 +0000 (Sun, 25 Aug 2013) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets.lua
+
+update
+------------------------------------------------------------------------
+r210 | kunda | 2013-08-24 17:24:17 +0000 (Sat, 24 Aug 2013) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets.lua
+
+some improvements
+------------------------------------------------------------------------
+r209 | kunda | 2013-08-22 13:22:55 +0000 (Thu, 22 Aug 2013) | 1 line
+Changed paths:
+   M /trunk/BattlegroundTargets.lua
+
+some improvements
+------------------------------------------------------------------------

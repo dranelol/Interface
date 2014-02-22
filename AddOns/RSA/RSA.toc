@@ -1,0 +1,26 @@
+﻿## Interface: 50400
+## Title: RSA [|c10FF75B3Core|r]
+## Notes: |cff00FF00Version: 2.900|r. Easy Spell Announcements! Amongst other things. This is required to run RSA.
+## Author: Raeli, Xadurk, Rowaa[SR13], Jenneth
+## Version: 2.900
+## SavedVariables: RSADB
+## OptionalDeps: Ace3
+## X-Curse-Packaged-Version: r236
+## X-Curse-Project-Name: RSA - Raeli's Spell Announcer
+## X-Curse-Project-ID: rsa
+## X-Curse-Repository-ID: wow/rsa/mainline
+
+## Title-zhTW: RSA [|c10FF75B3核心|r]
+## Notes-zhTW: |cff00FF00版本: 2.900|r. 簡易法術通報！假如使用附加模組，將需要執行RSA。
+
+
+embeds.xml
+Locale-enUS.lua
+Locale-esES.lua
+Locale-deDE.lua
+Locale-koKR.lua
+Locale-ruRU.lua
+Locale-zhCN.lua
+Locale-zhTW.lua
+Core.lua
+AnnouncementsMonitor.lua

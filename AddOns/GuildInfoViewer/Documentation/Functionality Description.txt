@@ -1,0 +1,8 @@
+
+--==-- GuildInfoViewer Functionality Description --==--
+
+Addon type: Interface
+Libraries used: none
+
+This addon allows the user to view officer notes and the guild configuration panel, regardless
+of actual permissions. These settings cannot be altered without actual permission, merely viewed.

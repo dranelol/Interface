@@ -1,0 +1,460 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+	<Frame name="EnchantingShufflerGUI" movable="true" enableMouse="true" hidden="true">
+		<Size x="250" y="230"/>
+		<TitleRegion setAllPoints="true" />
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="16"/>
+			</EdgeSize>
+			<TileSize>
+					<AbsValue val="32"/>
+			</TileSize>
+			<BackgroundInsets>
+					<AbsInset left="5" right="5" top="5" bottom="5"/>
+			</BackgroundInsets>
+		</Backdrop>
+
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+
+		<Layers>
+			<Layer>
+			<!-- TITLE TEXTURE -->
+				<Texture name="$parentTitleBorder" file="Interface\DialogFrame\UI-DialogBox-Header">
+				  <Size>
+					<AbsDimension x="160" y="32" />
+				  </Size>
+				  <Anchors>
+					<Anchor point="TOP">
+					  <Offset>
+						<AbsDimension x="0" y="11" />
+					  </Offset>
+					</Anchor>
+				  </Anchors>
+				  <TexCoords left="0.2" right="0.8" top="0" bottom="0.6" />
+				</Texture>
+			<!--Create Title for frame-->
+				<FontString name="TITLE" font="GameFontNormal" text="Enchanting Shuffler">
+				  <Size>
+					<AbsDimension x="140" y="0" />
+				  </Size>
+				  <Anchors>
+					<Anchor point="TOP">
+					  <Offset>
+						<AbsDimension x="0" y="0" />
+					  </Offset>
+					</Anchor>
+				  </Anchors>
+				  <FontHeight>
+					<AbsValue val="12" />
+				  </FontHeight>
+				  <Color r="1" g="0.8196079" b="0" />
+				  <Shadow>
+					<Color r="0" g="0" b="0" />
+					<Offset>
+					  <AbsDimension x="1" y="-1" />
+					</Offset>
+				  </Shadow>
+				</FontString>
+			</Layer>
+		</Layers>
+			<!--- button's -->
+			<Frames>
+				<Button name="$parentButtonClose" inherits="OptionsButtonTemplate" text="X">
+					<Size>
+						<AbsDimension x="20" y="20"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset x="0" y="0"/>
+						</Anchor>
+					</Anchors>
+					<Scripts>
+						<OnClick>
+							EnchantingShufflerGUI:Hide();
+							EnchantingShuffler_Opened = "No"
+						</OnClick>
+					</Scripts>
+				</Button>
+			</Frames>
+		<Frames>
+			<!-- Conversion Table -->
+			<Frame name="ConversionTable">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="10" y="-20"/>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="180" y="225"/>
+				</Size>
+				<Frames>
+					<!-- Conversion Table 1 -->
+					<Frame name="$parent_SpiritDust">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="5" y="-40" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="30" y="30"/>
+						</Size>
+						<Backdrop bgFile="Interface\ICONS\inv_misc_powder_copper">
+							<Size>
+								<AbsValue val="20"/>
+							</Size>
+						</Backdrop>
+						<Scripts>
+							<OnEnter>
+								ESPricingTooltips("Spirit Dust")
+							</OnEnter>
+							<OnLeave>
+								HideTooltips()
+							</OnLeave>
+						</Scripts>
+					</Frame>
+					<Frame name="$parent_MysteriousEssence">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="5" y="-80" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="30" y="30"/>
+						</Size>
+						<Backdrop bgFile="Interface\ICONS\trade_enchanting_greatermysteriousessence">
+							<Size>
+								<AbsValue val="20"/>
+							</Size>
+						</Backdrop>
+						<Scripts>
+							<OnEnter>
+								ESPricingTooltips("Mysterious Essence")
+							</OnEnter>
+							<OnLeave>
+								HideTooltips()
+							</OnLeave>
+						</Scripts>
+					</Frame>
+					<Frame name="$parent_EtherealShard">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="5" y="-120" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="30" y="30"/>
+						</Size>
+						<Backdrop bgFile="Interface\ICONS\trade_enchanting_largeetherealshard">
+							<Size>
+								<AbsValue val="20"/>
+							</Size>
+						</Backdrop>
+						<Scripts>
+							<OnEnter>
+								ESPricingTooltips("Ethereal Shard")
+							</OnEnter>
+							<OnLeave>
+								HideTooltips()
+							</OnLeave>
+						</Scripts>
+					</Frame>
+					<Frame name="$parent_ShaCrystal">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="5" y="-160" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="30" y="30"/>
+						</Size>
+						<Backdrop bgFile="Interface\ICONS\inv_misc_crystalepic2">
+							<Size>
+								<AbsValue val="20"/>
+							</Size>
+						</Backdrop>
+						<Scripts>
+							<OnEnter>
+								ESPricingTooltips("Sha Crystal")
+							</OnEnter>
+							<OnLeave>
+								HideTooltips()
+							</OnLeave>
+						</Scripts>
+					</Frame>
+					<!--- conversion table 2 -->
+					<Frame name="$parent_SpiritDust2">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="40" y="-5" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="30" y="30"/>
+						</Size>
+						<Backdrop bgFile="Interface\ICONS\inv_misc_powder_copper">
+							<Size>
+								<AbsValue val="20"/>
+							</Size>
+						</Backdrop>
+						<Scripts>
+							<OnEnter>
+								ESPricingTooltips("Spirit Dust")
+							</OnEnter>
+							<OnLeave>
+								HideTooltips()
+							</OnLeave>
+						</Scripts>
+					</Frame>
+					<Frame name="$parent_MysteriousEssence2">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="80" y="-5" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="30" y="30"/>
+						</Size>
+						<Backdrop bgFile="Interface\ICONS\trade_enchanting_greatermysteriousessence">
+							<Size>
+								<AbsValue val="20"/>
+							</Size>
+						</Backdrop>
+						<Scripts>
+							<OnEnter>
+								ESPricingTooltips("Mysterious Essence")
+							</OnEnter>
+							<OnLeave>
+								HideTooltips()
+							</OnLeave>
+						</Scripts>
+					</Frame>
+					<Frame name="$parent_EtherealShard2">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="120" y="-5" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="30" y="30"/>
+						</Size>
+						<Backdrop bgFile="Interface\ICONS\trade_enchanting_largeetherealshard">
+							<Size>
+								<AbsValue val="20"/>
+							</Size>
+						</Backdrop>
+						<Scripts>
+							<OnEnter>
+								ESPricingTooltips("Ethereal Shard")
+							</OnEnter>
+							<OnLeave>
+								HideTooltips()
+							</OnLeave>
+						</Scripts>
+					</Frame>
+					<Frame name="$parent_ShaCrystal2">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset x="160" y="-5" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="30" y="30"/>
+						</Size>
+						<Backdrop bgFile="Interface\ICONS\inv_misc_crystalepic2">
+							<Size>
+								<AbsValue val="20"/>
+							</Size>
+						</Backdrop>
+						<Scripts>
+							<OnEnter>
+								ESPricingTooltips("Sha Crystal")
+							</OnEnter>
+							<OnLeave>
+								HideTooltips()
+							</OnLeave>
+						</Scripts>
+					</Frame>
+				</Frames>
+				<!--Price Layers -->
+				<Layers>
+					<!-- Title layer-->
+					<Layer>
+						<FontString name="$parent_To" font="GameFontNormal" text="-To">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="200" y="-10"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parent_From" font="GameFontNormal" text="From-v">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="5" y="-15"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<!-- Dust conversion -->
+					<Layer>
+						<FontString name="$parent_ESDustToDust" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="45" y="-50"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parent_ESDustToEssence" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="85" y="-50"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parent_ESDustToShard" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="125" y="-50"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parent_ESDustToCrystal" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="165" y="-50"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<!-- Essence Conversion -->
+					<Layer>
+						<FontString name="$parent_ESEssenceToDust" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="45" y="-90"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parent_ESEssenceToEssence" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="85" y="-90"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parent_ESEssenceToShard" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="125" y="-90"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parent_ESEssenceToCrystal" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="165" y="-90"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<!-- Shard Conversion -->
+					<Layer>
+						<FontString name="$parent_ESShardToDust" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="45" y="-130"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parent_ESShardToEssence" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="85" y="-130"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parent_ESShardToShard" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="125" y="-130"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parent_ESShardToCrystal" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="165" y="-130"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<!-- Crystal Conversion -->
+					<Layer>
+						<FontString name="$parent_ESCrystalToDust" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="45" y="-170"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parent_ESCrystalToEssence" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="85" y="-170"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parent_ESCrystalToShard" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="125" y="-170"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer>
+						<FontString name="$parent_ESCrystalToCrystal" font="GameFontNormal" text="N/A">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset x="165" y="-170"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnShow>
+				ESDBPSelector()
+				EnchantingShufflerMain()
+			</OnShow>
+		</Scripts>
+   </Frame>
+</Ui>
+

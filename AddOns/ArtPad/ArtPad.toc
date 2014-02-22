@@ -1,0 +1,10 @@
+## Interface: 30100
+## Title: ArtPad
+## Version: 6
+## X-SaveVersion: 1
+## X-ProtocolVersion: 1
+## Author: Dust of Turalyon
+## Notes: Shared Canavas
+## SavedVariables: ArtPad_Settings
+## SavedVariablesPerCharacter:
+ArtPad.lua

@@ -1,0 +1,31 @@
+## Interface: 50400
+## Title: BattlegroundTargets
+## Notes: Shows all battleground enemies. A simple 'Enemy Unit Frame' for battlegrounds.
+## Notes-deDE: Zeigt alle Schlachtfeldgegner. Eine einfache 'Feindanzeige' für Schlachtfelder.
+## Notes-zhCN: 显示全部战场敌人。战场简洁敌对单位框体。
+## Notes-zhTW: 顯示全部戰場敵人。戰場簡潔敵對單位框體。
+## Author: kunda
+## Version: 50400-1
+## SavedVariables: BattlegroundTargets_Options
+## X-Curse-Packaged-Version: 50400-1
+## X-Curse-Project-Name: BattlegroundTargets
+## X-Curse-Project-ID: battlegroundtargets
+## X-Curse-Repository-ID: wow/battlegroundtargets/mainline
+
+BattlegroundTargets-localized-carrier.lua
+BattlegroundTargets-localized-racenames.lua
+BattlegroundTargets-localized-bgnames.lua
+
+BattlegroundTargets-localization-enUS.lua
+BattlegroundTargets-localization-deDE.lua
+BattlegroundTargets-localization-esES.lua
+BattlegroundTargets-localization-esMX.lua
+BattlegroundTargets-localization-itIT.lua
+BattlegroundTargets-localization-frFR.lua
+BattlegroundTargets-localization-koKR.lua
+BattlegroundTargets-localization-ptBR.lua
+BattlegroundTargets-localization-ruRU.lua
+BattlegroundTargets-localization-zhCN.lua
+BattlegroundTargets-localization-zhTW.lua
+
+BattlegroundTargets.lua

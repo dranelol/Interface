@@ -1,0 +1,68 @@
+﻿
+
+
+function pslocalepandam1()
+
+pscmrlastmoduleloadtxtp1		= "Pandaria raids, tier 1"
+pszzpandabossname31         = "The Stone Guard"
+pszzpandabossname34         = "The Spirit Kings"
+pszzpandabossname36         = "Will of the Emperor"
+pszzpandabossname41         = "Protectors of the Endless"
+
+
+pszzpandanotcounttick1  = "Do not count the first tick of"
+pszzpandaaddopttxt1     = "(if more than 1 player get it)"
+pszzpandaaddopttxt2     = "info about damage and healing by Living Amber after his death"
+pszzpandaaddopttxt3     = "who causes explosion"
+pszzpandaaddopttxt4     = "Heal to amber(s)"
+pszzpandaaddopttxt5     = "Info about every |sid130395|id"
+pszzpandaaddopttxt6     = "How much ticks of |sid130395|id while in any other petrification than Jasper (no first 3 sec)"
+pszzpandaaddopttxt7     = "Ticks with wrong petrification"
+pszzpandaaddopttxt8     = "Time with chains"
+pszzpandaaddopttxt9     = "Damage received"
+pszzpandaaddopttxt10    = "Damage from |s4id130395|id (wrong petrification, no 3 sec)"
+pszzpandaaddopttxt11    = "How much ticks of |sid116040|id or |sid116365|id while |sid115856|id is up"
+pszzpandaaddopttxt12    = "Not evaded ticks under"
+pszzpandaaddopttxt13	  = "Report info if someone die from"
+pszzpandaaddopttxt14    = "players have died from"
+pszzpandaaddopttxt15    = "NO damage"
+pszzpandaaddopttxt16    = "2 and 3 only"
+pszzpandaaddopttxt17    = "Damage to raid"
+pszzpandaaddopttxt18    = "removing debuff info"
+pszzpandaaddopttxt19    = "Damage done"
+pszzpandaaddopttxt20    = "Time under"
+pszzpandaaddopttxt21    = "if more than 1 player get it"
+pszzpandaaddopttxt22    = "Unnecessary"
+pszzpandaaddopttxt23    = "died withOUT"
+pszzpandaaddopttxt24    = "Players with buff near (yd)"
+pszzpandaaddopttxt25    = "does NOT have"
+pszzpandaaddopttxt26    = "instead of"
+pszzpandaaddopttxt27    = "Too close:"
+pszzpandaaddopttxt28    = "Who get damage:"
+pszzpandaaddopttxt29    = "Info about %s (if more than 300K damage was done to raid)"
+pszzpandaaddopttxt30    = "phase"
+pszzpandaaddopttxt31    = "(if more than %s players get it)"
+pszzpandaaddopttxt32    = "show who was the fastest runner on the last phase"
+pszzpandaaddopttxt33    = "The fastest runners were"
+pszzpandaaddopttxt34    = "on"
+pszzpandaaddopttxt35    = "Dispel"
+pszzpandaaddopttxt36    = "Healed"
+pszzpandaaddopttxt37    = "If boss with the lowest HP was healed by |sid117283|id - show info"
+pszzpandaaddopttxt38    = "Report if boss has received damage by |sid123012|id"
+pszzpandaaddopttxt39    = "NO DISPEL"
+pszzpandaaddopttxt40    = "Max stacks of %s"
+pszzpandaaddopttxt41    = "Top damagers on |sid123461|id phase"
+pszzpandaaddopttxt42    = "Who breaks |sid122224|id (with damage)"
+pszzpandaaddopttxt43    = "broke"
+pszzpandaaddopttxt44    = "was controlled by"
+pszzpandaaddopttxt45    = "Total heal to players with |sid121949|id buff (amount and times)"
+pszzpandaaddopttxt46    = "Total heal to |sid121949|id (amount - times)"
+pszzpandaaddopttxt47    = "Total damage to players with |sid122370|id buff"
+pszzpandaaddopttxt48    = "Best damage to players with |sid122370|id"
+pszzpandaaddopttxt49    = "Report damage to players with |sid122370|id buff after it ends"
+pszzpandaaddopttxt50    = "Report who dispelled |sid122370|id"
+
+
+
+end
+

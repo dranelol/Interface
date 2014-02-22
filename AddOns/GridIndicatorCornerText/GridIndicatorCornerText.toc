@@ -1,0 +1,9 @@
+﻿## Interface: 40000
+
+## Title: GridIndicatorCornerText
+
+## Version: 1.4.2
+## Author: Szandos
+## Notes: Adds corner text to Grid.
+GridIndicatorCornerTextLocal-enUS.lua
+GridIndicatorCornerText.lua

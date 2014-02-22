@@ -1,0 +1,37 @@
+﻿## Interface: 50400
+## Title: Phoenix|cff7fff7fStyle|r - Pandaria module, tier 1
+## Title-ruRU: Phoenix|cff7fff7fStyle|r - модуль Пандарии, тир 1
+## Author: Shurshik
+## Notes: PhoenixStyle`s module
+## Notes-ruRU: Модуль для аддона Феникс Стайл
+## Dependencies: PhoenixStyle
+## LoadOnDemand: 1
+## SavedVariablesPerCharacter: psraidoptionsonp1,psraidoptionschatp1,psicctekver_4
+Localization\localization-enEN.lua
+Localization\localization-ruRU.lua
+Localization\localization-deDE.lua
+Localization\localization-frFR.lua
+Localization\localization-esES.lua
+Localization\localization-esMX.lua
+Localization\localization-koKR.lua
+Localization\localization-zhTW.lua
+Localization\localization-zhCN.lua
+PhoenixStyleMod_Panda_tier1.lua
+PhoenixStyleMod_Panda_tier1.xml
+Damage_show.lua
+ImperialVizierZor'lok.lua
+BladeLordTa'yak.lua
+Garalon.lua
+WindLordMel'jarak.lua
+Amber-ShaperUn'sok.lua
+GrandEmpressShek'zeer.lua
+TheStoneGuard.lua
+FengtheAccursed.lua
+Gara'jaltheSpiritbinder.lua
+TheSpiritKings.lua
+Elegon.lua
+WilloftheEmperor.lua
+ProtectorsoftheEndless.lua
+Tsulong.lua
+LeiShi.lua
+ShaofFear.lua

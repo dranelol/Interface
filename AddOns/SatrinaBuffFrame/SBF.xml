@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/FrameXML/UI.xsd">
+	<GameTooltip name="SBFTooltip" frameStrata="TOOLTIP" hidden="true" parent="UIParent" inherits="GameTooltipTemplate">
+   <Scripts>
+     <Onload>
+       self:SetOwner(UIParent, "ANCHOR_NONE")
+     </Onload>
+   </Scripts>
+  </GameTooltip>
+  
+  <!-- Drag tab for frames -->
+  <Frame name="BuffFrameDragTabTemplate" hidden="true" frameStrata="DIALOG" virtual="true">
+     <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true"><TileSize val="4"/></Backdrop>
+		<Size x="50" y="12"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentLabel" inherits="GameFontNormalSmall" justifyh="CENTER" setallpoints="true"/>
+			</Layer>			
+		</Layers>	
+		<Scripts>
+			<OnLoad>
+				self:SetFrameLevel(20)
+				self.label = _G[self:GetName().."Label"]
+			</OnLoad>
+			<OnMouseDown>
+				if (button == "LeftButton") and self:IsVisible() then
+					if IsShiftKeyDown() then
+						SBFOptions:SelectFrame(self.frame.id)
+					end
+					self.frame:StartMoving()
+				end
+			</OnMouseDown>
+			<OnMouseUp>
+				self.frame:StopMovingOrSizing()
+				local p,_,_,x,y = self.frame:GetPoint()
+				SBF.db.profile.frames[self.frame.id].layout.point[1] = p
+				SBF.db.profile.frames[self.frame.id].layout.point[2] = x
+				SBF.db.profile.frames[self.frame.id].layout.point[3] = y
+				SBF:GetExtent(self.frame.id)
+			</OnMouseUp>
+			<OnEnter>
+				if not IsShiftKeyDown() then
+					GameTooltip:SetOwner(self, anchor)
+					GameTooltip:AddLine(string.format(SBF.strings.FRAMETITLE, self.frame.id))
+					GameTooltip:AddLine(SBF.strings.DRAGTAB1)
+					GameTooltip:AddLine(SBF.strings.DRAGTAB2)
+					GameTooltip:Show()
+				end
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide()
+			</OnLeave>
+		</Scripts>
+	</Frame>
+
+  <!-- Anchor dot-->
+	<Frame name="SBFBuffAnchorTemplate" frameStrata="BACKGROUND" virtual="true">
+    <Size x="5" y="5"/>
+    <Frames>
+      <Frame name="$parentDot">
+        <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true"><TileSize val="4"/></Backdrop>
+      </Frame>
+    </Frames>
+		<Scripts>
+			<OnLoad>
+        self.dot = _G[self:GetName().."Dot"]
+      </OnLoad>
+    </Scripts>
+  </Frame>
+  
+  <!-- Non-Secure elements -->
+  <!-- Buff bar -->
+	<Button name="SBFBuffBarTemplate" frameStrata="LOW" hidden="true" virtual="true" enableMouse="true">
+		<Size x="250" y="20"/>
+      <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true"><TileSize val="4"/></Backdrop>
+      <Layers>
+        <Layer level="ARTWORK">
+          <Texture name="$parentBar" setallpoints="true"/>
+        </Layer>
+        <Layer level="OVERLAY">
+          <Texture name="$parentSparkLeft" file="Interface\CastingBar\UI-CastingBar-Spark" alphaMode="ADD">
+            <Size x="16" y="32"/>
+            <Anchors><Anchor point="LEFT" relativeTo="$parentBar" relativePoint="LEFT"/></Anchors>
+            <TexCoords left="1" right="0" top="0" bottom="1"/>
+          </Texture>
+          <Texture name="$parentSparkRight" file="Interface\CastingBar\UI-CastingBar-Spark" alphaMode="ADD">
+            <Size x="16" y="32"/>
+            <Anchors><Anchor point="RIGHT" relativeTo="$parentBar" relativePoint="RIGHT"/></Anchors>
+            <TexCoords left="1" right="0" top="0" bottom="1"/>
+          </Texture>
+          <Texture name="$parentBorder" file="Interface\Buttons\UI-Debuff-Overlays" setallpoints="true">
+            <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+          </Texture>	
+        </Layer>
+      </Layers>
+		<Scripts>
+			<OnLoad>
+				self.bar = _G[self:GetName().."Bar"]
+				self.sparkLeft = _G[self:GetName().."SparkLeft"]
+				self.sparkRight = _G[self:GetName().."SparkRight"]
+          self.border = _G[self:GetName().."Border"]
+          self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+          self:SetScript("OnEnter", SBF.ShowTooltip)
+          self:SetScript("OnLeave", SBF.HideTooltip)
+          self:SetScript("OnClick", SBF.Buff_OnClick)
+          self.HideGraphics = SBF.BarHide
+          self.ShowGraphics = SBF.BarShow
+			</OnLoad>
+		</Scripts>
+	</Button>
+
+  <!-- Buff icon -->
+	<Button name="SBFBuffIconTemplate" frameStrata="LOW" hidden="true" virtual="true" enableMouse="true">
+    <Size x="20" y="20"/>
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parentIcon" setallpoints="true"/>
+      </Layer>
+      <Layer level="OVERLAY">
+        <Texture name="$parentBorder" file="Interface\Buttons\UI-Debuff-Overlays" setallpoints="true">
+          <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+        </Texture>	
+      </Layer>
+    </Layers>
+    <Frames>
+      <Cooldown name="$parentCooldown" inherits="CooldownFrameTemplate" setallpoints="true"/>
+    </Frames>
+    <NormalTexture name="$parentNormalTexture"/>
+    <Scripts>
+      <OnLoad>
+        self.icon = _G[self:GetName().."Icon"]
+        self.cooldownSweep = _G[self:GetName().."Cooldown"]
+        self.border = _G[self:GetName().."Border"]
+        self.texture = _G[self:GetName().."NormalTexture"]
+        self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+        self:SetScript("OnEnter", SBF.ShowTooltip)
+        self:SetScript("OnLeave", SBF.HideTooltip)
+        self:SetScript("OnClick", SBF.Buff_OnClick)
+        self.HideGraphics = SBF.IconHide
+        self.ShowGraphics = SBF.IconShow
+      </OnLoad>
+    </Scripts>
+	</Button>
+
+  <!-- Buff name -->
+	<Button name="SBFBuffNameTemplate" frameStrata="LOW" hidden="true" virtual="true" enableMouse="true">
+    <Size x="215" y="24"/>
+    <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true"><TileSize val="4"/></Backdrop>
+    <Layers>
+      <Layer level="OVERLAY">
+        <FontString name="$parentText" inherits="GameFontNormal" justifyH="CENTER" setallpoints="true"/>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        self.text = _G[self:GetName().."Text"]
+        self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+        self:SetScript("OnEnter", SBF.ShowTooltip)
+        self:SetScript("OnLeave", SBF.HideTooltip)
+        self:SetScript("OnClick", SBF.Buff_OnClick)
+        self.HideGraphics = SBF.NameHide
+        self.ShowGraphics = SBF.NameShow
+      </OnLoad>
+    </Scripts>
+	</Button>
+
+  <!-- Buff count -->
+	<Frame name="SBFBuffCountTemplate" frameStrata="LOW" virtual="true" enableMouse="false">
+		<Size x="24" y="24"/>
+     <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true"><TileSize val="4"/></Backdrop>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontNormalSmall" justifyH="RIGHT" setallpoints="true"/>
+      </Layer>
+    </Layers>
+		<Scripts>
+			<OnLoad>
+				self.text = _G[self:GetName().."Text"]
+			</OnLoad>
+		</Scripts>
+  </Frame>
+
+<!-- Buff Timer -->
+  <Frame name="SBFBuffTimerTemplate" frameStrata="LOW" virtual="true" enableMouse="false">
+    <Size x="60" y="12"/>
+    <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true"><TileSize val="4"/></Backdrop>
+    <Layers>
+      <Layer level="OVERLAY">
+        <FontString name="$parentText" inherits="GameFontNormalSmall"  justifyH="CENTER" setallpoints="true"/>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        self.text = _G[self:GetName().."Text"]
+      </OnLoad>
+    </Scripts>
+  </Frame>
+
+  <!-- Secure elements -->
+  <!-- Buff bar -->
+	<Button name="SBFSecureBuffBarTemplate" inherits="SecureActionButtonTemplate" frameStrata="LOW" hidden="true" virtual="true" enableMouse="true">
+		<Size x="250" y="20"/>
+    <Attributes>
+      <Attribute name="type2" value="cancelaura"/>
+    </Attributes>		
+    <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true"><TileSize val="4"/></Backdrop>
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parentBar" setallpoints="true"/>
+      </Layer>
+      <Layer level="OVERLAY">
+        <Texture name="$parentSparkLeft" file="Interface\CastingBar\UI-CastingBar-Spark" alphaMode="ADD">
+          <Size x="16" y="32"/>
+          <Anchors><Anchor point="LEFT" relativeTo="$parentBar" relativePoint="LEFT"/></Anchors>
+          <TexCoords left="1" right="0" top="0" bottom="1"/>
+        </Texture>
+        <Texture name="$parentSparkRight" file="Interface\CastingBar\UI-CastingBar-Spark" alphaMode="ADD">
+          <Size x="16" y="32"/>
+          <Anchors><Anchor point="RIGHT" relativeTo="$parentBar" relativePoint="RIGHT"/></Anchors>
+          <TexCoords left="1" right="0" top="0" bottom="1"/>
+        </Texture>
+        <Texture name="$parentBorder" file="Interface\Buttons\UI-Debuff-Overlays" setallpoints="true">
+          <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+        </Texture>	
+      </Layer>
+    </Layers>
+    <Scripts>
+			<OnLoad>
+          self.bar = _G[self:GetName().."Bar"]
+				self.sparkLeft = _G[self:GetName().."SparkLeft"]
+				self.sparkRight = _G[self:GetName().."SparkRight"]
+          self.border = _G[self:GetName().."Border"]
+          self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+          self:SetScript("OnEnter", SBF.ShowTooltip)
+          self:SetScript("OnLeave", SBF.HideTooltip)
+          self.onClick = SBF.Buff_OnClick
+          self.HideGraphics = SBF.BarHide
+          self.ShowGraphics = SBF.BarShow
+			</OnLoad>
+		</Scripts>
+	</Button>
+
+  <!-- Buff icon -->
+	<Button name="SBFSecureBuffIconTemplate" inherits="SecureActionButtonTemplate" frameStrata="LOW" hidden="false" virtual="true" enableMouse="true">
+		<Size x="20" y="20"/>
+    <Attributes>
+      <Attribute name="type2" value="cancelaura"/>
+    </Attributes>		
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parentIcon" setallpoints="true"/>
+      </Layer>
+      <Layer level="OVERLAY">
+        <Texture name="$parentBorder" file="Interface\Buttons\UI-Debuff-Overlays" setallpoints="true">
+          <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+        </Texture>	
+      </Layer>
+    </Layers>
+    <Frames>
+      <Cooldown name="$parentCooldown" inherits="CooldownFrameTemplate" setallpoints="true"/>
+    </Frames>
+    <NormalTexture name="$parentNormalTexture"/>
+    <Scripts>
+      <OnLoad>
+        self.icon = _G[self:GetName().."Icon"]
+        self.cooldownSweep = _G[self:GetName().."Cooldown"]
+        self.border = _G[self:GetName().."Border"]
+        self.texture = _G[self:GetName().."NormalTexture"]
+        self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+        self:SetScript("OnEnter", SBF.ShowTooltip)
+        self:SetScript("OnLeave", SBF.HideTooltip)
+        self.onClick = SBF.Buff_OnClick
+        self.HideGraphics = SBF.IconHide
+        self.ShowGraphics = SBF.IconShow
+      </OnLoad>
+    </Scripts>
+	</Button>
+
+  <!-- Buff name -->
+	<Button name="SBFSecureBuffNameTemplate" inherits="SecureActionButtonTemplate" frameStrata="LOW" hidden="true" virtual="true" enableMouse="true">
+    <Size x="215" y="24"/>
+    <Attributes>
+      <Attribute name="type2" value="cancelaura"/>
+    </Attributes>		
+    <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true"><TileSize val="4"/></Backdrop>
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString name="$parentText" inherits="GameFontNormal" justifyH="CENTER" setallpoints="true"/>
+      </Layer>
+    </Layers>
+    <NormalTexture name="$parentNormalTexture"/>
+    <Scripts>
+      <OnLoad>
+        self.text = _G[self:GetName().."Text"]
+        self:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+        self:SetScript("OnEnter", SBF.ShowTooltip)
+        self:SetScript("OnLeave", SBF.HideTooltip)
+        self.onClick = SBF.Buff_OnClick
+        self.HideGraphics = SBF.NameHide
+        self.ShowGraphics = SBF.NameShow
+      </OnLoad>
+    </Scripts>
+	</Button>
+
+<!-- Buff frame template -->
+	<Frame name="SBFBuffFrameTemplate" virtual="true" frameStrata="LOW" toplevel="true" movable="true" clampedtoscreen="true">
+		<Size x="20" y="20"/>
+	</Frame>
+
+  <Frame name="SBFSecureBuffFrameTemplate" inherits="SecureAuraHeaderTemplate" virtual="true" frameStrata="LOW" toplevel="true" movable="true" clampedtoscreen="true">
+    <Size x="20" y="20"/>
+	</Frame>
+</Ui>

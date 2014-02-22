@@ -1,0 +1,14 @@
+
+--==-- Contact Information (as of September 27th, 2008) --==--
+
+If you found a bug in this addon, want to provide feedback, want to help translate it, or even
+just want to ask a question, please contact the author, Saeris, using one of these methods:
+
+Email address: saeris.sanoora@gmail.com
+ICQ number: 119161819
+AIM screenname: SaerisSanoora
+
+If you use any other method, it might take significantly longer to reply to your message.
+
+If you wish to support the efforts that made this addon, you can donate via PayPal by following
+this URL: http://tinyurl.com/yo4asg

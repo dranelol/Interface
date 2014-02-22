@@ -1,0 +1,152 @@
+----------
+Version 2.12
+----------
+Bug Fixes:
+- Fixed a typo that caused an error for some quest NPCs containing repeatable quests.
+- Daily quests no longer require an updated database of quests. Quest types are not handled by the server.
+- Temporarily removed improved colored quest icons, since Blizzard does this by default now. I will come up with an alternative in 2.2
+
+----------
+Version 2.11
+---------
+Bug Fixes:
+- Added new Love is In The Air daily quests.
+
+----------
+Version 2.1
+----------
+New Features:
+- Daily Quests can now be filtered from automatically accepting and completing the quests.
+- Added an override option for Daily Quests.
+- Daily Quests will now have their icons and quest type displayed in the Quest Frame, similarly to repeatable quests.
+
+Bug Fixes:
+- Repeatable Quests that can be accepted (not just turned in) will now be selected based on the proper modifier keys and options. For Example: If a repeatable quest has not yet been completed and can be accepted, it will be selected based on the "Accept Available Quests" options.
+
+----------
+Version 2.095
+----------
+Bug Fixes: Fixed several bugs in preparation for the next release with new features.
+----------
+Version 2.061
+----------
+Bug Fixes: Fixed a small bug where a certain message wasn't being displayed in starting zones.
+----------
+Version 2.06
+----------
+Bug Fixes:
+- The Automatic Minimap Tracking option is back and working like normal.
+- There was a problem with override modifier keys not working with their appropriate functions. This has been fixed.
+- Various bug fixes and other improvements.
+- Changed the 'Auto Expand Submenu' options's default setting to enabled.
+----------
+Version 2.05
+----------
+New Features:
+- Added an option to automatically expand the interface options submenu.
+- Moved a bunch of functions into an internal library. This makes coding multiple addons easier for me. You don't need to download the library; It's included in the addon.
+
+Bug Fix:
+- Resetting and switching profiles will now properly toggle low level quest tracking and no longer cause the Enable button to malfunction.
+- Fixed the order of items in selectable drop down lists. 
+- Removed the 'Enable' option from the Display option panel.
+- Got rid of localizations. I didn't have any of the proper translations and it was just a big pain. If anyone with a second language wants to translate the strings, I would be happy to accept the help.
+- Got rid of hooks. It was causing compatibility issues with some addons.
+
+----------
+Version 2.03
+----------
+Bug Fix:
+- Fixed a bug where the slash command '/autoquest2 accept' wasn't toggling the option correctly and '/autoquest2 trivial' wasn't activating Low Level Quest minimap tracking.
+- Changing the 'Auto Toggle Trivial Quests', and possibly other options, no longer sometimes calls an error message.
+- Disabling the addon no longer prevents the addon's Interface Options sub categories from auto expanding when opened.
+- Added a few new repeatable quests to the database:
+  "Better Luck Next Time",
+  "Kalu'ak Fishing Derby",
+  "Titanium Powder"
+
+----------
+Version 2.02
+----------
+Bug Fix:
+- Updated AceConfigDialog-3.0 with a newer version. The previous build was calling an OnUpdate error when the 'Display' Config Panel was shown.
+
+----------
+Version 2.01
+----------
+Bug Fix:
+- Fixed an uncommon bug that sometimes froze the addon when a certain type of quest NPC had an active quest. There was a typo in one of the functions that I missed while testing. 
+
+-----------
+Version 2.0
+-----------
+Bug Fixes:
+- Complete code rewrite.
+- Improved stability, speed, and efficiency.
+- No longer becomes stuck on repeatable quests that can not be completed.
+- Quests that can not be completed will no longer be selected, and now shows the quest/gossip frame instead of the QuestProgressPanel.
+- A whole bunch of other stuff that I can't quite remember right now. Generally potential bugs.
+
+New Features:
+- Graphical interface.
+- Utilizes the Ace3 Library.
+- More intelligent quest filtering. Quests are now scanned BEFORE being selected instead of after.
+- Built in blacklist ignores known quests that interrupt the automatic behavior of the addon (repeatable quests).
+- Added profiles. Settings can be saved between characters.
+- Added customizable override modifier keys
+- Automatic quest sharing
+- Shared quest filtering
+- trivial and repeatable quest filtering
+- Automatic low level quest tracking
+- A bunch of other stuff.
+
+-------------
+Version 1.13
+-------------
+Bug Fixes:
+- Fixed several bugs that were causing NPCs to lockup when spoken to.
+
+New Features:
+- Several new features coming soon!
+
+-------------
+Version 1.12
+-------------
+Bug Fixes:
+- Forgot a line of code that broke the addon when accepting new quests from an NPC. Note: This is a quick fix and needs to be optimized.
+
+-------------
+Version 1.11
+-------------
+Bug Fixes:
+- Available quests offered by a quest giver with not-yet-completed quests were not showing up during the auto accept and complete procedure.
+
+-----------
+Version 1.1
+-----------
+New Features:
+- Added slash commands: /autoquest2 and /aq2. Arguments are...
+Enable: Always auto accept and turn in quests without holding down shift.
+Mod: Auto accept and turn in quests while holding Shift. (Default)
+Disable: Prevents the addon from auto accepting or turning in any quests.
+Verbose: Displays quest info in the chat frame.
+- Added a verbose option that displays quest objectives in the chat frame. (Enabled by default)
+- Settings are saved for each character.
+
+-------------
+Version 1.01
+-------------
+Bug Fixes:
+- Quests called by the "QUEST_GREETING" event were being ignored. This is called when the player talks to NPC who have only quest options. Available and active quests will be accepted from them now.
+
+New Features:
+- Added confirmation if the accepted quest will flag PvP
+
+------------
+Version 1.0
+------------
+Bug Fixes:
+- The UI panels are no longer shown while auto accepting and turning in quests.
+
+New Features:
+- Hooks the GossipFrame and QuestFrame OnEvent widgets instead of the OnShow functions of each frame.

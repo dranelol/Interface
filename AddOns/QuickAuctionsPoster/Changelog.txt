@@ -1,0 +1,19 @@
+R Removed
+A Added
+M Modified
+! New functionality
+
+v1.0.1		Zerotorescue		Wed, 22 Sep 2010 12:30:00 +0200		rev 6
+
+	M Rewritten to be less clunky and make the code more readable. Rather than calling the post button onclick event, it now calls the function that resides within that.
+	M TOC version will now be filled by the packager.
+
+v1.0.0		Zerotorescue		Sat, 11 Sep 2010 02:00:00 +0200		rev 3
+
+	A Added a manual changelog.
+	M Libraries will now be taken directly from the SVN when packaging (so you'll have the most updated versions).
+	A When QuickAuctions isn't enabled properly you will now get a warning.
+	M Now adds the checkbox when you first open the auction house, rathen then when it is loaded.
+	M Using a different template for the checkbox.
+	M Now using a different and better method to obtain a reference to the post button, this should be a lot more reliable. If you have AddonLoader enabled, QAPoster will ensure QuickAuctions is loaded prior to adding the checkbox. If the checkbox still can't be found for any reason you will be notified in the chatframe rather then receive an ugly error.
+	M Now tagging as v1.0.0. We are no longer in a development stage.

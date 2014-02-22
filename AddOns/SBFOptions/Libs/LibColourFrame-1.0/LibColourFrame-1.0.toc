@@ -1,0 +1,14 @@
+﻿## Interface: 20300
+## Title: LibColourFrame-1.0
+## Notes: An addition to ColorPickerFrame to add copy/paste and RGB input fields
+## Author: Satrina
+## X-Email: magicman@familyofnine.org
+## X-WoWIPortal: satrina
+## X-Category: Library
+## X-Curse-Packaged-Version: 3.2.6
+## X-Curse-Project-Name: SatrinaBuffFrame
+## X-Curse-Project-ID: satrina-buff-frame
+## X-Curse-Repository-ID: wow/satrina-buff-frame/mainline
+
+LibStub\LibStub.lua
+LibColourFrame-1.0.lua

@@ -1,0 +1,13 @@
+------------------------------------------------------------------------
+r29 | egingell | 2012-10-25 06:37:17 +0000 (Thu, 25 Oct 2012) | 1 line
+Changed paths:
+   A /tags/v201210250037 (from /trunk:28)
+
+-- Tagging
+------------------------------------------------------------------------
+r28 | egingell | 2012-10-25 06:34:00 +0000 (Thu, 25 Oct 2012) | 1 line
+Changed paths:
+   M /trunk/EGLoader.toc
+
+-- ##Interface: 50001 (I don't normally do this, but I think it's time I did one.) Please note that this is *only* an Interface ding. I have not confirmed whether it works in the current WoW version.
+------------------------------------------------------------------------

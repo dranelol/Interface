@@ -1,0 +1,1237 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+
+	<Frame name="PreformAVEnablerMemberTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="1610" y="15"/>
+		</Size>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentNameText" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="84" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentInfoText" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="125" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentNameText" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="1" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatusText1" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="55" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentInfoText" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="1" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentIdText1" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="70" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentStatusText1" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatusText2" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="55" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentIdText1" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentIdText2" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="70" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentStatusText2" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatusText3" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="55" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentIdText2" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentIdText3" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="70" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentStatusText3" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatusText4" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="55" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentIdText3" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentIdText4" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="70" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentStatusText4" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatusText5" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="55" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentIdText4" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentIdText5" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="70" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentStatusText5" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatusText6" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="55" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentIdText5" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentIdText6" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="70" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentStatusText6" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatusText7" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="55" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentIdText6" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentIdText7" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="70" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentStatusText7" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatusText8" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="55" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentIdText7" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentIdText8" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="70" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentStatusText8" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatusText9" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="55" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentIdText8" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentIdText9" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="70" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentStatusText9" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatusText10" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="55" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentIdText9" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentIdText10" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="70" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentStatusText10" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatusText11" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="55" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentIdText10" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentIdText11" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="70" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentStatusText11" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentVersionText" inherits="GameFontNormal" text="" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="40" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentIdText11" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<!--
+		<Frames>
+			<Button name="$parentButton" inherits="SecureUnitButtonTemplate">
+				<Size>
+					<AbsDimension x="75" y="15"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						PreformAVEnablerMemberButton_OnLoad(self);
+					</OnLoad>
+				</Scripts>
+				<HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+				</HighlightTexture>
+		-->
+				<!--
+				<HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight" alphaMode="ADD">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentLeft">
+							<Offset>
+								<AbsDimension x="-2" y="5"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight">
+							<Offset>
+								<AbsDimension x="2" y="-7"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</HighlightTexture>
+				-->
+		<!--
+			</Button>
+		</Frames>
+		-->
+		<Scripts>
+			<OnLoad>
+				if ( self:GetID() > 1 ) then
+					self:SetPoint( "TOP", _G[ "PreformAVEnablerMember"..(self:GetID() - 1)], "BOTTOM", 0, 0 );
+				end
+			</OnLoad>
+			<OnEnter>
+				PreformAVEnabler.MemberTemplateOnEnter( self, self:GetID() );
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Frame>
+
+	<!-- Queue buttons template -->
+	<Button name="PreformAVEnablerFrameQueueButtonTemplate" inherits="GameMenuButtonTemplate" text="PREFORM_AV_ENABLER_QUEUE" virtual="true">
+		<Size>
+			<AbsDimension x="70" y="20"/>
+		</Size>
+		<Scripts>
+			<OnClick>
+				PreformAVEnabler.RaidQueue(self:GetID());
+			</OnClick>
+			<OnEnter>
+				GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+				GameTooltip:SetText(PREFORM_AV_ENABLER_TOOLTIP1, nil, nil, nil, nil, 1);
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+			<OnLoad>
+				self:SetPoint("TOPLEFT", "PreformAVEnablerMajorityText"..self:GetID(), "BOTTOMLEFT", 0, -5);
+			</OnLoad>
+		</Scripts>
+	</Button>
+
+	<!-- Leave Queue button template -->
+	<Button name="PreformAVEnablerFrameLeaveButtonTemplate" inherits="GameMenuButtonTemplate" text="LEAVE_QUEUE" virtual="true">
+		<Size>
+			<AbsDimension x="100" y="20"/>
+		</Size>
+		<Scripts>
+			<OnClick>
+				PreformAVEnablerFrameLeaveButton_OnClick(self);
+			</OnClick>
+			<OnEnter>
+				GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+				GameTooltip:SetText(PREFORM_AV_ENABLER_TOOLTIP4, nil, nil, nil, nil, 1);
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+			<OnLoad>
+				self:SetPoint("TOPLEFT", "PreformAVEnablerFrameQueueButton"..self:GetID(), "BOTTOMLEFT", 0, -5);
+			</OnLoad>
+		</Scripts>
+	</Button>
+
+	<!-- Join button template -->
+	<Button name="PreformAVEnablerFrameJoinButtonTemplate" inherits="GameMenuButtonTemplate" text="JOIN" virtual="true">
+		<Size>
+			<AbsDimension x="100" y="20"/>
+		</Size>
+		<Scripts>
+			<OnClick>
+				PreformAVEnablerJoinButton_OnClick(self);
+			</OnClick>
+			<OnEnter>
+				GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+				GameTooltip:SetText(PREFORM_AV_ENABLER_TOOLTIP2, nil, nil, nil, nil, 1);
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+			<OnLoad>
+				self:SetPoint("TOPLEFT", "PreformAVEnablerFrameLeaveButton"..self:GetID(), "BOTTOMLEFT", 0, -5);
+			</OnLoad>
+		</Scripts>
+	</Button>
+
+	<!-- Automate template -->
+	<CheckButton name="PreformAVEnablerAutomateCheckButtonTemplate" inherits="UICheckButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="24" y="24"/>
+		</Size>
+		<Scripts>
+			<OnShow>
+				if ( PreformAVEnabler.automateBG == self:GetID() ) then
+					self:SetChecked(1);
+				else
+					self:SetChecked(0);
+				end
+				--_G[self:GetName().."Text"]:SetText(PREFORM_AV_ENABLER_AUTOMATE);
+			</OnShow>
+			<OnClick>
+				PreformAVEnablerAutomateCheckButton_OnClick(self);
+			</OnClick>
+			<OnEnter>
+				GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+				GameTooltip:SetText(PREFORM_AV_ENABLER_TOOLTIP5, nil, nil, nil, nil, 1);
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</CheckButton>
+
+	<!-- HR template -->
+	<Frame name="PreformAVEnablerRulerTemplate" virtual="true">
+		<Backdrop name="$parentBackdrop" bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true"/>
+	</Frame>
+
+	<!-- show / hide column button -->
+	<Button name="PreformAVEnablerHideButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="16" y="16"/>
+		</Size>
+		<Scripts>
+			<OnLoad>
+				self:SetPoint("RIGHT", "PreformAVEnablerHeaderText"..self:GetID(), "LEFT", -1, 0);
+			</OnLoad>
+			<OnClick>
+				PreformAVEnablerHideButton_OnClick(self);
+			</OnClick>
+			<OnEnter>
+				GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+				GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, 1);
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+		<NormalTexture file="Interface\Buttons\UI-MinusButton-Up"/>
+		<PushedTexture file="Interface\Buttons\UI-MinusButton-Down"/>
+		<HighlightTexture file="Interface\Buttons\UI-PlusButton-Hilight" alphaMode="ADD"/>
+	</Button>
+
+	<!-- header/majority -->
+	<FontString name="PreformAVEnablerHeaderTextTemplate" inherits="GameFontNormal" justifyH="LEFT" virtual="true">
+		<Size>
+			<AbsDimension x="125" y="15"/>
+		</Size>
+		<Color r="0.8" g="0.8" b="0.8"/>
+	</FontString>
+
+	<!-- Master Frame -->
+	<Frame name="PreformAVEnablerFrame" toplevel="true" frameStrata="MEDIUM" hidden="true" parent="UIParent" movable="true">
+		<Size>
+			<AbsDimension x="1655" y="425"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT">
+				<OffSet>
+					<AbsDimension x="200" y="-100"/>
+				</OffSet>
+			</Anchor>
+		</Anchors>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+				<Size>
+					<AbsDimension x="128" y="17"/>
+				</Size>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+
+		<Layers>
+			<Layer level="ARTWORK">
+
+				<!-- Frame header background texture -->
+				<Texture file="Interface\DialogFrame\UI-DialogBox-Header">
+					<Size>
+						<AbsDimension x="300" y="64"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="12"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				
+				<!-- Frame header label -->
+				<FontString inherits="GameFontNormal" text="PREFORM_AV_ENABLER_SELF">
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-3"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+
+			</Layer>
+			<Layer level="OVERLAY">
+
+				<FontString name="PreformAVEnablerInfoHeader" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Size>
+						<AbsDimension x="126" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="99" y="-25"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerHeaderText1" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerInfoHeader" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerHeaderText2" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerHeaderText1" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerHeaderText3" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerHeaderText2" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerHeaderText4" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerHeaderText3" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerHeaderText5" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerHeaderText4" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerHeaderText6" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerHeaderText5" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerHeaderText7" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerHeaderText6" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerHeaderText8" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerHeaderText7" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerHeaderText9" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerHeaderText8" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerHeaderText10" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerHeaderText9" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerHeaderText11" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerHeaderText10" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerVersionText" inherits="GameFontNormal" text="PREFORM_AV_ENABLER_VER" justifyH="LEFT">
+					<Size>
+						<AbsDimension x="40" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerHeaderText11" relativePoint="RIGHT"/>
+					</Anchors>
+					<Color r="0.8" g="0.8" b="0.8"/>
+				</FontString>
+
+				<FontString name="PreformAVEnablerInfoSumText" inherits="PreformAVEnablerHeaderTextTemplate" justifyV="BOTTOM">
+					<Size>
+						<AbsDimension x="125" y="15"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="150" y="55"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerMajorityText1" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="PreformAVEnablerInfoSumText" relativePoint="TOPRIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerMajorityText2" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerMajorityText1" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerMajorityText3" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerMajorityText2" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerMajorityText4" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerMajorityText3" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerMajorityText5" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerMajorityText4" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerMajorityText6" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerMajorityText5" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerMajorityText7" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerMajorityText6" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerMajorityText8" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerMajorityText7" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerMajorityText9" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerMajorityText8" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerMajorityText10" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerMajorityText9" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="PreformAVEnablerMajorityText11" inherits="PreformAVEnablerHeaderTextTemplate">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="PreformAVEnablerMajorityText10" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+
+				<FontString name="PreformAVEnablerPendingText" inherits="GameFontNormal" text="" justifyH="RIGHT">
+					<Anchors>
+						<Anchor point="BOTTOM">
+							<Offset>
+								<AbsDimension x="-10" y="25"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+
+			</Layer>
+		</Layers>
+
+		<Frames>
+			<Frame>
+				<Size>
+					<AbsDimension x="15" y="15"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-7" y="-10"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="PreformAVEnablerQuestionMark" inherits="GameTooltipHeader" text="?">
+							<Size>
+								<AbsDimension x="15" y="15"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPRIGHT"/>
+							</Anchors>
+							<Color r="1.0" g="0.82" b="0"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+						GameTooltip:SetText(PREFORM_AV_ENABLER_TOOLTIP11, nil, nil, nil, nil, 1);
+					</OnEnter>
+					<OnLeave>
+						GameTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+			</Frame>
+
+			<!-- buttonize -->
+			<CheckButton name="PreformAVEnablerButtonizeCheckButton" inherits="UICheckButtonTemplate">
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="12" y="-20"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						_G[self:GetName().."Text"]:SetText(PREFORM_AV_ENABLER_BUTTONIZE);
+					</OnLoad>
+					<OnShow>
+						if ( PreformAVEnabler.config.buttonize ) then
+							self:SetChecked(1);
+						else
+							self:SetChecked(nil);
+						end
+					</OnShow>
+					<OnClick>
+						PreformAVEnablerButtonize_OnClick(self);
+					</OnClick>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+						GameTooltip:SetText(PREFORM_AV_ENABLER_TOOLTIP9, nil, nil, nil, nil, 1);
+					</OnEnter>
+					<OnLeave>
+						GameTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+			</CheckButton>
+
+			<Button name="PreformAVEnablerInfoHideButton">
+				<Size>
+					<AbsDimension x="16" y="16"/>
+				</Size>
+				<Scripts>
+					<OnLoad>
+						self:SetPoint("RIGHT", "PreformAVEnablerInfoHeader", "LEFT", -1, 0);
+					</OnLoad>
+					<OnClick>
+						PreformAVEnabler.InfoHideButton_OnClick(self);
+					</OnClick>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-MinusButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-MinusButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-PlusButton-Hilight" alphaMode="ADD"/>
+			</Button>
+			<Button name="PreformAVEnablerHideButton1" inherits="PreformAVEnablerHideButtonTemplate" id="1"/>
+			<Button name="PreformAVEnablerHideButton2" inherits="PreformAVEnablerHideButtonTemplate" id="2"/>
+			<Button name="PreformAVEnablerHideButton3" inherits="PreformAVEnablerHideButtonTemplate" id="3"/>
+			<Button name="PreformAVEnablerHideButton4" inherits="PreformAVEnablerHideButtonTemplate" id="4"/>
+			<Button name="PreformAVEnablerHideButton5" inherits="PreformAVEnablerHideButtonTemplate" id="5"/>
+			<Button name="PreformAVEnablerHideButton6" inherits="PreformAVEnablerHideButtonTemplate" id="6"/>
+			<Button name="PreformAVEnablerHideButton7" inherits="PreformAVEnablerHideButtonTemplate" id="7"/>
+			<Button name="PreformAVEnablerHideButton8" inherits="PreformAVEnablerHideButtonTemplate" id="8"/>
+			<Button name="PreformAVEnablerHideButton9" inherits="PreformAVEnablerHideButtonTemplate" id="9"/>
+			<Button name="PreformAVEnablerHideButton10" inherits="PreformAVEnablerHideButtonTemplate" id="10"/>
+			<Button name="PreformAVEnablerHideButton11" inherits="PreformAVEnablerHideButtonTemplate" id="11"/>
+
+			<ScrollFrame name="PreformAVEnablerMembersScrollFrame" inherits="UIPanelScrollFrameTemplate">
+				<Size>
+					<AbsDimension x="1613" y="300"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="15" y="-40"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<ScrollChild>
+					<Frame name="$parentChildFrame">
+						<Size>
+							<AbsDimension x="1640" y="604"/>
+						</Size>
+						<Frames>
+
+							<Frame name="PreformAVEnablerRulerTop" inherits="PreformAVEnablerRulerTemplate">
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+									<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT">
+										<Offset>
+											<AbsDimension x="0" y="-2"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+
+							<Frame name="PreformAVEnablerMember1" inherits="PreformAVEnablerMemberTemplate" id="1">
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset>
+											<AbsDimension x="0" y="-2"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="PreformAVEnablerMember2" inherits="PreformAVEnablerMemberTemplate" id="2"/>
+							<Frame name="PreformAVEnablerMember3" inherits="PreformAVEnablerMemberTemplate" id="3"/>
+							<Frame name="PreformAVEnablerMember4" inherits="PreformAVEnablerMemberTemplate" id="4"/>
+							<Frame name="PreformAVEnablerMember5" inherits="PreformAVEnablerMemberTemplate" id="5"/>
+							<Frame name="PreformAVEnablerMember6" inherits="PreformAVEnablerMemberTemplate" id="6"/>
+							<Frame name="PreformAVEnablerMember7" inherits="PreformAVEnablerMemberTemplate" id="7"/>
+							<Frame name="PreformAVEnablerMember8" inherits="PreformAVEnablerMemberTemplate" id="8"/>
+							<Frame name="PreformAVEnablerMember9" inherits="PreformAVEnablerMemberTemplate" id="9"/>
+							<Frame name="PreformAVEnablerMember10" inherits="PreformAVEnablerMemberTemplate" id="10"/>
+							<Frame name="PreformAVEnablerMember11" inherits="PreformAVEnablerMemberTemplate" id="11"/>
+							<Frame name="PreformAVEnablerMember12" inherits="PreformAVEnablerMemberTemplate" id="12"/>
+							<Frame name="PreformAVEnablerMember13" inherits="PreformAVEnablerMemberTemplate" id="13"/>
+							<Frame name="PreformAVEnablerMember14" inherits="PreformAVEnablerMemberTemplate" id="14"/>
+							<Frame name="PreformAVEnablerMember15" inherits="PreformAVEnablerMemberTemplate" id="15"/>
+							<Frame name="PreformAVEnablerMember16" inherits="PreformAVEnablerMemberTemplate" id="16"/>
+							<Frame name="PreformAVEnablerMember17" inherits="PreformAVEnablerMemberTemplate" id="17"/>
+							<Frame name="PreformAVEnablerMember18" inherits="PreformAVEnablerMemberTemplate" id="18"/>
+							<Frame name="PreformAVEnablerMember19" inherits="PreformAVEnablerMemberTemplate" id="19"/>
+							<Frame name="PreformAVEnablerMember20" inherits="PreformAVEnablerMemberTemplate" id="20"/>
+							<Frame name="PreformAVEnablerMember21" inherits="PreformAVEnablerMemberTemplate" id="21"/>
+							<Frame name="PreformAVEnablerMember22" inherits="PreformAVEnablerMemberTemplate" id="22"/>
+							<Frame name="PreformAVEnablerMember23" inherits="PreformAVEnablerMemberTemplate" id="23"/>
+							<Frame name="PreformAVEnablerMember24" inherits="PreformAVEnablerMemberTemplate" id="24"/>
+							<Frame name="PreformAVEnablerMember25" inherits="PreformAVEnablerMemberTemplate" id="25"/>
+							<Frame name="PreformAVEnablerMember26" inherits="PreformAVEnablerMemberTemplate" id="26"/>
+							<Frame name="PreformAVEnablerMember27" inherits="PreformAVEnablerMemberTemplate" id="27"/>
+							<Frame name="PreformAVEnablerMember28" inherits="PreformAVEnablerMemberTemplate" id="28"/>
+							<Frame name="PreformAVEnablerMember29" inherits="PreformAVEnablerMemberTemplate" id="29"/>
+							<Frame name="PreformAVEnablerMember30" inherits="PreformAVEnablerMemberTemplate" id="30"/>
+							<Frame name="PreformAVEnablerMember31" inherits="PreformAVEnablerMemberTemplate" id="31"/>
+							<Frame name="PreformAVEnablerMember32" inherits="PreformAVEnablerMemberTemplate" id="32"/>
+							<Frame name="PreformAVEnablerMember33" inherits="PreformAVEnablerMemberTemplate" id="33"/>
+							<Frame name="PreformAVEnablerMember34" inherits="PreformAVEnablerMemberTemplate" id="34"/>
+							<Frame name="PreformAVEnablerMember35" inherits="PreformAVEnablerMemberTemplate" id="35"/>
+							<Frame name="PreformAVEnablerMember36" inherits="PreformAVEnablerMemberTemplate" id="36"/>
+							<Frame name="PreformAVEnablerMember37" inherits="PreformAVEnablerMemberTemplate" id="37"/>
+							<Frame name="PreformAVEnablerMember38" inherits="PreformAVEnablerMemberTemplate" id="38"/>
+							<Frame name="PreformAVEnablerMember39" inherits="PreformAVEnablerMemberTemplate" id="39"/>
+							<Frame name="PreformAVEnablerMember40" inherits="PreformAVEnablerMemberTemplate" id="40"/>
+
+							<Frame name="PreformAVEnablerRulerBottom" inherits="PreformAVEnablerRulerTemplate">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="2"/>
+										</Offset>
+									</Anchor>
+									<Anchor point="BOTTOMRIGHT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+
+						</Frames>
+					</Frame>
+				</ScrollChild>
+				<Scripts>
+					<OnLoad>
+						local bar = _G[self:GetName().."ScrollBar"];
+						bar:ClearAllPoints();
+						bar:SetPoint("TOPLEFT", self, "TOPRIGHT", 0, -16);
+						bar:SetPoint("BOTTOMLEFT", self, "BOTTOMRIGHT", 0, 16);
+					</OnLoad>
+				</Scripts>
+			</ScrollFrame>
+
+			<!-- Status Check button -->
+			<Button name="PreformAVEnablerFrameStatusButton" inherits="GameMenuButtonTemplate" text="PREFORM_AV_ENABLER_STATUSCHECK">
+				<Size>
+					<AbsDimension x="100" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="20" y="20" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						PreformAVEnablerFrameStatusButton_OnClick(self);
+					</OnClick>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+						GameTooltip:SetText(PREFORM_AV_ENABLER_TOOLTIP0, nil, nil, nil, nil, 1);
+					</OnEnter>
+					<OnLeave>
+						GameTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+			</Button>
+
+			<!-- Queue buttons -->
+			<Button name="PreformAVEnablerFrameQueueButton1" inherits="PreformAVEnablerFrameQueueButtonTemplate" id="1"/>
+			<Button name="PreformAVEnablerFrameQueueButton2" inherits="PreformAVEnablerFrameQueueButtonTemplate" id="2"/>
+			<Button name="PreformAVEnablerFrameQueueButton3" inherits="PreformAVEnablerFrameQueueButtonTemplate" id="3"/>
+			<Button name="PreformAVEnablerFrameQueueButton4" inherits="PreformAVEnablerFrameQueueButtonTemplate" id="4"/>
+			<Button name="PreformAVEnablerFrameQueueButton5" inherits="PreformAVEnablerFrameQueueButtonTemplate" id="5"/>
+			<Button name="PreformAVEnablerFrameQueueButton6" inherits="PreformAVEnablerFrameQueueButtonTemplate" id="6"/>
+			<Button name="PreformAVEnablerFrameQueueButton7" inherits="PreformAVEnablerFrameQueueButtonTemplate" id="7"/>
+			<Button name="PreformAVEnablerFrameQueueButton8" inherits="PreformAVEnablerFrameQueueButtonTemplate" id="8"/>
+			<Button name="PreformAVEnablerFrameQueueButton9" inherits="PreformAVEnablerFrameQueueButtonTemplate" id="9"/>
+			<Button name="PreformAVEnablerFrameQueueButton10" inherits="PreformAVEnablerFrameQueueButtonTemplate" id="10"/>
+			<Button name="PreformAVEnablerFrameQueueButton11" inherits="PreformAVEnablerFrameQueueButtonTemplate" id="11"/>
+
+			<!-- Leave Queue buttons -->
+			<Button name="PreformAVEnablerFrameLeaveButton1" inherits="PreformAVEnablerFrameLeaveButtonTemplate" id="1"/>
+			<Button name="PreformAVEnablerFrameLeaveButton2" inherits="PreformAVEnablerFrameLeaveButtonTemplate" id="2"/>
+			<Button name="PreformAVEnablerFrameLeaveButton3" inherits="PreformAVEnablerFrameLeaveButtonTemplate" id="3"/>
+			<Button name="PreformAVEnablerFrameLeaveButton4" inherits="PreformAVEnablerFrameLeaveButtonTemplate" id="4"/>
+			<Button name="PreformAVEnablerFrameLeaveButton5" inherits="PreformAVEnablerFrameLeaveButtonTemplate" id="5"/>
+			<Button name="PreformAVEnablerFrameLeaveButton6" inherits="PreformAVEnablerFrameLeaveButtonTemplate" id="6"/>
+			<Button name="PreformAVEnablerFrameLeaveButton7" inherits="PreformAVEnablerFrameLeaveButtonTemplate" id="7"/>
+			<Button name="PreformAVEnablerFrameLeaveButton8" inherits="PreformAVEnablerFrameLeaveButtonTemplate" id="8"/>
+			<Button name="PreformAVEnablerFrameLeaveButton9" inherits="PreformAVEnablerFrameLeaveButtonTemplate" id="9"/>
+			<Button name="PreformAVEnablerFrameLeaveButton10" inherits="PreformAVEnablerFrameLeaveButtonTemplate" id="10"/>
+			<Button name="PreformAVEnablerFrameLeaveButton11" inherits="PreformAVEnablerFrameLeaveButtonTemplate" id="11"/>
+
+			<!-- Join buttons -->
+			<Button name="PreformAVEnablerFrameJoinButton1" inherits="PreformAVEnablerFrameJoinButtonTemplate" id="1"/>
+			<Button name="PreformAVEnablerFrameJoinButton2" inherits="PreformAVEnablerFrameJoinButtonTemplate" id="2"/>
+			<Button name="PreformAVEnablerFrameJoinButton3" inherits="PreformAVEnablerFrameJoinButtonTemplate" id="3"/>
+			<Button name="PreformAVEnablerFrameJoinButton4" inherits="PreformAVEnablerFrameJoinButtonTemplate" id="4"/>
+			<Button name="PreformAVEnablerFrameJoinButton5" inherits="PreformAVEnablerFrameJoinButtonTemplate" id="5"/>
+			<Button name="PreformAVEnablerFrameJoinButton6" inherits="PreformAVEnablerFrameJoinButtonTemplate" id="6"/>
+			<Button name="PreformAVEnablerFrameJoinButton7" inherits="PreformAVEnablerFrameJoinButtonTemplate" id="7"/>
+			<Button name="PreformAVEnablerFrameJoinButton8" inherits="PreformAVEnablerFrameJoinButtonTemplate" id="8"/>
+			<Button name="PreformAVEnablerFrameJoinButton9" inherits="PreformAVEnablerFrameJoinButtonTemplate" id="9"/>
+			<Button name="PreformAVEnablerFrameJoinButton10" inherits="PreformAVEnablerFrameJoinButtonTemplate" id="10"/>
+			<Button name="PreformAVEnablerFrameJoinButton11" inherits="PreformAVEnablerFrameJoinButtonTemplate" id="11"/>
+
+			<!-- Automate buttons -->
+			<CheckButton name="PreformAVEnablerAutomateCheckButton1" inherits="PreformAVEnablerAutomateCheckButtonTemplate" id="1">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="PreformAVEnablerFrameQueueButton1" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="PreformAVEnablerAutomateCheckButton2" inherits="PreformAVEnablerAutomateCheckButtonTemplate" id="2">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="PreformAVEnablerFrameQueueButton2" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="PreformAVEnablerAutomateCheckButton3" inherits="PreformAVEnablerAutomateCheckButtonTemplate" id="3">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="PreformAVEnablerFrameQueueButton3" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="PreformAVEnablerAutomateCheckButton4" inherits="PreformAVEnablerAutomateCheckButtonTemplate" id="4">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="PreformAVEnablerFrameQueueButton4" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="PreformAVEnablerAutomateCheckButton5" inherits="PreformAVEnablerAutomateCheckButtonTemplate" id="5">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="PreformAVEnablerFrameQueueButton5" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="PreformAVEnablerAutomateCheckButton6" inherits="PreformAVEnablerAutomateCheckButtonTemplate" id="6">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="PreformAVEnablerFrameQueueButton6" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="PreformAVEnablerAutomateCheckButton7" inherits="PreformAVEnablerAutomateCheckButtonTemplate" id="7">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="PreformAVEnablerFrameQueueButton7" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="PreformAVEnablerAutomateCheckButton8" inherits="PreformAVEnablerAutomateCheckButtonTemplate" id="8">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="PreformAVEnablerFrameQueueButton8" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="PreformAVEnablerAutomateCheckButton9" inherits="PreformAVEnablerAutomateCheckButtonTemplate" id="9">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="PreformAVEnablerFrameQueueButton9" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="PreformAVEnablerAutomateCheckButton10" inherits="PreformAVEnablerAutomateCheckButtonTemplate" id="9">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="PreformAVEnablerFrameQueueButton10" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="PreformAVEnablerAutomateCheckButton11" inherits="PreformAVEnablerAutomateCheckButtonTemplate" id="9">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="PreformAVEnablerFrameQueueButton11" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</CheckButton>
+
+			<Slider name="PreformAVEnablerThresholdSlider" orientation="VERTICAL" minValue="5" maxValue="40" valueStep="1" defaultValue="30">
+				<Size>
+					<AbsDimension x="18" y="90"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="40" y="46" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="8"/>
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="8"/>
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="3" right="3" top="6" bottom="6"/>
+					</BackgroundInsets>
+				</Backdrop>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parentText" inherits="GameFontNormalSmall" text="PREFORM_AV_ENABLER_THRESHOLD">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+									<Offset>
+										<AbsDimension x="10" y="10"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentValue" inherits="GameFontNormalSmall" text="Threshold">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+									<Offset>
+										<AbsDimension x="25" y="-10"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString inherits="GameFontHighlightSmall" text="40">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="2" y="3"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString inherits="GameFontHighlightSmall" text="5">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="-2" y="3"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnShow>
+						self:SetValue(PreformAVEnabler.config.threshold);
+						PreformAVEnablerThresholdSliderValue:SetText(PreformAVEnabler.config.threshold);
+					</OnShow>
+					<OnValueChanged>
+						PreformAVEnabler.config.threshold = self:GetValue();
+						PreformAVEnablerThresholdSliderValue:SetText(PreformAVEnabler.config.threshold);
+					</OnValueChanged>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+						GameTooltip:SetText(PREFORM_AV_ENABLER_TOOLTIP6, nil, nil, nil, nil, 1);
+					</OnEnter>
+					<OnLeave>
+						GameTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+				<ThumbTexture file="Interface\Buttons\UI-SliderBar-Button-Vertical">
+					<Size>
+						<AbsDimension x="32" y="32"/>
+					</Size>
+				</ThumbTexture>
+			</Slider>
+
+			<!-- Close Button -->
+			<Button name="PreformAVEnablerFrameCloseButton" inherits="GameMenuButtonTemplate" text="CLOSE">
+				<Size>
+					<AbsDimension x="100" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-20" y="20" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						if ( PreformAVEnabler.IfSecure() ) then
+							return
+						end
+						self:GetParent():Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+			<Frame name="PreformAVEnablerResizeButton" enableMouse="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="15" y="10"/>
+						</Offset>
+					</Anchor>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-15" y="4"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnMouseUp>
+						self:GetParent().isResizing = nil;
+					</OnMouseUp>
+					<OnMouseDown>
+						if ( PreformAVEnabler.IfSecure() ) then
+							return
+						end
+
+						local _;
+						_, self:GetParent().startPos = GetCursorPosition();
+						self:GetParent().startPos = math.floor(self:GetParent().startPos);
+						self:GetParent().startHeight = self:GetParent():GetHeight();
+						self:GetParent().isResizing = true;
+					</OnMouseDown>
+					<OnEnter>
+						PreformAVEnablerResizeButton_OnEnter();
+					</OnEnter>
+					<OnLeave>
+						ResetCursor();
+					</OnLeave>
+				</Scripts>
+			</Frame>
+
+			<Frame name="PreformAVEnablerDropDown" inherits="UIDropDownMenuTemplate" id="1" hidden="true">
+				<Size>
+					<AbsDimension x="10" y="10"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="10" y="-10"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						PreformAVEnablerDropDown_OnLoad(self);
+					</OnLoad>
+				</Scripts>
+			</Frame>
+
+		</Frames>
+
+		<Scripts>
+			<OnLoad>
+				PreformAVEnabler.Frame_OnLoad(self);
+			</OnLoad>
+			<OnEvent>
+				PreformAVEnablerFrame_OnEvent(event, ...);
+			</OnEvent>
+			<OnShow>
+				if ( PreformAVEnabler.neverUpdated ~= 2 ) then
+					PreformAVEnabler.RequestStatus();
+					PreformAVEnabler.neverUpdated = 2;
+				end
+
+				PreformAVEnabler.Update();
+			</OnShow>
+			<OnHide>
+				PlaySound("igMainMenuQuit");
+			</OnHide>
+			<OnUpdate>
+				PreformAVEnablerFrame_OnUpdate(self, elapsed);
+			</OnUpdate>
+			<OnMouseUp>
+				if ( self.isMoving ) then
+					self:StopMovingOrSizing();
+					self.isMoving = false;
+				end
+			</OnMouseUp>
+			<OnMouseDown>
+				if (not self.IsLocked and button == "LeftButton") then
+					self:StartMoving();
+					self.isMoving = true;
+				end
+			</OnMouseDown>
+		</Scripts>
+	</Frame>
+	
+	<!--
+	<Button name="PreformAVEnablerBFButton" parent="BattlefieldFrame" frameStrata="HIGH" inherits="UIPanelButtonTemplate" text="PREFORM_AV_ENABLER_SELF">
+		<Size>
+			<AbsDimension x="136" y="22"/>
+		</Size>
+		<Anchors>
+			<Anchor point="RIGHT" relativeTo="BattlefieldFrameJoinButton" relativePoint="LEFT">
+				<Offset>
+					<AbsDimension x="0" y="24"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Scripts>
+			<OnClick>
+				PreformAVEnablerFrame:Show();
+			</OnClick>
+		</Scripts>
+	</Button>
+	-->
+
+	<Button name="PreformAVEnablerPVPBGButton" frameStrata="HIGH" parent="PVPHonorFrame" inherits="UIPanelButtonTemplate" text="PREFORM_AV_ENABLER_SELF">
+		<Size>
+			<AbsDimension x="136" y="22"/>
+		</Size>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT">
+				<Offset>
+					<AbsDimension x="-5" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Scripts>
+			<OnClick>
+				PreformAVEnablerFrame:Show();
+			</OnClick>
+		</Scripts>
+	</Button>
+
+</Ui>

@@ -1,0 +1,9 @@
+<Ui>
+	<Frame name="MFClipdummyframe">
+		<Scripts>
+			<OnUpdate>
+				MFClip:OnUpdate();
+			</OnUpdate>
+		</Scripts>
+	</Frame>
+</Ui>

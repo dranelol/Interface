@@ -1,0 +1,57 @@
+﻿local L = LibStub("AceLocale-3.0"):NewLocale("PallyPower", "zhCN", false, false)
+if not L then return end 
+L["AURA"] = "光环" -- Needs review
+L["AURABTN"] = "显示光环/圣印按钮" -- Needs review
+L["AURABTN_DESC"] = "显示或隐藏光环/圣印按钮" -- Needs review
+L["AURA_DESC"] = "已监视的光环" -- Needs review
+L["AURAM"] = "光环/圣印监视" -- Needs review
+L["AURAM_DESC"] = "监视光环/圣印" -- Needs review
+L["BSC"] = "主窗口大小"
+L["BSC_DESC"] = "设置祝福施加窗口的大小"
+L["BUFFM"] = "祝福监视" -- Needs review
+L["BUFFM_DESC"] = "监视中的祝福" -- Needs review
+L["Cast selected aura"] = "施放已选择的光环" -- Needs review
+L["Cast selected blessing"] = "施放已选择的祝福" -- Needs review
+L["Cast selected seal"] = "施放已选择的圣印" -- Needs review
+L["Change blessing"] = "修改祝福" -- Needs review
+L["Colors"] = "颜色" -- Needs review
+L["Cycle to next aura"] = "循环到下一个光环" -- Needs review
+L["Cycle to next seal"] = "循环到下一个圣印" -- Needs review
+L["Cycle to previous aura"] = "循环到上一个光环" -- Needs review
+L["Cycle to previous seal"] = "循环到上一个圣印" -- Needs review
+L["DISP"] = "显示设置"
+L["DISP_DESC"] = "祝福施加窗口的设置"
+L["DISPEDGES"] = "显示按钮边角" -- Needs review
+L["DISPEDGES_DESC"] = "显示玩家按钮的边角" -- Needs review
+L["Down"] = "下" -- Needs review
+L["Fully Buffed"] = "已完整Buff" -- Needs review
+L["IGNOREEXTRA"] = "忽略队伍6到队伍8" -- Needs review
+L["IGNOREEXTRADESC"] = "忽略在队伍6到队伍8的玩家" -- Needs review
+L["LAYOUT"] = "布局" -- Needs review
+L["LAYOUT_DESC"] = "自定义布局" -- Needs review
+L["Left"] = "左" -- Needs review
+L["MOVE_DESC"] = [=[要移动PallyPower的Buff按钮，使用 |cffffd200Shift|r + |cffffd200鼠标右键|r 来拖曳.
+
+]=] -- Needs review
+L["None"] = "无" -- Needs review
+L["None Buffed"] = "没有被Buff" -- Needs review
+L["Partially Buffed"] = "已部分被Buff" -- Needs review
+L["RESET"] = "重置位置"
+L["RESET_DESC"] = "将所有PallyPower窗口的位置重置回屏幕中央"
+L["RFB"] = "显示正义之怒按钮" -- Needs review
+L["RFB_DESC"] = "显示或隐藏正义之怒按钮" -- Needs review
+L["RFM"] = "正义之怒" -- Needs review
+L["RFM_DESC"] = "监视正义之怒" -- Needs review
+L["RFUSE"] = "正义之怒" -- Needs review
+L["RFUSE_DESC"] = "已监视的正义之怒" -- Needs review
+L["Right"] = "右" -- Needs review
+L["SEAL"] = "圣印" -- Needs review
+L["SEAL_DESC"] = "已监视的圣印" -- Needs review
+L["SHOWPARTY"] = "在小队时显示"
+L["SHOWPARTY_DESC"] = "当加入一个小队后显示/隐藏祝福施加窗口"
+L["SHOWSINGLE"] = "在单独时显示"
+L["SHOWSINGLE_DESC"] = "当单独一人显示/隐藏祝福施加窗口"
+L["SKIN"] = "皮肤" -- Needs review
+L["SKIN_DESC"] = "应用自定义到背景到Buff按钮" -- Needs review
+L["Up"] = "上" -- Needs review
+ 

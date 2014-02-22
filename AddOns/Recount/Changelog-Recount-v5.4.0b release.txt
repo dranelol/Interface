@@ -1,0 +1,15 @@
+------------------------------------------------------------------------
+r1252 | elsia | 2014-01-14 23:54:55 +0000 (Tue, 14 Jan 2014) | 1 line
+Changed paths:
+   A /tags/v5.4.0b release (from /trunk:1251)
+
+Tagging as v5.4.0b release
+------------------------------------------------------------------------
+r1251 | elsia | 2014-01-14 00:25:27 +0000 (Tue, 14 Jan 2014) | 2 lines
+Changed paths:
+   M /trunk/Tracker.lua
+   M /trunk/deletion.lua
+
+- Fixed bug where joining members cause deletion popups in scenarios (Thanks to Phanx and Farmbuyer for making the problem reproducible)
+- Fixed bug where one bit of the GUID was not considered for boss IDs (Thanks to Lombra for spotting this)
+------------------------------------------------------------------------

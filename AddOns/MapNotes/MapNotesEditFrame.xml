@@ -1,0 +1,601 @@
+<!--
+
+  Loading order is:
+      MapNotesTemplates.xml
+    * MapNotesEditFrame.xml
+      MapNotesMiniNoteFrame.xml
+      MapNotesOptionsFrame.xml
+      MapNotesSendFrame.xml
+
+  This file contains the following:
+
+    Definitions:
+      MN_EditIconTemplate
+      MN_TextColorTemplate
+
+    Declarations:
+      MapNotesEditFrame
+      ColorPickerFrame
+
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+  <Button name="MN_EditIconTemplate" virtual="true">
+    <Size x="16" y="16"/>
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture name="$parentTexture">
+          <Size x="16" y="16"/>
+          <Anchors>
+            <Anchor point="CENTER"/>
+          </Anchors>
+        </Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        self.index = tonumber(self:GetName():match('%d+$'));
+        assert(self:GetNumRegions() == 1);
+        local region = self:GetRegions();
+        region:SetTexture(MAPNOTES_PATH..'POIIcons\\Icon'..self.index);
+        self:RegisterForClicks("LeftButtonDown", "RightButtonDown");
+      </OnLoad>
+      <OnClick>
+        MapNotes_Edit_SetIcon(self.index);
+      </OnClick>
+      <OnShow>
+        <!--Telic_2 -->
+        self:SetFrameLevel(self:GetParent():GetFrameLevel() + 1);   <!--Telic_2 -->
+      </OnShow>
+      <!--Telic_2 -->
+    </Scripts>
+  </Button>
+
+  <Button name="MN_TextColorTemplate" virtual="true">
+    <Size x="16" y="16"/>
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture name="$parentTexture" file="Interface\AddOns\MapNotes\POIIcons\TextColourTemplate">
+          <Size x="16" y="16"/>
+          <Anchors>
+            <Anchor point="CENTER"/>
+          </Anchors>
+        </Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        self.item = self:GetName():match('MN_(.*)%d');
+        self.index = tonumber(self:GetName():match('%d+$'));
+        self:RegisterForClicks("LeftButtonDown", "RightButtonDown");
+      </OnLoad>
+      <OnClick>
+        local MapNotes_Edit_SetItemColor = _G['MapNotes_Edit_Set'..self.item];
+        assert(MapNotes_Edit_SetItemColor);
+        MapNotes_Edit_SetItemColor(self.index, button);
+      </OnClick>
+      <OnShow>
+        <!--Telic_2 -->
+        self:SetFrameLevel(self:GetParent():GetFrameLevel() + 1);   <!--Telic_2 -->
+      </OnShow>
+      <!--Telic_2 -->
+    </Scripts>
+  </Button>
+
+  <Frame name="MapNotesEditFrame" frameStrata="TOOLTIP" inherits="MapNotes_FrameTemplate">
+
+    <Size x="450" y="350"/>
+
+    <Anchors>
+      <Anchor point="CENTER"/>
+    </Anchors>
+
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString inherits="GameFontGreenLarge" text="MAPNOTES_EDIT_MENU">
+          <Anchors>
+            <Anchor point="TOP" x="0" y="-12"/>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+
+    <Frames>
+
+      <Button name="MapNotesButtonSaveNote" inherits="MapNotes_ButtonTemplate" text="MAPNOTES_SAVE_NOTE">
+        <Anchors>
+          <Anchor point="CENTER" relativePoint="BOTTOM" x="-103" y="30" />
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOption");
+            MapNotes_WriteNote();
+          </OnClick>
+<!--           <OnShow>
+            self:SetFrameLevel( self:GetParent():GetFrameLevel() + 1 );
+          </OnShow>
+ -->        </Scripts>
+      </Button>
+
+      <Button name="$parentCancel" inherits="MapNotes_CancelButtonTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MapNotesButtonSaveNote" x="20" y="0"/>
+        </Anchors>
+      </Button>
+
+      <Button name="MN_EditIcon0" inherits="MN_EditIconTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" x="50" y="-41"/>
+        </Anchors>
+      </Button>
+
+      <Button name="MN_EditIcon1" inherits="MN_EditIconTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_EditIcon0" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_EditIcon2" inherits="MN_EditIconTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_EditIcon1" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_EditIcon3" inherits="MN_EditIconTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_EditIcon2" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_EditIcon4" inherits="MN_EditIconTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_EditIcon3" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_EditIcon5" inherits="MN_EditIconTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_EditIcon4" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_EditIcon6" inherits="MN_EditIconTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_EditIcon5" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_EditIcon7" inherits="MN_EditIconTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_EditIcon6" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_EditIcon8" inherits="MN_EditIconTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_EditIcon7" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_EditIcon9" inherits="MN_EditIconTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_EditIcon8" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Frame name="MN_IconOverlay" enableMouse="false">
+        <Size x="32" y="32"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="MN_EditIcon0" x="-3" y="3"/>
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture name="MN_IconOverlayTexture" file="Interface\AddOns\MapNotes\POIIcons\Overlay">
+              <Size x="32" y="32"/>
+              <Anchors>
+                <Anchor point="CENTER"/>
+              </Anchors>
+            </Texture>
+          </Layer>
+        </Layers>
+      </Frame>
+      <EditBox name="MapNotes_TitleWideEditBox" historyLines="0" letters="100">
+        <Size x="400" y="32"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="MN_EditIcon0" x="-26" y="-36"/>
+        </Anchors>
+        <Scripts>
+          <OnLoad>
+            MapNotes_TitleWideEditBox:SetText("");
+          </OnLoad>
+          <OnTextChanged>
+            if (MapNotes_TitleWideEditBox:GetText() == "" or MapNotes_TitleWideEditBox:GetText() == nil) then
+              MapNotesButtonSaveNote:Disable();
+            else
+              MapNotesButtonSaveNote:Enable();
+            end
+          </OnTextChanged>
+          <OnEnterPressed>
+            PlaySound("igMainMenuOption");
+            MapNotes_WriteNote();
+          </OnEnterPressed>
+          <OnEscapePressed>
+            MapNotesEditFrame:Hide();
+          </OnEscapePressed>
+          <OnShow>
+            self:SetFrameLevel( self:GetParent():GetFrameLevel() + 1 );
+          </OnShow>
+          <OnTabPressed>
+            MN_Info1WideEditBox:SetFocus();
+          </OnTabPressed>
+        </Scripts>
+        <FontString inherits="ChatFontNormal"/>
+      </EditBox>
+      <Frame>
+        <Size x="420" y="28"/>
+        <Anchors>
+          <Anchor point="CENTER" relativeTo="MapNotes_TitleWideEditBox"/>
+        </Anchors>
+        <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+          <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
+          <TileSize val="12"/>
+          <EdgeSize val="12"/>
+        </Backdrop>
+      </Frame>
+      <EditBox name="MN_Info1WideEditBox" historyLines="0" letters="100">
+        <Size x="400" y="32"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="MapNotes_TitleWideEditBox" x="0" y="-65"/>
+        </Anchors>
+        <Scripts>
+          <OnEnterPressed>
+            PlaySound("igMainMenuOption");
+            MapNotes_WriteNote();
+          </OnEnterPressed>
+          <OnEscapePressed>
+            MapNotesEditFrame:Hide();
+          </OnEscapePressed>
+          <OnShow>
+            self:SetFrameLevel( self:GetParent():GetFrameLevel() + 1 );
+          </OnShow>
+          <OnTabPressed>
+            MN_Info2WideEditBox:SetFocus();
+          </OnTabPressed>
+        </Scripts>
+        <FontString inherits="ChatFontNormal"/>
+      </EditBox>
+      <Frame>
+        <Size x="420" y="28"/>
+        <Anchors>
+          <Anchor point="CENTER" relativePoint="CENTER" relativeTo="MN_Info1WideEditBox"/>
+        </Anchors>
+        <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+          <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
+          <TileSize val="12"/>
+          <EdgeSize val="12"/>
+        </Backdrop>
+      </Frame>
+      <EditBox name="MN_Info2WideEditBox" historyLines="0" letters="100">
+        <Size x="400" y="32"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="MN_Info1WideEditBox" x="0" y="-65"/>
+        </Anchors>
+        <Scripts>
+          <OnEnterPressed>
+            PlaySound("igMainMenuOption");
+            MapNotes_WriteNote();
+          </OnEnterPressed>
+          <OnEscapePressed>
+            MapNotesEditFrame:Hide();
+          </OnEscapePressed>
+          <OnShow>
+            self:SetFrameLevel( self:GetParent():GetFrameLevel() + 1 );
+          </OnShow>
+          <OnTabPressed>
+            MN_CreatorWideEditBox:SetFocus();
+          </OnTabPressed>
+        </Scripts>
+        <FontString inherits="ChatFontNormal"/>
+      </EditBox>
+      <Frame>
+        <Size x="420" y="28"/>
+        <Anchors>
+          <Anchor point="CENTER" relativePoint="CENTER" relativeTo="MN_Info2WideEditBox"/>
+        </Anchors>
+        <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+          <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
+          <TileSize val="12"/>
+          <EdgeSize val="12"/>
+        </Backdrop>
+      </Frame>
+      <EditBox name="MN_CreatorWideEditBox" historyLines="0" letters="100">
+        <Size x="400" y="32"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="MN_Info2WideEditBox" x="0" y="-65"/>
+        </Anchors>
+        <Scripts>
+          <OnEnterPressed>
+            PlaySound("igMainMenuOption");
+            MapNotes_WriteNote();
+          </OnEnterPressed>
+          <OnEscapePressed>
+            MapNotesEditFrame:Hide();
+          </OnEscapePressed>
+          <OnShow>
+            self:SetFrameLevel( self:GetParent():GetFrameLevel() + 1 );
+          </OnShow>
+          <OnTabPressed>
+            MapNotes_TitleWideEditBox:SetFocus();
+          </OnTabPressed>
+        </Scripts>
+        <FontString inherits="ChatFontNormal"/>
+      </EditBox>
+      <Frame>
+        <Size x="420" y="28"/>
+        <Anchors>
+          <Anchor point="CENTER" relativePoint="CENTER" relativeTo="MN_CreatorWideEditBox"/>
+        </Anchors>
+        <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+          <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
+          <TileSize val="12"/>
+          <EdgeSize val="12"/>
+        </Backdrop>
+      </Frame>
+      <Button name="MN_TextColor0" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" x="50" y="-111"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_TextColor1" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_TextColor0" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_TextColor2" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_TextColor1" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_TextColor3" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_TextColor2" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_TextColor4" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_TextColor3" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_TextColor5" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_TextColor4" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_TextColor6" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_TextColor5" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_TextColor7" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_TextColor6" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_TextColor8" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_TextColor7" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_TextColor9" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_TextColor8" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Frame name="MN_TextColorOverlay" enableMouse="false">
+        <Size x="32" y="32"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="MN_TextColor0" x="-3" y="3"/>
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture name="MN_TextColorOverlayTexture" file="Interface\AddOns\MapNotes\POIIcons\Overlay">
+              <Size x="32" y="32"/>
+              <Anchors>
+                <Anchor point="CENTER"/>
+              </Anchors>
+            </Texture>
+          </Layer>
+        </Layers>
+      </Frame>
+      <Button name="MN_Info1Color0" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" x="50" y="-175"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info1Color1" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info1Color0" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info1Color2" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info1Color1" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info1Color3" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info1Color2" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info1Color4" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info1Color3" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info1Color5" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info1Color4" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info1Color6" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info1Color5" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info1Color7" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info1Color6" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info1Color8" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info1Color7" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info1Color9" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info1Color8" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Frame name="MN_Info1ColorOverlay" enableMouse="false">
+        <Size x="32" y="32"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="MN_Info1Color0" x="-3" y="3"/>
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture name="MN_Info1ColorOverlayTexture" file="Interface\AddOns\MapNotes\POIIcons\Overlay">
+              <Size x="32" y="32"/>
+              <Anchors>
+                <Anchor point="CENTER"/>
+              </Anchors>
+            </Texture>
+          </Layer>
+        </Layers>
+      </Frame>
+      <Button name="MN_Info2Color0" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" x="50" y="-241"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info2Color1" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info2Color0" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info2Color2" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info2Color1" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info2Color3" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info2Color2" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info2Color4" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info2Color3" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info2Color5" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info2Color4" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info2Color6" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info2Color5" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info2Color7" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info2Color6" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info2Color8" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info2Color7" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Button name="MN_Info2Color9" inherits="MN_TextColorTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="MN_Info2Color8" x="21" y="0"/>
+        </Anchors>
+      </Button>
+      <Frame name="MN_Info2ColorOverlay" enableMouse="false">
+        <Size x="32" y="32"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="MN_Info2Color0" x="-3" y="3"/>
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture name="MN_Info2ColorOverlayTexture" file="Interface\AddOns\MapNotes\POIIcons\Overlay">
+              <Size x="32" y="32"/>
+              <Anchors>
+                <Anchor point="CENTER"/>
+              </Anchors>
+            </Texture>
+          </Layer>
+        </Layers>
+      </Frame>
+    </Frames>
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString name="MapNotes_EditFrame_Title" inherits="GameFontNormalSmall" text="MAPNOTES_EDIT_TITLE" justifyH="LEFT">
+          <Size x="222" y="16"/>
+          <Anchors>
+            <Anchor point="TOPLEFT" x="22" y="-63"/>
+          </Anchors>
+        </FontString>
+        <FontString name="MapNotes_EditFrame_MN_Info1" inherits="GameFontNormalSmall" text="MAPNOTES_EDIT_INFO1" justifyH="LEFT">
+          <Size x="222" y="16"/>
+          <Anchors>
+            <Anchor point="TOPLEFT" x="22" y="-129"/>
+          </Anchors>
+        </FontString>
+        <FontString name="MapNotes_EditFrame_MN_Info2" inherits="GameFontNormalSmall" text="MAPNOTES_EDIT_INFO2" justifyH="LEFT">
+          <Size x="222" y="16"/>
+          <Anchors>
+            <Anchor point="TOPLEFT" x="22" y="-194"/>
+          </Anchors>
+        </FontString>
+        <FontString name="MapNotes_EditFrame_Creator" inherits="GameFontNormalSmall" text="MAPNOTES_EDIT_CREATOR" justifyH="LEFT">
+          <Size x="222" y="16"/>
+          <Anchors>
+            <Anchor point="TOPLEFT" x="22" y="-259"/>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnShow>
+        MN_InitialiseTextColours(true);
+        self:SetFrameStrata("TOOLTIP");
+        self:SetAlpha(1.0);
+        MapNotes_NormaliseScale(self);
+      </OnShow>
+      <OnLoad>
+        self:SetBackdropColor(0, 0, 0, 1);
+      </OnLoad>
+    </Scripts>
+  </Frame>
+
+  <Frame parent="ColorPickerFrame" enableMouse="false" hidden="false">
+    <!-- Easy Hook ColorPickerFrame's OnHide function that will Never interfere with anyone elses... ;) -->
+    <Size x="1" y="1"/>
+    <Anchors>
+      <Anchor point="CENTER"/>
+    </Anchors>
+    <Scripts>
+      <OnHide>
+        if (ColorPickerFrame.strata) then
+          ColorPickerFrame:SetFrameStrata(ColorPickerFrame.strata);
+          ColorPickerFrame.strata = nil;
+        end
+        ColorPickerFrame:SetParent(UIParent);
+      </OnHide>
+      <OnUpdate>
+        if (ColorPickerFrame.forceHide and not WorldMapButton:IsVisible()) then
+          ColorPickerFrame.forceHide = nil;
+          ColorPickerFrame:Hide();
+        end
+      </OnUpdate>
+    </Scripts>
+  </Frame>
+
+  <Script>
+--    print('MapNotesEditFrame.xml loaded');
+  </Script>
+</Ui>

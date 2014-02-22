@@ -1,0 +1,40 @@
+
+--==-- TooltipItemQuantities2 Version History --==--
+
+2.1.0 (Feb 3, 2009):
+	New:
+		- Added support for SetAuctionSellItem() and SetSendMailItem().
+
+
+2.0.0 (Dec 16, 2008):
+	New:
+		- Rewritten for WotLK.
+
+
+1.3.0 (May 6, 2008):
+	- Added support for :SetMerchantCostItem() tooltip method.
+	
+	- Reformatted TOOLTIP_QUANTITY_METHODS table to use arrays instead of tables for
+		the data of each tooltip method, minorly speeding up access time.
+	
+	- Now uses LibStub as a load manager.
+
+
+1.2.1 (Mar 6, 2008):
+	- Miscellaneous code style updates.
+
+
+1.2.0 (Jan 28, 2008):
+	- Now supports the :SetGuildBankItem() tooltip method.
+
+
+1.1.0 (Jan 19, 2008):
+	- Miscellaneous efficiency updates.
+	
+	- Now hooks :SetHyperlink() as well so that tooltip.TooltipItemQuantities1:GetItemQuantity()
+		will return the proper default quantity of 1 instead of whatever quantity was present on the
+		tooltip prior to the :SetHyperlink() call.
+
+
+1.0.0 (6/19/07):
+	- Initial release.

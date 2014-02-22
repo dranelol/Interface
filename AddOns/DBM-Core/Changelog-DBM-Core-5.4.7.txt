@@ -1,0 +1,187 @@
+tag 5.4.7
+9d56b76f840bc8c72a640641499a1386e8087edc
+subversion <svn@deadlybossmods.com>
+2014-01-19 16:26:34 +0100
+
+Tagging as 5.4.7
+
+
+--------------------
+
+subversion:
+	- increment version number to 5.4.7
+	- nbluewiz via svn r11011: # Fix missing spell id.
+	- nbluewiz via svn r11010: # Fix bug.
+	- Omega via svn r11009: slightly increase scan time for icons on sha of pride don't warn as on second protectors push. for my heroic group, warning fired 10 WAY too early. on pull 5% good beacuse many procs and cds. later fight it's way too early. heck 4% may be too early too. will have to see.
+	- ultrashining via svn r11008: zhTW update
+	- nbluewiz via svn r11007: # Fix bad Lillan Voss combat start.
+	- nbluewiz via svn r11006: # Fix possible bug if instanceType is nil.
+	- Omega via svn r11005: in rare cases, it's possible to re-engage ordos before EndCombat is called, and have two berserk timers. This should fix that at least. As for the re-enraging. there is no clean way to do it without making a real mess. The combination of situations that cause this would require changing WAY too many things that have more important purposes.
+	- nbluewiz via svn r11004: # Proper fix.# Oh, sorry.
+	- nbluewiz via svn r11003: # Proper fix.
+	- Omega via svn r11002: Fix another leaked global
+	- Omega via svn r11001: Fix leaked global Fix lua error in iron qon
+	- Omega via svn r11000: fix nalak mistake
+	- nbluewiz via svn r10999: # little select fix.
+	- nbluewiz via svn r10998: # Fix lua error.
+	- nbluewiz via svn r10997: # Small experimental DBT tweak.
+	- Omega via svn r10996: DBT tweak
+	- nbluewiz via svn r10995: # Fix init range circle color.
+	- nbluewiz via svn r10994: # Do more tweak in range frame.
+	- nbluewiz via svn r10993: # This fix bugs real. I will do more tweaking.
+	- Omega via svn r10992: update nalak range finder, because, I need a boss to test filter on that's easy to pull
+	- Omega via svn r10991: fix another regression. Now icons are working properly, still going through more tests
+	- Omega via svn r10990: fix hundreds of lua errors a second
+	- nbluewiz via svn r10989: # Fix scenario error.
+	- nbluewiz via svn r10988: # Full rewrite range frame update. Cpu usage reduced about 30%
+	- nbluewiz via svn r10987: # Very little range frame tweaks
+	- nbluewiz via svn r10986: # Norushen : Fix bug.
+	- nbluewiz via svn r10985: # Improve CLEU processing.
+	- Omega via svn r10984: fix more bad
+	- Omega via svn r10983: missed one
+	- Omega via svn r10982: some rangeframe stuff
+	- nbluewiz via svn r10981: # Paragons : Fix this.
+	- Omega via svn r10980: Rest of MoP raids
+	- nbluewiz via svn r10979: # Fallen Protectors : Improve Calamity warning, Add Measures soon warning. # Norushen : Fix bug. # Paragons : Improve flash warning.
+	- Omega via svn r10978: world bosses
+	- Omega via svn r10977: fix fuckup, sorry about that
+	- Omega via svn r10976: ToT as well Also, add recover variables to lei shen and iron qon, since they are particularlly highly dependant on it
+	- nbluewiz via svn r10975: # Remove useless debug.
+	- Omega via svn r10974: Further optimize CLEU handling in SoO mods
+	- Omega via svn r10973: Optimize paragons and korkron Improve flash/whirling warnings to be more clear difference between charge(flash) and whirling(debuff when failing flash) Remove bugfix hack for catalyst bug, blizzard fixed it.
+	- nbluewiz via svn r10972: # Improve CheckTankDistance.
+	- nbluewiz via svn r10971: # Scenario fix.
+	- Omega via svn r10970: Jump to center doesn't seem to be randomly 5 anymore, possibly fixed in last batch of paragons hotfixes. change back to 6.5. can still be slightly under 7
+	- nbluewiz via svn r10969: # Small adjusts.
+	- tandanu via svn r10968: migrate saved DBT settings, they used to be stored by DBM itself
+	- tandanu via svn r10967: move DBT to a separate addon
+	- tandanu via svn r10966: fix modSyncSpam-issue, there is no reason to keep that table *that* clean
+	- Omega via svn r10965: readd ENCOUNTER_START to norushen. There is no evidence anywhere it ever fires in wrong place, only that it's missing sometimes.
+	- Omega via svn r10964: Make sure to use antispam properly so we don't block syncs completely if two diff events happen at same time (ie blind hatred and big add). only ones that should be same number are the two big add syncs so if we get one we block the other.
+	- nbluewiz via svn r10963: # Paragon : Normal also casts 5 times.
+	- nbluewiz via svn r10962: # Norushen : Fix spamming.
+	- nbluewiz via svn r10961: # Fix bug.
+	- Omega via svn r10960: more whirling tweaks
+	- nbluewiz via svn r10959: # Fix bossLeft not resetted. # Paragons : Fix whirling warning.
+	- nbluewiz via svn r10958: # Norushen : Remove ENCOUNTER_START trigger
+	- nbluewiz via svn r10957: # Norushen : Restore yell trigger. ENCOUNTER_START not always fires after wiped.
+	- nbluewiz via svn r10956: # Add uId check to Set icon function. # Meljarak : Fix duplicated Wind Bomb target warning.
+	- nbluewiz via svn r10955: # Also add this for safety.
+	- nbluewiz via svn r10954: # Fix lua error.
+	- Omega via svn r10953: Fix spellids in more places
+	- Omega via svn r10952: Fix several missing spellids in ToT mods
+	- Omega via svn r10951: Reviewed all AURA_DOSE. Removed unneeded IDs. Fixed missing ID on siegecrafter.
+	- nbluewiz via svn r10950: # Fix repeated scanner bug. (ugly)
+	- Omega via svn r10949: Fix more IJ spellids.
+	- nbluewiz via svn r10948: # Iron Juggernaut : Add missed spell id.
+	- nbluewiz via svn r10947: # DBM now always restores group icon setting on combat end if icon setter not disconnected. # Move ScanForMobs prototype to proper position.
+	- nbluewiz via svn r10946: # Remove useless icon table. this is "real" final fix.
+	- nbluewiz via svn r10945: # Final fix.
+	- nbluewiz via svn r10944: # Fix one more thing.
+	- nbluewiz via svn r10943: # Fix bug.
+	- nbluewiz via svn r10942: # Ordos : Add missing spell ids.
+	- nbluewiz via svn r10941: # Icon restoring for SetSortedIcon.
+	- nbluewiz via svn r10940: # Fix icon set and restoring bug.
+	- ultrashining via svn r10939: zhTW update
+	- nbluewiz via svn r10938: # Do not set icon on solo raid. # Force remove schedule icon on combat end. # Fix icon restoring not works.
+	- Omega via svn r10937: add shaman alive to variable recovery for garrosh
+	- Omega via svn r10936: include phase in status whispers too.
+	- nbluewiz via svn r10935: # Replace unregisterevents to shotrtermevents. # Fix RepeatedScan prototype not cancels.
+	- Omega via svn r10934: Change jump to center back to 5. this timer is variable. 5-7 seconds. 5 shortest time observed.
+	- Omega via svn r10933: switch event timing again, and send current power automatically at start
+	- Omega via svn r10932: fix unit power never registering on norushen
+	- Omega via svn r10931: Unregister target/mouseover events inside instances that are used for loading world bosses.
+	- Omega via svn r10930: Try to prevent too many repeat scans of death from above on engage
+	- nbluewiz via svn r10929: # Garrosh : Realm countdown option text improved. # koKR update.
+	- nbluewiz via svn r10928: # Fix special health bar not being removed.
+	- Omega via svn r10927: RU update
+	- nbluewiz via svn r10926: # Fix some special health bar bug.
+	- nbluewiz via svn r10925: # World boss mods.
+	- nbluewiz via svn r10924: # MV update. # Improve Will of Emperor mod. (this mod extremely require sync)
+	- nbluewiz via svn r10923: # CLEU for HoF.
+	- nbluewiz via svn r10922: # CLEU fix for normal RegisterEvents used.
+	- nbluewiz via svn r10921: # CLEU update for ToES.
+	- nbluewiz via svn r10920: # CLEU update for ToT mods.
+	- Omega via svn r10919: Change default special warning font color to be more noticeable, force reset defaults. Some might not like the force reset, but many more will actually start noticing the warnings and be able to actually read them in chat too.
+	- nbluewiz via svn r10918: # CLEU update : SoO 9~14.
+	- nbluewiz via svn r10917: # Fixed CLEU event unregister bug. # Apply SoO 5~8 boss.
+	- nbluewiz via svn r10916: # Fix bug.
+	- nbluewiz via svn r10915: # Oops. forgot this.
+	- nbluewiz via svn r10914: # Tweak combined show.
+	- nbluewiz via svn r10913: # CLEU change applied first 4 SoO boss.
+	- nbluewiz via svn r10912: # Apply new CLEU handling to SoOTrash.
+	- nbluewiz via svn r10911: # Apply better CLEU handling like UNIT events handling.
+	- Omega via svn r10910: make specWarnMaliciousBlast all stacks, including 1. many dps only take one stack then move out unless tank or with cooldown.
+	- Omega via svn r10909: Fix leaked global
+	- Omega via svn r10908: More fixes to infoframe hiding on wipe Sync malice, had 3 different pulls where bombardment malice not detected (out of combat log range) while spread out. Add antispam for MC interrupt.
+	- nbluewiz via svn r10907: # Fix bug.
+	- nbluewiz via svn r10906: # Fix update reminder and force disable bug.
+	- nbluewiz via svn r10905: # re-fix boss target scan bug.
+	- ebmor via svn r10904: Galakras: fix warnTowerOpen localization
+	- ebmor via svn r10903: deDE update
+	- nbluewiz via svn r10902: # Fix bugs.
+	- ultrashining via svn r10901: zhTW update
+	- nbluewiz via svn r10900: # Blackfuse : Add Inactivated weapon announce.
+	- nbluewiz via svn r10899: # Galakras : Fix add warning bug.
+	- nbluewiz via svn r10898: # Fix target scanner bug. / Fix rare lua error on EE sync.
+	- nbluewiz via svn r10897: # Change bossLeft to vb.
+	- nbluewiz via svn r10896: # Add experimental bossLeft code.
+	- Omega via svn r10895: Fix two bugs
+	- nbluewiz via svn r10894: # Apply variable sync to All SoO mods.
+	- nbluewiz via svn r10893: # I really hate custom scanner. So add this to core. Also more improve GetBossTarget.
+	- nbluewiz via svn r10892: # Speedup GetBossTarget function.
+	- Omega via svn r10891: ALso, make garrosh infoframe healer option. doesn't concern dps/tanks who else in raid doesn't have reduction. if RL isn't healer it does concern them but they can turn it on.
+	- Omega via svn r10890: Fix tower grunt timer to conform to other timers.
+	- Omega via svn r10889: Fix timerMatterScramble so it supports 2 golem up at once.
+	- Omega via svn r10888: make warnLookWithinEnd off by default, not everyone raids 10 man. too much going on, too many people going down at once on 25 man for this spammy alert.
+	- nbluewiz via svn r10887: # Add end target prototype. # Fallen Protectors : Add Corruption Kick move warning. # Galakras : Add adds warning, Pulsing Flames warning. # Dark Shaman : Apply sync to Fallen Ash warning. # Norushen : Add LookWithin end target warning. # Paragons : Fix bad whirling target warning. Improve scanning function performance. Re-add Insane Calculation timer. # Spoils : Matter Scramble cancels correctly.
+	- nbluewiz via svn r10886: # Malkorok : Remove useless blood rage cd timer.
+	- Omega via svn r10885: Couple test fights to test variables
+	- nbluewiz via svn r10884: # Apply CheckNearby to SoO mods.
+	- nbluewiz via svn r10883: # Add CheckNearby prototype.
+	- nbluewiz via svn r10882: # Core : Fix health bug. # Paragons : Fix whirl warning bug.
+	- Omega via svn r10881: add death from above near warning
+	- nbluewiz via svn r10880: # Blackfuse : Remove useless count from Shockwave Missile. Fix Shockwave spec warning not shows. Fix Death From Above special warning.
+	- nbluewiz via svn r10879: # Merge boss health fuctions. Now boss health status syncs with DBM boss health bar. Now fixed invalid health report(espcially healer). # Ignore IEEU when timer recovery working. (protectors, norushen and galakras)
+	- nbluewiz via svn r10878: # Core : Fix invalid health report. UNIT_HEALTH for bossN uId not fires. only UNIT_HEALTH_FREQUENT fires for boss uIds. But, UNIT_HEALTH_FREQUENT can consume high cpu, need to review. I will also work later to DBM boss health frames. # Thok : Add key timer. (to easier see what person have key)
+	- nbluewiz via svn r10877: # Sync phase information on timer recovery. (this can be used also other variables recovery to prevent bad warning on timer recovery) # Garrosh : Fix enter realm timer appears on phase 3 # Norushen : Enable Hatred timer for healers. # Paragons : Fix whirling warning bug. # Blackfuse -Remove Shockwave Missile timer seems to be useless. -Fix Magnetic Crush warning bug. # Thok : Slightly adjust blood frenzy end timer.
+	- Omega via svn r10876: Move to storing phase value in a way accessible by core. test on just one mod for now. if works. should be able to improve timer recovery (to also recover phase) and wipe messages to show phase with percent.
+	- Omega via svn r10875: fix a bug where info frame shows after wipe grammer fix
+	- Omega via svn r10874: small timer tweak
+	- Omega via svn r10873: raise stack taunt to 4 to avoid taunt DR Raise near warning for weapon to 20 yards
+	- Omega via svn r10872: fix lua error
+	- ultrashining via svn r10871: zhTW update
+	- Omega via svn r10870: expand info frame on garrosh to 10. on 25 man. often more than 5 without debuff.
+	- Omega via svn r10869: Prevent DBM_CORE_UPDATEREMINDER_HOTFIX showing more than once. Using the mods own antispam prototype :)
+	- Omega via svn r10868: Add desecrated weapon near warning. This warning is a smart warning and will not display on heroic difficulty in phase 1.
+	- Omega via svn r10867: Try to get curse to see an update
+	- Omega via svn r10866: I was actually going to add this info frame too, you beat me to it. However, needs to be shown right away, not 3 seconds later. People without debuff MUST be topped off on heroic or they wlll die to first annihilate which comes before 3 second.
+	- Omega via svn r10865: Use 10 second countdown on garrosh realm, give you a little more time to tab in
+	- nbluewiz via svn r10864: # Galakras : Fix first fireball CD. # Garrosh : Add info frame for damage reduce debuff. # Norushen : Fix LFR add spawn warning. # Spoils : Add info frame header.
+	- nbluewiz via svn r10863: # Twin Consorts : Fix bug.
+	- nbluewiz via svn r10862: # Change BigWigs style bar enlarge time to 11s. # Galakras : Fix first fireball CD. # Norushen : Accept ManifestationDied sync from old version of DBM. # Paragons : Fix Whirling target and near warning stuff. # Sha of Pride : Add Bursting Pride near warning. # Spoils : Matter Scramble cast bar. # Thok : Add blood phase end bar. # Iron Qon : Reduce spear warning spam. # Twin Consorts : Add Celestials assist stuff.
+	- nbluewiz via svn r10861: # Paragons - Change Kinetic Energy to Whirling. - Remove useless calculated timer. - Fix LFR Aim target timer bug. - Fix Aim cd timer.
+	- nbluewiz via svn r10860: # Core : Delay DBM kill message by 1 sec in order to not beaten by blizzard messages (loot spam, achievement spam, etc..) # Core : Add auto logging message option.
+	- nbluewiz via svn r10859: # Fix invalid scenario timer.
+	- nbluewiz via svn r10858: # Core : Fix unit_health combat detection bug.
+	- nbluewiz via svn r10857: # Try to reslove UNIT_HEALTH combat detection not works if mod loaded in combat.
+	- Omega via svn r10856: fix a bug
+	- nbluewiz via svn r10855: # Sha of anger tweak.
+	- ultrashining via svn r10854: zhTW update
+	- Omega via svn r10853: fix lua error
+	- Omega via svn r10852: Add some debug for icons
+	- Omega via svn r10851: audio countdown for realm. so you know when to tab back in in terrace face
+	- Omega via svn r10850: wrong revision, fix that
+	- Omega via svn r10849: Also, since i fixed many issues in mod, set hotfix notice so people don't complain mod is wrong for me cause they didn't update.
+	- Omega via svn r10848: make malice yell off by default. people end up using WA anyways and then i'm stuck looking at two bubbles for every debuff. I'd rather not see double chat spam. People without aura can turn mine on if they choose
+	- Omega via svn r10847: small option default change.
+	- Omega via svn r10846: sha of anger
+	- Omega via svn r10845: add reg exp to notes
+	- nbluewiz via svn r10844: # Norushen : Remove lfr filter and icon update.
+	- nbluewiz via svn r10843: # Core : Add duplicate check to SetSortedIcon prototype. # Blackfuse : Set Saw Blade yell default. Very important in heroic. # Norushen : Add Residual Corruption warning. Add Manifestation normal warning. # Malkorok : Fix timer bug. # Galakras : Adjust combat start timer -1 sec. # add many cast and personal timer.
+	- Omega via svn r10842: Add malice fading say bubbles, for less common strats.
+	- nbluewiz via svn r10841: # Fix BigWigs style bar error. # Special health bar bug fix.
+	- nbluewiz via svn r10840: # Move bad plant vs zombies localization.
+	- Omega via svn r10839: Ru update
+	- Omega via svn r10838: Test mod update
+	- tandanu via svn r10837: increment alpha version

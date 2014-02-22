@@ -1,0 +1,11 @@
+## Interface: 50001
+## X-Compatible-With: 50001
+## Title: Turn In
+## Notes: Automates the selection of quest and gossip options.
+## SavedVariables: TI_status, TI_NPCDB, TI_NPCIndex
+## Version: 2.1
+## X-Curse-Packaged-Version: 2.1.4
+## X-Curse-Project-Name: Turn In
+## X-Curse-Project-ID: turn-in
+## X-Curse-Repository-ID: wow/turn-in/mainline
+TurnIn.xml

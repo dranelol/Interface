@@ -1,0 +1,7 @@
+## Interface: 30000
+## Title: RapeDotty
+## Notes: RAEPTIEM
+## Author: Eggsampler
+## Version: 1.0
+
+RapeDotty.lua

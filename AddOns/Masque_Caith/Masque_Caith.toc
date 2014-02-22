@@ -1,0 +1,19 @@
+## Interface: 50400
+## Title: Masque: |cffff8000Caith|r
+## Version: 5.4.88
+## Author: StormFX
+## Notes: Caith skin for Masque.
+## Notes-deDE: Caith-Skin für Masque.
+## Notes-esES: Skin Caith para Masque.
+## Notes-zhTW: Masque的Caith皮膚。
+## Dependencies: Masque
+## X-Website: http://www.wowace.com/projects/masque_caith
+## X-Category: Interface Enhancements
+## X-Credits: Zeal, Caith
+## X-WoWI-ID: 8869
+## X-Curse-Packaged-Version: v5.4.88
+## X-Curse-Project-Name: Masque: Caith
+## X-Curse-Project-ID: masque_caith
+## X-Curse-Repository-ID: wow/masque_caith/mainline
+
+Caith.lua

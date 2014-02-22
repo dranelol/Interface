@@ -1,0 +1,11 @@
+## Interface: 50001
+## Title: MapNotesBrowser |c0000FF00(v1.00.50001)|r
+## Author: Cortello
+## eMail: cortello@gmx.com
+## Version: v1.00.50001
+## Notes: Frame for listing a map's notes alphabetically, and searching for notes
+## SavedVariables: 
+## OptionalDeps:
+## Dependencies: MapNotes
+
+MapNotesBrowser.xml

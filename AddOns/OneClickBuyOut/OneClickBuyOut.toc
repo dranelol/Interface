@@ -1,0 +1,18 @@
+## Interface: 50001
+## Title: OneClickBuyOut
+#@debug@
+# ## Title: |cffff0088EBG|r OneClickBuyOut
+#@end-debug@
+## LoadOnDemand: 1
+## LoadWith: Blizzard_AuctionUI
+## SavedVariables: OCBO_AucAdvance_Notified, OCBO_NoBuyout
+## OptionalDeps: BaudAuction, Auc-Advanced
+## Version: v201210250038
+## Author: egingell
+## X-Curse-Packaged-Version: v201210250038
+## X-Curse-Project-Name: OneClickBuyOut
+## X-Curse-Project-ID: ocbo
+## X-Curse-Repository-ID: wow/ocbo/mainline
+
+BrowseButton.lua
+OneClickBuyOut.lua

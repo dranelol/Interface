@@ -1,0 +1,42 @@
+## Interface: 40000
+## Title: Auction Profit Master (formerly QA)
+## Notes: Formerly Quick Auctions 3 by Shadowed
+## Author: Sapu, Jnt30
+## Version: 1.4
+## LoadManagers: AddonLoader
+## X-LoadOn-Slash: /apm, /auctinprofitmaster
+## X-LoadOn-AuctionHouse: true
+## X-LoadOn-Crafting: true
+## X-LoadOn-Mailbox: true
+## SavedVariables: AuctionProfitMasterDB
+## X-Curse-Packaged-Version: v1.4.5
+## X-Curse-Project-Name: Auction Profit Master
+## X-Curse-Project-ID: auction-profit-master
+## X-Curse-Repository-ID: wow/auction-profit-master/mainline
+
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+libs\AceAddon-3.0\AceAddon-3.0.xml
+libs\AceEvent-3.0\AceEvent-3.0.xml
+libs\AceDB-3.0\AceDB-3.0.xml
+libs\AceGUI-3.0\AceGUI-3.0.xml
+libs\AceConfig-3.0\AceConfig-3.0.xml
+libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
+libs\AceLocale-3.0\AceLocale-3.0.xml
+
+localization.enUS.lua
+localization.deDE.lua
+localization.ruRU.lua
+localization.frFR.lua
+localization.zhTW.lua
+
+AuctionProfitMaster.lua
+modules\scan.lua
+modules\manage.lua
+modules\post.lua
+modules\split.lua
+modules\summary.lua
+modules\config.lua
+modules\tradeskills.lua
+modules\mail.lua
+modules\status.lua

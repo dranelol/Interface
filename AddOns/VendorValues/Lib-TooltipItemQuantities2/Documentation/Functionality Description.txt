@@ -1,0 +1,26 @@
+
+--==-- TooltipItemQuantities2 Functionality Description --==--
+
+Addon type: Library
+Libraries used: none
+
+This embeddable addon is a library that tracks item quantities for tooltip Set<place>Item methods, so that
+other addons which require quantity information to display appropriate additional tooltip information will
+not have to hook those tooltip methods themselves.
+
+
+Here is the API, for developers:
+
+TooltipItemQuantities2.RegisterTooltip(tooltip)
+	Embeds an object called "TooltipItemQuantities2" into the tooltip and hooks all of its item methods to cache
+	the quantity for later retrieval through the method called tooltip.TooltipItemQuantitites2:GetItemQuantity().
+
+quantity, source = tooltip.TooltipItemQuantities2:GetItemQuantity()
+	Returns the quantity and source of a tooltip's current item. This is generally called during the OnTooltipSetItem
+	handler. The quantity may be 0, but will not be nil. The source is the tooltip method from which the quantity
+	was obtained, such as "SetBagItem".
+
+minor, subminor = TooltipItemQuantities2.GetVersion()
+	Returns the minor and subminor components of the currently running version of the addon. This is
+	the 2 and 3, respectively, of a number like 1.2.3. This is useful if you are depending on the non-embedded
+	version of the library.

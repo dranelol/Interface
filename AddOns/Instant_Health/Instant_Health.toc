@@ -1,0 +1,8 @@
+## Interface: 30000
+## Version: 1.1
+## Title: Instant Health
+## Author: Meloeth
+## Notes: Significantly speeds up health updates.
+## SavedVariables: IH_Settings
+Instant_Health.lua
+modules.xml

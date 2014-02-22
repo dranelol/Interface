@@ -1,0 +1,97 @@
+------------------------------------------------------------------------
+------- V 2.106
+------------------------------------------------------------------------ 
+- Fixed some bugs because blizzard changed something in there UI
+- Added Obsidian Nightwing as MultiMount
+
+------------------------------------------------------------------------
+------- V 2.105
+------------------------------------------------------------------------ 
+- Removed the text that a mount is not found ... while it is ;)
+
+------------------------------------------------------------------------
+------- V 2.104
+------------------------------------------------------------------------ 
+- Placed a workaround of the blizzard bug that the mounts get reordered ( Tnx Nizabel ) 
+
+------------------------------------------------------------------------
+------- V 2.103
+------------------------------------------------------------------------ 
+- Fixed the taint issues
+- Removed the part where stealth would remove the companion
+
+------------------------------------------------------------------------
+------- V 2.102
+------------------------------------------------------------------------ 
+- The icon texture can now be set again
+- Fixed the Auto Call Companion .. ( But changes the Filters off the Blizzard interface >< )
+- Added ButtonFacade again 
+
+------------------------------------------------------------------------
+------- V 2.101
+------------------------------------------------------------------------ 
+- Fixed a bug on the hunter class
+
+------------------------------------------------------------------------
+------- V 2.100
+------------------------------------------------------------------------ 
+- Fixed some bugs that came with the new patch ..
+- Removed the buttonfacade for now
+- Removed the collect me as its out of date
+
+- For now auto summon for pets is disabled as its now totally broken
+- Next version will fix the issue that characters have some unusable mounts ( lvl restriction or prof etc )
+
+------------------------------------------------------------------------
+------- V 2.018
+------------------------------------------------------------------------ 
+- Fixed the bug where a flymount was selected while swimming if you only had a mount that can be used as ground and fly
+- Changed the font to be more dynamic so that other languages get a proper interface
+- Added option to dismiss the companion only while steath and pvp is checked (NOTE: Option is not in the interface to set this use: "/run GUPPET_OPTIONS.AutoCompanion.DismissOnlyInPvp=1" )
+
+------------------------------------------------------------------------
+------- V 2.017
+------------------------------------------------------------------------ 
+- Fixed the incorrect declaration of the pally mount and the engineer and tailoring
+- Fixed the first time bootup bug
+- Fixed the Camouflage for hunters
+- Changed some stuff more to the V3.0 style for easy maintain both
+- Added flying from water surface
+- Dry fixed the Druid issues
+- Added checkbox in the menu for leaving form and casting mount instant
+- Added all the mounts and companions in the CollectMe but not the details yet
+
+------------------------------------------------------------------------
+------- V 2.016
+------------------------------------------------------------------------ 
+- Fixed the flying now in all places
+
+------------------------------------------------------------------------
+------- V 2.015
+------------------------------------------------------------------------ 
+- Fixed the flying stuff
+- Added some mounts
+
+------------------------------------------------------------------------
+------- V 2.014
+------------------------------------------------------------------------ 
+- Added missing mount Wooly White Rhino
+- Changed the messages for slashcommands
+- Added a easy command to reset the optionmenu location
+
+------------------------------------------------------------------------
+------- V 2.012
+------------------------------------------------------------------------ 
+- Fixed some minor bugs with great impact
+- Fixed flyzone of Wintergrasp
+
+------------------------------------------------------------------------
+------- V 2.01
+------------------------------------------------------------------------ 
+- Fixed Druids mounting
+- Removed all debug texts
+
+------------------------------------------------------------------------
+------- V 2.0
+------------------------------------------------------------------------ 
+First Beta release

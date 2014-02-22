@@ -1,0 +1,271 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+  <Script file="WhoHas.lua" />
+  <Script file="WhoHas_Scanner.lua" />
+  <Script file="WhoHas_Armory.lua" />
+  <Script file="WhoHas_Possessions.lua" />
+  <Script file="WhoHas_CharacterProfiler.lua" />
+  <Script file="WhoHas_Altoholic.lua" />
+  <Script file="Localization-enUS.lua" />
+  <Script file="Localization-deDE.lua" />
+  <Script file="Localization-frFR.lua" />
+  <Script file="OptionStrings.lua" />
+
+  <Frame name="WhoHasFrame" parent="GameTooltip" hidden="false">
+    <Scripts>
+      <OnLoad>
+        WhoHas.OnLoad(self);
+      </OnLoad>
+      <OnEvent>
+        WhoHas.OnEvent(self, event, ...);
+      </OnEvent>
+      <OnShow>
+        WhoHas.OnShow(self);
+      </OnShow>
+      <OnHide>
+        WhoHas.OnHide(self);
+      </OnHide>
+    </Scripts>
+  </Frame>
+
+  <CheckButton name="WhoHasOptionButtonTemplate" inherits="InterfaceOptionsSmallCheckButtonTemplate" virtual="true">
+    <Scripts>
+      <OnLoad>
+        _G[self:GetName().."Text"]:SetText(WhoHas.option_text[self:GetName()]);
+        self.var = WhoHas.option_strings[self:GetName()];
+      </OnLoad>
+      <OnShow>
+        self:SetChecked(WhoHasConfig[self.var]);
+      </OnShow>
+      <OnClick>
+        WhoHasConfig[self.var] = self:GetChecked();
+        if (self:GetChecked()) then
+          PlaySound("igMainMenuOptionCheckBoxOff");
+        else
+          PlaySound("igMainMenuOptionCheckBoxOn");
+        end
+        WhoHas.OptionsChanged();
+      </OnClick>
+    </Scripts>
+  </CheckButton>
+
+  <Frame name="WhoHasOptionsPanel" hidden="true" parent="InterfaceOptionsFramePanelContainer">
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString name="$parentTitle" text="WHOHAS_TITLE" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="16" y="-16"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentSubText" text="WHOHAS_SUBTEXT" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
+          <Size>
+            <AbsDimension y="32" x="0"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+              <Offset>
+                <AbsDimension x="0" y="-8"/>
+              </Offset>
+            </Anchor>
+            <Anchor point="RIGHT">
+              <Offset>
+                <AbsDimension x="-32" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Button name="$parentBackendSelection" inherits="UIDropDownMenuTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentSubText" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="100" y="-8"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString name="$parentCaption" text="WHOHAS_BACKEND_TEXT" inherits="GameFontHighlightSmall" justifyH="LEFT" justifyV="TOP">
+              <Anchors>
+                <Anchor point="LEFT">
+                  <Offset>
+                    <AbsDimension x="-100" y="4"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Scripts>
+          <OnLoad>
+            self.type = CONTROLTYPE_DROPDOWN;
+            WhoHas.BackendList_OnLoad(self);
+          </OnLoad>
+        </Scripts>
+      </Button>
+      <CheckButton name="$parentEnableButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentSubText" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <!--
+              <AbsDimension x="-2" y="-8"/>
+              -->
+              <AbsDimension x="-2" y="-40"/>
+            </Offset>
+          </Anchor>
+          <!--
+          <Anchor point="TOPLEFT" relativeTo="$parentTotalsButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+          -->
+        </Anchors>
+      </CheckButton>    
+      <CheckButton name="$parentTotalsButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentEnableButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+      <CheckButton name="$parentStackSizeButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentTotalsButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+      <CheckButton name="$parentVaultButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentStackSizeButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+      <CheckButton name="$parentAllGuildsButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentVaultButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+      <CheckButton name="$parentTabsButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentAllGuildsButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+      <CheckButton name="$parentInboxButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentTabsButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+      <CheckButton name="$parentVoidStoreButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentInboxButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+      <CheckButton name="$parentEquipmentButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentVoidStoreButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+      <CheckButton name="$parentFactionsButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentEquipmentButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+      <CheckButton name="$parentRealmsButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentFactionsButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+      <CheckButton name="$parentBagsButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentRealmsButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+      <CheckButton name="$parentWorldButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentBagsButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+      <CheckButton name="$parentMinesButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentWorldButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+      <CheckButton name="$parentOresButton" inherits="WhoHasOptionButtonTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentMinesButton" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </CheckButton>      
+    </Frames>
+    <Scripts>
+      <OnLoad>
+        self.name = "WhoHas";
+        InterfaceOptions_AddCategory(self);
+      </OnLoad>
+      <OnShow>
+        WhoHas.OptionsPanel_OnShow(self);
+      </OnShow>
+      <OnEvent>
+      </OnEvent>
+    </Scripts>  
+  </Frame>
+</Ui>

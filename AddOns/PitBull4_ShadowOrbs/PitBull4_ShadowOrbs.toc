@@ -1,0 +1,29 @@
+## Interface: 50400
+## Title: PitBull4 |r[|cffeda55fShadow orbs|r]
+## Title-deDE: PitBull4 |r[|cffeda55fSchattenkugeln|r]
+## Title-esES: PitBull4 |r[|cffeda55fShadow orbs|r]
+## Title-frFR: PitBull4 |r[|cffeda55fOrbes d'ombre|r]
+## Title-koKR: PitBull4 |r[|cffeda55f어둠의 구슬|r]
+## Title-ruRU: PitBull4 |r[|cffeda55fСферы тьмы|r]
+## Title-zhCN: PitBull4 |r[|cffeda55f暗影宝珠|r]
+## Title-zhTW: PitBull4 |r[|cffeda55f暗影寶珠|r]
+## Notes: Show Priest Shadow orbs.
+## Notes-deDE: Zeige Priester Schattenkugeln
+## Notes-esES: Show Priest Shadow orbs.
+## Notes-frFR: Les Orbes d'ombre du Prêtre Ombre
+## Notes-koKR: 사제의 어둠의 구슬을 보여줍니다
+## Notes-ruRU: Показывает сферы тьмы жрецов.
+## Notes-zhCN: 显示牧师暗影宝珠
+## Notes-zhTW: 顯示牧師暗影寶珠。
+## Author: Shefki
+## DefaultState: enabled
+## LoadOnDemand: 1
+## Dependencies: PitBull4
+## Version: v4.0.0-beta48
+## X-PitBull4-Condition: return select(2, UnitClass("player")) == "PRIEST" and select(4, GetBuildInfo()) >= 50000
+## X-Curse-Packaged-Version: v4.0.0-beta48
+## X-Curse-Project-Name: PitBull Unit Frames 4.0
+## X-Curse-Project-ID: pitbull4
+## X-Curse-Repository-ID: wow/pitbull4/mainline
+
+load.xml

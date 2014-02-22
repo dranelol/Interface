@@ -1,0 +1,169 @@
+Interface: 5.0.1
+Title: BalancePowerTracker
+Version: 1.3.4
+Author: Kurohoshi (EU-Minahonda)
+
+--INFO
+BPT's main purpose is providing a highly configurable eclipse bar with energy prediction to Balance druids. 
+It's focused on using the CPU strictly necessary and no more, therefore, it's divided into several modules.
+Energy track and prediction supported by LibBalancePowerTracker.
+Masque, MikSBT & LibSharedMedia are supported.
+Created & maintained by Kurohoshi (EU - Minahonda).
+	
+--CHANGELOG
+v 1.3.4 FIX: Included "" string in localized critter name zhCN to avoid errors in chinese client (couldn't log in beta with that locale)
+	FEATURE: Added option to completely disable border
+	FEATURE: Added option to change border size
+	FEATURE: Grow bar returns
+	FEATURE: Added option to enable/disable complete addon
+	FEATURE: Show only icons option added to default art bar
+	FIX: Options GUI update when changing options from outside
+	FIX: Options descriptions
+
+v 1.3.3 (Release for MoP)
+	FIX: Bar spark when having weird screen resolutions
+	FEATURE: Eclipse Icons added
+	FEATURE: Default art added
+	CHANGE: Pipe disabled on action blocked by any addon, just in case
+	FEATURE: LibSharedMedia support
+	FEATURE: LibButtonFacade support
+	FEATURE: Options completed
+	CHANGE: Removed LibBetterBlizzOptions
+	CHANGE: Updated LibBalancePowerTracker
+
+v 1.3.2 CHANGE: Very alpha release of new BPT for MoP, UI coded from 0, still many things to do...
+
+v 1.3.1 FIX: New mechanics in LBPT, some weird interactions between skills now are handled OK
+             (try to gain a Eclipse and then spend a "talent" point... you will see)
+
+v 1.3.0 FIX: Early fix to work with MoP, both BPT and LBPT, many changes inconming!
+
+v 1.2.7 FIX: Module loader fix when having disabled all BPT's side addons
+		FIX: Conflict with kgpanels via LibSharedMedia
+
+v 1.2.6 CHANGE: Option to ignore virtual energy whien you can gain both lunar and solar at the same time (Updated BalancePowerTracker_Options)
+		FIX: Updated LibBalancePowerTracker (Memory leak fixed, eclipse direction when entering arena, increased time to delete flying spells)
+		CHANGE: Updated .toc
+		FIX: Module loader fixed
+
+v 1.2.5 FIX: Updated LibBalancePowerTracker to handle Euphoria & 4T12 bonus hotfix
+
+v 1.2.4 FIX: Issues with lightmymacro
+		CHANGE: Option to disable the loading message, BalancePowerTracker_Options updated
+		CHANGE: LibBalancePowerTracker updated
+
+v 1.2.3 FIX: Move freely is now working again
+		FIX: LibBalancePowerTracker had some bugs fixed and is now updated.
+
+v 1.2.2 FIX; Lua error when Shooting stars proc
+
+v 1.2.1 FIX: Tier 12 fully supported now
+		CHANGE: LibBalancePowerTracker updated
+		CHANGE: Minor change due to reachEnd converted into VirtualEcipse (still using reachEnd)
+
+v 1.2.0 FIX: Now working in 4.2 patch.
+		FIX: Updated libraries.
+		FEATURE: BalancePowerTracker_Pipe: now you can use BPT's values in PowerAuras when this module is loaded.
+		FEATURE: BalancePowerTracker_Log: Found a bug? Please, log it with this tool.
+		CHANGE: BalancePowerTracker_Options: BPT's options were moved into a new AddOn in order to free a little memory.
+
+v 1.1.8 FIX: Now working in 4.1 patch.
+
+v 1.1.7 FIX: MSBT displaying "Move me!" when having alert warning turned off.
+		FEATURE: You can configure BPT to show/hide Eclipse spell effect using virtual info.
+
+v 1.1.6 FIX: Fixed still more issues with loading/storing settings (the ones that weren't corrected in v1.1.5, I think I've got all)
+
+v 1.1.5 FIX: Fixed issues with loading/storing settings
+
+v 1.1.4 CHANGE: Updated LibBalancePowerTracker.
+		FEATURE: Added sound effects alerts.
+		CHANGE: Minor improvements to code.
+		CHANGE: Updated to use the most recent ACE3 libs
+
+v 1.1.3 FEATURE: Custom form show/hide
+		FIX: Check Eclipse buff on teleport (for when entering arena)
+		FEATURE: Option to display lunar energy as negative energy
+		CHANGE: Updated LibBalancePowerTracker to the last build (1.0.3)
+		FIX: Reset works with callbacks.
+		FEATURE: Eclipse Chance calculation (Beta stage): See advanced tab.
+		FETAURE: Statistically Energy calculation (Beta stage): See advanced tab.
+
+v 1.1.2 FEATURE: Added option to change icon texture to media tab.
+		FIX: Original icons fixed
+		CHANGE: Icon offset range changed to [-30,30]
+		FEATURE: Added warning when you interrupt/fail to cast the spell that was going to give you Eclipse
+		FEATURE: Added other glow.
+			-LibBalancePowerTracker updated to include PvP bonus and improved eclipse direction fetching
+
+v 1.1.1 CHANGE: Oops, forgot to remove unused libraries, updated the others.
+		FEATURE: Added option to change relative point.
+		FIX: When deactivating LBF, the icons scale correctly.
+		CHANGE: Minor interface changes to allow the use of external skins.
+
+v 1.1.0 CHANGE: Massive changes to reduce CPU usage by 70%
+				- Energy track moved to library
+
+v 1.0.8	FIX: Showing addon when visible was not enabled
+		FEATURE: BalancePowerTracker_SharedInfo.hidden added
+		FEATURE: BalancePowerTracker_SharedInfo.enabled added
+		FEATURE: MSBT support
+		FEATURE: Text color and size can be changed
+		FEATURE: Icon offset can be changed
+		FIX: Position sliders gap reduced
+		CHANGE: Some functions moved from ADDON_LOADED to PLAYER_LOGIN shouldn't be any problem
+		FIX: Removed LibButtonFacade, but ButtonFacade is still supported
+		CHANGE: Hiding behaviour improved
+		FIX: Arrow not working like it should after teleporting
+
+v 1.0.7	FIX: Showing default blizz frame when getting out of vehicle
+		FIX: Not showing the foresee energy bar when reaching end
+		FIX: Bar not updating when teleporting & changing form at the same time
+		FIX: Enlarging both icons when there was no eclipse direction
+		FEATURE: Arrow can be scaled
+		FEATURE: Eclipse icons can be hidden
+		FEATURE: Show addon when not in Caster/Moonkin Form option
+		FEATURE: Border color can be changed
+		FEATURE: Added option to color the entire bar based on direction (You can select the info used to color the bar)
+		FEATURE: /bpt & /balancepowertracker show the config window
+		CHANGE: You can now select the info displayed on the icons (before, it used arrow's info)
+		CHANGE: Icons can be scaled
+		FEATURE: Original Icons can be selected (Need some tweaks)
+		FEATURE: ButtonFacade support
+		FEATURE: Bar can be set to vertical or horizontal
+		FEATURE: Added public functions to enable/disable/show/hide the addon and to start/stop foreseeing energy
+
+v 1.0.6	Not detecting instant SS bug fixed (I didn't find this one on time)
+
+v 1.0.5	Created & using SpellQueue ADT, easier to maintain code
+		In text you can configure which energy should be displayed
+		In arrow you can configure which info should be displayed
+		You can hide the former "addEnergy" bar without losing the benefits of Foresee energy
+		Add energy renamed to "Foresee energy"
+		Options clarified
+
+v 1.0.4	Perfomance improved: CPU usage reduced by aprox. 65-70%!
+		Alpha OOC added!
+		Fixed textures
+		Fixed not showing Virtual Eclipse on instant SS cast bug
+		Share Info and Same Color options removed
+		Options Revamped
+		Added screenflash warning
+		Added function to enlarge the Eclipse Icon you should aim to
+
+v 1.0.3 Uptaded "add energy" to the last ptr build (13082)
+		You can choose between arrow instead and spark (if you choose arrow, the text will move so you can see the arrow)
+		You can hide the energy text
+		New function added: Warnings
+		Bunch of minor bugs fixes
+v 1.0.2 Uptaded "add energy" to the last ptr build (13033):
+			SS fixed energy
+			fixed WR sometimes 14 energy
+			smoothly!
+			unregister its events when not using it, to free CPU
+		Fixed checking form when not having all forms trained
+		Info box in style tab
+		Strata and alpha can be changed
+v 1.0.1 Fixed Blizz Frame showing when not Balance and some bugs also with Blizz Frame & Power tracker
+		Fixed missing lib
+v 1.0.0 Release

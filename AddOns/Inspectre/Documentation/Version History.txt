@@ -1,0 +1,15 @@
+
+--==-- Inspectre Version History --==--
+
+2.0.0 (Jan 6, 2009):
+	New:
+		- Updated for WotLK.
+
+
+1.0.1 (May 17, 2008):
+	- Updated to account for an undocumented change in 2.4.2 that added another check
+		to cause the InspectFrame to close when no unit is targeted.
+
+
+1.0.0 (Apr 9, 2008):
+	- Initial release.

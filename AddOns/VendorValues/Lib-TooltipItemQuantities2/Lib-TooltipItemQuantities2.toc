@@ -1,0 +1,9 @@
+## Interface: 30000
+## Title: Lib-TooltipItemQuantities2
+## Version: 2.1.0
+## Author: Saeris
+## LoadOnDemand: 1
+
+## Notes: A library to easily retrieve the quantity of an item being displayed in a given tooltip.
+
+TooltipItemQuantities2.lua

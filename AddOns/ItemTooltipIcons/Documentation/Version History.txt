@@ -1,0 +1,19 @@
+
+--==-- ItemTooltipIcons Version History --==--
+
+2.0.0 (Jan 6, 2009):
+	New:
+		- Updated for WotLK.
+
+
+1.0.2 (Jul 22, 2008):
+	- Fixed a conflict with a newer version of ConfigManager1 that would cause icons to reset at login
+		to being shown for both tooltips.
+
+
+1.0.1 (May 31, 2008):
+	- Now uses the "delete empty tables at logout" feature of the ConfigManager1 library.
+
+
+1.0.0 (Apr 22, 2008):
+	- Initial release.

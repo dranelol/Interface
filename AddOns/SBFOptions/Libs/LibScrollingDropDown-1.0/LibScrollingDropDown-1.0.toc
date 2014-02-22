@@ -1,0 +1,14 @@
+﻿## Interface: 20300
+## Title: LibScrollingDropDown-1.0
+## Notes: A dropdown menu with 10 buttons and a scrollbar (no multiple level support)
+## Author: Satrina
+## X-Email: magicman@familyofnine.org
+## X-WoWIPortal: satrina
+## X-Category: Library
+## X-Curse-Packaged-Version: 3.2.6
+## X-Curse-Project-Name: SatrinaBuffFrame
+## X-Curse-Project-ID: satrina-buff-frame
+## X-Curse-Repository-ID: wow/satrina-buff-frame/mainline
+
+LibStub\LibStub.lua
+LibScrollingDropDown-1.0.lua

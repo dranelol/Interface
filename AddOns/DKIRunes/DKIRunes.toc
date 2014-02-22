@@ -1,0 +1,20 @@
+## Interface: 50200
+## Title: DKIRunes
+## Notes: Rune display based on the contest and community feedback of DeathKnight.info
+##		http://deathknight.info/
+##	  Initial coding framework derived from EbonBlade 2.4.3
+##		http://www.curse.com/downloads/details/13315/
+##	  Rune design by vectorvixen
+##		http://www.vectorvixen.com/
+##	  Special thanks to the following DKi members:
+##		Kuorag, Karaoke, Requiem, Xenithryu, Lykofos, Farsight, Dahnek, Venia, Squid Knight, Liquidwulfe, salamondo, Runick, Contempt, Dotdotcom, Woe, Sanzan, tehTali, DLMyst, Alistra, Darma, Accident, Adaran, Izbay, DragoonV, Verata, Zennie, Raylek, Vector-
+##		...and of course, Kenzi, for bringing us all together
+##
+##		Extra thanks go to ElderFuthark for his original creation/support of this mod from WotLK through Cataclysm
+##		-- Hanzo
+## SavedVariables: DKIRunes_Saved
+
+DKIRunes.xml
+
+DKIRunes.lua
+DKIRunesOptions.lua

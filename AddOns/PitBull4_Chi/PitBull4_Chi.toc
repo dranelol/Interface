@@ -1,0 +1,29 @@
+## Interface: 50400
+## Title: PitBull4 |r[|cffeda55fChi|r]
+## Title-deDE: PitBull4 |r[|cffeda55fChi|r]
+## Title-esES: PitBull4 |r[|cffeda55fChi|r]
+## Title-frFR: PitBull4 |r[|cffeda55fChi|r]
+## Title-koKR: PitBull4 |r[|cffeda55f기|r]
+## Title-ruRU: PitBull4 |r[|cffeda55fЦи|r]
+## Title-zhCN: PitBull4 |r[|cffeda55f真气|r]
+## Title-zhTW: PitBull4 |r[|cffeda55f真氣|r]
+## Notes: Show Monk chi icons.
+## Notes-deDE: Zeige Mönch Chi Icons
+## Notes-esES: Show Monk chi icons.
+## Notes-frFR: Montrer les icônes de chi du Moine
+## Notes-koKR: Show Monk chi icons.
+## Notes-ruRU: Показывать иконки ресурса монахов ци
+## Notes-zhCN: 显示武僧真气图标
+## Notes-zhTW: 顯示武僧的真氣圖示。
+## Author: Shefki
+## DefaultState: enabled
+## LoadOnDemand: 1
+## Dependencies: PitBull4
+## Version: v4.0.0-beta48
+## X-PitBull4-Condition: return select(2, UnitClass("player")) == "MONK"
+## X-Curse-Packaged-Version: v4.0.0-beta48
+## X-Curse-Project-Name: PitBull Unit Frames 4.0
+## X-Curse-Project-ID: pitbull4
+## X-Curse-Repository-ID: wow/pitbull4/mainline
+
+load.xml

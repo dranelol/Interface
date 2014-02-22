@@ -1,0 +1,13 @@
+## Author: Scruffles
+## Dependencies: DBM-Core
+## Interface: 30300
+## Notes: Tracks all the essentials for a moonkin, including Eclipse and its cooldown, Moonfire, and Insect Swarm, and all the others!
+## SavedVariables: Eclipse
+## Title: Eclipse
+## Version: 3.6
+
+
+Eclipse.xml
+
+Eclipse.lua
+EclipseGUI.lua

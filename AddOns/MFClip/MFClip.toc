@@ -1,0 +1,44 @@
+## Interface: 50400
+## Title: MFClip v2.23
+## Notes: All-in-one shadow priest addon.
+## Author: elchefe <>
+## Version: v2.23
+## SavedVariables: MFClipDB
+## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
+## X-Embeds: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets
+## X-Category: Priest
+## LoadOnDemand: 0
+## DefaultState: enabled
+## X-Curse-Packaged-Version: v2.23
+## X-Curse-Project-Name: MFClip
+## X-Curse-Project-ID: mfclip
+## X-Curse-Repository-ID: wow/mfclip/mainline
+
+# Libraries
+#@no-lib-strip@
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\AceAddon-3.0\AceAddon-3.0.xml
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+Libs\AceConfig-3.0\AceConfig-3.0.xml
+Libs\AceConsole-3.0\AceConsole-3.0.xml
+Libs\AceDB-3.0\AceDB-3.0.xml
+Libs\AceEvent-3.0\AceEvent-3.0.xml
+Libs\LibSharedMedia-3.0\lib.xml
+Libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
+#@end-no-lib-strip@
+
+# LibDataBroker
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+
+# xml
+embeds.xml
+
+# lua
+MFClip.lua
+MFClip_options.lua
+default.lua
+livebars.lua
+
+# StatusBar implementation (taken over from Gnosis)
+CreateStatusBar.lua

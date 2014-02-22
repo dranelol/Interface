@@ -1,0 +1,32 @@
+## Interface: 50400
+## Title: RaidBuffStatus
+## Author: Danielbarron, oscarucb
+## Version: 5.8.0
+## X-Build: 657
+## X-ReleaseDate: 2013-10-23T03:01:27Z
+## X-Revision: $Revision: 647 $
+## Notes: Reports on a configurable dashboard or to group chat on consumables, buffs, AFK, mana and many many others but in an intelligent automagic way. RBS is the last nail in the coffin of all slacking level max-level raiders
+## URL: http://www.wowace.com/projects/raidbuffstatus/
+## DefaultState: Enabled
+## OptionalDeps: Ace3, XPerl, LibGroupInSpecT-1.0
+## SavedVariables: RaidBuffStatusDB, RaidBuffStatusDefaultProfile
+## X-Category: Raid
+## X-Embeds: Ace3, LibDataBroker-1.1, LibGroupInSpecT-1.0
+## LoadManagers: AddonLoader
+## X-LoadOn-Group: true
+## X-LoadOn-Slash: /raidbuffstatus, /rbs
+## X-Curse-Packaged-Version: 5.8.0
+## X-Curse-Project-Name: RaidBuffStatus
+## X-Curse-Project-ID: raidbuffstatus
+## X-Curse-Repository-ID: wow/raidbuffstatus/mainline
+
+embeds.xml
+
+locale.lua
+
+Core.lua
+Buffs.lua
+Config.lua
+MiniMap.lua
+ToolScanner.lua
+oRAEvent.lua

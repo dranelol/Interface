@@ -1,0 +1,32 @@
+## Interface: 40000
+## Title: Loot Filter
+## Notes: Filter items you get from looting
+## Author: meter@lootfilter.com, tweak@lootfilter.com
+## URL: http://www.lootfilter.com
+## SavedVariables: LootFilterVars
+## X-Version: 3.20
+
+xml\templates.xml
+
+LootFilter.lua
+LootFilter_new.lua
+
+locale\en.lua
+locale\cn.lua
+locale\de.lua
+locale\fr.lua
+locale\es.lua
+locale\tw.lua
+locale\ru.lua
+
+lib\ui.lua
+lib\events.lua
+lib\scheduler.lua
+lib\util.lua
+lib\cleaning.lua
+lib\caching.lua
+lib\filtering.lua
+lib\matching.lua
+lib\item.lua
+
+LootFilter.xml

@@ -1,0 +1,1361 @@
+42954 : { # Glyph of Adrenaline Rush                                
+        spells = [57112],                                           
+        classes = [4]                                               
+}                                                                   
+42897 : { # Glyph of Aimed Shot                                     
+        spells = [56994], 
+        classes = [3]                                               
+}                                                                   
+42955 : { # Glyph of Ambush                                         
+        spells = [57113],                                           
+        classes = [4]                                               
+}                                                                   
+43533 : { # Glyph of Anti-Magic Shell                               
+        spells = [57207],                                           
+        classes = [6]                                               
+}                                                                   
+43316 : { # Glyph of Aquatic Form                                   
+        spells = [58286],                                           
+        classes = [11]                                              
+}                                                                   
+45738 : { # Glyph of Arcane Barrage                                 
+        spells = [64276],                                           
+        classes = [8]                                               
+}                                                                   
+44955 : { # Glyph of Arcane Blast                                   
+        spells = [56991],                                           
+        classes = [8]                                               
+}                                                                   
+43339 : { # Glyph of Arcane Intellect                               
+        spells = [58303],                                           
+        classes = [8]                                               
+}                                                                   
+42735 : { # Glyph of Arcane Missiles                                
+        spells = [56971],                                           
+        classes = [8]                                               
+}                                                                   
+42736 : { # Glyph of Arcane Power                                   
+        spells = [56972],                                           
+        classes = [8]                                               
+}                                                                   
+42898 : { # Glyph of Arcane Shot                                    
+        spells = [56995],                                           
+        classes = [3]                                               
+}                                                                   
+43355 : { # Glyph of Aspect of the Pack
+        spells = [58297],
+        classes = [3]
+}
+43381 : { # Glyph of Astral Recall                                  
+        spells = [58329],                                           
+        classes = [7]                                               
+}                                                                   
+42956 : { # Glyph of Backstab                                       
+        spells = [57114],                                           
+        classes = [4]                                               
+}                                                                   
+42456 : { # Glyph of Bane of Agony                                 
+        spells = [57260],                                           
+        classes = [9]                                               
+}                                                                   
+45623 : { # Glyph of Barkskin                                       
+        spells = [64256],                                           
+        classes = [11]                                              
+}                                                                   
+43395 : { # Glyph of Battle                                         
+        spells = [58342],                                           
+        classes = [1]                                               
+}                                                                   
+45741 : { # Glyph of Beacon of Light                                
+        spells = [64277],                                           
+        classes = [2]                                               
+}                                                                   
+45601 : { # Glyph of Berserk                                        
+        spells = [64268],                                           
+        classes = [11]                                              
+}                                                                   
+43396 : { # Glyph of Berserker Rage                                      
+        spells = [58343],                                           
+        classes = [1]                                               
+}                                                                   
+42902 : { # Glyph of Bestial Wrath                                  
+        spells = [56999],                                           
+        classes = [3]                                               
+}                                                                   
+42957 : { # Glyph of Blade Flurry                                   
+        spells = [57115],                                           
+        classes = [4]                                               
+}                                                                   
+45790 : { # Glyph of Bladestorm                                     
+        spells = [64295],                                           
+        classes = [1]                                               
+}                                                                   
+44920 : { # Glyph of Blast Wave                                     
+        spells = [56990],                                           
+        classes = [8]                                               
+}                                                                   
+43365 : { # Glyph of Blessing of Kings                              
+        spells = [58311],                                           
+        classes = [2]                                               
+}                                                                   
+43340 : { # Glyph of Blessing of Might                              
+        spells = [58314],                                           
+        classes = [2]                                               
+}                                                                   
+64493 : { # Glyph of Blind
+        spells = [92579],
+        classes = [4]
+}
+42737 : { # Glyph of Blink                                          
+        spells = [56973],                                           
+        classes = [8]                                               
+}                                                                   
+43826 : { # Glyph of Blood Boil                                   
+        spells = [59339],                                           
+        classes = [6]                                               
+}                                                                   
+43535 : { # Glyph of Blood Tap                                      
+        spells = [57209],                                           
+        classes = [6]                                               
+}                                                                   
+43416 : { # Glyph of Bloodthirst                                      
+        spells = [57156],                                           
+        classes = [1]                                               
+}                                                                   
+43412 : { # Glyph of Bloody Healing                                    
+        spells = [57153],                                           
+        classes = [1]                                               
+}                                                                   
+43379 : { # Glyph of Blurred Speed                                  
+        spells = [58323],                                           
+        classes = [4]                                               
+}                                                                   
+43536 : { # Glyph of Bone Shield                                    
+        spells = [57210],                                           
+        classes = [6]                                               
+}                                                                   
+41517 : { # Glyph of Chain Heal                                     
+        spells = [57232],                                           
+        classes = [7]                                               
+}                                                                   
+41518 : { # Glyph of Chain Lightning                                
+        spells = [57233],                                           
+        classes = [7]                                               
+}                                                                   
+43537 : { # Glyph of Chains of Ice                                  
+        spells = [57211],                                           
+        classes = [6]                                               
+}                                                                   
+43334 : { # Glyph of Challenging Roar                               
+        spells = [58287],                                           
+        classes = [11]                                              
+}                                                                   
+45781 : { # Glyph of Chaos Bolt                                     
+        spells = [64294],                                           
+        classes = [9]                                               
+}                                                                   
+45625 : { # Glyph of Chimera Shot                                   
+        spells = [64271],                                           
+        classes = [3]                                               
+}                                                                   
+42396 : { # Glyph of Circle of Healing                              
+        spells = [57181],                                           
+        classes = [5]                                               
+}                                                                   
+41104 : { # Glyph of Cleansing                                      
+        spells = [57020],                                           
+        classes = [2]                                               
+}                                                                   
+43414 : { # Glyph of Cleaving                                       
+        spells = [57154],                                           
+        classes = [1]                                               
+}                                                                   
+45769 : { # Glyph of Cloak of Shadows                               
+        spells = [64303],                                           
+        classes = [4]                                               
+}                                                                   
+63481 : { # Glyph of Colossus Smash
+        spells = [89815],
+        classes = [1]
+}
+49084 : { # Glyph of Command                                        
+        spells = [68166],                                           
+        classes = [1]                                               
+}                                                                   
+42901 : { # Glyph of Concussive Shot                            
+        spells = [56998],                                           
+        classes = [3]                                               
+}                                                                   
+42753 : { # Glyph of Cone of Cold                                   
+        spells = [56988],                                           
+        classes = [8]                                               
+}                                                                   
+42454 : { # Glyph of Conflagrate                                    
+        spells = [57258],                                           
+        classes = [9]                                               
+}                                                                   
+43359 : { # Glyph of Conjuring                                    
+        spells = [58306],                                           
+        classes = [8]                                               
+}                                                                   
+41099 : { # Glyph of Consecration                                   
+        spells = [57023],                                           
+        classes = [2]                                               
+}                                                                   
+42455 : { # Glyph of Corruption                                     
+        spells = [57259],                                           
+        classes = [9]                                               
+}                                                                   
+42958 : { # Glyph of Crippling Poison                               
+        spells = [57116],                                           
+        classes = [4]                                               
+}                                                                   
+41098 : { # Glyph of Crusader Strike                                
+        spells = [57024],                                           
+        classes = [2]                                               
+}                                                                   
+43392 : { # Glyph of Curse of Exhaustion                            
+        spells = [58338],                                           
+        classes = [9]                                               
+}                                                                   
+45799 : { # Glyph of Dancing Rune Weapon                            
+        spells = [64297],                                           
+        classes = [6]                                               
+}                                                                   
+43674 : { # Glyph of Dash                                           
+        spells = [59315],                                           
+        classes = [11]                                              
+}                                                                   
+43868 : { # Glyph of Dazing Shield                          
+        spells = [59560],                                           
+        classes = [2]                                               
+}                                                                   
+42959 : { # Glyph of Deadly Throw                                   
+        spells = [57117],                                           
+        classes = [4]                                               
+}                                                                   
+43542 : { # Glyph of Death and Decay                                
+        spells = [57214],                                           
+        classes = [6]                                               
+}                                                                   
+45804 : { # Glyph of Death Coil                                     
+        spells = [64266],                                           
+        classes = [6]                                               
+}                                                                   
+42457 : { # Glyph of Death Coil                                     
+        spells = [57261],                                           
+        classes = [9]                                               
+}                                                                   
+43541 : { # Glyph of Death Grip                                     
+        spells = [57213],                                           
+        classes = [6]                                               
+}                                                                   
+43827 : { # Glyph of Death Strike                                   
+        spells = [59340],                                           
+        classes = [6]                                               
+}                                                                   
+67483 : { # Glyph of Death Wish
+        spells = [94405],
+        classes = [1]
+}
+43539 : { # Glyph of Death's Embrace                                
+        spells = [57215],                                           
+        classes = [6]                                               
+}                                                                   
+45736 : { # Glyph of Deep Freeze                                    
+        spells = [64274],                                           
+        classes = [8]                                               
+}                                                                   
+45782 : { # Glyph of Demonic Circle                                 
+        spells = [64317],                                           
+        classes = [9]                                               
+}                                                                   
+43398 : { # Glyph of Demoralizing Shout                                   
+        spells = [58345],                                           
+        classes = [1]                                               
+}                                                                   
+42903 : { # Glyph of Deterrence                                     
+        spells = [57000],                                           
+        classes = [3]                                               
+}                                                                   
+43415 : { # Glyph of Devastate                                      
+        spells = [57155],                                           
+        classes = [1]                                               
+}                                                                   
+42904 : { # Glyph of Disengage                                      
+        spells = [57001],                                           
+        classes = [3]                                               
+}                                                                   
+42397 : { # Glyph of Dispel Magic                                   
+        spells = [57183],                                           
+        classes = [5]                                               
+}                                                                   
+45753 : { # Glyph of Dispersion                                     
+        spells = [64280],                                           
+        classes = [5]                                               
+}                                                                   
+43376 : { # Glyph of Distract                                       
+        spells = [58324],                                           
+        classes = [4]                                               
+}                                                                   
+45758 : { # Glyph of Divine Accuracy                                   
+        spells = [64283],                                           
+        classes = [5]                                               
+}                                                                   
+41106 : { # Glyph of Divine Favor                                     
+        spells = [57029],                                           
+        classes = [2]                                               
+}                                                                   
+45745 : { # Glyph of Divine Plea                                    
+        spells = [64305],                                           
+        classes = [2]                                               
+}                                                                   
+41096 : { # Glyph of Divine Protection                           
+        spells = [57022],                                           
+        classes = [2]                                               
+}                                                                   
+41108 : { # Glyph of Divinity                                       
+        spells = [57031],                                           
+        classes = [2]                                               
+}                                                                   
+42754 : { # Glyph of Dragon's Breath                                
+        spells = [56989],                                           
+        classes = [8]                                               
+}                                                                   
+43390 : { # Glyph of Drain Soul                                     
+        spells = [58337],                                           
+        classes = [9]                                               
+}                                                                   
+45775 : { # Glyph of Earth Shield                                   
+        spells = [64261],                                           
+        classes = [7]                                               
+}                                                                   
+41527 : { # Glyph of Earthliving Weapon                             
+        spells = [57236],                                           
+        classes = [7]                                               
+}                                                                   
+41552 : { # Glyph of Elemental Mastery                              
+        spells = [57250],                                           
+        classes = [7]                                               
+}                                                                   
+43400 : { # Glyph of Enduring Victory                               
+        spells = [58347],                                           
+        classes = [1]                                               
+}                                                                   
+43393 : { # Glyph of Enslave Demon                                  
+        spells = [58339],                                           
+        classes = [9]                                               
+}                                                                   
+40924 : { # Glyph of Entangling Roots                               
+        spells = [48121],                                           
+        classes = [11]                                              
+}                                                                   
+42960 : { # Glyph of Evasion                                        
+        spells = [57119],                                           
+        classes = [4]                                               
+}                                                                   
+42961 : { # Glyph of Eviscerate                                     
+        spells = [57120],                                           
+        classes = [4]                                               
+}                                                                   
+42738 : { # Glyph of Evocation                                      
+        spells = [56974],                                           
+        classes = [8]                                               
+}                                                                   
+41103 : { # Glyph of Exorcism                                       
+        spells = [57025],                                           
+        classes = [2]                                               
+}                                                                   
+45731 : { # Glyph of Explosive Shot                                 
+        spells = [64273],                                           
+        classes = [3]                                               
+}                                                                   
+42962 : { # Glyph of Expose Armor                                   
+        spells = [57121],                                           
+        classes = [4]                                               
+}                                                                   
+42398 : { # Glyph of Fade                                           
+        spells = [57184],                                           
+        classes = [5]                                               
+}                                                                   
+43342 : { # Glyph of Fading                                         
+        spells = [58317],                                           
+        classes = [5]                                               
+}                                                                   
+67485 : { # Glyph of Faerie Fire
+        spells = [94403],
+        classes = [11]
+}
+45766 : { # Glyph of Fan of Knives                                  
+        spells = [64315],                                           
+        classes = [4]                                               
+}                                                                   
+42458 : { # Glyph of Fear                                           
+        spells = [57262],                                           
+        classes = [9]                                               
+}                                                                   
+42399 : { # Glyph of Fear Ward                                      
+        spells = [57185],                                           
+        classes = [5]                                               
+}                                                                   
+43351 : { # Glyph of Feign Death                                    
+        spells = [58302],                                           
+        classes = [3]                                               
+}                                                                   
+42963 : { # Glyph of Feint                                          
+        spells = [57122],                                           
+        classes = [4]                                               
+}                                                                   
+42459 : { # Glyph of Felguard                                       
+        spells = [57263],                                           
+        classes = [9]                                               
+}                                                                   
+42460 : { # Glyph of Felhunter                                      
+        spells = [57264],                                           
+        classes = [9]                                               
+}                                                                   
+67486 : { # Glyph of Feral Charge
+        spells = [94404],
+        classes = [11]
+}
+45771 : { # Glyph of Feral Spirit                                   
+        spells = [64288],                                           
+        classes = [7]                                               
+}                                                                   
+48720 : { # Glyph of Ferocious Bite                                           
+        spells = [67600],                                           
+        classes = [11]                                              
+}                                                                   
+41529 : { # Glyph of Fire Elemental Totem                           
+        spells = [57237],                                           
+        classes = [7]                                               
+}                                                                   
+41530 : { # Glyph of Fire Nova                                      
+        spells = [57238],                                           
+        classes = [7]                                               
+}                                                                   
+42739 : { # Glyph of Fireball                                       
+        spells = [56975],                                           
+        classes = [8]                                               
+}                                                                   
+41531 : { # Glyph of Flame Shock                                    
+        spells = [57239],                                           
+        classes = [7]                                               
+}                                                                   
+41532 : { # Glyph of Flametongue Weapon                             
+        spells = [57240],                                           
+        classes = [7]                                               
+}                                                                   
+42400 : { # Glyph of Flash Heal                                     
+        spells = [57186],                                           
+        classes = [5]                                               
+}                                                                   
+44928 : { # Glyph of Focus                                          
+        spells = [62162],                                           
+        classes = [11]                                              
+}                                                                   
+41101 : { # Glyph of Focused Shield                               
+        spells = [57019],                                           
+        classes = [2]                                               
+}                                                                   
+43371 : { # Glyph of Fortitude                                      
+        spells = [58318],                                           
+        classes = [5]                                               
+}                                                                   
+42905 : { # Glyph of Freezing Trap                                  
+        spells = [57002],                                           
+        classes = [3]                                               
+}                                                                   
+40896 : { # Glyph of Frenzied Regeneration                          
+        spells = [56943],                                           
+        classes = [11]                                              
+}                                                                   
+42741 : { # Glyph of Frost Nova                                     
+        spells = [56976],                                           
+        classes = [8]                                               
+}                                                                   
+41547 : { # Glyph of Frost Shock                                    
+        spells = [57241],                                           
+        classes = [7]                                               
+}                                                                   
+43543 : { # Glyph of Frost Strike                                   
+        spells = [57216],                                           
+        classes = [6]                                               
+}                                                                   
+42742 : { # Glyph of Frostbolt                                      
+        spells = [56977],                                           
+        classes = [8]                                               
+}                                                                   
+44684 : { # Glyph of Frostfire                                      
+        spells = [61677],                                           
+        classes = [8]                                               
+}                                                                   
+45793 : { # Glyph of Furious Sundering                                      
+        spells = [64255],                                           
+        classes = [1]                                               
+}                                                                   
+42964 : { # Glyph of Garrote                                        
+        spells = [57123],                                           
+        classes = [4]                                               
+}                                                                   
+43725 : { # Glyph of Ghost Wolf                                     
+        spells = [59326],                                           
+        classes = [7]                                               
+}                                                                   
+42966 : { # Glyph of Gouge                                          
+        spells = [57125],                                           
+        classes = [4]                                               
+}                                                                   
+41538 : { # Glyph of Grounding Totem                                
+        spells = [57247],                                           
+        classes = [7]                                               
+}                                                                   
+45755 : { # Glyph of Guardian Spirit                                
+        spells = [64281],                                           
+        classes = [5]                                               
+}                                                                   
+41095 : { # Glyph of Hammer of Justice                              
+        spells = [57027],                                           
+        classes = [2]                                               
+}                                                                   
+45742 : { # Glyph of Hammer of the Righteous                        
+        spells = [64278],                                           
+        classes = [2]                                               
+}                                                                   
+41097 : { # Glyph of Hammer of Wrath                                
+        spells = [57028],                                           
+        classes = [2]                                               
+}                                                                   
+45779 : { # Glyph of Haunt                                          
+        spells = [64291],                                           
+        classes = [9]                                               
+}                                                                   
+41533 : { # Glyph of Healing Stream Totem                           
+        spells = [57242],                                           
+        classes = [7]                                               
+}                                                                   
+40914 : { # Glyph of Healing Touch                                  
+        spells = [56945],                                           
+        classes = [11]                                              
+}                                                                   
+41534 : { # Glyph of Healing Wave                                   
+        spells = [57243],                                           
+        classes = [7]                                               
+}                                                                   
+42461 : { # Glyph of Health Funnel                                  
+        spells = [57265],                                           
+        classes = [9]                                               
+}                                                                   
+42462 : { # Glyph of Healthstone                                    
+        spells = [57266],                                           
+        classes = [9]                                               
+}                                                                   
+43534 : { # Glyph of Heart Strike                                   
+        spells = [57208],                                           
+        classes = [6]                                               
+}                                                                   
+42967 : { # Glyph of Hemorrhage                                     
+        spells = [57126],                                           
+        classes = [4]                                               
+}                                                                   
+43418 : { # Glyph of Heroic Throw                                  
+        spells = [57158],                                           
+        classes = [1]                                               
+}                                                                   
+45777 : { # Glyph of Hex                                            
+        spells = [64316],                                           
+        classes = [7]                                               
+}                                                                   
+42401 : { # Glyph of Holy Nova                                      
+        spells = [57187],                                           
+        classes = [5]                                               
+}                                                                   
+45746 : { # Glyph of Holy Shock                                     
+        spells = [64254],                                           
+        classes = [2]                                               
+}                                                                   
+43867 : { # Glyph of Holy Wrath                                     
+        spells = [59559],                                           
+        classes = [2]                                               
+}                                                                   
+43544 : { # Glyph of Horn of Winter                                 
+        spells = [57217],                                           
+        classes = [6]                                               
+}                                                                   
+42463 : { # Glyph of Howl of Terror                                 
+        spells = [57267],                                           
+        classes = [9]                                               
+}                                                                   
+45806 : { # Glyph of Howling Blast                                  
+        spells = [64300],                                           
+        classes = [6]                                               
+}                                                                   
+45800 : { # Glyph of Hungering Cold                                 
+        spells = [64298],                                           
+        classes = [6]                                               
+}                                                                   
+40920 : { # Glyph of Hurricane                                      
+        spells = [56946],                                           
+        classes = [11]                                              
+}                                                                   
+45740 : { # Glyph of Ice Barrier                                    
+        spells = [64257],                                           
+        classes = [8]                                               
+}                                                                   
+42744 : { # Glyph of Ice Block                                      
+        spells = [56979],                                           
+        classes = [8]                                               
+}                                                                   
+42745 : { # Glyph of Ice Lance                                      
+        spells = [56980],                                           
+        classes = [8]                                               
+}                                                                   
+42906 : { # Glyph of Ice Trap                                     
+        spells = [57003],                                           
+        classes = [3]                                               
+}                                                                   
+43546 : { # Glyph of Icy Touch                                      
+        spells = [57219],                                           
+        classes = [6]                                               
+}                                                                   
+42746 : { # Glyph of Icy Veins                                      
+        spells = [56981],                                           
+        classes = [8]                                               
+}                                                                   
+42464 : { # Glyph of Immolate                                       
+        spells = [57268],                                           
+        classes = [9]                                               
+}                                                                   
+42908 : { # Glyph of Immolation Trap                                
+        spells = [57005],                                           
+        classes = [3]                                               
+}                                                                   
+42465 : { # Glyph of Imp                                            
+        spells = [57269],                                           
+        classes = [9]                                               
+}                                                                   
+42453 : { # Glyph of Incinerate                                     
+        spells = [57257],                                           
+        classes = [9]                                               
+}                                                                   
+42402 : { # Glyph of Inner Fire                                     
+        spells = [57188],                                           
+        classes = [5]                                               
+}                                                                   
+40908 : { # Glyph of Innervate                                      
+        spells = [56947],                                           
+        classes = [11]                                              
+}                                                                   
+40919 : { # Glyph of Insect Swarm                                   
+        spells = [56948],                                           
+        classes = [11]                                              
+}                                                                   
+43366 : { # Glyph of Insight                             
+        spells = [58312],                                           
+        classes = [2]                                               
+}                                                                   
+67482 : { # Glyph of Intercept
+        spells = [94406],
+        classes = [1]
+}
+43419 : { # Glyph of Intervene                                      
+        spells = [57159],                                           
+        classes = [1]                                               
+}                                                                   
+45794 : { # Glyph of Intimidating Shout                           
+        spells = [64312],                                           
+        classes = [1]                                               
+}                                                                   
+42748 : { # Glyph of Invisibility                                   
+        spells = [56983],                                           
+        classes = [8]                                               
+}                                                                   
+41092 : { # Glyph of Judgement                                      
+        spells = [57030],                                           
+        classes = [2]                                               
+}                                                                   
+43369 : { # Glyph of Justice
+        spells = [58316],
+        classes = [2]
+}
+42971 : { # Glyph of Kick                                          
+        spells = [57130],                                           
+        classes = [4]                                               
+}                                                                   
+42915 : { # Glyph of Kill Command                                  
+        spells = [57012],                                           
+        classes = [3]                                               
+}                                                                   
+45732 : { # Glyph of Kill Shot                                      
+        spells = [64304],                                           
+        classes = [3]                                               
+}                                                                   
+45762 : { # Glyph of Killing Spree                                  
+        spells = [64285],                                           
+        classes = [4]                                               
+}                                                                   
+43391 : { # Glyph of Kilrogg                                        
+        spells = [58340],                                           
+        classes = [9]                                               
+}                                                                   
+67484 : { # Glyph of Lacerate
+        spells = [94402],
+        classes = [11]
+}
+50077 : { # Glyph of Lash of Pain                                    
+        spells = [71102],                                    
+        classes = [9]                                               
+}                                                                   
+41524 : { # Glyph of Lava Burst                                          
+        spells = [57234],                                           
+        classes = [7]                                               
+}                                                                   
+41540 : { # Glyph of Lava Lash                                      
+        spells = [57249],                                           
+        classes = [7]                                               
+}                                                                   
+43367 : { # Glyph of Lay on Hands                                   
+        spells = [58313],                                           
+        classes = [2]                                               
+}                                                                   
+43370 : { # Glyph of Levitate                                       
+        spells = [58319],                                           
+        classes = [5]                                               
+}                                                                   
+45785 : { # Glyph of Life Tap                                       
+        spells = [64248],                                           
+        classes = [9]                                               
+}                                                                   
+40915 : { # Glyph of Lifebloom                                      
+        spells = [56949],                                           
+        classes = [11]                                              
+}                                                                   
+41109 : { # Glyph of Light of Dawn                                 
+        spells = [57035],                                           
+        classes = [2]                                               
+}                                                                   
+41536 : { # Glyph of Lightning Bolt                                 
+        spells = [57245],                                           
+        classes = [7]                                               
+}                                                                   
+41537 : { # Glyph of Lightning Shield                               
+        spells = [57246],                                           
+        classes = [7]                                               
+}                                                                   
+42403 : { # Glyph of Lightwell                                      
+        spells = [57189],                                           
+        classes = [5]                                               
+}                                                                   
+63539 : { # Glyph of Living Bomb
+        spells = [94000],
+        classes = [8]
+}
+43397 : { # Glyph of Long Charge                                         
+        spells = [58344],                                           
+        classes = [1]                                               
+}                                                                   
+42749 : { # Glyph of Mage Armor                                     
+        spells = [56984],                                           
+        classes = [8]                                               
+}                                                                   
+50045 : { # Glyph of Mana Shield                                  
+        spells = [71101],                                           
+        classes = [8]                                               
+}                                                                   
+40900 : { # Glyph of Mangle                                         
+        spells = [56950],                                           
+        classes = [11]                                              
+}                                                                   
+42404 : { # Glyph of Mass Dispel                                    
+        spells = [57190],                                           
+        classes = [5]                                               
+}                                                                   
+45733 : { # Glyph of Master's Call                                 
+        spells = [64253],                                           
+        classes = [3]                                               
+}                                                                   
+40897 : { # Glyph of Maul                                           
+        spells = [56961],                                           
+        classes = [11]                                              
+}                                                                   
+43350 : { # Glyph of Mend Pet                                       
+        spells = [58301],                                           
+        classes = [3]                                               
+}                                                                   
+42900 : { # Glyph of Mending                                        
+        spells = [56997],                                           
+        classes = [3]                                               
+}                                                                   
+45780 : { # Glyph of Metamorphosis                                  
+        spells = [64318],                                           
+        classes = [9]                                               
+}                                                                   
+42415 : { # Glyph of Mind Flay                                      
+        spells = [57200],                                           
+        classes = [5]                                               
+}                                                                   
+45739 : { # Glyph of Mirror Image                                   
+        spells = [64314],                                           
+        classes = [8]                                               
+}                                                                   
+42907 : { # Glyph of Misdirection                                  
+        spells = [57004],                                           
+        classes = [3]                                               
+}                                                                   
+42751 : { # Glyph of Molten Armor                                   
+        spells = [56986],                                           
+        classes = [8]                                               
+}                                                                   
+45622 : { # Glyph of Monsoon                                        
+        spells = [64258],                                           
+        classes = [11]                                              
+}                                                                   
+40923 : { # Glyph of Moonfire                                       
+        spells = [56951],                                           
+        classes = [11]                                              
+}                                                                   
+43421 : { # Glyph of Mortal Strike                                  
+        spells = [57160],                                           
+        classes = [1]                                               
+}                                                                   
+45768 : { # Glyph of Mutilate                                       
+        spells = [64260],                                           
+        classes = [4]                                               
+}                                                                   
+43547 : { # Glyph of Obliterate                                     
+        spells = [57220],                                           
+        classes = [6]                                               
+}                                                                   
+43422 : { # Glyph of Overpower                                      
+        spells = [57161],                                           
+        classes = [1]                                               
+}                                                                   
+45760 : { # Glyph of Pain Suppression                               
+        spells = [64259],                                           
+        classes = [5]                                               
+}                                                                   
+43671 : { # Glyph of Path of Frost                               
+        spells = [57229],                                           
+        classes = [6]                                               
+}                                                                   
+45756 : { # Glyph of Penance                                        
+        spells = [64282],                                           
+        classes = [5]                                               
+}                                                                   
+43548 : { # Glyph of Pestilence                                  
+        spells = [57221],                                           
+        classes = [6]                                               
+}                                                                   
+43377 : { # Glyph of Pick Lock                                      
+        spells = [58325],                                           
+        classes = [4]                                               
+}                                                                   
+43343 : { # Glyph of Pick Pocket                                    
+        spells = [58326],                                           
+        classes = [4]                                               
+}                                                                   
+43417 : { # Glyph of Piercing Howl                                      
+        spells = [57157],                                           
+        classes = [1]                                               
+}                                                                   
+43553 : { # Glyph of Pillar of Frost                              
+        spells = [57226],                                           
+        classes = [6]                                               
+}                                                                   
+43380 : { # Glyph of Poisons                                         
+        spells = [58328],                                           
+        classes = [4]                                               
+}                                                                   
+42752 : { # Glyph of Polymorph                                      
+        spells = [56987],                                           
+        classes = [8]                                               
+}                                                                   
+42407 : { # Glyph of Power Word: Barrier                                         
+        spells = [57193],                                           
+        classes = [5]                                               
+}                                                                   
+42408 : { # Glyph of Power Word: Shield                             
+        spells = [57194],                                           
+        classes = [5]                                               
+}                                                                   
+42409 : { # Glyph of Prayer of Healing                              
+        spells = [57195],                                           
+        classes = [5]                                               
+}                                                                   
+42968 : { # Glyph of Preparation                                    
+        spells = [57127],                                           
+        classes = [4]                                               
+}                                                                   
+42405 : { # Glyph of Psychic Horror                                   
+        spells = [57191],                                           
+        classes = [5]                                               
+}                                                                   
+42410 : { # Glyph of Psychic Scream                                 
+        spells = [57196],                                           
+        classes = [5]                                               
+}                                                                   
+42743 : { # Glyph of Pyroblast                                      
+        spells = [56978],                                           
+        classes = [8]                                               
+}                                                                   
+43432 : { # Glyph of Raging Blow
+        spells = [57172],
+        classes = [1]
+}
+43673 : { # Glyph of Raise Ally                                     
+        spells = [57228],                                           
+        classes = [6]                                               
+}                                                                   
+43549 : { # Glyph of Raise Dead
+        spells = [57222],
+        classes = [6]
+}
+40903 : { # Glyph of Rake                                           
+        spells = [56952],                                           
+        classes = [11]                                              
+}                                                                   
+43413 : { # Glyph of Rapid Charge                                   
+        spells = [57162],                                           
+        classes = [1]                                               
+}                                                                   
+42911 : { # Glyph of Rapid Fire                                     
+        spells = [57008],                                           
+        classes = [3]                                               
+}                                                                   
+45735 : { # Glyph of Raptor Strike                                  
+        spells = [64246],                                           
+        classes = [3]                                               
+}                                                                   
+40909 : { # Glyph of Rebirth                                        
+        spells = [56953],                                           
+        classes = [11]                                              
+}                                                                   
+41094 : { # Glyph of Rebuke                                
+        spells = [57033],                                           
+        classes = [2]                                               
+}                                                                   
+40912 : { # Glyph of Regrowth                                       
+        spells = [56954],                                           
+        classes = [11]                                              
+}                                                                   
+40913 : { # Glyph of Rejuvenation                                   
+        spells = [56955],                                           
+        classes = [11]                                              
+}                                                                   
+42411 : { # Glyph of Renew                                          
+        spells = [57197],                                           
+        classes = [5]                                               
+}                                                                   
+43385 : { # Glyph of Renewed Life                                   
+        spells = [58330],                                           
+        classes = [7]                                               
+}                                                                   
+43672 : { # Glyph of Resilient Grip                                     
+        spells = [57230],                                           
+        classes = [6]                                               
+}                                                                   
+43430 : { # Glyph of Resonating Power                               
+        spells = [57164],                                           
+        classes = [1]                                               
+}                                                                   
+42965 : { # Glyph of Revealing Strike                                 
+        spells = [57124],                                           
+        classes = [4]                                               
+}                                                                   
+43424 : { # Glyph of Revenge                                        
+        spells = [57165],                                           
+        classes = [1]                                               
+}                                                                   
+43338 : { # Glyph of Revive Pet                                     
+        spells = [58299],                                           
+        classes = [3]                                               
+}                                                                   
+41100 : { # Glyph of Righteousness                              
+        spells = [57032],                                           
+        classes = [2]                                               
+}                                                                   
+40902 : { # Glyph of Rip                                            
+        spells = [56956],                                           
+        classes = [11]                                              
+}                                                                   
+45772 : { # Glyph of Riptide                                        
+        spells = [64289],                                           
+        classes = [7]                                               
+}                                                                   
+43550 : { # Glyph of Rune Strike                                    
+        spells = [57223],                                           
+        classes = [6]                                               
+}                                                                   
+43825 : { # Glyph of Rune Tap                                       
+        spells = [59338],                                           
+        classes = [6]                                               
+}                                                                   
+42969 : { # Glyph of Rupture                                        
+        spells = [57128],                                           
+        classes = [4]                                               
+}                                                                   
+43378 : { # Glyph of Safe Fall                                      
+        spells = [58327],                                           
+        classes = [4]                                               
+}                                                                   
+45747 : { # Glyph of Salvation                                      
+        spells = [64251],                                           
+        classes = [2]                                               
+}                                                                   
+42970 : { # Glyph of Sap                                            
+        spells = [57129],                                           
+        classes = [4]                                               
+}                                                                   
+45604 : { # Glyph of Savage Roar                                    
+        spells = [64307],                                           
+        classes = [11]                                              
+}                                                                   
+43356 : { # Glyph of Scare Beast                                    
+        spells = [58298],                                           
+        classes = [3]                                               
+}                                                                   
+45734 : { # Glyph of Scatter Shot                                   
+        spells = [64249],                                           
+        classes = [3]                                               
+}                                                                   
+42412 : { # Glyph of Scourge Imprisonment                           
+        spells = [57198],                                           
+        classes = [5]                                               
+}                                                                   
+43551 : { # Glyph of Scourge Strike                                 
+        spells = [57224],                                           
+        classes = [6]                                               
+}                                                                   
+41110 : { # Glyph of Seal of Insight                                  
+        spells = [57034],                                           
+        classes = [2]                                               
+}                                                                   
+43869 : { # Glyph of Seal of Truth                              
+        spells = [59561],                                           
+        classes = [2]                                               
+}                                                                   
+42471 : { # Glyph of Seduction                                       
+        spells = [57275],                                           
+        classes = [9]                                               
+}                                                                   
+42912 : { # Glyph of Serpent Sting                                  
+        spells = [57009],                                           
+        classes = [3]                                               
+}                                                                   
+43373 : { # Glyph of Shackle Undead                                 
+        spells = [58320],                                           
+        classes = [5]                                               
+}                                                                   
+42467 : { # Glyph of Shadow Bolt                                    
+        spells = [57271],                                           
+        classes = [9]                                               
+}                                                                   
+45764 : { # Glyph of Shadow Dance                                   
+        spells = [64286],                                           
+        classes = [4]                                               
+}                                                                   
+43372 : { # Glyph of Shadow Protection                              
+        spells = [58321],                                           
+        classes = [5]                                               
+}                                                                   
+42414 : { # Glyph of Shadow Word: Death                             
+        spells = [57199],                                           
+        classes = [5]                                               
+}                                                                   
+42406 : { # Glyph of Shadow Word: Pain                              
+        spells = [57192],                                           
+        classes = [5]                                               
+}                                                                   
+42468 : { # Glyph of Shadowburn                                     
+        spells = [57272],                                           
+        classes = [9]                                               
+}                                                                   
+43374 : { # Glyph of Shadowfiend                                    
+        spells = [58322],                                           
+        classes = [5]                                               
+}                                                                   
+45783 : { # Glyph of Shadowflame                                    
+        spells = [64311],                                           
+        classes = [9]                                               
+}                                                                   
+45776 : { # Glyph of Shamanistic Rage                                 
+        spells = [64262],                                           
+        classes = [7]                                               
+}                                                                   
+45744 : { # Glyph of Shield of the Righteous                        
+        spells = [64308],                                           
+        classes = [2]                                               
+}                                                                   
+43425 : { # Glyph of Shield Slam                                       
+        spells = [57152],                                           
+        classes = [1]                                               
+}                                                                   
+45797 : { # Glyph of Shield Wall                                    
+        spells = [64252],                                           
+        classes = [1]                                               
+}                                                                   
+41526 : { # Glyph of Shocking                                       
+        spells = [57235],                                           
+        classes = [7]                                               
+}                                                                   
+45792 : { # Glyph of Shockwave                                      
+        spells = [64296],                                           
+        classes = [1]                                               
+}                                                                   
+40901 : { # Glyph of Shred                                          
+        spells = [56957],                                           
+        classes = [11]                                              
+}                                                                   
+42910 : { # Glyph of Silencing Shot                                     
+        spells = [57007],                                           
+        classes = [3]                                               
+}                                                                   
+42972 : { # Glyph of Sinister Strike                                
+        spells = [57131],                                           
+        classes = [4]                                               
+}                                                                   
+43423 : { # Glyph of Slam                                        
+        spells = [57163],                                           
+        classes = [1]                                               
+}                                                                   
+42973 : { # Glyph of Slice and Dice                                 
+        spells = [57132],                                           
+        classes = [4]                                               
+}                                                                   
+45737 : { # Glyph of Slow                                    
+        spells = [64275],                                           
+        classes = [8]                                               
+}                                                                   
+43364 : { # Glyph of Slow Fall                                      
+        spells = [58308],                                           
+        classes = [8]                                               
+}                                                                   
+42416 : { # Glyph of Smite                                          
+        spells = [57201],                                           
+        classes = [5]                                               
+}                                                                   
+42913 : { # Glyph of Snake Trap                                     
+        spells = [57010],                                           
+        classes = [3]                                               
+}                                                                   
+40899 : { # Glyph of Solar Beam                                          
+        spells = [56944],                                           
+        classes = [11]                                              
+}                                                                   
+45789 : { # Glyph of Soul Link                                      
+        spells = [64250],                                           
+        classes = [9]                                               
+}                                                                   
+42466 : { # Glyph of Soul Swap                                   
+        spells = [57270],                                           
+        classes = [9]                                               
+}                                                                   
+43394 : { # Glyph of Souls                                          
+        spells = [58341],                                           
+        classes = [9]                                               
+}                                                                   
+42470 : { # Glyph of Soulstone                                      
+        spells = [57274],                                           
+        classes = [9]                                               
+}                                                                   
+45795 : { # Glyph of Spell Reflection                               
+        spells = [64302],                                           
+        classes = [1]                                               
+}                                                                   
+42417 : { # Glyph of Spirit of Redemption                           
+        spells = [57202],                                           
+        classes = [5]                                               
+}                                                                   
+45757 : { # Glyph of Spirit Tap                                      
+        spells = [64309],                                           
+        classes = [5]                                               
+}                                                                   
+42974 : { # Glyph of Sprint                                         
+        spells = [57133],                                           
+        classes = [4]                                               
+}                                                                   
+40921 : { # Glyph of Starfall                                       
+        spells = [56958],                                           
+        classes = [11]                                              
+}                                                                   
+40916 : { # Glyph of Starfire                                       
+        spells = [56959],                                           
+        classes = [11]                                              
+}                                                                   
+45603 : { # Glyph of Starsurge                                        
+        spells = [64313],                                           
+        classes = [11]                                              
+}                                                                   
+42914 : { # Glyph of Steady Shot                                    
+        spells = [57011],                                           
+        classes = [3]                                               
+}                                                                   
+45778 : { # Glyph of Stoneclaw Totem                                
+        spells = [64247],                                           
+        classes = [7]                                               
+}                                                                   
+41539 : { # Glyph of Stormstrike                                    
+        spells = [57248],                                           
+        classes = [7]                                               
+}                                                                   
+43552 : { # Glyph of Strangulate                                    
+        spells = [57225],                                           
+        classes = [6]                                               
+}                                                                   
+43427 : { # Glyph of Sunder Armor                                   
+        spells = [57167],                                           
+        classes = [1]                                               
+}                                                                   
+43428 : { # Glyph of Sweeping Strikes                               
+        spells = [57168],                                           
+        classes = [1]                                               
+}                                                                   
+40906 : { # Glyph of Swiftmend                                      
+        spells = [56960],                                           
+        classes = [11]                                              
+}                                                                   
+45743 : { # Glyph of Templar's Verdict                                   
+        spells = [64279],                                           
+        classes = [2]                                               
+}                                                                   
+43386 : { # Glyph of the Arctic Wolf
+        spells = [58332],
+        classes = [7]
+}
+41107 : { # Glyph of the Ascetic Crusader                                 
+        spells = [57021],                                           
+        classes = [2]                                               
+}                                                                   
+42909 : { # Glyph of the Dazzled Prey
+        spells = [57006],
+        classes = [3]
+}
+43360 : { # Glyph of the Monkey                                     
+        spells = [58307],                                           
+        classes = [8]                                               
+}                                                                   
+43361 : { # Glyph of the Penguin
+        spells = [58310],
+        classes = [8]
+}
+43335 : { # Glyph of the Wild
+        spells = [58296],
+        classes = [11]
+}
+43332 : { # Glyph of Thorns                                         
+        spells = [58289],                                           
+        classes = [11]                                              
+}                                                                   
+45770 : { # Glyph of Thunder                                        
+        spells = [64287],                                           
+        classes = [7]                                               
+}                                                                   
+43399 : { # Glyph of Thunder Clap                                   
+        spells = [58346],                                           
+        classes = [1]                                               
+}                                                                   
+44923 : { # Glyph of Thunderstorm                                   
+        spells = [57253],                                           
+        classes = [7]                                               
+}                                                                   
+67487 : { # Glyph of Tiger's Fury
+        spells = [94401],
+        classes = [11]
+}
+41535 : { # Glyph of Totemic Recall                            
+        spells = [57244],                                           
+        classes = [7]                                               
+}                                                                   
+42899 : { # Glyph of Trap Launcher
+        spells = [56996],
+        classes = [3]
+}
+45767 : { # Glyph of Tricks of the Trade                            
+        spells = [64310],                                           
+        classes = [4]                                               
+}                                                                   
+43368 : { # Glyph of Truth                                   
+        spells = [58315],                                           
+        classes = [2]                                               
+}                                                                   
+41102 : { # Glyph of Turn Evil                                      
+        spells = [57036],                                           
+        classes = [2]                                               
+}                                                                   
+44922 : { # Glyph of Typhoon                                        
+        spells = [56965],                                           
+        classes = [11]                                              
+}                                                                   
+43331 : { # Glyph of Unburdened Rebirth                             
+        spells = [58288],                                           
+        classes = [11]                                              
+}                                                                   
+43389 : { # Glyph of Unending Breath                                
+        spells = [58336],                                           
+        classes = [9]                                               
+}                                                                   
+42472 : { # Glyph of Unstable Affliction                            
+        spells = [57276],                                           
+        classes = [9]                                               
+}                                                                   
+43554 : { # Glyph of Vampiric Blood                                 
+        spells = [57227],                                           
+        classes = [6]                                               
+}                                                                   
+45761 : { # Glyph of Vendetta                               
+        spells = [64284],                                           
+        classes = [4]                                               
+}                                                                   
+43431 : { # Glyph of Victory Rush                                   
+        spells = [57170],                                           
+        classes = [1]                                               
+}                                                                   
+42473 : { # Glyph of Voidwalker                                     
+        spells = [57277],                                           
+        classes = [9]                                               
+}                                                                   
+43344 : { # Glyph of Water Breathing                                
+        spells = [58331],                                           
+        classes = [7]                                               
+}                                                                   
+41541 : { # Glyph of Water Shield                                  
+        spells = [57251],                                           
+        classes = [7]                                               
+}
+43388 : { # Glyph of Water Walking
+        spells = [58333],
+        classes = [7]
+}
+45602 : { # Glyph of Wild Growth
+        spells = [64270],
+        classes = [11]
+}
+41542 : { # Glyph of Windfury Weapon
+        spells = [57252],
+        classes = [7]
+}
+41105 : { # Glyph of Word of Glory                                
+        spells = [57026],                                           
+        classes = [2]                                               
+}                                                                   
+40922 : { # Glyph of Wrath
+        spells = [56963],
+        classes = [11]
+}
+42917 : { # Glyph of Wyvern Sting
+        spells = [57014],
+        classes = [3]
+}
+
+[22:49:55] <Adys> CLASSES = (
+[22:49:55] <Adys> 	(1, "Warrior"),
+[22:49:55] <Adys> 	(2, "Paladin"),
+[22:49:55] <Adys> 	(3, "Hunter"),
+[22:49:56] <Adys> 	(4, "Rogue"),
+[22:49:58] <Adys> 	(5, "Priest"),
+[22:50:00] <Adys> 	(6, "Death Knight"),
+[22:50:02] <Adys> 	(7, "Shaman"),
+[22:50:04] <Adys> 	(8, "Mage"),
+[22:50:06] <Adys> 	(9, "Warlock"),
+[22:50:08] <Adys> 	(11, "Druid"),
+[22:50:12] <Adys> )

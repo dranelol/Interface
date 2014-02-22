@@ -1,0 +1,26 @@
+tag v4.0.0-beta48
+e12b815ec6f79b2a9b9df108a26d4a890a747002
+Shefki <shefki@shefki.org>
+2013-09-30 09:31:18 -0700
+
+Tagging as v4.0.0-beta48
+
+
+--------------------
+
+Shefki:
+	- This commit should fully fix the problems people have been having with SetFont() errors.  If the font returned from GetFont is nil then use our cached font and size.  Size whenever font is nil will be an uninitialized value and so the existing fix would still throw errors when the size ended up being less than or equal to 0.
+	- It doesn't make sense to call GetFont on a new FontString.  The flags should not be preserved, so just set the font and size and leave the flags as "".  The AddFontString call later will set the flags properly. If the font string already exists then you want to preserve the flags.
+	- Fix some typos that were fixed on nebula1169's branch.
+	- Remove some values I set to help debugging ticket #1050.
+	- Hopefully avoid the SetFont errors for sure now assuming that the problem is that GetFont() doesn't work immediately after a SetFont() while the game is still loading in.
+	- Missed wrapping a geterrorhandler() in pcall().
+	- Protect against Blizzard's error handler throwing an error, which is why the protection code didn't allow the frames to work even when the SetFont error was happening.
+	- Stash the DEFAULT_FONT and DEFAULT_FONT_SIZE so I can get people having the font problem to show me what's being stored.
+	- Wrap the SetFont and SetAlpha calls in pcalls() which should prevent errors with them from breaking frames entirely.
+	- Make the Vengeance fix backwards compatible.
+Benjamin Staneck:
+	- use a different ID for vengeance that works in 5.4
+Shefki:
+	- Remove unnecessary constants that I added on accident.
+	- Hopefully stop some rare errors in LuaTexts about SetFont.

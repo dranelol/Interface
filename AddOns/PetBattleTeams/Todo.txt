@@ -1,0 +1,115 @@
+TODO:
+
+alpha: 
+
+beta:
+
+post release:
+
+add detached frame compact mode
+
+Done:
+
+3.1.0 removed leftover debug spam
+
+r25 updated to latest libpetbreedinfo
+r25 reset the scroll bar when the roster frame is shown or hidden (post 328)
+r25 moved controller code from view to controller. opps. scrolling while moving pets will now properly enable and disable pet unitframes (ticket 37)
+r25 roster min size is now 2 entries or else onvertical scroll doesnt fire for the scroll frame, since the bobber doesnt move. future: implement onmousewheel back up  (post 328)
+
+r24 added ability to toggle visiblity for selected team, roster and control buttons
+r24 added config entries for component visiblity
+
+r23 added menu to PBT frame (ticket 28)
+
+r22 fixed gui initializing during combat at login
+
+r21 Added breed info to tooltip pet names
+ 
+r20/3.0.5 mainframe no longer displays when attached after a reload during combat. pbt will restore itself after combat.
+
+r19 Nuked release
+
+r18 removed dependancy from Blizzard_PetJournal
+r18 removed PetJournalLib as we didn't actually use it
+r18 refixed bandage button for non enUS clients again
+
+r17 Moved printed text from TeamManager to calling functions
+r17 added /pbt toggle to toggle the attach/detach state
+r17 fixed printed text for lock and unlocking teams
+
+
+3.0.4 fixed being unable to scroll to the last team when a user had 14 teams (and presumably other quantities as well)
+3.0.4 changed pet bandage button to use itemID instead of enUS text
+3.0.4 fixed some ability names being blank in the pet tooltip
+3.0.4 fixed teams not switching 
+
+3.0.3 Changed vertical scrolling to only move one at a time
+3.0.3 fixed /pbt reset teams
+
+3.0.2 Added additional checks to make sure a petframe is set before trying to show a tooltip
+3.0.2 Added enabled flag to freshly created teams
+3.0.2 Added IsTeamLocked check to IsTeamEnabled (shouldnt have to ask twice to find out if its enabled)
+
+3.0.1 team names are now colored yellow when locked to match the unit frame border
+3.0.1 scrolling now correctly keeps disabled pets disabled
+3.0.1 trying to swap from a locked team now automatically copies instead
+3.0.1 locked teams no longer disable during a team move
+
+3.0.0 added local _ and preferredIndex = STATICPOPUP_NUMDIALOGS, to reduce taint issues
+3.0.0 removed tutorial.lua from the toc
+
+
+r16 - moved team names up 2 px to prevent names being cut off by unit frames
+r16 - newly created teams are now inserted directly after the team they were copied from
+r16 - moved add team button over 3px to line up with unit frames
+r16 - Increased hieght of team frame by 2px to remove overlap with unit frames
+
+r15 - updated toc number
+r15 - fixed teams remaining locked after a pet battle
+r15 - teams no longer lock during a pet battle
+r15 - pet bandage button now works
+r15 - added import dialog for optionally importing pets from 2.4
+r15 - added help text for /pbt
+
+r14 - when a new team is created, that team is now selected
+r14 - mainFrame no longer displays resizer and is no longer moveable after reloading
+r14 - fixed empty|invalid pets not showing up as locked when the team is locked 
+
+r13  - fixed invalid pets not reseting border color
+r13  - added auto dismiss
+r13  - fixed resizer showing while attached
+r13  - fixed team names reseting when changing pet load out
+r13  - fixed TeamManager:IsWorking to return the correct values when idle
+r13  - fixed Swapping pets when both teams have an empty pet
+r13  - fixed empty_pets not showing disabled when they are
+
+r12 - fixed swaping to empty pet between teams
+r12 - can no longer pick up empty or invalid pets
+r12 - added description to a number of options
+r12 - added helper text to pet tooltip
+r12 - fixed bad petID issues with TeamManager:GetPetInfo
+r12 - slash commands
+r12 - implement hiding helper text
+
+Add timer indicator for team move
+Add user Lock teams to TeamManager for individual teams
+Add resizer back in
+Add team movement visual cue
+Add hide on escape for team move
+Add Importer for 2.4.11 teams
+Add ability to display XP to unit frame (either swaping HP bar or numerical, or have level show .0-.9)
+Add ability to attach to petjournal
+Add ability to detach from petjournal
+Add pet bandage, pet revive buttons to frame
+Add fix taint issues
+toggle auto saving
+Add configuration
+	Level display
+	xp display on level
+	attach|detach
+	lock team
+teamFrame: 
+	add visual indicator for a user locked team
+
+Add unlock/lock all button ?

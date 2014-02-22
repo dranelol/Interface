@@ -1,0 +1,11 @@
+tag v0.54.15
+290ae5de236c1b7a1fe3c616ad456cb10b3c7dd0
+kravval <kravval@curse>
+2014-01-17 05:40:04 +0100
+
+- 
+
+--------------------
+
+kravval:
+	- - deDE Spoils of Pandaria

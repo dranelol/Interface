@@ -1,0 +1,14 @@
+tag v3.1.8
+975db9024dfabc53236bc35e4d0bf6d9dc6ab7e9
+Benjamin Staneck <staneck@gmail.com>
+2012-12-20 17:48:52 +0100
+
+Tagging Version v3.1.8
+
+
+--------------------
+
+Benjamin Staneck:
+	- bump toc and version number
+Xinhuan:
+	- Add itIT and ptBR localization files. These localizations need some updating.

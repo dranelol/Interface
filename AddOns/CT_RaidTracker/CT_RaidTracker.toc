@@ -1,0 +1,20 @@
+## Interface: 30300
+## Title: CT RaidTracker 1.7 (modded by Eris)
+## Version: v1.7.33 (MLMods.net)
+## X-Revision: 17330
+## Notes: Counts raid loot and attendance more at www.mldkp.net
+## SavedVariables: CT_RaidTracker_Online, CT_RaidTracker_RaidLog, CT_RaidTracker_Options, CT_RaidTracker_SortOptions, CT_RaidTracker_ItemOptions, CT_RaidTracker_ItemOptions_selected, CT_RaidTracker_VersionFix, CT_RaidTracker_GetCurrentRaid, CT_RaidTracker_TimeOffsetStatus,CT_RaidTracker_CustomZoneTriggers
+## OptionalDeps: CT_MasterMod, HoB_DKP, AdvancedItemTooltip, dkpposter, EasyDKP, ItemLevelDKP
+localization.lua
+localization.deDE.lua
+localization.frFR.lua
+localization.esES.lua
+localization.ruRU.lua
+localization.zhTW.lua
+localization.zhCN.lua
+localization.koKR.lua
+CT_RaidTrackerOptions.xml
+CT_RaidTrackerItemOptions.xml
+CT_RaidTracker.xml
+
+

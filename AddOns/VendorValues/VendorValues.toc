@@ -1,0 +1,22 @@
+## Interface: 30000
+## Title: VendorValues
+## Version: 5.0.2
+## Author: Saeris
+## SavedVariables: VendorValues_Config
+## OptionalDeps: Lib-ItemVendorPricesDB2, Lib-TooltipItemQuantities2
+
+## Notes: Displays in all item tooltips the price a vendor would pay for that item. Type "/veva" for commands.
+
+Lib-EventsManager2\EventsManager2.lua
+Lib-ItemVendorPricesDB2\ItemVendorPricesDB2_Loader.xml
+
+Lib-TooltipItemQuantities2\TooltipItemQuantities2.lua
+
+NicheDevTools\NicheDevTools_RegisterSlashCommand.lua
+NicheDevTools\NicheDevTools_UseWorldFrameForVariablesLoaded.lua
+
+VendorValues_Base.lua
+VendorValues_Localization_enUS.lua
+VendorValues_Config.lua
+VendorValues_Tooltips.lua
+VendorValues_Init.lua

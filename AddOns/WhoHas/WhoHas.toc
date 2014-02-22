@@ -1,0 +1,17 @@
+## Interface: 50001
+## Title: WhoHas
+## Version: 5.2.0
+## Author: Gruma
+## Notes: Modifies the tooltip to show who has the item displayed in it.
+## Notes-deDE: Ändert den Tooltip um anzuzeigen, wer den Gegenstand besitzt.
+## Notes-frFR: Modifie le Tooltip, pour indiquer celui qui a l'objet.
+## SavedVariables: WhoHasConfig WhoHasData
+## OptionalDeps: CharacterProfiler Possessions Armory DataStore myAddons SellValue LinkWranger
+## RequiredDeps:
+## X-Date: September 23, 2012
+## X-Email: gruma@pobox.com
+## X-Website: http://my.curse.com/downloads/wow-addons/details/who-has.aspx
+## X-Category: MYADDONS_CATEGORY_INVENTORY
+## X-OptionsFrame: WhoHasConfigFrame
+## X-Localizations: enUS
+WhoHas.xml

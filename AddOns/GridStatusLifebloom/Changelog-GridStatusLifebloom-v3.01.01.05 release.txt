@@ -1,0 +1,180 @@
+------------------------------------------------------------------------
+r50 | azethoth | 2009-04-22 17:54:31 +0000 (Wed, 22 Apr 2009) | 1 line
+Changed paths:
+   A /tags/v3.01.01.05 release (from /trunk:49)
+
+Tagging as v3.01.01.05 release
+------------------------------------------------------------------------
+r49 | Azethoth | 2009-04-22 17:48:59 +0000 (Wed, 22 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/GridStatusLifebloom.toc
+
+-- isMine -> caster handling
+------------------------------------------------------------------------
+r48 | Azethoth | 2009-04-22 17:47:32 +0000 (Wed, 22 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/GridStatusLifebloom.lua
+
+-- isMine -> caster handling
+------------------------------------------------------------------------
+r46 | Azethoth | 2009-01-20 16:42:51 +0000 (Tue, 20 Jan 2009) | 1 line
+Changed paths:
+   M /trunk/GridStatusLifebloom.lua
+   M /trunk/GridStatusLifebloom.toc
+
+-- Translation update
+------------------------------------------------------------------------
+r45 | StingerSoft | 2009-01-20 08:10:25 +0000 (Tue, 20 Jan 2009) | 1 line
+Changed paths:
+   M /trunk/GridStatusLifebloom.lua
+
+ruRU added
+------------------------------------------------------------------------
+r44 | sayclub | 2009-01-16 01:39:23 +0000 (Fri, 16 Jan 2009) | 1 line
+Changed paths:
+   M /trunk/GridStatusLifebloom.lua
+
+koKR update
+------------------------------------------------------------------------
+r42 | Azethoth | 2009-01-13 21:06:56 +0000 (Tue, 13 Jan 2009) | 2 lines
+Changed paths:
+   M /trunk/GridStatusLifebloom.lua
+
+-- Minor code wrangling
+-- Deal with some code apendicitis
+------------------------------------------------------------------------
+r41 | Azethoth | 2009-01-12 04:07:05 +0000 (Mon, 12 Jan 2009) | 3 lines
+Changed paths:
+   M /trunk/GridStatusLifebloom.lua
+
+-- Support OnStatusEnable, OnStatusDisable
+-- Processing now reduced to just support the enabled statuses
+-- No processing unless a status is enabled
+------------------------------------------------------------------------
+r40 | Azethoth | 2009-01-06 06:41:38 +0000 (Tue, 06 Jan 2009) | 1 line
+Changed paths:
+   M /trunk/GridStatusLifebloom.lua
+   M /trunk/GridStatusLifebloom.toc
+
+-- Incorporate all of Pastamancer's code to improve the algorithm.
+------------------------------------------------------------------------
+r39 | Azethoth | 2009-01-05 10:45:40 +0000 (Mon, 05 Jan 2009) | 3 lines
+Changed paths:
+   M /trunk/GridStatusLifebloom.lua
+
+-- Drop SpecialEventsEmbed-Auras
+-- Update to latest guid branch api
+-- Only compatible with the guid branch of Grid
+------------------------------------------------------------------------
+r38 | Azethoth | 2008-12-30 09:03:17 +0000 (Tue, 30 Dec 2008) | 4 lines
+Changed paths:
+   M /trunk/GridStatusLifebloom.lua
+   M /trunk/GridStatusLifebloom.toc
+
+-- alpha version, only compatible with new guid based Grid
+-- Uses GridRoster
+-- Not tested with malygos etc. yet, working for regular usage though.
+
+------------------------------------------------------------------------
+r37 | Azethoth | 2008-10-20 03:48:18 +0000 (Mon, 20 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/GridStatusLifebloom.toc
+
+-- v3.00.02.00 release
+------------------------------------------------------------------------
+r35 | Azethoth | 2008-10-20 03:23:35 +0000 (Mon, 20 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/GridStatusLifebloom.toc
+
+-- 3.00.02.00 release
+------------------------------------------------------------------------
+r34 | Azethoth | 2008-10-17 16:33:33 +0000 (Fri, 17 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/GridStatusLifebloom.lua
+
+-- Clean up some commented out code
+------------------------------------------------------------------------
+r33 | Azethoth | 2008-10-17 06:09:16 +0000 (Fri, 17 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/GridStatusLifebloom.lua
+
+-- Add back 1/10 second to timer
+------------------------------------------------------------------------
+r32 | Azethoth | 2008-10-17 03:29:24 +0000 (Fri, 17 Oct 2008) | 2 lines
+Changed paths:
+   M /trunk/GridStatusLifebloom.lua
+   M /trunk/GridStatusLifebloom.toc
+
+-- Fix countdown
+-- Remove BS dependency
+------------------------------------------------------------------------
+r31 | root | 2008-09-29 21:35:25 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   A /trunk/.pkgmeta
+
+Facilitate WowAce-on-CurseForge transition
+------------------------------------------------------------------------
+r29 | root | 2008-09-29 20:58:08 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   D /tmp/trunk/GridStatusLifebloom
+   A /trunk (from /tmp/trunk/GridStatusLifebloom:28)
+
+Importing old repo data under /trunk
+------------------------------------------------------------------------
+r24 | scorpion | 2008-03-05 10:16:05 +0000 (Wed, 05 Mar 2008) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusLifebloom/GridStatusLifebloom.lua
+
+GridStatusLifebloom:
+- add zhTW & zhCN translation
+------------------------------------------------------------------------
+r23 | kunda | 2008-02-18 14:35:38 +0000 (Mon, 18 Feb 2008) | 5 lines
+Changed paths:
+   M /tmp/trunk/GridStatusLifebloom/GridStatusLifebloom.lua
+   M /tmp/trunk/GridStatusLifebloom/GridStatusLifebloom.toc
+
+GridStatusLifebloom:
+- use LibBabble-Spell-3.0 because Grid uses it
+- cleanup
+- toc update
+- added deDE
+------------------------------------------------------------------------
+r22 | sayclub | 2007-12-24 07:55:53 +0000 (Mon, 24 Dec 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusLifebloom/GridStatusLifebloom.lua
+
+GridStatusLifebloom : 
+- koKR Update
+------------------------------------------------------------------------
+r21 | anaram | 2007-08-26 22:31:04 +0000 (Sun, 26 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/GridStatusLifebloom/GridStatusLifebloom.lua
+
+GridStatusLifebloom - added experimental option to display time as global cooldowns instead of seconds.
+------------------------------------------------------------------------
+r20 | anaram | 2007-08-18 13:04:19 +0000 (Sat, 18 Aug 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/GridStatusLifebloom/GridStatusLifebloom.lua
+
+GridStatusLifebloom - some cleanup, changed default coloring.
+------------------------------------------------------------------------
+r19 | sayclub | 2007-08-07 02:31:48 +0000 (Tue, 07 Aug 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/GridStatusLifebloom/GridStatusLifebloom.lua
+
+GridStatusLifebloom - Fixed localization koKR(fix ANSII format to UTF8 )
+
+------------------------------------------------------------------------
+r18 | anaram | 2007-07-11 14:03:05 +0000 (Wed, 11 Jul 2007) | 1 line
+Changed paths:
+   A /tmp/trunk/GridStatusLifebloom/GridStatusLifebloom.lua
+   A /tmp/trunk/GridStatusLifebloom/GridStatusLifebloom.toc
+
+GridStatusLifebloom - added initial version
+------------------------------------------------------------------------
+r17 | anaram | 2007-07-11 13:55:32 +0000 (Wed, 11 Jul 2007) | 1 line
+Changed paths:
+   A /tmp/trunk/GridStatusLifebloom
+
+GridStatusLifebloom - Created folder
+------------------------------------------------------------------------

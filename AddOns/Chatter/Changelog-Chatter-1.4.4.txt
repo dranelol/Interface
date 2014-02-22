@@ -1,0 +1,12 @@
+tag 1.4.4
+7d4b1c67c51a3b452e54f833f0a1c4fabd6ee2e2
+Sal Scotto <sal.scotto@gmail.com>
+2013-03-06 07:00:39 -0500
+
+Tagging for 5.2
+
+
+--------------------
+
+Benjamin Staneck:
+	- I'm in your toc, updating your Interface Version to 50200.

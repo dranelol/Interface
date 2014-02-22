@@ -1,0 +1,381 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+	<Script file="DKIRunes.lua"/>
+
+	<!-- Template -->
+	<Frame name="IndividualRuneTemplate" virtual="true" hidden="false">
+
+		<Size>
+			<AbsDimension x="32" y="32"/>
+		</Size>
+
+		<Frames>
+			<Cooldown name="$parentCooldown" hidden="true">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Cooldown>
+
+			<Frame name="$parentBorder">
+				<Size x="28" y="28"/>
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset x="0" y="0"/>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="BORDER">
+						<Texture name="$parentTexture">
+							<Color r="0" g="0" b="0" a="0"/>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
+		</Frames>
+
+		<Layers>
+
+			<Layer level="BACKGROUND">
+				<Texture name="$parentBackground" setAllPoints="true">
+					<Color r="0" g="1" b="0" a="0.0" />
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK" textureSublevel="-2">
+				<Texture name="$parentRuneEmpower" file="Interface\AddOns\DKIRunes\empower" alpha="0">
+					<Size x="64" y="64" />
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK" textureSublevel="-1">
+				<Texture name="$parentRune" file="Interface\AddOns\DKIRunes\Blood_Runes">
+					<Size x="32" y="32" />
+				</Texture>
+			</Layer>
+			
+			<Layer level="ARTWORK" textureSublevel="-2">
+				<Texture name="$parentRuneTrail1" file="Interface\AddOns\DKIRunes\Blood_Runes" alpha="0">
+					<Size x="32" y="32" />
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="3"/>
+					</Anchors>					
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK" textureSublevel="-2">
+				<Texture name="$parentRuneTrail2" file="Interface\AddOns\DKIRunes\Blood_Runes" alpha="0">
+					<Size x="32" y="32" />
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="6"/>
+					</Anchors>					
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK" textureSublevel="-2">
+				<Texture name="$parentRuneTrail3" file="Interface\AddOns\DKIRunes\Blood_Runes" alpha="0">
+					<Size x="32" y="32" />
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="9"/>
+					</Anchors>					
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK" textureSublevel="-2">
+				<Texture name="$parentRuneTrail4" file="Interface\AddOns\DKIRunes\Blood_Runes" alpha="0">
+					<Size x="32" y="32" />
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="12"/>
+					</Anchors>					
+				</Texture>
+			</Layer>
+
+		</Layers>
+
+		<Animations>
+			<AnimationGroup parentKey="energize">
+				<Alpha target="$parentRuneEmpower" startDelay="0" endDelay="0.3" change="0.8" duration="0.1" order="1" smoothing="IN_OUT"/>
+				<Rotation target="$parentRuneEmpower" degrees="360" startDelay="0" endDelay="1" duration="1" smoothing="OUT" order="1">
+					<Origin point="CENTER">
+						<Offset x="0" y="0"/>
+					</Origin>
+				</Rotation>
+				<Alpha target="$parentRuneEmpower" change="-1.0" duration="2" order="2" smoothing="OUT"/>
+			</AnimationGroup>
+		</Animations>		
+	</Frame>
+
+	<!-- Background -->
+	<Frame name="DKIRunesFrame" toplevel="false" parent="UIParent" hidden="false">
+
+		<TitleRegion>
+			<Size>
+				<AbsDimension x="256" y="256"/>
+			</Size>
+			<Anchors>
+				<Anchor point="CENTER" relativePoint="CENTER"/>
+			</Anchors>
+		</TitleRegion>
+
+		<Size x="512" y="256"/>
+
+		<Anchors>
+			<Anchor point="CENTER" relativeTo="UIParent" relativePoint="CENTER">
+				<Offset>
+					<AbsDimension x="62" y="152"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentBackground" setAllPoints="true">
+					<Color r="0" g="1" b="0" a="0.0" />
+				</Texture>
+			</Layer>
+		</Layers>
+
+		<Frames>
+
+			<Frame name="DKIRunesRunicPower" setAllPoints="true" hidden="true">
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="DKIRunicPower" inherits="GameFontNormalLarge">
+							<Anchors>
+								<Anchor point="CENTER" relativePoint="CENTER">
+									<Offset>
+										<AbsDimension x="-101" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>	
+
+			<Frame name="DKIRunesEbonBlade" setAllPoints="true" hidden="true">
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture name="EbonBlade_Base" file="Interface\AddOns\DKIRunes\EbonBlade_base">
+							<Size x="512" y="256"/>
+							<Anchors>
+								<Anchor point="CENTER" relativePoint="CENTER"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="BORDER">
+						<Texture name="EbonBlade_Bar_0">
+							<Size x="181" y="18"/>
+							<Anchors>
+								<Anchor point="CENTER" relativePoint="CENTER">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="BORDER">
+						<Texture name="EbonBlade_Bar_1">
+							<Size x="181" y="18"/>
+							<Anchors>
+								<Anchor point="CENTER" relativePoint="CENTER">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="ARTWORK">
+						<Texture name="EbonBlade_Top" file="Interface\AddOns\DKIRunes\EbonBlade_top">
+							<Size x="512" y="256"/>
+							<Anchors>
+								<Anchor point="CENTER" relativePoint="CENTER"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>	
+
+			<Frame name="DKIRunesHorizontalBackdrop" setAllPoints="true" hidden="true">
+
+				<Size x="160" y="40"/> 
+
+				<Anchors>
+					<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>	  
+
+				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="16"/>
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="16"/>
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5"/>
+					</BackgroundInsets>
+				</Backdrop>
+
+				<Layers>
+					<Layer level="BORDER">
+						<Texture name="Horizontal_Bar_0">
+							<Size x="150" y="16"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="CENTER">
+									<Offset>
+										<AbsDimension x="-75" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="BORDER">
+						<Texture name="Horizontal_Bar_1">
+							<Size x="150" y="16"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="CENTER">
+									<Offset>
+										<AbsDimension x="-75" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+			
+			</Frame>	
+
+			<Frame name="DKIRunesVerticalBackdrop" setAllPoints="true" hidden="true">
+
+				<Size x="40" y="160"/> 
+
+				<Anchors>
+					<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>	  
+
+				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="16"/>
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="16"/>
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5"/>
+					</BackgroundInsets>
+				</Backdrop>
+
+				<Layers>
+					<Layer level="BORDER">
+						<Texture name="Vertical_Bar_0">
+							<Size x="16" y="150"/>
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT" relativePoint="CENTER">
+									<Offset>
+										<AbsDimension x="0" y="-75"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="BORDER">
+						<Texture name="Vertical_Bar_1">
+							<Size x="16" y="150"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="CENTER">
+									<Offset>
+										<AbsDimension x="0" y="-75"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				
+			</Frame>	
+
+		</Frames>
+
+		<Scripts>
+			<OnLoad>
+				DKIRunes_OnLoad(self);
+			</OnLoad>
+			<OnUpdate>
+				DKIRunes_OnUpdate(self, arg1);
+			</OnUpdate>
+		</Scripts>
+
+	</Frame>
+
+	<Frame name="Rune1" parent="DKIRunesFrame" hidden="false" inherits="IndividualRuneTemplate" level="OVERLAY" id="1">
+		<Anchors>
+			<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER">
+				<Offset>
+					<AbsDimension x="-60" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+	</Frame>
+
+	<Frame name="Rune2" parent="DKIRunesFrame" hidden="false" inherits="IndividualRuneTemplate" level="OVERLAY" id="2">
+		<Anchors>
+			<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER">
+				<Offset>
+					<AbsDimension x="-36" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+	</Frame>
+
+	<Frame name="Rune5" parent="DKIRunesFrame" hidden="false" inherits="IndividualRuneTemplate" level="OVERLAY" id="5">
+		<Anchors>
+			<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER">
+				<Offset>
+					<AbsDimension x="-12" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+	</Frame>
+
+	<Frame name="Rune6" parent="DKIRunesFrame" hidden="false" inherits="IndividualRuneTemplate" level="OVERLAY" id="6">
+		<Anchors>
+			<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER">
+				<Offset>
+					<AbsDimension x="12" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+	</Frame>
+
+	<Frame name="Rune3" parent="DKIRunesFrame" hidden="false" inherits="IndividualRuneTemplate" level="OVERLAY" id="3">
+		<Anchors>
+			<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER">
+				<Offset>
+					<AbsDimension x="36" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+	</Frame>
+
+	<Frame name="Rune4" parent="DKIRunesFrame" hidden="false" inherits="IndividualRuneTemplate" level="OVERLAY" id="4">
+		<Anchors>
+			<Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER">
+				<Offset>
+					<AbsDimension x="60" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+	</Frame>
+
+</Ui>

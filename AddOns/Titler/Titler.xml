@@ -1,0 +1,204 @@
+<Ui>
+  <Frame name="TitlerMain" parent="UIParent" enableMouse="true" movable="true">
+    <Size>
+      <AbsDimension x="300" y="370"/>
+    </Size>
+    <Anchors>
+      <Anchor point="CENTER"/>
+    </Anchors>
+    <Scripts>
+      <OnLoad>
+	  self:RegisterEvent("ADDON_LOADED");
+      </OnLoad>
+      <OnEvent>
+        if(arg1 == "Titler") then
+          Titler_Init();
+        end
+      </OnEvent>
+	<OnMouseDown>
+        self:StartMoving();
+	</OnMouseDown>
+	<OnMouseUp>
+	  self:StopMovingOrSizing();
+	</OnMouseUp>
+    </Scripts>
+    <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Gold-Border" tile="true">
+      <BackgroundInsets>
+        <AbsInset left="4" right="4" top="4" bottom="4" />
+      </BackgroundInsets>
+      <TileSize>
+        <AbsValue val="16" />
+      </TileSize>
+      <EdgeSize>
+        <AbsValue val="32" />
+      </EdgeSize>
+    </Backdrop>
+    <Layers>
+      	<Layer level="ARTWORK">
+			<FontString name="Titler_Title" inherits="ChatFontNormal" text="Fun with |cff00ff00Titler|r!!">
+			<Anchors>
+			<Anchor point="TOP">
+			<Offset>
+			<AbsDimension x="0" y="-15"/>
+			</Offset>
+			</Anchor>
+			</Anchors>
+			</FontString>
+
+			<FontString name="Titler_Stats" inherits="ChatFontNormal" text="stats">
+			<Anchors>
+			<Anchor point="TOPLEFT">
+			<Offset>
+			<AbsDimension x="15" y="-75"/>
+			</Offset>
+			</Anchor>
+			</Anchors>
+			</FontString>
+		</Layer>
+    </Layers>
+    <Frames>
+	<Button name="$parentButtonClose" inherits="OptionsButtonTemplate" text="Close">
+	<Anchors>
+	 <Anchor point="BOTTOMRIGHT">
+	  <Offset>
+	   <AbsDimension x="-12" y="15"/>
+	  </Offset>
+	 </Anchor>
+	</Anchors>
+	<Scripts>
+	 <OnClick> TitlerMain:Hide();</OnClick>
+	</Scripts>
+	</Button>
+
+	<Button name="Titler_DisableAll" inherits="OptionsButtonTemplate" text="Disable All">
+	<Anchors>
+	 <Anchor point="BOTTOMLEFT">
+	  <Offset>
+	   <AbsDimension x="12" y="15"/>
+	  </Offset>
+	 </Anchor>
+	</Anchors>
+	<Scripts>
+	 <OnClick> Titler_DisableAll(); </OnClick>
+	</Scripts>
+	</Button>
+	<Button name="Titler_EnableAll" inherits="OptionsButtonTemplate" text="Enable All">
+	<Anchors>
+	 <Anchor point="BOTTOMLEFT">
+	  <Offset>
+	   <AbsDimension x="12" y="40"/>
+	  </Offset>
+	 </Anchor>
+	</Anchors>
+	<Scripts>
+	 <OnClick> Titler_EnableAll(); </OnClick>
+	</Scripts>
+	</Button>
+
+	<Button name="Titler_StartStop" inherits="OptionsButtonTemplate" text="Start">
+	<Anchors>
+	 <Anchor point="BOTTOMLEFT">
+	  <Offset>
+	   <AbsDimension x="105" y="15"/>
+	  </Offset>
+	 </Anchor>
+	</Anchors>
+	<Scripts>
+	 <OnClick> Titler_Run(); </OnClick>
+	</Scripts>
+	</Button>
+
+	<CheckButton name="Titler_Autorun" inherits="OptionsCheckButtonTemplate" checked="false" text="Autorun">
+	 <Anchors><Anchor point="BOTTOMRIGHT"><Offset>
+	 <AbsDimension x="-80" y="38"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>SetAutorun();</OnClick></Scripts>
+	</CheckButton>
+
+
+	<CheckButton name="Title1" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-95"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Titler_EnableDisable(1);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="Title2" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-115"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Titler_EnableDisable(2);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="Title3" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-135"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Titler_EnableDisable(3);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="Title4" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-155"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Titler_EnableDisable(4);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="Title5" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-175"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Titler_EnableDisable(5);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="Title6" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-195"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Titler_EnableDisable(6);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="Title7" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-215"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Titler_EnableDisable(7);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="Title8" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-235"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Titler_EnableDisable(8);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="Title9" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-255"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Titler_EnableDisable(9);</OnClick></Scripts>
+	</CheckButton>
+	<CheckButton name="Title10" inherits="OptionsCheckButtonTemplate" checked="true">
+	 <Anchors><Anchor point="TOPLEFT"><Offset>
+	 <AbsDimension x="10" y="-275"></AbsDimension>
+	 </Offset></Anchor></Anchors>
+	 <Scripts><OnClick>Titler_EnableDisable(10);</OnClick></Scripts>
+	</CheckButton>
+
+      <ScrollFrame name="TitlerBar" inherits="FauxScrollFrameTemplate" hidden="false">
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="0" y="-95"/>
+            </Offset>
+          </Anchor>
+          <Anchor point="RIGHT">
+            <Offset>
+              <AbsDimension x="-40" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnVerticalScroll>
+            FauxScrollFrame_OnVerticalScroll(self, offset, 16, TitlerBar_Update);
+          </OnVerticalScroll>
+          <OnShow>
+            TitlerBar_Update()
+          </OnShow>
+        </Scripts>
+      </ScrollFrame>
+    </Frames>
+  </Frame>
+</Ui>

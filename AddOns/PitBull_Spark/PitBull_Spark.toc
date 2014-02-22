@@ -1,0 +1,20 @@
+﻿## Interface: 30300
+## Title: PitBull |r[|cffeda55fSpark|r]
+## Notes: Graceful display of energy ticks and the spellcasting five-second-rule.
+## Notes-koKR: 기력 회복 및 5초 규칙 주문 시전을 우아하게 표시합니다.
+## Author: Nymbia, Ellipsis
+## X-PitBull-Condition: return select(2, UnitClass("player")) ~= "WARRIOR"
+## DefaultState: enabled
+## LoadOnDemand: 1
+## Dependencies: PitBull
+## OptionalDeps: Ace2
+## X-Category: UnitFrame
+## X-eMail: nymbia@gmail.com
+## X-License: GPL v2 or later
+## Version: 2.0
+## X-Curse-Packaged-Version: v3.2.16
+## X-Curse-Project-Name: PitBull Unit Frames 3.0
+## X-Curse-Project-ID: pit-bull
+## X-Curse-Repository-ID: wow/pit-bull/mainline
+
+Spark.lua

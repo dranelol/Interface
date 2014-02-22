@@ -1,0 +1,18 @@
+## Interface: 30200
+## Author: Mood
+## Title: Announce
+## Notes: Party/raid chat announcer for various spells.
+## OptionalDeps: Ace3
+## X-Embeds: Ace3
+## X-Category: Chat/Communication
+## SavedVariables: SkillSettings
+## SavedVariablesPerCharacter: CharacterSettings
+
+
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+libs\AceAddon-3.0\AceAddon-3.0.lua
+libs\AceEvent-3.0\AceEvent-3.0.lua
+libs\AceHook-3.0\AceHook-3.0.lua
+
+Announce.lua

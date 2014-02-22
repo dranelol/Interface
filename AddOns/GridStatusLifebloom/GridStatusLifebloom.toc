@@ -1,0 +1,16 @@
+﻿## Interface: 30000
+## Title: GridStatusLifebloom |cff7fff7f -Ace2-|r
+## Notes: Counts stacked lifeblooms and uses progressive colors to indicate the active number of HOTs.
+## Author: Coedan@Neptulon-EU, Toadkiller
+## Version: v3.01.01.05 release
+## Grid Author: Pastamancer & Maia
+## Dependencies: Grid
+## X-Credits: GridStatusHotStack by Zekiel@DarkSpear
+## X-Category: UnitFrame
+## X-GridStatusModule: GridStatusLifebloom
+## X-Curse-Packaged-Version: r51
+## X-Curse-Project-Name: GridStatusLifebloom
+## X-Curse-Project-ID: grid-status-lifebloom
+## X-Curse-Repository-ID: wow/grid-status-lifebloom/mainline
+
+GridStatusLifebloom.lua

@@ -1,0 +1,73 @@
+LunarSphere Public Release
+Version 1.04 Changelog
+
+Fixed an issue with the speech system. Thanks Blizzard for removing randomseed :( Oh well, I guess it randomizes anyway, do it's all good.
+
+LunarSphere Public Release
+Version 1.03 Changelog
+
+... Updated LunarSphere to work with the 3.1 patch. I'm leaving the 1.01 and 1.02 changelog below...
+
+===========================================
+all previous changelogs can be seen inside
+the changelog board (which also looks better
+and is formatted), found at:
+
+http://lunaraddons.com/forum/index.php?board=29.0
+
+- Moongaze (moongazemods@gmail.com)
+===========================================
+
+Feature Additions
+
+	Buttons Tab: New feature added called "Keep keybinds while swapping" which has been added to the "Button display options" section. If this is turned on, moving spells from one button to another will not transfer the keybind. Useful for those who like to swap around spells on their sphere into their "action bar" setup on LunarSphere with the 12 main keybinds.
+
+	Buttons Tab: New feature added called "Always show pet button types when pet is out" which has been added to the "Button display options" section. This is on by default. When this option is on and "Edit Button" mode is off, all pet action button types within LunarSphere will always be visible while a pet it out, and will not be visible at all when a pet is not out. Turning this feature off will cause the pet action button types to show and hide like a normal LunarSphere button.
+
+	Skin Tab: A new feature was added to the Sphere skinning section called "Use random sphere texture" which will pick a random sphere texture from the list and assign it to the sphere every time you reload your UI, log on, and of course, at the moment you turn on the option.
+
+Feature Changes
+
+	Sphere Tab: Setting the sphere scale will now only affect the sphere and not the sphere and the buttons. If you want to globally scale the buttons as well, use the "Global scale of buttons" feature to apply a scale to all buttons via the "Apply" button, or manually set each button's scale in its Button Settings window.
+
+	Sphere Tab: The sphere scale can now be set to 3.0, up from 2.0.
+
+	Buttons Tab: Added a scroll bar for the tab, allowing for more features to be represented, as well as allowing for some feature to have more room.
+
+	Buttons Tab: "Global scale of buttons" feature has been modified. The "Apply" and "Reset" boxes have been removed, the scale can go up to 3.0, and the changes take effect as you slide the slider. Seems to be more intuitive this way.
+
+	Buttons Tab: The "Force drag-and-drop assignment" feature now works with "click-to-drop" assignment as well. This means that you can pick up a spell/item/macro and just click a button with the left, middle, or right mouse button, while NOT in combat, to assign the action if this feature is turned on and the "Edit Button" is off. Before, you could only drag and drop, and only assign to the left mouse button.
+
+	Buttons: Changed the code to allow for the highlighting of active aspects for Hunters and presences for Death Knights.
+
+	Locale: Got rid of the "Google French" translation because it has been said to be horrible. Still waiting for translations of other languages when they are finished =)
+
+	Item Recognition: "Noah's Special Brew" is now recognized as a healing potion for the Death Knights.
+
+	Item Recognition: Changed the code to have a slight delay before checking for new mounts/pets when you learn a new companion, to help aid with some companions not being recognized immediately.
+
+	Item Recognition: All "Rejuvenation Potion" items (Major Rejuvenation, Minor Rejuvenation, Powerful Rejuvenation, and Super Rejuvenation) and all "Alchemist Potion" items (Crazy Alchemist's Potion, Mad Alchemist's Potion) are now recognized as both health potions and mana potions and assigned to the proper strength settings within LS.
+
+Bug Fixes
+
+	Fixed an issue where the sphere text event for "Spell/Item Count" would not hide the text if a spell/item was dragged into the slot that has no count, whereas the original spell/item did, resulting in situations where, for example, "Prayer of Fortitude" would show a count, but if the spell was replaced with "Renew" the original count would still show.
+
+	Fixed an issue where the sphere text event for "Spell/Item Cooldown" would not update properly if the user dragged a new spell/item to track, resulting in the previous spell/item, if any, still being shown for the cooldown tracking.
+
+	Fixed an issue where sometimes, if the saved variables event doesn't fire properly, only part of the addon is loaded and crashed. Now, if the player login event happens before the saved variables event happens, LS will try to force it's way through the loading process. This is not the best idea I've had, but it will have to do for right now...
+
+	Fixed an issue where mounts that would typically be "spell mounts" were not working well with the speech support. This was due to some code I added near the end of the beta testing that added rank support (mainly for polymorph spells) to the speech system... and it unfairly messed with the spell mounts as well.
+
+	Fixed an issue where logging into the game while in a shape shift form would cause a loading error for some situations for druids and possibly other classes.
+
+	Fixed a typo. "Vendor" is not spelled "Vender" ^.^
+
+	Fixed an issue where the "Apply to weapon" button types (both the normal "apply to weapon" and the "apply poison to weapon" types) were not transferring the inventory targeting feature when being picked up as a "Use last submenu action" or "Use second to last submenu action" type.
+
+	Fixed an issue where spell mounts and "small pet" companions that were saved to a template would not actually load properly when the template was loaded.
+
+	Fixed an issue where the button types that did not rely on items (such as the "Open Backpack," "Apply to weapon," and "Random companion") would not load properly when when a template was loaded with these buttons types within it.
+
+	Fixed an issue where the "Conjure Mana Gem" spells would not load properly if assigned to a template. The mage template handled it fine, just not custom-made templates.
+
+	Fixed an issue where having submenu compression turned on and modifying the Button Distance, Button Spacing, or the Button Angle Offset in the Sphere tab, while "Edit Button" mode was off, would result in the submenu buttons no longer being compressed until "Edit Button" mode was turned on and then off.

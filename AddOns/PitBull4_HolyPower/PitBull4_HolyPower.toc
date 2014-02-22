@@ -1,0 +1,29 @@
+## Interface: 50400
+## Title: PitBull4 |r[|cffeda55fHoly power|r]
+## Title-deDE: PitBull4 |r[|cffeda55fHeilige Macht|r]
+## Title-esES: PitBull4 |r[|cffeda55fHoly power|r]
+## Title-frFR: PitBull4 |r[|cffeda55fPuissance sacrée|r]
+## Title-koKR: PitBull4 |r[|cffeda55fHoly power|r]
+## Title-ruRU: PitBull4 |r[|cffeda55fЭнергия Света|r]
+## Title-zhCN: PitBull4 |r[|cffeda55f神圣之力|r]
+## Title-zhTW: PitBull4 |r[|cffeda55f聖能|r]
+## Notes: Show Paladin Holy power icons.
+## Notes-deDE: Symbole für "Heilige Macht" des Paladins anzeigen.
+## Notes-esES: Show Paladin Holy power icons.
+## Notes-frFR: Affiche les icônes de puissance sacrée du paladin.
+## Notes-koKR: Show Paladin Holy power icons.
+## Notes-ruRU: Отображает иконки Энергии Света паладинов.
+## Notes-zhCN: 显示圣骑士的神圣之力图标
+## Notes-zhTW: 顯示勝騎士聖能圖示
+## Author: ckknight
+## DefaultState: enabled
+## LoadOnDemand: 1
+## Dependencies: PitBull4
+## Version: v4.0.0-beta48
+## X-PitBull4-Condition: return select(2, UnitClass("player")) == "PALADIN" and PowerBarColor["HOLY_POWER"]
+## X-Curse-Packaged-Version: v4.0.0-beta48
+## X-Curse-Project-Name: PitBull Unit Frames 4.0
+## X-Curse-Project-ID: pitbull4
+## X-Curse-Repository-ID: wow/pitbull4/mainline
+
+load.xml

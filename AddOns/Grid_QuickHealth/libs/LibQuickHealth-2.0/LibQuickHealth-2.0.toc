@@ -1,0 +1,17 @@
+## Interface: 40200
+## Title: Lib: QuickHealth-2.0
+## Author: Tifi, Cncfanatics
+## X-Donate: PayPal: diego.duclos@gmail.com
+## X-Email: diego.duclos@gmail.com
+## X-Category: Library
+## X-License: MIT
+## X-Curse-Packaged-Version: r21
+## X-Curse-Project-Name: LibQuickHealth-2.0
+## X-Curse-Project-ID: project-14303
+## X-Curse-Repository-ID: wow/project-14303/mainline
+## X-Curse-Packaged-Version: 5.0.4-release
+## X-Curse-Project-Name: Grid_QuickHealth
+## X-Curse-Project-ID: project-14141
+## X-Curse-Repository-ID: wow/project-14141/mainline
+
+LibQuickHealth-2.0.xml

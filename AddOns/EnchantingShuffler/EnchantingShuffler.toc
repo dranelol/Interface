@@ -1,0 +1,13 @@
+## Interface: 50400
+## Title: Enchanting Shuffler
+## Notes: Shuffling enchanting mats
+## Author: Shiftywarloc aka j311yf1sh
+## Version: 2.4
+## SavedVariables: EnchantingShufflerDB
+
+embeds.xml
+EnchantingShufflerGUI.xml
+EnchantingShufflerOpts.xml
+
+EnchantingShuffler.lua
+

@@ -1,0 +1,1985 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+	
+	<!-- Main Script -->
+	
+	<Frame name="LootFilterFrame" enableMouse="false" parent="UIParent">
+		<Scripts>
+			<OnLoad> LootFilter.OnLoad(self); </OnLoad>
+			<OnEvent> LootFilter.OnEvent(self, event, ...); </OnEvent>
+		</Scripts>
+	</Frame>
+	
+	 <GameTooltip name="LootFilterScanningTooltip" inherits="GameTooltipTemplate">
+	   <Scripts>
+		 <Onload>
+		   self:SetOwner(UIParent, "ANCHOR_NONE");
+		 </Onload>
+	   </Scripts>
+	 </GameTooltip>
+	
+	<Frame name="LootFilterOptions" toplevel="true" movable="true" parent="UIParent"
+		enableMouse="true" hidden="true">
+		<Scripts>
+			<OnLoad> LootFilter.setTitle(); </OnLoad>
+		</Scripts>
+		<TitleRegion setAllPoints="true"/>
+		<Size>
+			<AbsDimension x="640" y="480"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+			edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+				<Size>
+					<AbsDimension x="128" y="17"/>
+				</Size>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="LootFilterFrameTitle"
+					file="Interface\DialogFrame\UI-DialogBox-Header">
+					<Size>
+						<AbsDimension x="276" y="64"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="12"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString name="LootFilterFrameTitleText"
+					inherits="GameFontNormal" text="Loot Filter">
+					<Anchors>
+						<Anchor point="TOP" relativeTo="LootFilterOptions">
+							<Offset>
+								<AbsDimension x="0" y="-3"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			
+			<!-- ##### BUTTONS ##### -->
+			
+			<Button name="LootFilterIcon">
+				<Size>
+					<AbsDimension x="32" y="32"/>
+				</Size>
+				<NormalTexture
+					file="Interface\AddOns\LootFilter\Images\LFbutton"/>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="TOP"
+						relativeTo="LootFilterFrameTitle">
+						<Offset>
+							<AbsDimension x="-85" y="-20"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			
+			<Button name="LootFilterButtonGeneral"
+				inherits="GameMenuButtonTemplate" text="LFINT_BTN_GENERAL">
+				<Size>
+					<AbsDimension x="70" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="TOP"
+						relativeTo="LootFilterFrameTitle">
+						<Offset>
+							<AbsDimension x="-300" y="-50"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> LootFilter.selectButton(self,
+						LootFilterFrameGeneral); </OnClick>
+				</Scripts>
+			</Button>
+			
+			<Button name="LootFilterButtonQuality"
+				inherits="GameMenuButtonTemplate" text="LFINT_BTN_QUALITY">
+				<Size>
+					<AbsDimension x="70" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="TOP"
+						relativeTo="LootFilterFrameTitle">
+						<Offset>
+							<AbsDimension x="-230" y="-50"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> LootFilter.selectButton(self,
+						LootFilterFrameQuality); </OnClick>
+				</Scripts>
+			</Button>
+			<Button name="LootFilterButtonType" inherits="GameMenuButtonTemplate"
+				text="LFINT_BTN_TYPE">
+				<Size>
+					<AbsDimension x="70" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="TOP"
+						relativeTo="LootFilterFrameTitle">
+						<Offset>
+							<AbsDimension x="-160" y="-50"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> LootFilter.selectButton(self, LootFilterFrameType);
+						</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="LootFilterButtonName" inherits="GameMenuButtonTemplate"
+				text="LFINT_BTN_NAME">
+				<Size>
+					<AbsDimension x="70" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="TOP"
+						relativeTo="LootFilterFrameTitle">
+						<Offset>
+							<AbsDimension x="-90" y="-50"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> LootFilter.selectButton(self, LootFilterFrameName);
+						</OnClick>
+				</Scripts>
+			</Button>
+			
+			<Button name="LootFilterButtonValue" inherits="GameMenuButtonTemplate"
+				text="LFINT_BTN_VALUE">
+				<Size>
+					<AbsDimension x="70" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="TOP"
+						relativeTo="LootFilterFrameTitle">
+						<Offset>
+							<AbsDimension x="-20" y="-50"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> LootFilter.checkDependencies();
+						LootFilter.selectButton(self, LootFilterFrameValue);
+						</OnClick>
+				</Scripts>
+			</Button>
+			
+			<Button name="LootFilterButtonClean" inherits="GameMenuButtonTemplate"
+				text="LFINT_BTN_CLEAN">
+				<Size>
+					<AbsDimension x="70" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="TOP"
+						relativeTo="LootFilterFrameTitle">
+						<Offset>
+							<AbsDimension x="50" y="-50"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> LootFilter.selectButton(self, LootFilterFrameClean);
+						</OnClick>
+				</Scripts>
+			</Button>
+			
+			
+			<Button name="LootFilterButtonCopy" inherits="GameMenuButtonTemplate"
+				text="LFINT_BTN_COPY">
+				<Size>
+					<AbsDimension x="70" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="TOP"
+						relativeTo="LootFilterFrameTitle">
+						<Offset>
+							<AbsDimension x="190" y="-50"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> LootFilter.selectButton(self, LootFilterFrameCopy);
+						</OnClick>
+				</Scripts>
+			</Button>
+			
+			<Button name="LootFilterClose" inherits="GameMenuButtonTemplate"
+				text="LFINT_BTN_CLOSE">
+				<Anchors>
+					<Anchor point="CENTER" relativePoint="BOTTOM"
+						relativeTo="LootFilterOptions">
+						<Offset>
+							<AbsDimension x="0" y="30"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick> LootFilter.setNames(); LootFilter.setNamesDelete();
+						LootFilter.setItemValue();
+						self:GetParent():Hide(); LootFilter.hasFocus= 0; </OnClick>
+				</Scripts>
+			</Button>
+			
+			<!-- ##### Frame General ##### -->
+			
+			<Frame name="LootFilterFrameGeneral" toplevel="false" movable="true"
+				parent="LootFilterOptions" enableMouse="true" hidden="false">
+				<Size>
+					<AbsDimension x="640" y="430"/>
+				</Size>
+				<Anchor point="LEFT" relativePoint="TOP"
+					relativeTo="LootFilterFrameTitle">
+					<Offset>
+						<AbsDimension x="-300" y="-50"/>
+					</Offset>
+				</Anchor>
+				<Layers>
+					<Layer level="ARTWORK">
+						
+						<FontString name="LootFilterEditBoxTitle2"
+							inherits="GameFontNormal" justifyV="TOP"
+							justifyH="LEFT" text="LFINT_TXT_MOREINFO">
+							<Size>
+								<AbsDimension x="600" y="430"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="BOTTOM"
+									relativeTo="LootFilterFrameTitle">
+									<Offset>
+										<AbsDimension x="-297" y="-520"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="LootFilterEditBoxTitle3"
+							inherits="GameFontNormal" justifyV="TOP"
+							justifyH="LEFT" text="LFINT_TXT_SELECTBAGS">
+							<Size>
+								<AbsDimension x="600" y="430"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="BOTTOM"
+									relativeTo="LootFilterFrameTitle">
+									<Offset>
+										<AbsDimension x="-297" y="-290"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				
+				<Frames>
+					
+					<Frame name="LootFilterOPEnable"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="-300" y="-80"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					<Frame name="LootFilterOPTooltips"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="-300" y="-110"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					
+					<Frame name="LootFilterOPNotifyDelete"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="-100" y="-80"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					<Frame name="LootFilterOPNotifyKeep"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="-100" y="-95"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					<Frame name="LootFilterOPNotifyNoMatch"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="-100" y="-110"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					<Frame name="LootFilterOPNotifyOpen"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="100" y="-80"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					<Frame name="LootFilterOPNotifyNew"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="100" y="-95"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					<Frame name="LootFilterOPConfirmDelete"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="LootFilterOPNotifyNew"/>
+							<Anchor point="BOTTOM" relativeTo="LootFilterOPNotifyNoMatch"/>
+						</Anchors>
+					</Frame>
+					<Frame name="LootFilterOPBag0"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="100" y="-165"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					<Frame name="LootFilterOPBag1"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="0" y="-165"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					<Frame name="LootFilterOPBag2"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="-100" y="-165"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					<Frame name="LootFilterOPBag3"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="-200" y="-165"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					<Frame name="LootFilterOPBag4"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="-300" y="-165"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					
+				</Frames>
+			</Frame>
+			
+			<!-- ##### Frame Quality ##### -->
+			
+			<Frame name="LootFilterFrameQuality" toplevel="true" movable="false"
+				parent="LootFilterOptions" enableMouse="true" hidden="true">
+				<Size>
+					<AbsDimension x="640" y="430"/>
+				</Size>
+				<Anchor point="LEFT" relativePoint="TOP"
+					relativeTo="LootFilterFrameTitle">
+					<Offset>
+						<AbsDimension x="-300" y="-50"/>
+					</Offset>
+				</Anchor>
+				
+				<Frames>
+				</Frames>
+			</Frame>
+			
+			<!-- ##### Frame Type ##### -->
+			
+			<Frame name="LootFilterFrameType" toplevel="true" movable="false"
+				parent="LootFilterOptions" enableMouse="true" hidden="true">
+				<Size>
+					<AbsDimension x="640" y="430"/>
+				</Size>
+				<Anchor point="LEFT" relativePoint="TOP"
+					relativeTo="LootFilterFrameTitle">
+					<Offset>
+						<AbsDimension x="-300" y="-50"/>
+					</Offset>
+				</Anchor>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parent_TextType"
+							inherits="GameFontNormal" text="LFINT_TXT_SELECTTYPE">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="TOP"
+									relativeTo="LootFilterOptions">
+									<Offset>
+										<AbsDimension x="-297" y="-68"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Button name="LootFilterSelectDropDownType"
+						inherits="UIDropDownMenuTemplate">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="LootFilterOptions"
+								relativePoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="150" y="-70"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								UIDropDownMenu_SetWidth(self, 150);
+							</OnLoad>
+						</Scripts>
+					</Button>
+				</Frames>
+			</Frame>
+			
+			<!-- ##### Frame Name ##### -->
+			
+			<Frame name="LootFilterFrameName" toplevel="true" movable="false"
+				parent="LootFilterOptions" enableMouse="true" hidden="true">
+				<Size>
+					<AbsDimension x="640" y="430"/>
+				</Size>
+				<Anchor point="LEFT" relativePoint="TOP"
+					relativeTo="LootFilterFrameTitle">
+					<Offset>
+						<AbsDimension x="-300" y="-50"/>
+					</Offset>
+				</Anchor>
+				<Layers>
+					<Layer level="ARTWORK">
+						
+						<FontString name="LootFilterEditBoxTitle2"
+							inherits="GameFontNormal" text="LFINT_TXT_ITEMKEEP">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="TOP"
+									relativeTo="LootFilterFrameTitle">
+									<Offset>
+										<AbsDimension x="-297" y="-78"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="LootFilterEditBoxTitle5"
+							inherits="GameFontNormal"
+							text="LFINT_TXT_ITEMDELETE">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="TOP"
+									relativeTo="LootFilterFrameTitle">
+									<Offset>
+										<AbsDimension x="5" y="-80"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="LootFilterEditBoxTitle6"
+							inherits="GameFontNormal"
+							text="LFINT_TXT_INSERTNEWNAME">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="TOP"
+									relativeTo="LootFilterFrameTitle">
+									<Offset>
+										<AbsDimension x="-100" y="-430"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				
+				<Frames>
+					<ScrollFrame name="LootFilterScrollFrame1"
+						inherits="UIPanelScrollFrameTemplate">
+						<Size>
+							<AbsDimension x="250" y="310"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterOptions">
+								<Offset>
+									<AbsDimension x="30" y="-90"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<ScrollChild>
+							<Frame name="LootFilterScrollChildFrame1"
+								enableMouse="true">
+								<Size>
+									<AbsDimension x="250" y="310"/>
+								</Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<Frames>
+									<EditBox name="LootFilterEditBox1"
+										letters="7500" multiLine="true"
+										enableMouse="true" autoFocus="false">
+										<Size>
+											<AbsDimension x="250" y="310"/>
+										</Size>
+										<Anchors>
+											<Anchor point="TOPLEFT">
+												<Offset>
+													<AbsDimension x="0" y="0"/>
+												</Offset>
+											</Anchor>
+										</Anchors>
+										<Scripts>
+											<OnShow> LootFilter.getNames();
+												</OnShow>
+											<OnTextChanged> local scrollBar =
+												getglobal(self:GetParent():GetParent():GetName().."ScrollBar")
+												self:GetParent():GetParent():UpdateScrollChildRect();
+												local min; local max; min, max =
+												scrollBar:GetMinMaxValues(); if (
+												max > 0 and (self.max ~= max) ) then
+												self.max = max;
+												scrollBar:SetValue(max); end
+												</OnTextChanged>
+											<OnClick>
+											</OnClick>
+											<OnEscapePressed>
+												LootFilter.updateFocus(self, 1, false);
+												</OnEscapePressed>
+											<OnEditFocusGained>
+												LootFilter.updateFocus(self, 1, true);
+												</OnEditFocusGained>
+											<OnEditFocusLost>
+											</OnEditFocusLost>
+											<OnEnter>
+												LootFilter.showTooltip(self,
+												"LToolTip5"); </OnEnter>
+											<OnLeave> GameTooltip:Hide();
+												</OnLeave>
+										</Scripts>
+										<FontString inherits="ChatFontNormal"/>
+									</EditBox>
+								</Frames>
+								<Scripts>
+									<OnMouseUp> LootFilterEditBox1:SetFocus();
+										</OnMouseUp>
+									<OnEnter> LootFilter.showTooltip(self,
+										"LToolTip5"); </OnEnter>
+									<OnLeave> GameTooltip:Hide(); </OnLeave>
+								</Scripts>
+							</Frame>
+						</ScrollChild>
+					</ScrollFrame>
+					
+					<ScrollFrame name="LootFilterScrollFrame2"
+						inherits="UIPanelScrollFrameTemplate">
+						<Size>
+							<AbsDimension x="250" y="310"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterOptions">
+								<Offset>
+									<AbsDimension x="330" y="-90"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<ScrollChild>
+							<Frame name="LootFilterScrollChildFrame2"
+								enableMouse="true">
+								<Size>
+									<AbsDimension x="250" y="310"/>
+								</Size>
+								<Anchors>
+									<Anchor point="TOPLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<Frames>
+									<EditBox name="LootFilterEditBox2"
+										letters="7500" multiLine="true"
+										enableMouse="true" autoFocus="false">
+										<Size>
+											<AbsDimension x="250" y="310"/>
+										</Size>
+										<Anchors>
+											<Anchor point="TOPLEFT">
+												<Offset>
+													<AbsDimension x="0" y="0"/>
+												</Offset>
+											</Anchor>
+										</Anchors>
+										<Scripts>
+											<OnShow> LootFilter.getNamesDelete();
+												</OnShow>
+											<OnTextChanged> local scrollBar =
+												getglobal(self:GetParent():GetParent():GetName().."ScrollBar")
+												self:GetParent():GetParent():UpdateScrollChildRect();
+												local min; local max; min, max =
+												scrollBar:GetMinMaxValues(); if (
+												max > 0 and (self.max ~= max) ) then
+												self.max = max;
+												scrollBar:SetValue(max); end
+												</OnTextChanged>
+											<OnClick>
+											</OnClick>
+											<OnEscapePressed>
+												LootFilter.updateFocus(self, 2, false);
+												</OnEscapePressed>
+											<OnEditFocusGained>
+												LootFilter.updateFocus(self, 2, true);
+												</OnEditFocusGained>
+											<OnEditFocusLost>
+											</OnEditFocusLost>
+											<OnEnter>
+												LootFilter.showTooltip(self,
+												"LToolTip6"); </OnEnter>
+											<OnLeave> GameTooltip:Hide();
+												</OnLeave>
+										</Scripts>
+										<FontString inherits="ChatFontNormal"/>
+									</EditBox>
+								</Frames>
+								<Scripts>
+									<OnMouseUp> LootFilterEditBox2:SetFocus();
+										</OnMouseUp>
+									<OnEnter> LootFilter.showTooltip(self,
+										"LToolTip6"); </OnEnter>
+									<OnLeave> GameTooltip:Hide(); </OnLeave>
+								</Scripts>
+							</Frame>
+						</ScrollChild>
+					</ScrollFrame>
+					
+					<Frame name="LootFilterTextBackground1" hidden="false">
+						<Size>
+							<AbsDimension x="290" y="323"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterScrollFrame1">
+								<Offset>
+									<AbsDimension x="-10" y="7"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Backdrop
+							bgFile="Interface\Tooltips\UI-Tooltip-Background"
+							edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+							tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="16"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5"/>
+							</BackgroundInsets>
+						</Backdrop>
+						<Scripts>
+							<OnLoad>
+								self:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r,
+								TOOLTIP_DEFAULT_COLOR.g,
+								TOOLTIP_DEFAULT_COLOR.b);
+								self:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
+								TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
+								TOOLTIP_DEFAULT_BACKGROUND_COLOR.b); </OnLoad>
+						</Scripts>
+					</Frame>
+					<Frame name="LootFilterTextBackground2">
+						<Size>
+							<AbsDimension x="290" y="323"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterScrollFrame2">
+								<Offset>
+									<AbsDimension x="-10" y="7"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Backdrop
+							bgFile="Interface\Tooltips\UI-Tooltip-Background"
+							edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+							tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="16"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5"/>
+							</BackgroundInsets>
+						</Backdrop>
+						<Scripts>
+							<OnLoad>
+								self:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r,
+								TOOLTIP_DEFAULT_COLOR.g,
+								TOOLTIP_DEFAULT_COLOR.b);
+								self:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
+								TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
+								TOOLTIP_DEFAULT_BACKGROUND_COLOR.b); </OnLoad>
+						</Scripts>
+					</Frame>
+				</Frames>
+			</Frame>
+			
+			<!-- ##### Frame Value ##### -->
+			
+			<Frame name="LootFilterFrameValue" toplevel="true" movable="false"
+				parent="LootFilterOptions" enableMouse="true" hidden="true">
+				<Size>
+					<AbsDimension x="640" y="430"/>
+				</Size>
+				<Anchor point="LEFT" relativePoint="TOP"
+					relativeTo="LootFilterFrameTitle">
+					<Offset>
+						<AbsDimension x="-300" y="-50"/>
+					</Offset>
+				</Anchor>
+				<Layers>
+					<Layer level="ARTWORK">
+					
+						
+						<FontString name="LootFilterSizeToCalculate"
+							inherits="GameFontNormal" text="LFINT_TXT_SIZETOCALCULATE" hidden="true">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="TOP"
+									relativeTo="LootFilterFrameTitle">
+									<Offset>
+										<AbsDimension x="-280" y="-230"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						
+						<FontString name="LootFilterNeedAddon"
+							inherits="GameFontNormal" justifyV="TOP"
+							justifyH="LEFT" text="LFINT_TXT_INFORMANTNEED"
+							hidden="false">
+							<Size>
+								<AbsDimension x="600" y="430"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="BOTTOM"
+									relativeTo="LootFilterFrameTitle">
+									<Offset>
+										<AbsDimension x="-297" y="-220"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						
+						<FontString name="LootFilterFreeSlotsText"
+							inherits="GameFontNormal" justifyV="TOP"
+							justifyH="LEFT" text="LFINT_TXT_NUMFREEBAGSLOTS"
+							hidden="true">
+							<Size>
+								<AbsDimension x="300" y="20"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="BOTTOM"
+									relativeTo="LootFilterFrameTitle">
+									<Offset>
+										<AbsDimension x="-280" y="-50"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						
+						<FontString name="LootFilterTextSessionValueInfo"
+							inherits="GameFontNormal" text="">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="BOTTOM"
+									relativeTo="LootFilterOptions">
+									<Offset>
+										<AbsDimension x="-297" y="200"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="LootFilterTextSessionItemTotal"
+							inherits="GameFontNormal" text="">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="BOTTOM"
+									relativeTo="LootFilterOptions">
+									<Offset>
+										<AbsDimension x="-297" y="185"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="LootFilterTextSessionValueTotal"
+							inherits="GameFontNormal" text="">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="BOTTOM"
+									relativeTo="LootFilterOptions">
+									<Offset>
+										<AbsDimension x="-297" y="170"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="LootFilterTextSessionValueAverage"
+							inherits="GameFontNormal" text="">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="BOTTOM"
+									relativeTo="LootFilterOptions">
+									<Offset>
+										<AbsDimension x="-297" y="155"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="LootFilterTextSessionValueHour"
+							inherits="GameFontNormal" text="">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="BOTTOM"
+									relativeTo="LootFilterOptions">
+									<Offset>
+										<AbsDimension x="-297" y="140"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+
+					</Layer>
+				</Layers>
+				<Frames>
+					<Button name="LootFilterButtonReset"
+						inherits="GameMenuButtonTemplate" text="LFINT_BTN_RESET" hidden="true">
+						<Size>
+							<AbsDimension x="70" y="20"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="BOTTOM"
+								relativeTo="LootFilterOptions">
+								<Offset>
+									<AbsDimension x="-90" y="180"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick> 
+								LootFilter.sessionReset();
+								LootFilter.sessionUpdateValues(); 
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Frame name="LootFilterOPCaching"
+						inherits="LootFilterOptionTemplate2" hidden="true">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="-300" y="-80"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					
+					<Frame name="LootFilterOPValDelete"
+						inherits="LootFilterOptionTemplate2" hidden="true">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="-300" y="-140"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					
+					<Frame name="LootFilterOPValKeep"
+						inherits="LootFilterOptionTemplate2" hidden="true">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="-300" y="-170"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					
+					<EditBox name="LootFilterEditBox3" letters="5" hidden="true"
+						enableMouse="true" autoFocus="false">
+						<Size>
+							<AbsDimension x="40" y="20"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterOptions">
+								<Offset>
+									<AbsDimension x="240" y="-117"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnTextChanged>
+							</OnTextChanged>
+							<OnClick> self:SetFocus(); </OnClick>
+							<OnEscapePressed> self:ClearFocus();
+								</OnEscapePressed>
+							<OnEditFocusGained>
+							</OnEditFocusGained>
+							<OnEditFocusLost> LootFilter.setItemValue();
+								</OnEditFocusLost>
+							<OnShow> LootFilter.getItemValue(); </OnShow>
+							<OnEnter> LootFilter.showTooltip(self, "LToolTip7");
+								</OnEnter>
+							<OnLeave> GameTooltip:Hide(); </OnLeave>
+						</Scripts>
+						<FontString inherits="ChatFontNormal"/>
+					</EditBox>
+					
+					<Frame name="LootFilterTextBackground3" hidden="true">
+						<Size>
+							<AbsDimension x="50" y="25"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterOptions">
+								<Offset>
+									<AbsDimension x="234" y="-115"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Backdrop
+							bgFile="Interface\Tooltips\UI-Tooltip-Background"
+							edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+							tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="16"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5"/>
+							</BackgroundInsets>
+						</Backdrop>
+						<Scripts>
+							<OnLoad>
+								self:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r,
+								TOOLTIP_DEFAULT_COLOR.g,
+								TOOLTIP_DEFAULT_COLOR.b);
+								self:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
+								TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
+								TOOLTIP_DEFAULT_BACKGROUND_COLOR.b); </OnLoad>
+						</Scripts>
+					</Frame>
+					
+					<EditBox name="LootFilterEditBox4" letters="5" hidden="true"
+						enableMouse="true" autoFocus="false">
+						<Size>
+							<AbsDimension x="40" y="20"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterOptions">
+								<Offset>
+									<AbsDimension x="240" y="-147"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnTextChanged> LootFilter.setItemValue();
+								</OnTextChanged>
+							<OnClick> self:SetFocus(); </OnClick>
+							<OnEscapePressed> self:ClearFocus();
+								</OnEscapePressed>
+							<OnEditFocusGained>
+							</OnEditFocusGained>
+							<OnEditFocusLost>
+							</OnEditFocusLost>
+							<OnEnter> LootFilter.showTooltip(self, "LToolTip8");
+								</OnEnter>
+							<OnLeave> GameTooltip:Hide(); </OnLeave>
+						</Scripts>
+						<FontString inherits="ChatFontNormal"/>
+					</EditBox>
+					
+					<Frame name="LootFilterTextBackground4" hidden="true">
+						<Size>
+							<AbsDimension x="50" y="25"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterOptions">
+								<Offset>
+									<AbsDimension x="234" y="-145"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Backdrop
+							bgFile="Interface\Tooltips\UI-Tooltip-Background"
+							edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+							tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="16"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5"/>
+							</BackgroundInsets>
+						</Backdrop>
+						<Scripts>
+							<OnLoad>
+								self:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r,
+								TOOLTIP_DEFAULT_COLOR.g,
+								TOOLTIP_DEFAULT_COLOR.b);
+								self:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
+								TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
+								TOOLTIP_DEFAULT_BACKGROUND_COLOR.b); </OnLoad>
+						</Scripts>
+					</Frame>
+					
+					<EditBox name="LootFilterEditBox5" letters="5" hidden="true"
+						enableMouse="true" autoFocus="false">
+						<Size>
+							<AbsDimension x="40" y="20"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterOptions">
+								<Offset>
+									<AbsDimension x="240" y="-87"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnTextChanged> LootFilter.setItemValue();
+								</OnTextChanged>
+							<OnClick> self:SetFocus(); </OnClick>
+							<OnEscapePressed> self:ClearFocus();
+								</OnEscapePressed>
+							<OnEditFocusGained>
+							</OnEditFocusGained>
+							<OnEditFocusLost>
+							</OnEditFocusLost>
+							<OnEnter> LootFilter.showTooltip(self, "LToolTip9");
+								</OnEnter>
+							<OnLeave> GameTooltip:Hide(); </OnLeave>
+						</Scripts>
+						<FontString inherits="ChatFontNormal"/>
+					</EditBox>
+					
+					<Frame name="LootFilterTextBackground5" hidden="true">
+						<Size>
+							<AbsDimension x="50" y="25"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterOptions">
+								<Offset>
+									<AbsDimension x="234" y="-85"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Backdrop
+							bgFile="Interface\Tooltips\UI-Tooltip-Background"
+							edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+							tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="16"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5"/>
+							</BackgroundInsets>
+						</Backdrop>
+						<Scripts>
+							<OnLoad>
+								self:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r,
+								TOOLTIP_DEFAULT_COLOR.g,
+								TOOLTIP_DEFAULT_COLOR.b);
+								self:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
+								TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
+								TOOLTIP_DEFAULT_BACKGROUND_COLOR.b); </OnLoad>
+						</Scripts>
+					</Frame>
+					
+					<Frame name="LootFilterOPNoValue"
+						inherits="LootFilterOptionTemplate2" hidden="true">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="-300" y="-200"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					
+					<Button name="LootFilterSelectDropDownCalculate"
+						inherits="UIDropDownMenuTemplate" hidden="true">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="LootFilterFrameTitle"
+								relativePoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="35" y="-230"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								UIDropDownMenu_SetWidth(self, 150); </OnLoad>
+							<OnEnter> LootFilter.showTooltip(self, "LToolTip12");
+								</OnEnter>
+							<OnLeave> GameTooltip:Hide(); </OnLeave>
+						</Scripts>
+					</Button>
+					
+					<Frame name="LootFilterOPMarketValue"
+						inherits="LootFilterOptionTemplate2" hidden="true">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="-300" y="-260"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					
+				</Frames>
+				<Scripts>
+					<OnShow>
+						LootFilter.sessionUpdateValues();
+					</OnShow>
+				</Scripts>
+			</Frame>
+			
+			<!-- ##### Frame Clean ##### -->
+			
+			<Frame name="LootFilterFrameClean" toplevel="true" movable="false"
+				parent="LootFilterOptions" enableMouse="true" hidden="true">
+				<Size>
+					<AbsDimension x="640" y="430"/>
+				</Size>
+				<Anchor point="LEFT" relativePoint="TOP"
+					relativeTo="LootFilterFrameTitle">
+					<Offset>
+						<AbsDimension x="-300" y="-50"/>
+					</Offset>
+				</Anchor>
+				<Layers>
+					<Layer level="ARTWORK">
+						
+						<FontString name="LootFilterTextClean"
+							inherits="GameFontNormal"
+							text="LFINT_TXT_SELLALLNOMATCH">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="TOP"
+									relativeTo="LootFilterFrameTitle">
+									<Offset>
+										<AbsDimension x="-297" y="-78"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						
+						<FontString name="LootFilterTextCleanTotalValue"
+							inherits="GameFontNormal" text="">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="BOTTOM"
+									relativeTo="LootFilterOptions">
+									<Offset>
+										<AbsDimension x="-297" y="30"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						
+					</Layer>
+					
+				</Layers>
+				<FontString name="$parent_Text" inherits="GameFontNormal"
+					text="Loot Filter">
+					<Anchors>
+						<Anchor point="LEFT">
+							<Offset>
+								<AbsDimension x="20" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<Frames>
+					
+					<Frame name="LootFilterOPOpenVendor"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="30" y="-97"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					<Frame name="LootFilterOPAutoSell"
+						inherits="LootFilterOptionTemplate2" hidden="false">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="TOP"
+								relativeTo="LootFilterFrameTitle">
+								<Offset>
+									<AbsDimension x="30" y="-112"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Frame>
+					
+					<ScrollFrame name="LootFilterScrollFrameClean"
+						inherits="FauxScrollFrameTemplate">
+						<Size>
+							<AbsDimension x="555" y="310"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterOptions">
+								<Offset>
+									<AbsDimension x="30" y="-120"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer level="ARTWORK">
+								
+								<FontString name="cleanLine1"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-10"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine2"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-26"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine3"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-42"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine4"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-58"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine5"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-74"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine6"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-90"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine7"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-106"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine8"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-122"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine9"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-138"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine10"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-154"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine11"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-170"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine12"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-186"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine13"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-202"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine14"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-218"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine15"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-234"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine16"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-250"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine17"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-266"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine18"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-282"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="cleanLine19"
+									inherits="GameFontNormal" text="">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="TOP"
+											relativeTo="LootFilterScrollFrameClean">
+											<Offset>
+												<AbsDimension x="-275" y="-298"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								
+							</Layer>
+							
+						</Layers>
+						<Frames>
+							<Frame name="FrameCleanLine1"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-10"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine2"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-26"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine3"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-42"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine4"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-58"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine5"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-74"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine6"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-90"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine7"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-106"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine8"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-122"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine9"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-138"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine10"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-154"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine11"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-170"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine12"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-186"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine13"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-202"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine14"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-218"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine15"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-234"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine16"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-250"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine17"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-266"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine18"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-282"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+							<Frame name="FrameCleanLine19"
+								inherits="LootFilterLineTemplate" hidden="false">
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="TOP"
+										relativeTo="LootFilterScrollFrameClean">
+										<Offset>
+											<AbsDimension x="-275" y="-298"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Frame>
+						</Frames>
+						<Scripts>
+							<OnVerticalScroll>
+								FauxScrollFrame_OnVerticalScroll(self, self:GetVerticalScroll(), 16, LootFilter.CleanScrollBar_Update);
+							</OnVerticalScroll>
+							<OnMouseUp>
+							</OnMouseUp>
+							<OnEnter>
+								LootFilter.showTooltip(self, "LToolTip10");
+							</OnEnter>
+							<OnLeave>
+								GameTooltip:Hide();
+							</OnLeave>
+							<OnShow>
+							</OnShow>
+						</Scripts>
+					</ScrollFrame>
+					
+					<Button name="LootFilterButtonDeleteItems"
+						inherits="GameMenuButtonTemplate"
+						text="LFINT_BTN_DELETEITEMS">
+						<Size>
+							<AbsDimension x="150" y="20"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterOptions">
+								<Offset>
+									<AbsDimension x="20" y="-85"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick> LootFilter.iWantTo(); </OnClick>
+						</Scripts>
+					</Button>
+					
+					<Button name="LootFilterButtonIWantTo"
+						inherits="GameMenuButtonTemplate"
+						text="LFINT_BTN_YESSURE">
+						<Size>
+							<AbsDimension x="150" y="20"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterOptions">
+								<Offset>
+									<AbsDimension x="180" y="-85"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick> if (LootFilterButtonDeleteItems:GetText() ==
+								LootFilter.Locale.LocText["LTDeleteItems"]) then
+								LootFilter.sellQueue = 1;
+								LootFilter.deleteItems(GetTime() +
+								LootFilter.LOOT_TIMEOUT, true); 
+								else
+								LootFilter.sellQueue = 1;
+								LootFilter.deleteItems(GetTime() +
+								LootFilter.LOOT_TIMEOUT, false); 
+								end; </OnClick>
+						</Scripts>
+					</Button>
+					
+					<Frame name="LootFilterTextBackgroundClean" hidden="false">
+						<Size>
+							<AbsDimension x="595" y="323"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterScrollFrameClean">
+								<Offset>
+									<AbsDimension x="-10" y="7"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Backdrop
+							bgFile="Interface\Tooltips\UI-Tooltip-Background"
+							edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+							tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="16"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5"/>
+							</BackgroundInsets>
+						</Backdrop>
+						<Scripts>
+							<OnLoad>
+								self:SetBackdropBorderColor(TOOLTIP_DEFAULT_COLOR.r,
+								TOOLTIP_DEFAULT_COLOR.g,
+								TOOLTIP_DEFAULT_COLOR.b);
+								self:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r,
+								TOOLTIP_DEFAULT_BACKGROUND_COLOR.g,
+								TOOLTIP_DEFAULT_BACKGROUND_COLOR.b); </OnLoad>
+							<OnShow> LootFilter.initClean();
+								LootFilter.processCleaning(); </OnShow>
+						</Scripts>
+					</Frame>
+				</Frames>
+				<Scripts>
+					<OnShow>
+						LootFilter.constructCleanList();
+					</OnShow>
+				</Scripts>
+			</Frame>
+			
+			
+			<!-- ##### Frame Copy ##### -->
+			
+			<Frame name="LootFilterFrameCopy" toplevel="true" movable="false"
+				parent="LootFilterOptions" enableMouse="true" hidden="true">
+				<Size>
+					<AbsDimension x="640" y="430"/>
+				</Size>
+				<Anchor point="LEFT" relativePoint="TOP"
+					relativeTo="LootFilterFrameTitle">
+					<Offset>
+						<AbsDimension x="-300" y="-50"/>
+					</Offset>
+				</Anchor>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="LootFilterEditBoxTitleCopy3"
+							inherits="GameFontNormal"
+							text="LFINT_TXT_SELECTCHARCOPY">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="TOP"
+									relativeTo="LootFilterFrameTitle">
+									<Offset>
+										<AbsDimension x="-297" y="-78"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="LootFilterEditBoxTitleCopy4"
+							inherits="GameFontNormal"
+							text="LFINT_TXT_COPYSUCCESS">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="TOP"
+									relativeTo="LootFilterFrameTitle">
+									<Offset>
+										<AbsDimension x="-297" y="-150"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="LootFilterEditBoxTitleCopy5"
+							inherits="GameFontNormal"
+							text="LFINT_TXT_DELETESUCCESS">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="TOP"
+									relativeTo="LootFilterFrameTitle">
+									<Offset>
+										<AbsDimension x="-297" y="-150"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				
+				<Frames>
+					<Button name="LootFilterSelectDropDown"
+						inherits="UIDropDownMenuTemplate">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="LootFilterOptions"
+								relativePoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="10" y="-100"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								UIDropDownMenu_Initialize(LootFilterSelectDropDown,
+								LootFilter.SelectDropDown_Initialize);
+								UIDropDownMenu_SetWidth(self, 300); </OnLoad>
+						</Scripts>
+					</Button>
+					
+					<Button name="LootFilterButtonRealCopy"
+						inherits="GameMenuButtonTemplate"
+						text="LFINT_BTN_COPYSETTINGS" enable="false">
+						<Anchors>
+							<Anchor point="TOPLEFT"
+								relativeTo="LootFilterOptions">
+								<Offset>
+									<AbsDimension x="400" y="-90"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick> LootFilter.copySettings(); </OnClick>
+							<OnShow>
+								LootFilterEditBoxTitleCopy4:Hide();
+								LootFilterEditBoxTitleCopy5:Hide();
+							</OnShow>
+						</Scripts>
+					</Button>
+					<Button name="LootFilterButtonRealDelete"
+						inherits="GameMenuButtonTemplate"
+						text="LFINT_BTN_DELETESETTINGS" enable="false">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT"
+								relativeTo="LootFilterButtonRealCopy">
+								<Offset>
+									<AbsDimension x="0" y="-5"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								LootFilter.deleteSettings();
+							</OnClick>
+							<OnShow>
+								LootFilterEditBoxTitleCopy4:Hide();
+								LootFilterEditBoxTitleCopy5:Hide();
+							</OnShow>
+						</Scripts>
+					</Button>
+				</Frames>
+			</Frame>
+			
+			<!-- ##### end of frames ##### -->
+		</Frames>
+		<Scripts>
+		</Scripts>
+	</Frame>
+	
+</Ui>

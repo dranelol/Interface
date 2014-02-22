@@ -1,0 +1,5 @@
+<Bindings>
+  <Binding name="SUNNARTUI" header="SUNNART">
+      SunnArt:ToggleUI(false);
+  </Binding>
+</Bindings>

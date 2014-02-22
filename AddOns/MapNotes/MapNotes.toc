@@ -1,0 +1,51 @@
+﻿## Interface: 50001
+## Title: MapNotes |c0000FF00(6.09.50001)|r
+## Author: Cortello
+## eMail: cortello@gmx.com
+## Version: 6.09.50001
+## URL: See README for download sites
+## Notes: An annotation system for the World Map and Minimap. Other AddOns can also 'Plug In' and allow notes to be made on their frames e.g. AlphaMap.
+## Notes-deDE: Ermöglicht es Notizen auf der Karte zu platzieren.
+## Notes-enUS: An annotation system for the World Map and Minimap.
+## Notes-frFR: Ajoute la possibilité de créer des annotations sur votre carte du monde.
+## Notes-koKR: 세계 지도에 메모 시스템을 추가합니다.
+## OptionalDeps: Thottbot, myAddOns, SilverTrack
+## OptionalDeps: LibDebug
+## DefaultState: enabled
+## SavedVariables: MapNotes_Data_Notes
+## SavedVariables: MapNotes_Data_Lines
+## SavedVariables: MapNotes_Options
+## SavedVariables: MapNotes_Undelete_Info
+
+# Library files
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\LibMapData-1.0\library.lua
+Libs\Astrolabe\Load.xml
+
+# Constants and Colours
+MapNotesConstants.lua
+MapNotesColours.lua
+
+# Localization files
+localization.en.lua
+localization.de.lua
+localization.fr.lua
+localization.kr.lua
+localization.tw.lua
+localization.es.lua
+localization.cn.lua
+
+MapNotesUtilities.lua
+MapNotesPlugIns.lua
+
+# Core module
+MapNotes.lua
+
+# XML frame definitions
+MapNotesTemplates.xml
+MapNotesEditFrame.xml
+MapNotesMiniNoteFrame.xml
+MapNotesOptionsFrame.xml
+MapNotesCoordinatesFrames.xml
+MapNotesSendFrame.xml

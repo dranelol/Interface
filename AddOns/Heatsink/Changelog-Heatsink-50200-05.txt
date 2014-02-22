@@ -1,0 +1,13 @@
+tag 50200-05
+0ba806ccbfb4c1d9a0d273ffdc1b38e623b062ba
+durcyn <durcyn@gmail.com>
+2013-04-07 14:47:27 -0500
+
+50200-05
+
+
+--------------------
+
+durcyn:
+	- additional input validation to avoid nil bar ids
+	- cleaner workaround for libcandybar issues - cooldowns that reset to higher/lower durations should correctly restart bars now.

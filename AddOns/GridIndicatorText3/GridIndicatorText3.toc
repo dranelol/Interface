@@ -1,0 +1,18 @@
+## Interface: 50300
+## Title: GridIndicatorText3
+## Notes: Adds a third text indicator to Grid.
+## Author: kunda
+## Version: 50300-1
+## Dependencies: Grid
+## X-Curse-Packaged-Version: 50300-1
+## X-Curse-Project-Name: GridIndicatorText3
+## X-Curse-Project-ID: grid-indicator-text3
+## X-Curse-Repository-ID: wow/grid-indicator-text3/mainline
+
+GridIndicatorText3-localization-enUS.lua
+GridIndicatorText3-localization-deDE.lua
+GridIndicatorText3-localization-koKR.lua
+GridIndicatorText3-localization-zhCN.lua
+GridIndicatorText3-localization-zhTW.lua
+
+GridIndicatorText3.lua

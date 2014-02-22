@@ -1,0 +1,16 @@
+## Interface: 30000
+## Title: Lib: ItemPrice-1.1
+## Notes: Library with vendor sell prices for items.
+## Author: Bam
+## Version: 1.1
+## OptionalDeps: 
+## X-Category: Library
+## X-AceForum: 5875
+## X-License: LGPL v2.1
+## X-Curse-Packaged-Version: r62
+## X-Curse-Project-Name: ItemPrice-1.1
+## X-Curse-Project-ID: itemprice-1-1
+## X-Curse-Repository-ID: wow/itemprice-1-1/mainline
+
+LibStub\LibStub.lua
+lib.xml

@@ -1,0 +1,68 @@
+
+--==-- ItemVendorPricesDB2 Functionality Description --==--
+
+Addon type: Library
+Libraries used:
+	EventsManager2
+
+This embeddable addon is a library which manages a database of item vendor prices (how much
+money can be obtained by selling an item to a vendor), for use by other addons which require such
+data. It loads a base database from the DefaultDatabase file and then stores any new or different
+prices in an errata table which is saved between sessions. Also, this library implements the GetSellValue()
+developer-defined API function, as described here: http://www.wowwiki.com/API_GetSellValue
+
+
+Here is the API, for developers:
+
+In the following descriptions, these terms are defined:
+	itemID - A key from the database. A simple positive integer.
+	data - A price value from the database.
+
+
+size = ItemVendorPricesDB2.GetDBSize()
+	Returns the size of the database.
+
+data = ItemVendorPricesDB2.GetData(itemID)
+	Returns the data (price) corresponding to the itemID (key) in the database.
+	
+oldData, newData = ItemVendorPricesDB2.SetData(itemID, newPrice)
+	Sets the database's data for itemID to the newPrice. If this new data differs from that in the database
+	at the time, it is stored in the errata table.
+
+
+minor, subminor = ItemVendorPricesDB2.GetVersion()
+	Returns the minor and subminor components of the currently running version of the addon. This is
+	the 2 and 3, respectively, of a number like 1.2.3. This is useful if you are depending on the non-embedded
+	version of the library.
+
+
+
+The library registers some custom events with EventsManager2 which can be used to monitor for new
+or updated data:
+	ItemVendorPricesDB2_DB_SIZE_CHANGED
+		Args:
+			1 - The old database size, 0 the first time this fires.
+			2 - The new database size.
+		Triggers any time an item is added to or removed from the database. Of note is that this
+		fires BEFORE the update events for price (except for the first time), so the very next one
+		of those will correspond to whatever item was added or removed.
+	ItemVendorPricesDB2_PRICE_CHANGED
+		Args:
+			1 - itemID
+			2 - Old price, potentially nil.
+			3 - New price, potentially nil.
+		Fires when an item's price changes. The old price will be nil if the item was not in the database.
+		The new price will be nil if the item is being removed from the database.
+
+
+To embed the library into your addon, place the Lib-ItemVendorPricesDB2 directory into your addon's directory.
+Then, add the line PATH\ItemVendorPricesDB2_Loader.xml at the top of the file list in your .toc file, such as
+Lib-ItemVendorPricesDB2\ItemVendorPricesDB2_Loader.xml. Ensure that all of the required libraries load prior to this.
+
+To run the library non-embedded, require it by listing it in the RequiredDeps line of your .toc file. Then, tell
+users to ensure that they always have the latest version installed. To check the running version from your
+addon, call the API function ItemVendorPricesDB2.GetVersion().
+
+Either embedded or non-embedded, the saved variables stub should be present in order for errata and
+rarity exclusions to be saved. This stub acts just like a normal load-on-demand addon. Your addon does
+not need to list it at a dependency.

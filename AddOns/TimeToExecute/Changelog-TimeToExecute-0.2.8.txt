@@ -1,0 +1,19 @@
+------------------------------------------------------------------------
+r22 | tifordin | 2011-03-04 00:22:34 +0000 (Fri, 04 Mar 2011) | 1 line
+Changed paths:
+   A /tags/0.2.8 (from /trunk:21)
+
+Tagging 0.2.8
+------------------------------------------------------------------------
+r21 | tifordin | 2011-03-04 00:22:12 +0000 (Fri, 04 Mar 2011) | 1 line
+Changed paths:
+   M /trunk/TimeToExecute.toc
+
+Marking version 0.2.8.
+------------------------------------------------------------------------
+r20 | tifordin | 2011-03-04 00:21:18 +0000 (Fri, 04 Mar 2011) | 1 line
+Changed paths:
+   M /trunk/TimeToExecute.toc
+
+Updating Interface flag to Cataclysm.
+------------------------------------------------------------------------
