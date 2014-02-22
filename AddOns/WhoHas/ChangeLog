@@ -1,0 +1,268 @@
+2012-09-23 version 5.2.0
+        
+    * Completely rewrote the Armory scanner to work with Armory 5.
+
+2012-09-18 version 5.1.2
+        
+    * Fixed an issue where mails without attachments would cause
+      an error when using Altoholic data.
+
+2012-09-17 version 5.1.1
+        
+    * This version only affects German and French clients. If
+      you are running an English client you do not need this update.
+        
+    * Fixed a stupid error in the localizations for Void Storage.
+        
+    * German translations are now complete, except for MoP mines.
+      Thanks again to TorenAltair!
+        
+2012-09-16 version 5.1.0
+        
+    * Added support for Altoholic.
+        
+    * Added the "all factions" option. This has actually been
+      in the code for a long time, but was never exposed in the
+      UI. I don't know why.
+        
+    * Added the "all realms" option. Currently this only work
+      with Altoholic.
+        
+    * Updated German translations. (Still incomplete though.)
+      Thanks to TorenAltair!
+        
+2012-09-13 version 5.0.1
+        
+    * Note: This version patches one specific error. You do not
+      need to install this update unless you are using German or
+      French clients, or if you are seeing a 'bad argument #1'
+      error on line 641 of WhoHas.lua.
+        
+    * Added new strings to the German and French localizations.
+      These still need to be translated.
+        
+    * Modified the code so that it will log a message instead of
+      causing an error if a tooltip format string cannot be found.
+
+2012-09-09 version 5.0.0
+        
+    * Updated for WoW 5.0.4.
+    
+    * Updated Possessions support to include void storage.
+        
+    * Removed keyring support.
+        
+    * Updated to include Cataclysm and Pandaria ores and essences.
+
+2010-12-27 version 4.0.1
+        
+    * Fixed an Armory incompatibility that got missed in the last
+      update.
+
+2010-11-11 version 4.0.0b3
+        
+    * Patched an incompatibility with recent Armory data changes.
+
+2010-11-09 version 4.0.0b2
+        
+    * The inventory addon selection can now be explicitly selected
+      in the options.
+        
+    * I am not able to reproduce the errors some users are seeing,
+      but I made some adjustments that will hopefully resolve the
+      issues for those users.
+        
+    * Preparing to revise the Armory integration to retrieve data
+      through its API, rather than its variables.
+
+2010-10-18 version 4.0.0a1
+        
+    * Alpha version - includes basic fixes for 4.0. Work in progress.
+
+2009-12-27 version 3.3.1
+        
+    * Fixed a problem with ArmoryGuildBank data. AGB data has a
+      different in-memory format at login than it does after visiting
+      the Guild Bank, and WhoHas was only handling the latter format
+      correctly. Now WhoHas understands both formats.
+        
+2009-12-26 version 3.3.0
+
+    * Updated TOC for client 3.3.
+
+    * Fixed the names of Northrend mines (thanks to Pelion).
+	
+    * Added translations for Northrend additions (courtesy of Pelion
+      from ri.gametraveler.ch)
+
+2009-11-29 version 3.2.0
+
+    * Updated TOC for client 3.2.
+	
+    * Added support for Armory version 7.
+	
+    * Added some new conversions for WoTLK ores.
+
+2008-11-18 version 3.0.2
+        
+    * Added support for Armory (finally!).  This is now the preferred backend.
+	
+    * Added support for the new interface options panel.
+
+2008-11-15 version 3.0.1
+     
+    * Fixed minor issues with unrecognized tooltips.
+	
+    * Fixed the placement of info in recipe tooltips.
+
+2008-11-14 version 3.0.0
+        
+    * Updated TOC for client 3.0.0.
+
+2008-05-18 version 2.4.1
+        
+    * Added support for LinkWrangler.
+
+2008-04-07 version 2.4.0
+    
+    * Updated TOC for client 2.4.0.
+    
+    * Patched a minor issue with Guild Bank items causing Lua errors
+      after upgrades.  As of WoW 2.4.0, Guild Bank items may not be
+      cached immediately after a client update, and so WhoHas cannot
+      immediately get the item info.  The only solution is to revisit
+      your Guild Bank after the client has had a chance to update your
+      item cache.
+
+2007-12-28 version 2.3.8
+        
+    * Added the ability to ignore specific items.  Type "/whohas
+      ignore ITEM NAME" in chat to prevent WhoHas from showing tooltips
+      for an item.
+        
+    * Added the ability to display guild bank contents for alts.  Note
+      that Possessions doesn't yet record the faction a guild belongs
+      to, so WhoHas may show guild banks for both factions if you're
+      using Possessions.
+        
+    * Added the ability to track and display guild bank contents by
+      tab.  Note that Possessions doesn't break guild bank contents out
+      by tab, so WhoHas will use its built-in guild bank tracking if you
+      enable counts by tab.
+        
+    * Added display of lesser/greater enchanting essences when
+      hovering over greater/lesser essences.
+
+2007-12-22 version 2.3.7
+        
+    * Added display of primal counts for mote tooltips.
+        
+    * Added display of metal bar counts for ore tooltips.
+        
+    * Added display of ore counts for mine tooltips.
+        
+    * Added German and French translations, courtesy of Pelion of Curse.com.
+        
+    * Fixed enchanting recipes to display properly.
+
+2007-12-09 version 2.3.6
+
+    * Added support for guild bank data from Siz's Possessions.  
+      If WhoHas detect's Siz's Possessions, it will use that data and will
+      not scan the guild bank itself.
+
+    * Fixed a guild bank conflict with Siz's Possessions.
+
+    * Added support for Inventory and Bank Bag data from Siz's Possessions.
+
+2007-12-08 version 2.3.5
+
+    * Fixed a problem with tooltip info showing up twice in some cases.
+
+    * Added a setting to disable world tooltip info.
+
+    * Added support for CharacterProfiler inbox handling of multiple-item 
+      mails. 
+
+2007-12-01 version 2.3.4
+
+    * Fixed the mail support I broke in 2.3.3.
+
+2007-11-30 version 2.3.3
+
+    * Added Guild Bank support. WhoHas will now scan and summarize your 
+      guild bank contents by itself - no other addons needed. Guild
+      bank contents are only guaranteed correct while you have the
+      guild bank window open. If other guild members change the guild bank
+      at other times, WhoHas will not see the change until you visit
+      the guild bank again.
+
+    * Changed the way tooltips are detected. This makes WhoHas play 
+      better with Baggins and other addons that implement
+      UpdateTooltip. World, minimap, and buff/debuff tooltips are
+      still handled the old way and may flicker, but item and action
+      tooltips should now be stable.
+
+    * Other minor fixes to display options and updating behavior. 
+
+2007-11-23 version 2.3.2
+
+    * Changed the version numbering scheme to reflect the client
+      version. The prefix (2.3) now reflects the WoW version, and the
+      last number (.2) reflects my revision level in the current
+      version.
+
+    * Fixed a minor potential bug when sending mail that could cause
+      WhoHas to ignore what you just sent.
+
+    * Added an experimental hack for Baggins. This slightly modifies
+      the way Baggins works, so please let me know if it causes any
+      conflicts.
+
+2007-11-21 version 2.1.1
+    
+    * Replacement for the short-lived and buggy 2.1.0 version.
+    
+    * Fixes a problem where inbox items wouldn't show up when using
+      the CharacterProfiler backend.
+    
+    * Improves the handling of email items. 2.0 would not reflect any
+      items mailed to alts until you logged out and in. This version
+      updates alt inboxes immediately, and correctly handles
+      multi-item mails.
+
+    * This version does NOT correct the Baggins problem.
+
+    * This version does NOT use the most recent Possessions email
+      fixes for 2.3.
+
+2007-11-20 version 2.1.0 (removed)
+
+2007-11-04 version 2.0.3
+
+    * Fixed to correctly exclude other-faction alts.
+
+2007-10-04 version 2.0.2
+
+    * Modified WhoHas so that it doesn't cause errors when inventory
+      data is missing.
+
+2007-10-02 version 2.0.1
+
+    * Fixed a bug that blocked control-clicks on chat links.
+
+2007-09-29 version 2.0
+
+    * Rewrote for better CPU performance. CPU usage is now minimal in
+      most cases.
+
+    * Pulled out a few embedded strings so that it is now fully
+      localizable.
+
+2007-08-30 version 1.1
+
+    * Added support for Siz's Possessions.
+
+2007-08-19 version 1.0
+
+    * First release of WhoHas.
