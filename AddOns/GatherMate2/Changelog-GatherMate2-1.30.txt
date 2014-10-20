@@ -1,0 +1,32 @@
+tag 1.30
+27c3ee8e292974d2148677eeb1d4b847432f8bc6
+Hendrik Leppkes <h.leppkes@gmail.com>
+2014-10-14 21:05:24 +0200
+
+Tag as 1.30
+
+
+--------------------
+
+Hendrik Leppkes:
+	- Avoid a division by zero when the zone size is unknown
+	- Remove WorldMapFrame OnHide hook, the default UI does the same thing now
+	- Optimize map info data storage and fake floor handling
+	- Add dummy skill values for WoD mines and herbs
+	In WoD, you can gather them anytime and instead get less resources out of them.
+	The whole skill feature needs re-design or removal.
+	- Use UnitPosition to allow minimap icons to update even when the map is switched
+	- Liberate GatherMate2 from LibMapData-1.0
+	- Add WoD fishing schools (with placeholder images)
+	- Add WoD mining and herbalism nodes
+	- Cleanup a few comments
+	- Properly update the minimap zoom state when forcing a map update
+	- Update TOC
+	- Update usage of GetMapContinents/GetMapZones
+	- Revert "fix 6.0 lua errors"
+	This reverts commit aac47b1572f6273f6227dc8819a7fb78dffd3109.
+	
+	Check if there is a WoD branch before doing random commits, kthx.
+oscarucb:
+	- fix 6.0 lua errors
+	caused by the new return format for GetMapContinents()

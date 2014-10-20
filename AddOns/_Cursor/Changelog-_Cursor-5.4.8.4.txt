@@ -1,0 +1,11 @@
+tag 5.4.8.4
+c3eed6d84b16c3965ce0b40110fbc664a813351e
+James D. Callahan III <jcallahan@curse.com>
+2014-07-12 21:20:28 -0500
+
+
+
+--------------------
+
+James D. Callahan III:
+	- Removed IsHidden check...it was preventing un-hiding. Yay.

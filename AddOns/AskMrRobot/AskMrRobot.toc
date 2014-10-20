@@ -1,0 +1,60 @@
+## Interface: 60000
+## Title: Ask Mr. Robot
+## Author: Team Robot, Inc.
+## Version: 2
+## Notes: Exports/Imports data to/from askmrrobot.com.
+## URL: www.askmrrobot.com
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariablesPerCharacter: AmrDb
+## SavedVariables: AmrSettings
+## X-Curse-Packaged-Version: v2
+## X-Curse-Project-Name: AskMrRobot
+## X-Curse-Project-ID: askmrrobot
+## X-Curse-Repository-ID: wow/askmrrobot/mainline
+
+#@no-lib-strip@
+Libs\LibStub\Libstub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+#@end-no-lib-strip@
+
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+
+#@no-lib-strip@
+Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
+#@end-no-lib-strip@
+
+#translations first
+Localization\localization.en.lua
+Localization\localization.de.lua
+
+wait.lua
+sort.lua
+
+ui\Components.lua
+amr-constants.lua
+AskMrRobot.lua
+config.lua
+AskMrRobotUi.lua
+ui\RobotStamp.lua
+ui\ItemTooltipFrame.lua
+ui\ItemLinkText.lua
+ui\ItemIcon.lua
+ui\GemIcon.lua
+ui\EnchantLinkText.lua
+ui\FontString.lua
+ui\ScrollFrame.lua
+ui\ExportTab.lua
+ui\JewelPanel.lua
+ui\SummaryTab.lua
+ui\GemTab.lua
+ui\EnchantTab.lua
+ui\HelpTab.lua
+ui\ImportTab.lua
+ui\ShoppingListTab.lua
+ui\GearComparisonTab.lua
+ui\CombatLogTab.lua
+
+AskMrRobot.xml
+
+

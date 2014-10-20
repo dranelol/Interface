@@ -1,0 +1,92 @@
+------------------------------------------------------------------------
+r766 | funkydude | 2014-10-14 20:13:09 +0000 (Tue, 14 Oct 2014) | 1 line
+Changed paths:
+   D /trunk/libs/LibGroupInSpecT/LibGroupInSpecT-1.0.lua
+   M /trunk/libs/LibGroupInSpecT/LibGroupInSpecT-1.1.lua
+   M /trunk/libs.xml
+
+remove old LibGroupInSpecT.
+------------------------------------------------------------------------
+r765 | funkydude | 2014-10-14 20:01:25 +0000 (Tue, 14 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/modules/BattleRes.lua
+   M /trunk/oRA3.toc
+
+bump toc
+------------------------------------------------------------------------
+r764 | funkydude | 2014-10-14 10:43:35 +0000 (Tue, 14 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/modules/BattleRes.lua
+
+BattleRes: Add position saving and config options for lock & show/hide.
+------------------------------------------------------------------------
+r763 | funkydude | 2014-10-13 23:32:23 +0000 (Mon, 13 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/modules/BattleRes.lua
+
+BattleRes: Compensate for ragequits.
+------------------------------------------------------------------------
+r762 | funkydude | 2014-10-13 23:26:13 +0000 (Mon, 13 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/modules/BattleRes.lua
+
+BattleRes: Various fixes.
+------------------------------------------------------------------------
+r761 | funkydude | 2014-10-13 22:38:49 +0000 (Mon, 13 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/modules/BattleRes.lua
+
+BattleRes: Commit what I have so far, still disabled.
+------------------------------------------------------------------------
+r760 | nebula169 | 2014-09-28 02:38:15 +0000 (Sun, 28 Sep 2014) | 1 line
+Changed paths:
+   M /trunk/libs/LibGroupInSpecT/LibGroupInSpecT-1.1.lua
+
+fix LibGroupInSpecT-1.1
+------------------------------------------------------------------------
+r759 | funkydude | 2014-09-28 00:00:20 +0000 (Sun, 28 Sep 2014) | 1 line
+Changed paths:
+   M /trunk/libs/LibGroupInSpecT/LibGroupInSpecT-1.1.lua
+
+Update WoD compatible LibGroupInSpecT-1.1 hard embed.
+------------------------------------------------------------------------
+r758 | funkydude | 2014-09-22 14:32:02 +0000 (Mon, 22 Sep 2014) | 1 line
+Changed paths:
+   M /trunk/modules/BattleRes.lua
+   M /trunk/oRA3.toc
+
+more BattleRes plumbing.
+------------------------------------------------------------------------
+r757 | funkydude | 2014-09-22 12:01:56 +0000 (Mon, 22 Sep 2014) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/libs/LibGroupInSpecT/LibGroupInSpecT-1.0.lua
+   M /trunk/libs/LibGroupInSpecT/LibGroupInSpecT-1.1.lua
+   M /trunk/locales/itIT.lua
+   M /trunk/locales/ptBR.lua
+   A /trunk/modules/BattleRes.lua
+
+BattleRes module plumbing.
+------------------------------------------------------------------------
+r756 | funkydude | 2014-09-22 10:21:38 +0000 (Mon, 22 Sep 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Cooldowns.lua
+
+Cooldowns: Add compat for new LibGroupInSpecT.
+------------------------------------------------------------------------
+r755 | funkydude | 2014-09-22 10:02:05 +0000 (Mon, 22 Sep 2014) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   A /trunk/libs/LibGroupInSpecT
+   A /trunk/libs/LibGroupInSpecT/LibGroupInSpecT-1.0.lua
+   A /trunk/libs/LibGroupInSpecT/LibGroupInSpecT-1.1.lua
+   M /trunk/libs.xml
+
+Hard embed both versions of LibGroupInSpecT with a custom check for loading each one on WoD/MoP.
+------------------------------------------------------------------------
+r754 | nebula169 | 2014-08-14 03:20:17 +0000 (Thu, 14 Aug 2014) | 1 line
+Changed paths:
+   M /trunk/modules/ReadyCheck.lua
+
+ReadyCheck: show groups 1-4 above the divider in Mythic difficulty
+------------------------------------------------------------------------

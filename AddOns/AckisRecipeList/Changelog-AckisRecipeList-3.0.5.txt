@@ -1,0 +1,14 @@
+tag 3.0.5
+97c87c568eec064f3608412a92089da686d0d6eb
+James D. Callahan III <jcallahan@curse.com>
+2014-08-05 18:45:49 -0500
+
+
+
+--------------------
+
+James D. Callahan III:
+	- LibAboutPanel; my nemesis!
+	- Added "reputation" as an option to the "dump empties" command.
+	- When assigning a recipe to a reputation vendor, assign it to the reputation as well.
+	- Changed "private.private" to "private" - FTW.

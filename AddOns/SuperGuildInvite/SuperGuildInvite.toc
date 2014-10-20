@@ -1,0 +1,29 @@
+## Interface: 50400
+## Author: Janniie - Stormreaver EU
+## Title: |cffffff00<|r|cff16ABB5SGI|r|cffffff00>|r |cff16ABB5SuperGuildInvite|r
+## Notes: Version 7.2.2
+## Version: 7.2.2
+## SavedVariables: SGI_DATA
+## SavedVariablesPerCharacter: SGI_BACKUP
+
+libs\GuildShield\GuildShield.lua
+libs\ChatIntercept\ChatIntercept.lua
+libs\Alerts\Alerts.lua
+
+libs\LibWho-2.0\libs\LibStub\LibStub.lua
+libs\LibWho-2.0\libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+libs\LibWho-2.0\LibWho-2.0.lua
+
+locale\localization.lua
+
+SGI_Constants.lua
+SGI_Core.lua
+
+SGI_Blacklist.lua
+SGI_AddOn_Message.lua
+SGI_Filter.lua
+SuperScan.lua
+SGI_System_Message.lua
+SGI_Events.lua
+
+SGI_GUI.lua

@@ -1,0 +1,51 @@
+v2.4
+*Updated for patch 6.0.2
+
+v2.3
+*Fixed bug with some realms not loading data from the app properly.
+
+v2.2
+*Added realm average daily sold quantity to tooltips.
+
+v2.1
+*Updated for the new version of the TSM Desktop Application.
+
+v2.0.5
+*Updated TOC for patch 5.4.
+
+v2.0.4
+*Removed leftover debug code.
+
+v2.0.3
+*Fixed issue with display of last scan in tooltips.
+
+v2.0.2
+*Fixed issue with battlepet tooltips.
+
+v2.0.1
+*Fixed issue with importing realm data.
+
+v2.0
+*First 2.0 Version!
+\\
+
+v1.3
+*Updated for patch 5.2.
+*Removed min buyout from tooltip and APIs.
+*Fixed some importing issues with case discrepancies in realm names.
+*Fixed a lua error from missing data.
+*Many other minor bug fixes and improvements.
+
+v1.2
+*Added support for new TradeSKillMaster application data format.
+*Updated for MoP.
+*Fixed a few minor bugs.
+
+v1.1
+*Added support for region data.
+*Updated tooltip to be less crowded.
+*Tooltip now includes standard deviation (similar to wowuction.com).
+*Many other minor bug fixes and improvements.
+
+v1.0
+*First Release Version!

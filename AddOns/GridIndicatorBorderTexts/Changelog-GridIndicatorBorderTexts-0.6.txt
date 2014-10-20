@@ -1,0 +1,14 @@
+------------------------------------------------------------------------
+r6 | sirjoga | 2013-05-25 20:08:03 +0000 (Sat, 25 May 2013) | 1 line
+Changed paths:
+   A /tags/0.6 (from /trunk:5)
+
+Patched for new grid compatibility, thx Aseyhe.
+------------------------------------------------------------------------
+r5 | sirjoga | 2013-05-25 20:03:22 +0000 (Sat, 25 May 2013) | 1 line
+Changed paths:
+   M /trunk/GridIndicatorBorderTexts.toc
+   M /trunk/core.lua
+
+-
+------------------------------------------------------------------------

@@ -1,0 +1,13 @@
+﻿## Interface: 50200
+## Title: GridIndicatorBorderTexts
+## Author: sirjoga
+## Version: 0.6
+## Dependencies: Grid
+## X-Curse-Packaged-Version: 0.6
+## X-Curse-Project-Name: GridIndicatorBorderTexts
+## X-Curse-Project-ID: gridindicatorbordertexts
+## X-Curse-Repository-ID: wow/gridindicatorbordertexts/mainline
+
+locals\locals.xml
+core.lua
+

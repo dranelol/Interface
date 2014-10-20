@@ -1,0 +1,11 @@
+tag 2.0.9.1
+c9d52327587f6edc9e07177e23f5ff5d0efcaaa1
+Benjamin Staneck <staneck@gmail.com>
+2014-10-14 15:50:14 +0200
+
+
+
+--------------------
+
+Benjamin Staneck:
+	- Load locales after init

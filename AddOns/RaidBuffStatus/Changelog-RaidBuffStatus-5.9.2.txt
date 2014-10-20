@@ -1,0 +1,37 @@
+------------------------------------------------------------------------
+r680 | oscarucb | 2014-05-18 22:17:28 +0000 (Sun, 18 May 2014) | 1 line
+Changed paths:
+   A /tags/5.9.2 (from /trunk:679)
+
+Tagging as 5.9.2
+------------------------------------------------------------------------
+r679 | oscarucb | 2014-05-12 22:20:55 +0000 (Mon, 12 May 2014) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+
+don't hide the Scan button in combat mode
+
+------------------------------------------------------------------------
+r678 | oscarucb | 2014-05-09 11:08:20 +0000 (Fri, 09 May 2014) | 2 lines
+Changed paths:
+   M /trunk/Core.lua
+
+improve queue checking to include paused queues
+
+------------------------------------------------------------------------
+r677 | oscarucb | 2014-05-04 12:47:20 +0000 (Sun, 04 May 2014) | 3 lines
+Changed paths:
+   M /trunk/Config.lua
+   M /trunk/Core.lua
+
+add a button for boss mod pull timer
+cleanup some redundant function closures
+
+------------------------------------------------------------------------
+r675 | oscarucb | 2014-05-04 07:03:02 +0000 (Sun, 04 May 2014) | 2 lines
+Changed paths:
+   M /trunk/Buffs.lua
+
+symbiosis: fix some false positives with multiple druids
+
+------------------------------------------------------------------------

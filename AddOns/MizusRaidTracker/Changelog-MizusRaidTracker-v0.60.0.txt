@@ -1,0 +1,19 @@
+tag v0.60.0
+f37702b477d8426b41da3f66763087b739af2f88
+Mizukichan <mizukichan@arcor.de>
+2014-10-14 22:13:13 +0200
+
+Tagging as v0.60.0
+
+
+--------------------
+
+Mizukichan:
+	- TOC bump.
+	- Removed manual changelog
+	- Code comments
+	- TOC bump
+	- Fixed stupid bugs
+	- Added handling for WoW 6.0 GUIDs
+	- Added comments
+	- Added WoW 6.0 instance difficulty IDs

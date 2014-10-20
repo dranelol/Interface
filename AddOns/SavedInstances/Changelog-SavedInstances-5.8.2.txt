@@ -1,0 +1,28 @@
+------------------------------------------------------------------------
+r384 | oscarucb | 2014-05-18 21:30:24 +0000 (Sun, 18 May 2014) | 1 line
+Changed paths:
+   A /tags/5.8.2 (from /trunk:383)
+
+Tagging as 5.8.2
+------------------------------------------------------------------------
+r383 | oscarucb | 2014-05-16 22:59:05 +0000 (Fri, 16 May 2014) | 2 lines
+Changed paths:
+   M /trunk/SavedInstances.lua
+
+fix ticket 153: timeless chests display error
+
+------------------------------------------------------------------------
+r382 | oscarucb | 2014-05-09 15:22:42 +0000 (Fri, 09 May 2014) | 2 lines
+Changed paths:
+   M /trunk/SavedInstances.lua
+
+ticket 152: broker text for TitanPanel
+
+------------------------------------------------------------------------
+r381 | oscarucb | 2014-05-05 12:02:41 +0000 (Mon, 05 May 2014) | 2 lines
+Changed paths:
+   M /trunk/SavedInstances.lua
+
+ticket 151: sethekk halls frFR
+
+------------------------------------------------------------------------

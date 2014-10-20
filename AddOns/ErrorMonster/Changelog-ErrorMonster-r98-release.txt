@@ -1,0 +1,50 @@
+------------------------------------------------------------------------
+r98 | funkydude | 2014-10-14 20:15:42 +0000 (Tue, 14 Oct 2014) | 1 line
+Changed paths:
+   A /tags/r98-release (from /trunk:97)
+
+Tagging as r98-release
+------------------------------------------------------------------------
+r97 | funkydude | 2014-10-14 19:58:40 +0000 (Tue, 14 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/ErrorMonster.toc
+
+bump toc
+------------------------------------------------------------------------
+r95 | funkydude | 2014-09-21 16:13:16 +0000 (Sun, 21 Sep 2014) | 1 line
+Changed paths:
+   M /trunk/ErrorMonster.toc
+   M /trunk/embeds.xml
+
+tweaks
+------------------------------------------------------------------------
+r94 | funkydude | 2014-09-21 15:39:46 +0000 (Sun, 21 Sep 2014) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   D /trunk/ErrorMonster-enUS.lua
+   D /trunk/ErrorMonster-esES.lua
+   D /trunk/ErrorMonster-koKR.lua
+   D /trunk/ErrorMonster-zhCN.lua
+   D /trunk/ErrorMonster-zhTW.lua
+   M /trunk/ErrorMonster.lua
+   M /trunk/ErrorMonster.toc
+   A /trunk/Libs (from /trunk/libs:91)
+   A /trunk/Libs/CallbackHandler-1.0.lua
+   A /trunk/Libs/LibStub.lua
+   A /trunk/Locales
+   A /trunk/Locales/deDE.lua
+   A /trunk/Locales/enUS.lua
+   A /trunk/Locales/esES.lua
+   A /trunk/Locales/esMX.lua
+   A /trunk/Locales/frFR.lua
+   A /trunk/Locales/itIT.lua
+   A /trunk/Locales/koKR.lua
+   A /trunk/Locales/ptBR.lua
+   A /trunk/Locales/ruRU.lua
+   A /trunk/Locales/zhCN.lua
+   A /trunk/Locales/zhTW.lua
+   M /trunk/embeds.xml
+   D /trunk/libs
+
+Structural & code cleanups, remove pointless libraries, move localization to wowace.
+------------------------------------------------------------------------

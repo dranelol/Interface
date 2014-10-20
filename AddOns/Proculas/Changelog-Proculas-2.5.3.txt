@@ -1,0 +1,8 @@
+2014-06-02  Xocide  <xocide@proculas.com>
+
+[c21602b646d0] [2.5.3]
+* CombatScanner.lua:
+
+Fixed issue with the combat scanner attempting to use `playerName` when it wasn't defined.
+
+

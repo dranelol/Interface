@@ -1,0 +1,11 @@
+tag 1.8.44
+b92adf8c03de8197ad5eb962d35c04237efc5737
+James D. Callahan III <jcallahan@curse.com>
+2014-05-03 13:49:13 -0500
+
+
+
+--------------------
+
+Paul "Myrroddin" Vandersypen:
+	- - local reference to LibStub, as global reference to a global is pointless (Artifacts.lua) - fix ticket #491 Lake of Stars Digsite is Mogu not Mantid (Digsites.lua) - poke for latest localizations (LibBabble-DigSites, LibBabble-Artifacts, Archy itself) - poke for latest libraries

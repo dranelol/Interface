@@ -1,0 +1,8 @@
+2014-10-13  Adam tegen  <adam.tegen@gmail.com>
+
+[fd135f065e75] [v2]
+* .hgtags:
+
+Added tag v2.0.0.0 for changeset e77e01abce98
+
+

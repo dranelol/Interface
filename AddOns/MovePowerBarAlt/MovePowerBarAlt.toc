@@ -1,0 +1,6 @@
+## Interface: 40000
+## Title: MovePowerBarAlt
+## Author: sp00n / Treeston
+## Notes: Makes the PlayerPowerBarAlt frame moveable (used in encounters like Atramedes or Cho'gall). /mpba
+
+MovePowerBarAlt.lua

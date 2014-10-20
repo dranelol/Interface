@@ -1,0 +1,21 @@
+tag v4.0.0-beta51
+ecad020f6d75a04d603a1e78a08cd8f78574905d
+Kyle Buller <nebula@the-syn.com>
+2014-09-16 13:28:25 -0500
+
+Tagging as v4.0.0-beta51
+
+
+--------------------
+
+Kyle Buller:
+	- option to display the unit's 3D portrait as the background
+	- simplify suppress_ooc updating
+	- add click-through option for resource indicators
+	- hard embed LibDataBroker-1.1 and assume optdep loading isn't broken
+	- update "Druid mana" LuaTexts on UNIT_DISPLAYPOWER
+	- use UNIT_POWER_FREQUENT instead of UNIT_POWER
+	- Totems: tweak options
+	- Totems: update noCooldownCount on option change
+	- Aura: add an option to disable OmniCC et al. by setting noCooldownCount
+	- WoD auras: hide the default cooldown text and fix the cooldown spiral

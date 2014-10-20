@@ -1,0 +1,13 @@
+------------------------------------------------------------------------
+r237 | jenneth | 2014-04-12 19:33:25 +0000 (Sat, 12 Apr 2014) | 1 line
+Changed paths:
+   M /trunk/Monk/Monk.lua
+
+(Monk) Fixing tickets 270, 271.
+------------------------------------------------------------------------
+r236 | jenneth | 2014-01-19 20:31:06 +0000 (Sun, 19 Jan 2014) | 1 line
+Changed paths:
+   M /trunk/Paladin/Paladin.lua
+
+(Paladin) Fixing Prot GoaK double announcement.
+------------------------------------------------------------------------

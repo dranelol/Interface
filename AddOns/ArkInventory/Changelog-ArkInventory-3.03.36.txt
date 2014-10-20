@@ -1,0 +1,77 @@
+------------------------------------------------------------------------
+r432 | arkayenro | 2014-07-19 15:38:54 +0000 (Sat, 19 Jul 2014) | 8 lines
+Changed paths:
+   A /tags/3.03.36 (from /trunk:431)
+
+*3.03.36 (20-JUN-2014)*
+ * added - ability to select flying mounts as land mounts (mostly for those without the flying skill), disabled by default, accessed via the ldb menu or mount locations main menu
+ * added - cross realm support for item counts and money amounts
+ * changed - money tooltips now use the item tooltip options to determine which othr characters data is displayed
+ * fixed - cosmetic issue when buying bank bag slots and the "buy" text staying there (it now goes away after a refresh)
+ * fixed - issue where tooltip option for self only was based on character name and the change to displaying multiple realms meant characters with the same name would all display, its now based on character id
+ * fixed - issue where item counts were not being sorted alphabetically
+
+------------------------------------------------------------------------
+r431 | arkayenro | 2014-07-19 15:37:01 +0000 (Sat, 19 Jul 2014) | 8 lines
+Changed paths:
+   M /trunk/ArkInventory.lua
+   M /trunk/ArkInventory.toc
+   M /trunk/ArkInventoryCompanion.lua
+   M /trunk/ArkInventoryRealms.lua
+   M /trunk/ArkInventoryStorage.lua
+   M /trunk/VersionHistory.txt
+
+*3.03.36 (20-JUN-2014)*
+ * added - ability to select flying mounts as land mounts (mostly for those without the flying skill), disabled by default, accessed via the ldb menu or mount locations main menu
+ * added - cross realm support for item counts and money amounts
+ * changed - money tooltips now use the item tooltip options to determine which othr characters data is displayed
+ * fixed - cosmetic issue when buying bank bag slots and the "buy" text staying there (it now goes away after a refresh)
+ * fixed - issue where tooltip option for self only was based on character name and the change to displaying multiple realms meant characters with the same name would all display, its now based on character id
+ * fixed - issue where item counts were not being sorted alphabetically
+
+------------------------------------------------------------------------
+r430 | arkayenro | 2014-07-06 00:59:38 +0000 (Sun, 06 Jul 2014) | 2 lines
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/ArkInventory.lua
+   M /trunk/ArkInventory.toc
+   M /trunk/ArkInventory.xml
+   M /trunk/ArkInventoryCompanion.lua
+   M /trunk/ArkInventoryExternals.lua
+   M /trunk/ArkInventoryLDB.lua
+   M /trunk/ArkInventoryMedia.lua
+   M /trunk/ArkInventoryMenu.lua
+   M /trunk/ArkInventoryMoney.lua
+   M /trunk/ArkInventoryPetJournal.lua
+   A /trunk/ArkInventoryRealms.lua
+   M /trunk/ArkInventoryRestack.lua
+   M /trunk/ArkInventoryRules.lua
+   M /trunk/ArkInventorySearch.lua
+   M /trunk/ArkInventorySearch.xml
+   M /trunk/ArkInventoryStaticPopups.lua
+   M /trunk/ArkInventoryStorage.lua
+   M /trunk/ArkInventoryTooltip.lua
+   M /trunk/ArkInventoryTranslate.lua
+   M /trunk/ArkInventoryUpgrades.lua
+   M /trunk/Bindings.xml
+   M /trunk/Locale/deDE.lua
+   M /trunk/Locale/enUS.lua
+   M /trunk/Locale/esES.lua
+   M /trunk/Locale/esMX.lua
+   M /trunk/Locale/frFR.lua
+   M /trunk/Locale/itIT.lua
+   M /trunk/Locale/koKR.lua
+   M /trunk/Locale/locale.xml
+   M /trunk/Locale/ptBR.lua
+   M /trunk/Locale/ruRU.lua
+   M /trunk/Locale/zhCN.lua
+   M /trunk/Locale/zhTW.lua
+   M /trunk/Modules/ArkInventoryConfig/ArkInventoryConfig.lua
+   M /trunk/Modules/ArkInventoryConfig/ArkInventoryConfig.toc
+   M /trunk/ReadMe.txt
+   M /trunk/VersionHistory.txt
+   M /trunk/embeds.xml
+
+ArkInventory:
+- alpha only
+------------------------------------------------------------------------

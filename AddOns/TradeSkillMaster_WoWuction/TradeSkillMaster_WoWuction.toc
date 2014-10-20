@@ -1,0 +1,26 @@
+## Interface: 60000
+## Title: |cff00ff00TradeSkillMaster_WoWuction|r
+## Notes: Gets data from wowuction.com in game for use by other TSM modules.
+## Author: Sapu94, Bart39
+## Version: v2.4
+## SavedVariables: TradeSkillMaster_WoWuctionDB
+## Dependency: TradeSkillMaster
+## X-Curse-Packaged-Version: v2.4
+## X-Curse-Project-Name: TradeSkillMaster_WoWuction
+## X-Curse-Project-ID: tradeskillmaster_wowuction
+## X-Curse-Repository-ID: wow/tradeskillmaster_wowuction/mainline
+
+Locale\enUS.lua
+Locale\deDE.lua
+Locale\esES.lua
+Locale\esMX.lua
+Locale\frFR.lua
+Locale\koKR.lua
+Locale\ruRU.lua
+Locale\zhCN.lua
+Locale\zhTW.lua
+Locale\ptBR.lua
+
+TradeSkillMaster_WoWuction.lua
+AppData.lua
+tsm_wowuction.lua
