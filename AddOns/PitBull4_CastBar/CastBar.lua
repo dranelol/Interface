@@ -1,5 +1,3 @@
-if select(6, GetAddOnInfo("PitBull4_" .. (debugstack():match("[o%.][d%.][u%.]les\\(.-)\\") or ""))) ~= "MISSING" then return end
-
 local PitBull4 = _G.PitBull4
 if not PitBull4 then
 	error("PitBull4_CastBar requires PitBull4")
@@ -54,6 +52,7 @@ function PitBull4_CastBar:OnEnable()
 	self:RegisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE")
 	self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE")
 	self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
+	self:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
 end
 
 function PitBull4_CastBar:OnDisable()
@@ -345,6 +344,13 @@ PitBull4_CastBar.UNIT_SPELLCAST_INTERRUPTIBLE = PitBull4_CastBar.UpdateInfo
 PitBull4_CastBar.UNIT_SPELLCAST_NOT_INTERRUPTIBLE = PitBull4_CastBar.UpdateInfo
 PitBull4_CastBar.UNIT_SPELLCAST_CHANNEL_UPDATE = PitBull4_CastBar.UpdateInfo
 PitBull4_CastBar.UNIT_SPELLCAST_CHANNEL_STOP = PitBull4_CastBar.UpdateInfo
+
+function PitBull4_CastBar:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	for i=1, MAX_BOSS_FRAMES do
+		local unit = ("boss%d"):format(i)
+		self:UpdateInfo(nil, unit)
+	end
+end
 
 PitBull4_CastBar:SetLayoutOptionsFunction(function(self)
 	return 'auto_hide', {

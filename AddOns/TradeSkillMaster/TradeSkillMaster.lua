@@ -19,7 +19,6 @@ TSM._version = GetAddOnMetadata("TradeSkillMaster", "X-Curse-Packaged-Version") 
 
 
 TSMAPI = {}
-local lib = TSMAPI
 
 TSM.designDefaults = {
 	frameColors = {
@@ -67,6 +66,7 @@ local savedDBDefaults = {
 		bankUIframeScale = 1,
 		frameStatus = {},
 		customPriceTooltips = {},
+		groupImportHistory = {}
 	},
 	profile = {
 		minimapIcon = {
@@ -91,8 +91,11 @@ local savedDBDefaults = {
 		moneyTextTooltip = false,
 		tooltip = true,
 		postDuration = 3,
-		deValueSource = "DBMarket",
+		destroyValueSource = "DBMarket",
+		detailedDestroyTooltip = true,
 		deTooltip = true,
+		millTooltip = true,
+		prospectTooltip = true,
 		vendorBuyTooltip = true,
 		vendorSellTooltip = true,
 		isBankui = true,
@@ -108,14 +111,17 @@ local savedDBDefaults = {
 		groupTreeSelectedGroupStatus = {},
 		exportSubGroups = false,
 		colorGroupName = true,
+		embeddedTooltip = true,
 	},
 	factionrealm = {
 		accountKey = nil,
 		characters = {},
 		syncAccounts = {},
-		numPagesCache = {},
 		bankUIBankFramePosition = {100, 300},
 		bankUIGBankFramePosition = {100, 300},
+	},
+	realm = {
+		numPagesCache = {}
 	},
 }
 
@@ -138,6 +144,14 @@ function TSM:OnInitialize()
 		TSM.operations = TSM.db.profile.operations
 	end
 	
+	-- update for 6.0.1
+	if type(TSM.db.factionrealm.numPagesCache) == "table" then
+		wipe(TSM.db.factionrealm.numPagesCache)
+		TSM.db.factionrealm.numPagesCache = nil
+	end
+	
+	TSM:RegisterEvent("BLACK_MARKET_ITEM_UPDATE", "ScanBMAH")
+	
 	-- Prepare the TradeSkillMasterAppDB database
 	-- We're not using AceDB here on purpose due to bugs in AceDB, but are emulating the parts of it that we need.
 	local json = TradeSkillMasterAppDB
@@ -154,24 +168,26 @@ function TSM:OnInitialize()
 			TSM_APP_DATA_TMP = nil
 		end
 	end
-	TradeSkillMasterAppDB = TradeSkillMasterAppDB or {factionrealm={}, profiles={}}
-	TradeSkillMasterAppDB.version = max(TradeSkillMasterAppDB.version or 0, 5)
-	local factionrealmKey = UnitFactionGroup("player").." - "..GetRealmName()
+	TradeSkillMasterAppDB = TradeSkillMasterAppDB or {realm={}, profiles={}}
+	TradeSkillMasterAppDB.version = max(TradeSkillMasterAppDB.version or 0, 7)
+	TradeSkillMasterAppDB.region = GetCVar("portal") == "public-test" and "PTR" or GetCVar("portal")
+	local realmKey = GetRealmName()
 	local profileKey = TSM.db:GetCurrentProfile()
-	TradeSkillMasterAppDB.factionrealm[factionrealmKey] = TradeSkillMasterAppDB.factionrealm[factionrealmKey] or {}
+	TradeSkillMasterAppDB.factionrealm = nil
+	TradeSkillMasterAppDB.realm[realmKey] = TradeSkillMasterAppDB.realm[realmKey] or {}
 	TradeSkillMasterAppDB.profiles[profileKey] = TradeSkillMasterAppDB.profiles[profileKey] or {}
 	TSM.appDB = {}
-	TSM.appDB.factionrealm = TradeSkillMasterAppDB.factionrealm[factionrealmKey]
+	TSM.appDB.realm = TradeSkillMasterAppDB.realm[realmKey]
 	TSM.appDB.profile = TradeSkillMasterAppDB.profiles[profileKey]
 	TSM.appDB.profile.groupTest = nil
-	TSM.appDB.keys = {profile=profileKey, factionrealm=factionrealmKey}
-
-	-- TSM core must be registered as a module just like the modules
-	TSM:RegisterModule()
+	TSM.appDB.keys = {profile=profileKey, realm=realmKey}
 
 	for name, module in pairs(TSM.modules) do
 		TSM[name] = module
 	end
+
+	-- TSM core must be registered as a module just like the modules
+	TSM:RegisterModule()
 
 	-- create account key for multi-account syncing if necessary
 	TSM.db.factionrealm.accountKey = TSM.db.factionrealm.accountKey or (GetRealmName() .. random(time()))
@@ -232,10 +248,17 @@ function TSM:OnInitialize()
 		end
 	end
 	
+	if TSM.db.profile.deValueSource then
+		TSM.db.profile.destroyValueSource = TSM.db.profile.deValueSource
+		TSM.db.profile.deValueSource = nil
+	end
+	
 	-- Cache battle pet names
 	for i=1, C_PetJournal.GetNumPets() do C_PetJournal.GetPetInfoByIndex(i) end
 	-- force a garbage collection
 	collectgarbage()
+	
+	TSMAPI:CreateTimeDelay(3, TSM.App.LoadData)
 end
 
 function TSM:RegisterModule()
@@ -244,6 +267,7 @@ function TSM:RegisterModule()
 		{ side = "options", desc = L["Groups"], callback = "LoadGroupOptions", slashCommand = "groups", icon = "Interface\\Icons\\INV_DataCrystal08" },
 		{ side = "options", desc = L["Module Operations / Options"], slashCommand = "operations", callback = "LoadOperationOptions", icon = "Interface\\Icons\\INV_Misc_Enggizmos_33" },
 		{ side = "options", desc = L["Tooltip Options"], slashCommand = "tooltips", callback = "LoadTooltipOptions", icon = "Interface\\Icons\\PET_Type_Mechanical" },
+		{ side = "options", desc = "TSM Application", slashCommand = "app", callback = "App:LoadTSMAppOptions", icon = "Interface\\Icons\\Achievement_Faction_GoldenLotus" },
 	}
 
 	TSM.priceSources = {}
@@ -263,18 +287,6 @@ function TSM:RegisterModule()
 	if select(4, GetAddOnInfo("Auctionator")) == 1 and Atr_GetAuctionBuyout then
 		tinsert(TSM.priceSources, { key = "AtrValue", label = L["Auctionator - Auction Value"], callback = Atr_GetAuctionBuyout })
 	end
-	-- TheUndermineJournal
-	if select(4, GetAddOnInfo("TheUndermineJournal")) == 1 and TUJMarketInfo then
-		tinsert(TSM.priceSources, { key = "TUJMarket", label = L["TUJ RE - Market Price"], callback = function(itemLink) return (TUJMarketInfo(TSMAPI:GetItemID(itemLink)) or {}).market end })
-		tinsert(TSM.priceSources, { key = "TUJMean", label = L["TUJ RE - Mean"], callback = function(itemLink) return (TUJMarketInfo(TSMAPI:GetItemID(itemLink)) or {}).marketaverage end })
-		tinsert(TSM.priceSources, { key = "TUJGEMarket", label = L["TUJ GE - Market Average"], callback = function(itemLink) return (TUJMarketInfo(TSMAPI:GetItemID(itemLink)) or {}).gemarketaverage end })
-		tinsert(TSM.priceSources, { key = "TUJGEMedian", label = L["TUJ GE - Market Median"], callback = function(itemLink) return (TUJMarketInfo(TSMAPI:GetItemID(itemLink)) or {}).gemarketmedian end })
-	end
-	-- TheUndermineJournalGE
-	if select(4, GetAddOnInfo("TheUndermineJournalGE")) == 1 and TUJMarketInfo then
-		tinsert(TSM.priceSources, { key = "TUJGEMarket", label = L["TUJ GE - Market Average"], callback = function(itemLink) return (TUJMarketInfo(TSMAPI:GetItemID(itemLink)) or {}).marketaverage end })
-		tinsert(TSM.priceSources, { key = "TUJGEMedian", label = L["TUJ GE - Market Median"], callback = function(itemLink) return (TUJMarketInfo(TSMAPI:GetItemID(itemLink)) or {}).marketmedian end })
-	end
 	-- Vendor Buy Price
 	tinsert(TSM.priceSources, { key = "VendorBuy", label = L["Buy from Vendor"], callback = function(itemLink) return TSMAPI:GetVendorCost(TSMAPI:GetItemString(itemLink)) end })
 
@@ -286,11 +298,12 @@ function TSM:RegisterModule()
 
 
 	TSM.slashCommands = {
-		{ key = "version", label = L["Prints out the version numbers of all installed modules"], callback = function() TSM:Print(L["TSM Version Info:"]) for _, module in ipairs(TSM.Modules:GetInfo()) do print(module.name, "|cff99ffff" .. module.version .. "|r") end end },
-		{ key = "freset", label = L["Resets the position, scale, and size of all applicable TSM and module frames."], callback = TSM.ResetFrames },
+		{ key = "version", label = L["Prints out the version numbers of all installed modules"], callback = function() TSM:Print(L["TSM Version Info:"]) local chatFrame = TSMAPI:GetChatFrame() for _, module in ipairs(TSM.Modules:GetInfo()) do chatFrame:AddMessage(module.name.." |cff99ffff"..module.version.."|r") end end },
+		{ key = "freset", label = L["Resets the position, scale, and size of all applicable TSM and module frames."], callback = "ResetFrames" },
 		{ key = "bankui", label = L["Toggles the bankui"], callback = "toggleBankUI" },
 		{ key = "sources", label = L["Prints out the available price sources for use in custom price boxes."], callback = "PrintPriceSources" },
 		{ key = "price", label = L["Allows for testing of custom prices."], callback = "TestPriceSource" },
+		{ key = "assist", label = L["Opens the TradeSkillMaster Assistant window."], callback = "Assistant:Open" },
 	}
 
 	TSM.moduleAPIs = {
@@ -323,7 +336,7 @@ function TSM:OnTSMDBShutdown()
 	-- save group info into TSM.appDB
 	for profile in TSMAPI:GetTSMProfileIterator() do
 		local profileGroupData = {}
-		for itemString in pairs(TSM.db.profile.items) do
+		for itemString, groupPath in pairs(TSM.db.profile.items) do
 			if strfind(itemString, "item") then
 				local shortItemString = gsub(gsub(itemString, "item:", ""), ":0:0:0:0:0:", ":")
 				local itemPrices = {}
@@ -332,6 +345,7 @@ function TSM:OnTSMDBShutdown()
 				itemPrices.an = GetOperationPrice("Auctioning", "normalPrice", itemString)
 				itemPrices.ax = GetOperationPrice("Auctioning", "maxPrice", itemString)
 				if next(itemPrices) then
+					itemPrices.gr = groupPath
 					local itemID, rand = (":"):split(shortItemString)
 					if rand == "0" then
 						shortItemString = itemID
@@ -418,25 +432,110 @@ function TSM:GetTooltip(itemString, quantity)
 					tinsert(text, { left = "  " .. L["Disenchant Value:"], right = TSMAPI:FormatTextMoney(deValue, "|cffffffff", true) })
 				end
 			end
-			local _, itemLink, quality, ilvl, _, iType = TSMAPI:GetSafeItemInfo(itemString)
-			local itemString = TSMAPI:GetItemString(itemLink)
-			local WEAPON, ARMOR = GetAuctionItemClasses()
+			
+			if TSM.db.profile.detailedDestroyTooltip then
+				local _, itemLink, quality, ilvl, _, iType = TSMAPI:GetSafeItemInfo(itemString)
+				local itemString = TSMAPI:GetItemString(itemLink)
+				local WEAPON, ARMOR = GetAuctionItemClasses()
 
-			for _, data in ipairs(TSMAPI.DisenchantingData.disenchant) do
-				for item, itemData in pairs(data) do
-					if item ~= "desc" and itemData.itemTypes[iType] and itemData.itemTypes[iType][quality] then
-						for _, deData in ipairs(itemData.itemTypes[iType][quality]) do
-							if ilvl >= deData.minItemLevel and ilvl <= deData.maxItemLevel then
-								local matValue = TSM:GetCustomPrice(TSM.db.profile.deValueSource, item)
-								local value = (matValue or 0) * deData.amountOfMats
-								local name, _, matQuality = TSMAPI:GetSafeItemInfo(item)
-								local colorName = format("|c%s%s%s%s|r",select(4,GetItemQualityColor(matQuality)),name, " x ", deData.amountOfMats)
-								if value > 0 then
-									if moneyCoinsTooltip then
-										tinsert(text, { left = "    " .. colorName, right = TSMAPI:FormatTextMoneyIcon(value, "|cffffffff", true) })
-									else
-										tinsert(text, { left = "    " .. colorName, right = TSMAPI:FormatTextMoney(value, "|cffffffff", true) })
+				for _, data in ipairs(TSMAPI.DisenchantingData.disenchant) do
+					for item, itemData in pairs(data) do
+						if item ~= "desc" and itemData.itemTypes[iType] and itemData.itemTypes[iType][quality] then
+							for _, deData in ipairs(itemData.itemTypes[iType][quality]) do
+								if ilvl >= deData.minItemLevel and ilvl <= deData.maxItemLevel then
+									local matValue = TSM:GetCustomPrice(TSM.db.profile.destroyValueSource, item)
+									local value = (matValue or 0) * deData.amountOfMats
+									local name, _, matQuality = TSMAPI:GetSafeItemInfo(item)
+									if matQuality then
+										local colorName = format("|c%s%s%s%s|r",select(4,GetItemQualityColor(matQuality)),name, " x ", deData.amountOfMats)
+										if value > 0 then
+											if moneyCoinsTooltip then
+												tinsert(text, { left = "    " .. colorName, right = TSMAPI:FormatTextMoneyIcon(value, "|cffffffff", true) })
+											else
+												tinsert(text, { left = "    " .. colorName, right = TSMAPI:FormatTextMoney(value, "|cffffffff", true) })
+											end
+										end
 									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	-- add mill value info
+	if TSM.db.profile.millTooltip then
+		local millValue = TSM:GetMillValue(itemString)
+		if millValue > 0 then
+			if moneyCoinsTooltip then
+				if IsShiftKeyDown() then
+					tinsert(text, { left = "  " .. format(L["Mill Value x%s:"], quantity), right = TSMAPI:FormatTextMoneyIcon(millValue * quantity, "|cffffffff", true) })
+				else
+					tinsert(text, { left = "  " .. L["Mill Value:"], right = TSMAPI:FormatTextMoneyIcon(millValue, "|cffffffff", true) })
+				end
+			else
+				if IsShiftKeyDown() then
+					tinsert(text, { left = "  " .. format(L["Mill Value x%s:"], quantity), right = TSMAPI:FormatTextMoney(millValue * quantity, "|cffffffff", true) })
+				else
+					tinsert(text, { left = "  " .. L["Mill Value:"], right = TSMAPI:FormatTextMoney(millValue, "|cffffffff", true) })
+				end
+			end
+			
+			if TSM.db.profile.detailedDestroyTooltip then
+				for _, targetItem in ipairs(TSMAPI:GetConversionTargetItems("mill")) do
+					local herbs = TSMAPI:GetItemConversions(targetItem)
+					if herbs[itemString] then
+						local value = (TSM:GetCustomPrice(TSM.db.profile.destroyValueSource, targetItem) or 0) * herbs[itemString].rate
+						local name, _, matQuality = TSMAPI:GetSafeItemInfo(targetItem)
+						if matQuality then
+							local colorName = format("|c%s%s%s%s|r",select(4,GetItemQualityColor(matQuality)),name, " x ", herbs[itemString].rate)
+							if value > 0 then
+								if moneyCoinsTooltip then
+									tinsert(text, { left = "    " .. colorName, right = TSMAPI:FormatTextMoneyIcon(value, "|cffffffff", true) })
+								else
+									tinsert(text, { left = "    " .. colorName, right = TSMAPI:FormatTextMoney(value, "|cffffffff", true) })
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	-- add prospect value info
+	if TSM.db.profile.prospectTooltip then
+		local prospectValue = TSM:GetProspectValue(itemString)
+		if prospectValue > 0 then
+			if moneyCoinsTooltip then
+				if IsShiftKeyDown() then
+					tinsert(text, { left = "  " .. format(L["Prospect Value x%s:"], quantity), right = TSMAPI:FormatTextMoneyIcon(prospectValue * quantity, "|cffffffff", true) })
+				else
+					tinsert(text, { left = "  " .. L["Prospect Value:"], right = TSMAPI:FormatTextMoneyIcon(prospectValue, "|cffffffff", true) })
+				end
+			else
+				if IsShiftKeyDown() then
+					tinsert(text, { left = "  " .. format(L["Prospect Value x%s:"], quantity), right = TSMAPI:FormatTextMoney(prospectValue * quantity, "|cffffffff", true) })
+				else
+					tinsert(text, { left = "  " .. L["Prospect Value:"], right = TSMAPI:FormatTextMoney(prospectValue, "|cffffffff", true) })
+				end
+			end
+			
+			if TSM.db.profile.detailedDestroyTooltip then
+				for _, targetItem in ipairs(TSMAPI:GetConversionTargetItems("prospect")) do
+					local gems = TSMAPI:GetItemConversions(targetItem)
+					if gems[itemString] then
+						local value = (TSM:GetCustomPrice(TSM.db.profile.destroyValueSource, targetItem) or 0) * gems[itemString].rate
+						local name, _, matQuality = TSMAPI:GetSafeItemInfo(targetItem)
+						if matQuality then
+							local colorName = format("|c%s%s%s%s|r",select(4,GetItemQualityColor(matQuality)),name, " x ", gems[itemString].rate)
+							if value > 0 then
+								if moneyCoinsTooltip then
+									tinsert(text, { left = "    " .. colorName, right = TSMAPI:FormatTextMoneyIcon(value, "|cffffffff", true) })
+								else
+									tinsert(text, { left = "    " .. colorName, right = TSMAPI:FormatTextMoney(value, "|cffffffff", true) })
 								end
 							end
 						end
@@ -519,7 +618,7 @@ function TSM:GetDisenchantValue(link)
 			if item ~= "desc" and itemData.itemTypes[iType] and itemData.itemTypes[iType][quality] then
 				for _, deData in ipairs(itemData.itemTypes[iType][quality]) do
 					if ilvl >= deData.minItemLevel and ilvl <= deData.maxItemLevel then
-						local matValue = TSM:GetCustomPrice(TSM.db.profile.deValueSource, item)
+						local matValue = TSM:GetCustomPrice(TSM.db.profile.destroyValueSource, item)
 						value = value + (matValue or 0) * deData.amountOfMats
 					end
 				end
@@ -527,6 +626,34 @@ function TSM:GetDisenchantValue(link)
 		end
 	end
 
+	return value
+end
+
+function TSM:GetMillValue(itemString)
+	local value = 0
+	
+	for _, targetItem in ipairs(TSMAPI:GetConversionTargetItems("mill")) do
+		local herbs = TSMAPI:GetItemConversions(targetItem)
+		if herbs[itemString] then
+			local matValue = TSM:GetCustomPrice(TSM.db.profile.destroyValueSource, targetItem)
+			value = value + (matValue or 0) * herbs[itemString].rate
+		end
+	end
+	
+	return value
+end
+
+function TSM:GetProspectValue(itemString)
+	local value = 0
+	
+	for _, targetItem in ipairs(TSMAPI:GetConversionTargetItems("prospect")) do
+		local gems = TSMAPI:GetItemConversions(targetItem)
+		if gems[itemString] then
+			local matValue = TSM:GetCustomPrice(TSM.db.profile.destroyValueSource, targetItem)
+			value = value + (matValue or 0) * gems[itemString].rate
+		end
+	end
+	
 	return value
 end
 
@@ -584,4 +711,25 @@ function TSM:GetAuctionPlayer(player, player_full)
 	else
 		return player
 	end
+end
+
+function TSM:ScanBMAH()
+	TSM.appDB.factionrealm.bmah = nil
+	local items = {}
+	for i=1, C_BlackMarket.GetNumItems() do
+		local quantity, minBid, minIncr, currBid, numBids, itemLink, bmId = TSMAPI:Select({3, 9, 10, 11, 13, 15, 16}, C_BlackMarket.GetItemInfoByIndex(i))
+		local itemString = TSMAPI:GetItemString(itemLink)
+		if itemString then
+			local itemID, rand = TSMAPI:Select({2, 8}, (":"):split(itemString))
+			itemID = tonumber(itemID)
+			rand = tonumber(rand)
+			if itemID and rand then
+				minBid = floor(minBid/COPPER_PER_GOLD)
+				minIncr = floor(minIncr/COPPER_PER_GOLD)
+				currBid = floor(currBid/COPPER_PER_GOLD)
+				tinsert(items, {item=itemID, rand=rand, quantity=quantity, minBid=minBid, minIncr=minIncr, currBid=currBid, numBids=numBids, bmId=bmId, time=time()})
+			end
+		end
+	end
+	TSM.appDB.factionrealm.blackMarket = {lastUpdate=time(), items=items, version=1}
 end

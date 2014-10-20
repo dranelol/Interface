@@ -1,9 +1,4 @@
-if select(6, GetAddOnInfo("PitBull4_" .. (debugstack():match("[o%.][d%.][u%.]les\\(.-)\\") or ""))) ~= "MISSING" then return end
-
-local player_class = select(2, UnitClass("player"))
-if player_class ~= "WARLOCK" then
-	return
-end
+if select(2, UnitClass("player")) ~= "WARLOCK" then return end
 
 local PitBull4 = _G.PitBull4
 if not PitBull4 then
@@ -58,7 +53,7 @@ end
 PitBull4_DemonicFury.GetExampleColor = PitBull4_DemonicFury.GetColor
 
 function PitBull4_DemonicFury:UNIT_POWER_FREQUENT(event, unit, power_type)
-	if unit ~= "player" or ((event == "UNIT_POWER" or event == "UNIT_MAXPOWER") and power_type ~= "DEMONIC_FURY") then
+	if unit ~= "player" or ((event == "UNIT_POWER_FREQUENT" or event == "UNIT_MAXPOWER") and power_type ~= "DEMONIC_FURY") then
 		return
 	end
 

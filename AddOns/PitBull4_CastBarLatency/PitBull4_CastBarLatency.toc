@@ -19,8 +19,8 @@
 ## DefaultState: enabled
 ## LoadOnDemand: 1
 ## Dependencies: PitBull4, PitBull4_CastBar
-## Version: v4.0.0-beta48
-## X-Curse-Packaged-Version: v4.0.0-beta48
+## Version: v4.0.0-beta51
+## X-Curse-Packaged-Version: v4.0.0-beta51
 ## X-Curse-Project-Name: PitBull Unit Frames 4.0
 ## X-Curse-Project-ID: pitbull4
 ## X-Curse-Repository-ID: wow/pitbull4/mainline

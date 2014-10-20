@@ -2,10 +2,10 @@
 ************************************************************************
 Panel.lua
 ************************************************************************
-File date: 2013-03-08T02:43:03Z
-File hash: 1b54116
-Project hash: e8a8419
-Project version: 2.5.13
+File date: 2014-05-26T16:58:52Z
+File hash: 2fb70ce
+Project hash: 5b35dab
+Project version: 3.0.5
 ************************************************************************
 Please see http://www.wowace.com/addons/arl/ for more information.
 ************************************************************************
@@ -41,11 +41,10 @@ local L		= LibStub("AceLocale-3.0"):GetLocale(private.addon_name)
 -------------------------------------------------------------------------------
 -- Upvalues
 -------------------------------------------------------------------------------
-local AcquireTable = private.AcquireTable
 local SetTextColor = private.SetTextColor
 local SetTooltipScripts = private.SetTooltipScripts
 
-local A = private.ACQUIRE_TYPES
+local A = private.ACQUIRE_TYPE_IDS
 
 -------------------------------------------------------------------------------
 -- Constants
@@ -146,21 +145,6 @@ function private.InitializeFrame()
 	-------------------------------------------------------------------------------
 	-- Displays the main GUI frame.
 	-------------------------------------------------------------------------------
-	local ITEM_FILTER_INIT_FUNCS = {
-		["alchemy"] = private.InitializeItemFilters_Alchemy,
-		["blacksmithing"] = private.InitializeItemFilters_Blacksmithing,
-		["cooking"] = private.InitializeItemFilters_Cooking,
-		["enchanting"] = private.InitializeItemFilters_Enchanting,
-		["engineering"] = private.InitializeItemFilters_Engineering,
-		["firstaid"] = private.InitializeItemFilters_FirstAid,
-		["leatherworking"] = private.InitializeItemFilters_Leatherworking,
-		["smelting"] = private.InitializeItemFilters_Smelting,
-		["tailoring"] = private.InitializeItemFilters_Tailoring,
-		["jewelcrafting"] = private.InitializeItemFilters_Jewelcrafting,
-		["inscription"] = private.InitializeItemFilters_Inscription,
-		["runeforging"] = private.InitializeItemFilters_Runeforging,
-	}
-
 	function MainPanel:Display(profession_name, is_linked)
 		self.is_linked = is_linked
 
@@ -193,7 +177,8 @@ function private.InitializeFrame()
 			private.InitializeFilterPanel()
 		end
 		local prof_name = private.PROFESSION_LABELS[self.current_profession]
-		local init_func = ITEM_FILTER_INIT_FUNCS[prof_name]
+		local profession_module = addon:GetModule(private.PROFESSION_MODULE_NAMES[private.ORDERED_PROFESSIONS[self.current_profession]], true)
+		local init_func = profession_module and profession_module.InitializeItemFilters
 		local panel
 
 		if init_func then
@@ -203,9 +188,7 @@ function private.InitializeFrame()
 			self.filter_menu.item[panel_name] = self.filter_menu[panel_name]
 			self.filter_menu[panel_name] = nil
 
-			init_func(private, panel)
-
-			ITEM_FILTER_INIT_FUNCS[prof_name] = nil
+			init_func(profession_module, panel)
 		else
 			panel = self.filter_menu.item["items_" .. prof_name]
 		end
@@ -242,11 +225,9 @@ function private.InitializeFrame()
 			self.list_frame:Update(nil, false)
 		else
 			local current_tab = self.tabs[addon.db.profile.current_tab]
-			local on_click = current_tab:GetScript("OnClick")
+			current_tab:GetScript("OnClick")(current_tab)
 
-			on_click(current_tab)
-
-			self.current_tab = addon.db.profile.current_tab
+			self.current_tab = current_tab
 		end
 		self.sort_button:SetTextures()
 		self.filter_toggle:SetTextures()
@@ -505,11 +486,9 @@ function private.InitializeFrame()
 		end
 
 		local function SearchByAcquireType(recipe, search_pattern)
-			local ACQUIRE_NAMES = private.ACQUIRE_NAMES
-
-			for acquire_type in pairs(ACQUIRE_NAMES) do
-				if recipe.acquire_data[acquire_type] then
-					local acquire_name = ACQUIRE_NAMES[acquire_type]:lower()
+			for acquire_type_label, acquire_type in pairs(private.AcquireTypes) do
+				if recipe.acquire_data[acquire_type:ID()] then
+					local acquire_name = acquire_type:Name():lower()
 
 					if acquire_name:find(search_pattern) then
 						return true
@@ -524,7 +503,7 @@ function private.InitializeFrame()
 
 			for location_name in pairs(location_list) do
 				for spell_id in pairs(location_list[location_name].recipes) do
-					if spell_id == recipe.spell_id then
+					if spell_id == recipe:SpellID() then
 						local location = location_name:lower()
 
 						if location:find(search_pattern) then
@@ -543,41 +522,41 @@ function private.InitializeFrame()
 			return false
 		end
 
-		local function SearchByList(recipe, search_pattern, list)
-			for id_num, unit in pairs(list) do
-				if unit.item_list and unit.item_list[recipe.spell_id] and unit.name:lower():find(search_pattern) then
+		local function SearchByList(recipe, search_pattern, acquire_type_id)
+			for id_num, unit in private.ACQUIRE_TYPES_BY_ID[acquire_type_id]:EntityPairs() do
+				if unit.item_list and unit.item_list[recipe:SpellID()] and unit.name:lower():find(search_pattern) then
 					return true
 				end
 			end
 		end
 
 		local function SearchByTrainer(recipe, search_pattern)
-			return SearchByList(recipe, search_pattern, private.trainer_list)
+			return SearchByList(recipe, search_pattern, A.TRAINER)
 		end
 
 		local function SearchByVendor(recipe, search_pattern)
-			return SearchByList(recipe, search_pattern, private.vendor_list)
+			return SearchByList(recipe, search_pattern, A.VENDOR)
 		end
 
 		local function SearchByMobDrop(recipe, search_pattern)
-			return SearchByList(recipe, search_pattern, private.mob_list)
+			return SearchByList(recipe, search_pattern, A.MOB_DROP)
 		end
 
 		local function SearchByCustom(recipe, search_pattern)
-			return SearchByList(recipe, search_pattern, private.custom_list)
+			return SearchByList(recipe, search_pattern, A.CUSTOM)
 		end
 
 		local function SearchByDiscovery(recipe, search_pattern)
-			return SearchByList(recipe, search_pattern, private.discovery_list)
+			return SearchByList(recipe, search_pattern, A.DISCOVERY)
 		end
 
 		local function SearchByReputation(recipe, search_pattern)
-			local reputation_list = private.reputation_list
+			local reputation_acquire_type = private.AcquireTypes.Reputation
 
-			for acquire_type, acquire_data in pairs(recipe.acquire_data) do
-				if acquire_type == A.REPUTATION then
+			for acquire_type_id, acquire_data in pairs(recipe.acquire_data) do
+				if acquire_type_id == A.REPUTATION then
 					for id_num, info in pairs(acquire_data) do
-						local str = reputation_list[id_num].name:lower()
+						local str = reputation_acquire_type:GetEntity(id_num).name:lower()
 
 						if str and str:find(search_pattern) then
 							return true
@@ -669,7 +648,7 @@ function private.InitializeFrame()
 
 	-- Resets the SearchBox text and the state of all MainPanel.list_frame and recipe_list entries.
 	function SearchBox:Reset()
-		for index, recipe in pairs(private.recipe_list) do
+		for index, recipe in pairs(private.profession_recipe_list[private.ORDERED_PROFESSIONS[MainPanel.current_profession]]) do
 			recipe:RemoveState("RELEVANT")
 		end
 		self.prev_search = nil
@@ -821,7 +800,7 @@ function private.InitializeFrame()
 	expand_button:SetPoint("LEFT", expand_button_frame.left, "RIGHT", -3, -3)
 
 	expand_button:SetScript("OnClick", function(self, mouse_button, down)
-		local current_tab = MainPanel.tabs[MainPanel.current_tab]
+		local current_tab = MainPanel.current_tab
 		local is_expanded = current_tab["expand_button_" .. MainPanel.current_profession]
 		local expand_mode
 
@@ -869,35 +848,11 @@ function private.InitializeFrame()
 	end
 
 	-------------------------------------------------------------------------------
-	-- "Skill Level" checkbox.
-	-------------------------------------------------------------------------------
-	local SkillToggle = _G.CreateFrame("CheckButton", nil, MainPanel, "UICheckButtonTemplate")
-	SkillToggle:SetPoint("TOPLEFT", SearchBox, "TOPRIGHT", 0, 0)
-	SkillToggle:SetHeight(16)
-	SkillToggle:SetWidth(16)
-
-	SkillToggle.text = SkillToggle:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
-	SkillToggle.text:SetPoint("LEFT", SkillToggle, "RIGHT", 0, 0)
-
-	SkillToggle:SetScript("OnClick", function(self, button, down)
-		addon.db.profile.skill_view = not addon.db.profile.skill_view
-		MainPanel.list_frame:Update(nil, false)
-	end)
-
-	SkillToggle:SetScript("OnShow", function(self)
-		self:SetChecked(addon.db.profile.skill_view)
-	end)
-
-	SkillToggle.text:SetText(_G.SKILL)
-	SetTooltipScripts(SkillToggle, L["SKILL_TOGGLE_DESC"], 1)
-
-	-------------------------------------------------------------------------------
 	-- "Display Exclusions" checkbox.
 	-------------------------------------------------------------------------------
 	local ExcludeToggle = _G.CreateFrame("CheckButton", nil, MainPanel, "UICheckButtonTemplate")
-	ExcludeToggle:SetPoint("TOP", SkillToggle, "BOTTOM", 0, 1)
-	ExcludeToggle:SetHeight(16)
-	ExcludeToggle:SetWidth(16)
+	ExcludeToggle:SetPoint("TOPLEFT", SearchBox, "TOPRIGHT", 0, 0)
+	ExcludeToggle:SetSize(16, 16)
 
 	ExcludeToggle.text = ExcludeToggle:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
 	ExcludeToggle.text:SetPoint("LEFT", ExcludeToggle, "RIGHT", 0, 0)
@@ -994,6 +949,59 @@ function private.InitializeFrame()
 			self:SetDisabledTexture([[Interface\CHATFRAME\UI-ChatIcon-ScrollUp-Disabled]])
 		end
 	end
+
+	-------------------------------------------------------------------------------
+	-- Sort By buttons.
+	-------------------------------------------------------------------------------
+	do
+		local name_button, skill_button
+
+		local function ToggleOnClick(self)
+			addon.db.profile.skill_view = not addon.db.profile.skill_view
+
+			name_button:GetScript("OnShow")(name_button)
+			skill_button:GetScript("OnShow")(skill_button)
+			MainPanel.list_frame:Update(nil, false)
+		end
+
+		local sort_label = MainPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+		sort_label:SetPoint("LEFT", sort_toggle, "RIGHT", 0, 0)
+		sort_label:SetText(_G.COMPACT_UNIT_FRAME_PROFILE_SORTBY)
+
+		name_button = _G.CreateFrame("Button", nil, MainPanel)
+		name_button:SetNormalFontObject("GameFontNormalGraySmall")
+		name_button:SetHighlightFontObject("GameFontNormalSmall")
+		name_button:SetDisabledFontObject("GameFontHighlightSmallOutline")
+		name_button:SetFontString(name_button:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall"))
+		name_button:SetText(_G.NAME)
+		name_button:SetSize(name_button:GetFontString():GetStringWidth(), 16)
+		name_button:SetPoint("LEFT", sort_label, "RIGHT", 2, 0)
+
+		name_button:SetScript("OnClick", ToggleOnClick)
+
+		name_button:SetScript("OnShow", function(self)
+			self[addon.db.profile.skill_view and "Enable" or "Disable"](self)
+		end)
+
+		local separator = MainPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+		separator:SetPoint("LEFT", name_button, "RIGHT", 0, 0)
+		separator:SetText(" / ")
+
+		skill_button = _G.CreateFrame("Button", nil, MainPanel)
+		skill_button:SetNormalFontObject("GameFontNormalGraySmall")
+		skill_button:SetHighlightFontObject("GameFontNormalSmall")
+		skill_button:SetDisabledFontObject("GameFontHighlightSmallOutline")
+		skill_button:SetFontString(skill_button:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall"))
+		skill_button:SetText(_G.SKILL_LEVEL)
+		skill_button:SetSize(skill_button:GetFontString():GetStringWidth(), 16)
+		skill_button:SetPoint("LEFT", separator, "RIGHT", 0, 0)
+
+		skill_button:SetScript("OnClick", ToggleOnClick)
+
+		skill_button:SetScript("OnShow", function(self)
+			self[addon.db.profile.skill_view and "Disable" or "Enable"](self)
+		end)
+	end -- do-block
 
 	-------------------------------------------------------------------------------
 	-- Create MainPanel.progress_bar and set its scripts

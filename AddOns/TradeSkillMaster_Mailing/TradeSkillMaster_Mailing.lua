@@ -29,13 +29,16 @@ local savedDBDefaults = {
 		sendMessages = true,
 		defaultPage = 1,
 		showReloadBtn = true,
+		keepMailSpace = 0,
 	},
 	factionrealm = {
 		deMailTarget = "",
-		goldMailTarget = "",
-		goldKeepAmount = 1000000,
 		mailTargets = {},
 		mailItems = {},
+	},
+	char = {
+		goldMailTarget = "",
+		goldKeepAmount = 1000000,
 	},
 }
 
@@ -49,6 +52,9 @@ function TSM:OnEnable()
 	
 	-- register this module with TSM
 	TSM:RegisterModule()
+	
+	-- temporary check
+	TSMAPI:Verify(TSMAPI.IsPlayer, "You need to update your TradeSkillMaster addon. Otherwise, you may see lua errors!")
 end
 
 -- registers this module with TSM by first setting all fields and then calling TSMAPI:NewModule().
@@ -66,6 +72,7 @@ TSM.operationDefaults = {
 	maxQty = 10,
 	target = "",
 	restock = nil, -- take into account how many the target already has
+	restockGBank = nil,
 	keepQty = 0,
 	ignorePlayer = {},
 	ignoreFactionrealm = {},

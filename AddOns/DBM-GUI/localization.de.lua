@@ -10,15 +10,16 @@ L.Website					= "Besuche unsere neuen Diskussions- und Support-Foren: |cFF73C2FB
 L.WebsiteButton				= "Foren"
 
 L.OTabBosses	= "Bosse"
-L.OTabOptions	= "Optionen"
+L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options	 	= "Allgemeine Einstellungen"
-L.TabCategory_MOP	 		= "Mists of Pandaria"
-L.TabCategory_CATA	 		= "Cataclysm"
-L.TabCategory_WOTLK 		= "Wrath of the Lich King"
-L.TabCategory_BC 			= "The Burning Crusade"
-L.TabCategory_CLASSIC		= "Classic"
-L.TabCategory_PVP 			= "PvP"
+L.TabCategory_WoD	 		= EXPANSION_NAME5
+L.TabCategory_MOP	 		= EXPANSION_NAME4
+L.TabCategory_CATA	 		= EXPANSION_NAME3
+L.TabCategory_WOTLK 		= EXPANSION_NAME2
+L.TabCategory_BC 			= EXPANSION_NAME1
+L.TabCategory_CLASSIC		= EXPANSION_NAME0
+L.TabCategory_PVP 			= PVP
 L.TabCategory_OTHER    		= "Sonstige Boss Mods"
 
 L.BossModLoaded 			= "Statistiken von %s"
@@ -49,22 +50,18 @@ L.BossStatistics			= "Boss Statistiken"
 L.Statistic_Kills			= "Siege:"
 L.Statistic_Wipes			= "Niederlagen:"
 L.Statistic_Incompletes		= "Abgebrochen:"
-L.Statistic_BestKill		= "Schnellster:"
+L.Statistic_BestKill		= "Rekordzeit:"
 
 -- Tab: General Core Options
 L.General 					= "Allgemeine Grundeinstellungen"
 L.EnableDBM 				= "Aktiviere DBM"
 L.EnableMiniMapIcon			= "Aktiviere Minimap-Symbol"
-L.SetPlayerRole				= "Automatisch eigene Rolle (Schutz/Heilung/Schaden) setzen (empfohlen)"
 L.UseMasterVolume			= "Benutze Master-Audiokanal um DBM-Sounddateien abzuspielen"
-L.LFDEnhance				= "Spiele \"Bereitschaftscheck\"-Sound für Rollenabfragen und Einladungen der Gruppensuche im Master-Audiokanal"
-L.AutologBosses				= "Automatische Aufzeichnung von Bosskämpfen im spieleigenen Kampflog"
-L.AdvancedAutologBosses		= "Automatische Aufzeichnung von Bosskämpfen mit Addon \"Transcriptor\""
-L.LogOnlyRaidBosses			= "Nur Schlachtzugbosskämpfe aufzeichnen\n(ohne Schlachtzugsbrowser-/Dungeon-/Szenarien-/Weltbosskämpfe)"
 L.Latency_Text				= "Maximale Synchronisierungslatenz: %d"
 -- Tab: General Timer Options
 L.TimerGeneral 				= "Allgemeine Einstellungen für Timer"
-L.SKT_Enabled				= "Zeige immer Timer für schnellsten Sieg (ignoriert Boss-spezifische Einstellung)"
+L.SKT_Enabled				= "Zeige immer Timer für Rekordzeit (ignoriert Boss-spezifische Einstellung)"
+L.CRT_Enabled				= "Zeige Zeit bis zur nächsten Wiederbelebungsaufladung im Kampf (nur bei 6.x-Schwierigkeitgraden)"
 L.ChallengeTimerOptions		= "Timer für den schnellsten Abschluss im Herausforderungsmodus"
 L.ChallengeTimerPersonal	= "Persönliche Bestzeit"
 L.ChallengeTimerGuild		= "Bestzeit der Gilde"
@@ -73,21 +70,13 @@ L.ChallengeTimerRealm		= "Bestzeit des Realms"
 L.ModelOptions				= "Einstellungen für 3D-Modellanzeige"
 L.EnableModels				= "Aktiviere 3D-Modelle in den Bosseinstellungen"
 L.ModelSoundOptions			= "Setze Soundeinstellung für Modellanzeige"
-L.ModelSoundShort			= "Kurz"
-L.ModelSoundLong			= "Lang"
+L.ModelSoundShort			= SHORT
+L.ModelSoundLong			= TOAST_DURATION_LONG
 
 L.Button_RangeFrame			= "Zeige/Verberge Abstandsfenster"
 L.Button_RangeRadar			= "Zeige/Verberge Abstandsradar"
 L.Button_InfoFrame			= "Zeige/Verberge Infofenster"
 L.Button_TestBars			= "Starte Testbalken"
-
-L.PizzaTimer_Headline 		= 'Erstelle einen "Pizza-Timer"'
-L.PizzaTimer_Title			= 'Name (z.B. "Pizza!")'
-L.PizzaTimer_Hours 			= "Stunden"
-L.PizzaTimer_Mins 			= "Min"
-L.PizzaTimer_Secs 			= "Sek"
-L.PizzaTimer_ButtonStart 	= "Starte Timer"
-L.PizzaTimer_BroadCast		= "Anderen Schlachtzugspielern anzeigen"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "Schlachtzugwarnungen"
@@ -106,12 +95,13 @@ L.ShowFakedRaidWarnings 	= "Zeige Warnungen als künstliche Schlachtzugwarnungen
 L.WarningIconLeft 			= "Zeige Symbol links an"
 L.WarningIconRight 			= "Zeige Symbol rechts an"
 L.WarningIconChat 			= "Zeige Symbole im Chatfenster"
-L.ShowCountdownText			= "Zeige Countdown-Text"
+L.ShowCountdownText			= "Zeige Countdown-Text während Zählungen mit der primären Stimme"
 L.RaidWarnMessage 			= "Danke, dass du Deadly Boss Mods verwendest"
 L.BarWhileMove 				= "bewegbare Schlachtzugwarnung"
 L.RaidWarnSound				= "Sound für Schlachtzugwarnung"
 L.CountdownVoice			= "Primäre Stimme für akustische Zählungen"
 L.CountdownVoice2			= "Sekundäre Stimme für akustische Zählungen"
+L.CountdownVoice3			= "Tertiäre Stimme für akustische Zählungen"
 L.SpecialWarnSound			= "Sound für Spezialwarnungen, die dich oder deine Rolle betreffen"
 L.SpecialWarnSound2			= "Sound für Spezialwarnungen, die jeden betreffen"
 L.SpecialWarnSound3			= "Sound für SEHR wichtige Spezialwarnungen"
@@ -127,6 +117,7 @@ L.CombatMessages			= "Kampfmeldungen"
 L.ShowEngageMessage 		= "Zeige Meldungen für den Beginn von Kämpfen im Chatfenster"
 L.ShowKillMessage 			= "Zeige Meldungen für Siege im Chatfenster"
 L.ShowWipeMessage 			= "Zeige Meldungen für Niederlagen im Chatfenster"
+L.ShowGuildMessages 		= "Zeige Meldungen für Kampfbeginn/Siege/Niederlagen deiner Gilde im Chatfenster"
 L.ShowRecoveryMessage 		= "Zeige Meldungen für Neukalibrierung der Timer im Chatfenster"
 L.WhisperMessages			= "Flüstermeldungen"
 L.AutoRespond 				= "Aktiviere automatische Antwort während eines Bosskampfes"
@@ -188,41 +179,75 @@ L.HP_GrowUpwards			= "Erweitere Lebensanzeige nach oben"
 L.HP_ShowDemo				= "Anzeigen"
 L.BarWidth					= "Balkenbreite: %d"
 
+-- Tab: Global Filter
+L.Panel_SpamFilter			= "Filter / Spam-Filter"
+L.Area_SpamFilter_Outgoing	= "globale Filtereinstellungen"
+L.SpamBlockNoShowAnnounce	= "Zeige keine Mitteilungen und spiele keine Warnungssounds"
+L.DontShowFarWarnings		= "Zeige keine Mitteilungen/Timer für weit entfernte Ereignisse"
+L.SpamBlockNoSendWhisper	= "Flüstere keine Bosswarnungen an andere Spieler"
+L.SpamBlockNoSetIcon		= "Setze keine Zeichen auf Ziele"
+L.SpamBlockNoRangeFrame		= "Zeige kein Abstandsfenster/-radar an"
+L.SpamBlockNoInfoFrame		= "Zeige kein Infofenster an"
+L.SpamBlockNoHealthFrame	= "Zeige keine Lebensanzeige an"
+
 -- Tab: Spam Filter
-L.Panel_SpamFilter				= "Filter / Spam-Filter"
-L.Area_SpamFilter				= "Spam-Filter"
-L.StripServerName				= "Entferne den Realmnamen der Spieler in Warnungen und Timern"
-L.SpamBlockBossWhispers			= "Aktiviere Filter für &lt;DBM&gt;-Flüstermitteilungen im Kampf"
-L.BlockVersionUpdateNotice		= "Zeige Update-Meldung im Chatfenster statt als Popup (nicht empfohlen)"
-L.ShowBigBrotherOnCombatStart	= "Führe bei Kampfbeginn eine \"BigBrother\"-Buffprüfung durch"
-L.BigBrotherAnnounceToRaid		= "Verkünde Ergebnis der \"BigBrother\"-Buffprüfung zum Schlachtzug"
+L.Area_SpamFilter			= "Spam-Filter"
+L.StripServerName			= "Entferne den Realmnamen der Spieler in Warnungen und Timern"
+L.SpamBlockBossWhispers		= "Aktiviere Filter für &lt;DBM&gt;-Flüstermitteilungen im Kampf"
+L.BlockVersionUpdateNotice	= "Zeige Update-Meldung im Chatfenster statt als Popup (nicht empfohlen)"
+L.ShowBBOnCombatStart		= "Führe bei Kampfbeginn eine \"BigBrother\"-Buffprüfung durch"
+L.BigBrotherAnnounceToRaid	= "Verkünde Ergebnis der \"BigBrother\"-Buffprüfung zum Schlachtzug"
 
-L.Area_SpamFilter_Outgoing		= "globale Filtereinstellungen"
-L.SpamBlockNoShowAnnounce		= "Zeige keine Mitteilungen und spiele keine Warnungssounds"
-L.SpamBlockNoSendWhisper		= "Sende keine Flüstermitteilungen an andere Spieler"
-L.SpamBlockNoSetIcon			= "Setze keine Zeichen auf Ziele"
-L.SpamBlockNoRangeFrame			= "Zeige kein Abstandsfenster/-radar an"
-L.SpamBlockNoInfoFrame			= "Zeige kein Infofenster an"
-L.SpamBlockNoHealthFrame		= "Zeige keine Lebensanzeige an"
-
-L.Area_PullTimer				= "Filtereinstellungen für Pull-Timer"
-L.DontShowPTNoID				= "Blockiere Pull-Timer, die nicht aus deiner derzeitigen Zone gesendet worden sind"
-L.DontShowPT					= "Zeige keinen Timerbalken für Pull-Timer"
-L.DontShowPTText				= "Zeige keine Mitteilungen für Pull-Timer im Chatfenster"
-L.DontPlayPTCountdown			= "Spiele keinen akustischen Countdown für Pull/Kampfbeginn-Timer"
-L.DontShowPTCountdownText		= "Zeige keinen optischen Countdown für Pull/Kampfbeginn-Timer"
-L.PT_Threshold					= "Zeige keinen optischen Countdown für Pull/Kampfbeginn-Timer über: %d"
+L.Area_SpecFilter			= "Filtereinstellungen für Spezialisierungen"
+L.FilterTankSpec			= "Unterdrücke Warnungen für Tanks, falls deine aktuelle Spezialisierung keine \"Schutz\"-Spezialisierung ist"
 
 
-L.Panel_HideBlizzard			= "Verberge Spielelemente"
-L.Area_HideBlizzard				= "Einstellungen zum Verbergen von Spielelementen"
-L.HideBossEmoteFrame			= "Verberge das Fenster \"RaidBossEmoteFrame\" während Bosskämpfen"
-L.HideWatchFrame				= "Verberge das Fenster für die Questverfolgung während Bosskämpfen"
-L.HideTooltips					= "Verberge Tooltips während Bosskämpfen"
-L.SpamBlockSayYell				= "Sprechblasen-Ansagen im Chatfenster ausblenden"
-L.DisableCinematics				= "Verberge Videosequenzen"
-L.AfterFirst					= "Nach jeweils einmaligem Abspielen"
-L.Always						= "Immer"
+
+
+--L.FilterHealerSpec		= "Unterdrücke Warnungen für Heiler, falls deine aktuelle Spezialisierung keine \"Heilung\"-Spezialisierung ist"--Not in use
+--L.FilterDamagerSpec		= "Unterdrücke Warnungen für DDs, falls deine aktuelle Spezialisierung keine \"Schaden\"-Spezialisierung ist"--Not in use
+
+L.Area_PullTimer			= "Filtereinstellungen für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
+L.DontShowPTNoID			= "Blockiere Pull-Timer, die nicht aus deiner derzeitigen Zone gesendet worden sind"
+L.DontShowPT				= "Zeige keinen Timerbalken für Pull-/Pausen-Timer"
+L.DontShowPTText			= "Zeige keine Mitteilungen für Pull-/Pausen-Timer im Chatfenster"
+L.DontPlayPTCountdown		= "Spiele keinen akustischen Countdown für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
+L.DontShowPTCountdownText	= "Zeige keinen optischen Countdown für Pull-, Pausen-, Kampf- und benutzerdefinierte Timer"
+L.PT_Threshold				= "Zeige keinen opt. Countd. f. Pull-/Pausen-/Kampf-/Nutzer-Timer über: %d"
+
+L.Panel_HideBlizzard		= "Verberge Spielelemente"
+L.Area_HideBlizzard			= "Einstellungen zum Verbergen von Spielelementen"
+L.HideBossEmoteFrame		= "Verberge das Fenster \"RaidBossEmoteFrame\" während Bosskämpfen"
+L.HideWatchFrame			= "Verberge das Fenster für die Questverfolgung während Bosskämpfen"
+L.HideTooltips				= "Verberge Tooltips während Bosskämpfen"
+L.SpamBlockSayYell			= "Sprechblasen-Ansagen im Chatfenster ausblenden"
+L.DisableCinematics			= "Verberge Videosequenzen"
+L.AfterFirst				= "Nach jeweils einmaligem Abspielen"
+L.Always					= ALWAYS
+
+L.Panel_ExtraFeatures		= "Sonstige Funktionen"
+L.Area_ChatAlerts			= "Alarmmeldungen im Chatfenster"
+L.RoleSpecAlert				= "Zeige Alarmmeldung, wenn deine Beutespezialisierung nicht deiner aktuellen Spezialisierung beim Betreten eines Schlachtzugs entspricht"
+L.WorldBossAlert			= "Zeige Alarmmeldung, wenn auf deinem Realm Gildenmitglieder oder Freunde möglicherweise beginnen gegen Weltbosse zu kämpfen (ungenau falls Sender \"CRZed\" ist)"
+L.Area_SoundAlerts			= "Akustische Alarme"
+L.LFDEnhance				= "Spiele \"Bereitschaftscheck\"-Sound für Rollenabfragen und Einladungen der Gruppensuche im Master-Audiokanal (funktioniert z.B. auch wenn Soundeffekte abgeschaltet sind und ist allgemein lauter)"
+L.WorldBossNearAlert		= "Spiele \"Bereitschaftscheck\"-Sound, wenn Weltbosse in deiner Nähe gepullt werden, die du brauchst (Boss-spezifische Einstellung)"
+L.AFKHealthWarning			= "Spiele Alarmsound, wenn du Gesundheit verlierst, während du als nicht an der Tastatur (\"AFK\") markiert bist"
+L.Area_AutoLogging			= "Automatische Aufzeichnungen"
+L.AutologBosses				= "Automatische Aufzeichnung von Bosskämpfen im spieleigenen Kampflog (/dbm pull vor Bossen wird benötigt um die Aufzeichnung rechtzeitig für \"Pre-Pots\" und andere Ereignisse zu starten)"
+L.AdvancedAutologBosses		= "Automatische Aufzeichnung von Bosskämpfen mit Addon \"Transcriptor\""
+L.LogOnlyRaidBosses			= "Nur Schlachtzugbosskämpfe aufzeichnen\n(ohne Schlachtzugsbrowser-/Dungeon-/Szenarienbosskämpfe)"
+L.Area_Invite				= "Einstellungen für Einladungen"
+L.AutoAcceptFriendInvite	= "Automatisch Gruppeneinladungen von Freunden akzeptieren"
+L.AutoAcceptGuildInvite		= "Automatisch Gruppeneinladungen von Gildenmitgliedern akzeptieren"
+
+L.PizzaTimer_Headline 		= 'Erstelle einen "Pizza-Timer"'
+L.PizzaTimer_Title			= 'Name (z.B. "Pizza!")'
+L.PizzaTimer_Hours 			= "Stunden"
+L.PizzaTimer_Mins 			= "Min"
+L.PizzaTimer_Secs 			= "Sek"
+L.PizzaTimer_ButtonStart 	= "Starte Timer"
+L.PizzaTimer_BroadCast		= "Anderen Schlachtzugspielern anzeigen"
 
 -- Misc
 L.FontHeight	= 16

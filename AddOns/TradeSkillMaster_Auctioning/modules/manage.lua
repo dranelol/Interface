@@ -85,9 +85,11 @@ end
 
 function Manage:ScanComplete(interrupted)
 	if interrupted then
+		TSM.Scan:KillEventThread()
 		Util:Stop(true)
 	else
 		local numToManage = Util:DoneScanning()
+		TSMAPI:FireEvent("AUCTIONING:SCANDONE", {num=numToManage})
 		if numToManage == 0 then
 			Util:Stop()
 		elseif TSM.db.global.scanCompleteSound ~= 1 then

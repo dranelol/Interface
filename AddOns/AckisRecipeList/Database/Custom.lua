@@ -2,10 +2,10 @@
 ************************************************************************
 Custom.lua
 ************************************************************************
-File date: 2013-11-03T22:33:53Z
-File hash: a88f694
-Project hash: e8a8419
-Project version: 2.5.13
+File date: 2014-02-14T05:23:40Z
+File hash: 04922c6
+Project hash: 5b35dab
+Project version: 3.0.5
 ************************************************************************
 Please see http://www.wowace.com/addons/arl/ for more information.
 ************************************************************************
@@ -24,17 +24,17 @@ local _G = getfenv(0)
 local FOLDER_NAME, private	= ...
 
 local LibStub = _G.LibStub
-
 local addon		= LibStub("AceAddon-3.0"):GetAddon(private.addon_name)
 local L			= LibStub("AceLocale-3.0"):GetLocale(private.addon_name)
 
+-----------------------------------------------------------------------
+-- Imports.
+-----------------------------------------------------------------------
 local Z			= private.ZONE_NAMES
-
-private.custom_list	= {}
 
 function addon:InitCustom()
 	local function AddCustom(identifier, zone_name, coord_x, coord_y, faction)
-		private:AddListEntry(private.custom_list, identifier, L[identifier], zone_name, coord_x, coord_y, nil)
+		private.AcquireTypes.Custom:AddEntity(identifier, L[identifier], zone_name, coord_x, coord_y, faction)
 	end
 	AddCustom("DAILY_COOKING_MEAT", Z.SHATTRATH_CITY)
 	AddCustom("DAILY_COOKING_FISH", Z.SHATTRATH_CITY)
@@ -55,7 +55,6 @@ function addon:InitCustom()
 	AddCustom("KUNG")
 	AddCustom("DAILY_COOKING_DAL", Z.DALARAN)
 	AddCustom("ARCH_DROP_ULD", Z.ULDUM)
-	AddCustom("REMOVED_FROM_GAME")
 	AddCustom("PREREQ")
 	AddCustom("BANANA_INFUSED_RUM", Z.KRASARANG_WILDS, 52.3, 88.7)
 	AddCustom("FOUR_SENSES_BREW", Z.KUN_LAI_SUMMIT, 44.7, 52.3)

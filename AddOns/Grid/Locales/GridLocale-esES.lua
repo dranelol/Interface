@@ -25,7 +25,10 @@ Grid.L = L
 L["Debug"] = "Depurar"
 L["Debugging"] = "Depuración"
 L["Module debugging menu."] = "Depuración por los módulos"
+L["Open Grid's options in their own window, instead of the Interface Options window, when typing /grid or right-clicking on the minimap icon, DataBroker icon, or layout tab."] = "Mostrar las opciones de Grid en su propia ventana, en lugar de la ventana estándar de Opciones de interfaz, cuando se introduce el comando /grid o se hace clic en el icono de minimapa, el icono de DataBroker o la pestaña de los marcos de Grid."
 L["Show minimap icon"] = "Mostrar icono del minimapa"
+L["Show the Grid icon on the minimap. Note that some DataBroker display addons may hide the icon regardless of this setting."] = "Muestra el icono de Grid en la minimapa. Nota que es posible que algunos addons DataBroker se oculta el icono independientemente de este ajuste."
+L["Standalone options"] = "Opciones independientes"
 L["Toggle debugging for %s."] = "Activar mensajes de depuración por %s"
 
 ------------------------------------------------------------------------
@@ -127,6 +130,8 @@ L["Adjust border color and alpha."] = "Ajustar el color y la opacidad del borde.
 L["Adjust frame padding."] = "Ajustar la separación entre los marcos y la ventana que los contiene."
 L["Adjust frame spacing."] = "Ajustar la separación de un marco de otro."
 L["Adjust Grid scale."] = "Ajustar la escala de Grid."
+L["Adjust the extra spacing inside the layout frame, around the unit frames."] = "Ajustar el espaciamento dentro el marco de diseño, cerca de los marcos de unidades."
+L["Adjust the spacing between individual unit frames."] = "Ajustar el especiamento entre los marcos individuales de unidades."
 L["Advanced"] = "Avanzado"
 L["Advanced options."] = "Opciones avanzadas"
 L["Allows mouse click through the Grid Frame."] = "Permiter hacer clic a través de la ventana de Grid."
@@ -136,6 +141,8 @@ L["Background color"] = "Color de fondo"
 L["Battleground Layout"] = "Diseño - Campo de Batalla"
 L["Beast"] = "Bestia"
 L["Border color"] = "Color de borde"
+L["Border Inset"] = "Encarte del borde"
+L["Border Size"] = "Tamaño del borde"
 L["Border Texture"] = "Textura del borde"
 L["Bottom"] = "Abajo"
 L["Bottom Left"] = "Inferior-Izquierda"
@@ -159,12 +166,16 @@ L["Dragonkin"] = "Dragonante"
 L["Drag this tab to move Grid."] = "Arrastrar esta pestaña para mover Grid."
 L["Elemental"] = "Elemental"
 L["Fallback colors"] = "Colores alternativos"
+L["Flexible Raid Layout"] = "Banda flexible"
 L["Frame lock"] = "Bloquear ventana"
+L["Frame Spacing"] = "Espaciamiento entre los marcos"
 L["Group Anchor"] = "Ancla de grupo"
 L["Horizontal groups"] = "Grupos horizontales"
 L["Humanoid"] = "Humanoide"
 L["Layout"] = "Diseño"
 L["Layout Anchor"] = "Ancla de ventana"
+L["Layout Background"] = "Fondo"
+L["Layout Padding"] = "Espaciamiento dentro el diseño"
 L["Left"] = "Izquierda"
 L["Lock Grid to hide this tab."] = "Bloquear Grid para ocultar esta pestaña."
 L["Locks/unlocks the grid for movement."] = "Bloquear/desbloquear el movimiento de Grid."
@@ -181,6 +192,7 @@ L["Scale"] = "Escala"
 L["Select which layout to use when in a 10 player raid."] = "Seleccionar qué diseño quieres usar cuando estás en banda de 10 jugadores."
 L["Select which layout to use when in a 25 player raid."] = "Seleccionar qué diseño quieres usar cuando estás en banda de 25 jugadores."
 L["Select which layout to use when in a battleground."] = "Seleccionar qué diseño quieres usar cuando estás en campo de batalla."
+L["Select which layout to use when in a flexible raid."] = "Seleccionar el diseño para usar en una banda flexible."
 L["Select which layout to use when in an arena."] = "Seleccionar qué diseño quieres usar cuando estás en arena."
 L["Select which layout to use when in a party."] = "Seleccionar qué diseño quieres usar cuando estás en grupo."
 L["Select which layout to use when not in a party."] = "Seleccionar qué diseño quieres usar cuando no estás en grupo."
@@ -407,14 +419,14 @@ L["X"] = "X"
 ------------------------------------------------------------------------
 --	GridStatusResurrect
 
-L["Casting color"] = "Color de casteando" -- Needs review
-L["Pending color"] = "Color de pendiente" -- Needs review
-L["RES"] = "RES" -- Needs review
-L["Resurrection"] = "Resurrección" -- Needs review
-L["Show the status until the resurrection is accepted or expires, instead of only while it is being cast."] = "Muestra el estado hasta que la resurrección es aceptada o haya expirado, en vez de mostrarse solo durante el casteo." -- Needs review
-L["Show until used"] = "Mostrar mientras se castea" -- Needs review
-L["Use this color for resurrections that are currently being cast."] = "Usar este color para las resurrecciones que están siendo casteadas." -- Needs review
-L["Use this color for resurrections that have finished casting and are waiting to be accepted."] = "Usar este color para las resurreciones que se han terminado de castear y están esperando ser aceptadas." -- Needs review
+L["Casting color"] = "Color de casteando"
+L["Pending color"] = "Color de pendiente"
+L["RES"] = "RES"
+L["Resurrection"] = "Resurrección"
+L["Show the status until the resurrection is accepted or expires, instead of only while it is being cast."] = "Muestra el estado hasta que la resurrección es aceptada o haya expirado, en vez de mostrarse solo durante el casteo."
+L["Show until used"] = "Mostrar hasta que se acepta"
+L["Use this color for resurrections that are currently being cast."] = "Usar este color para las resurrecciones que están siendo casteadas."
+L["Use this color for resurrections that have finished casting and are waiting to be accepted."] = "Usar este color para las resurreciones que se han terminado de castear y están esperando ser aceptadas."
 
 ------------------------------------------------------------------------
 --	GridStatusTarget

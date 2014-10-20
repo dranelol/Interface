@@ -20,8 +20,8 @@ psraidoptionstxtp3[1]={{"|tip2 "..psmainmdamagefrom.." |sid143412|id", "|tip2 ".
 {"|tip2 "..psmainmdamagefrom.." |sid145993|id"},
 {"|tip2 "..psmainmdamagefrom.." |sid148143|id"},
 {"|tip2 "..psmainmdamagefrom.." |sid143327|id","|tip2 "..psmainmdamagefrom.." |sid144335|id","|tip2 "..psmainmdamagefrom.." |sid144662|id","|tip2 "..psmainmdamagefrom.." |sid144210|id","|tip2 "..psmainmgot.." |sid143856|id"},
-{"|tip2 "..psmainmdamagefrom.." |sid142232|id","|tip2 "..psmainmdamagefrom.." |sid142950|id"},
-{"|tip2 "..psmainmdamagefrom.." |sid144650|id","|tip2 "..psmainmdamagefrom.." |sid144969|id"}
+{"|tip2 "..psmainmdamagefrom.." |sid142232|id","|tip2 "..psmainmdamagefrom.." |sid142950|id","|tip2 "..psmainmdamagefrom.." |sid143701|id","|tip2 "..psmainmdamagefrom.." |sid143240|id","|tip2 "..psmainmdamagefrom.." |sid142945|id","|tip2 "..psmainmdamagefrom.." |sid142803|id"},
+{"|tip2 "..psmainmdamagefrom.." |sid144650|id","|tip2 "..psmainmdamagefrom.." |sid144969|id","|tip2 "..psmainmdamagefrom.." |sid145033|id","|tip2 "..psmainmdamagefrom.." |sid147235|id (>400K)","|tip2 "..psmainmdamagefrom.." |sid147324|id"}
 }
 
 
@@ -47,8 +47,8 @@ psraidoptionschatdefp3[1]={{1,1,1},
 {1},
 {1},
 {1,1,1,1,1},
-{1,1},
-{1,1}
+{1,1,1,1,1,1},
+{1,1,1,1,1}
 }
 
 
@@ -67,8 +67,8 @@ psraidoptionsondefp2[1]={{1,1,1},
 {1},
 {1},
 {1,1,1,1,1},
-{1,1},
-{1,1}
+{1,1,1,1,1,1},
+{1,1,1,1,1}
 }
 
 

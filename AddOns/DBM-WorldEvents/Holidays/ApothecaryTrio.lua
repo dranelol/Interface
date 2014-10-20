@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("d288", "DBM-WorldEvents", 1)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10805 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 11027 $"):sub(12, -3))
 mod:SetCreatureID(36272, 36296, 36565)
 mod:SetModelID(16176)
 mod:SetZone()
@@ -14,7 +14,7 @@ mod:RegisterEvents(
 )
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START",
+	"SPELL_CAST_START 68821",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED"
 )

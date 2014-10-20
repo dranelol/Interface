@@ -122,14 +122,14 @@ function Data:ProcessData(scanData, groupItems)
 	if groupItems then
 		for itemString in pairs(groupItems) do
 			local itemID = TSMAPI:GetItemID(itemString)
-			if TSM.data[itemID] then
+			if TSM.scanData[itemID] then
 				TSM:DecodeItemData(itemID)
-				TSM.data[itemID].minBuyout = nil
+				TSM.scanData[itemID].minBuyout = nil
 				TSM:EncodeItemData(itemID)
 			end
 		end
 	else
-		for itemID, data in pairs(TSM.data) do
+		for itemID, data in pairs(TSM.scanData) do
 			TSM:DecodeItemData(itemID)
 			data.minBuyout = nil
 			TSM:EncodeItemData(itemID)
@@ -154,10 +154,10 @@ function Data:ProcessData(scanData, groupItems)
 			
 			local itemID, data = unpack(scanDataList[index])
 			TSM:DecodeItemData(itemID)
-			TSM.data[itemID] = TSM.data[itemID] or {scans={}, lastScan = 0}
+			TSM.scanData[itemID] = TSM.scanData[itemID] or {scans={}, lastScan = 0}
 			local marketValue = Data:CalculateMarketValue(data.records)
 			
-			local scanData = TSM.data[itemID].scans
+			local scanData = TSM.scanData[itemID].scans
 			scanData[day] = scanData[day] or {avg=0, count=0}
 			if type(scanData[day]) == "number" then
 				-- this should never happen...
@@ -171,9 +171,9 @@ function Data:ProcessData(scanData, groupItems)
 			scanData[day].avg = floor((scanData[day].avg * scanData[day].count + marketValue) / (scanData[day].count + 1) + 0.5)
 			scanData[day].count = scanData[day].count + 1
 			
-			TSM.data[itemID].lastScan = TSM.db.factionrealm.lastCompleteScan
-			TSM.data[itemID].minBuyout = data.minBuyout > 0 and data.minBuyout or nil
-			Data:UpdateMarketValue(TSM.data[itemID])
+			TSM.scanData[itemID].lastScan = TSM.db.realm.lastCompleteScan
+			TSM.scanData[itemID].minBuyout = data.minBuyout > 0 and data.minBuyout or nil
+			Data:UpdateMarketValue(TSM.scanData[itemID])
 			TSM:EncodeItemData(itemID)
 			
 			index = index + 1

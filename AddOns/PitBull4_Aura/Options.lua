@@ -1,7 +1,5 @@
 -- Options.lua : Options config
 
-if select(6, GetAddOnInfo("PitBull4_" .. (debugstack():match("[o%.][d%.][u%.]les\\(.-)\\") or ""))) ~= "MISSING" then return end
-
 local _G = getfenv(0)
 local PitBull4 = _G.PitBull4
 local PitBull4_Aura= PitBull4:GetModule("Aura")
@@ -45,6 +43,7 @@ PitBull4_Aura:SetDefaults({
 	max_debuffs = 6,
 	zoom_aura = false,
 	click_through = false,
+	suppress_occ = true,
 	cooldown = {
 		my_buffs = true,
 		my_debuffs = true,
@@ -261,7 +260,6 @@ PitBull4_Aura:SetDefaults({
 {
 	-- Global defaults
 	colors = color_defaults,
-	guess_weapon_enchant_icon = true,
 	filters = {
 		-- default filters are indexed by two character codes.
 		-- The first character follows the following format:
@@ -1585,18 +1583,7 @@ end)
 
 
 PitBull4_Aura:SetGlobalOptionsFunction(function(self)
-	return 'guess_weapon_enchant_icon', {
-		type = 'toggle',
-		name = L['Use spell icon'],
-		desc = L['Use the spell icon for the weapon enchant rather than the icon for the weapon.'],
-		get = function(info)
-			return self.db.profile.global.guess_weapon_enchant_icon
-		end,
-		set = function(info, value)
-			self.db.profile.global.guess_weapon_enchant_icon = value
-			self:UpdateWeaponEnchants(true)
-		end,
-	}, 'filter_editor', {
+	return 'filter_editor', {
 		type = 'group',
 		childGroups = 'tab',
 		name = L['Aura filter editor'],
@@ -2339,6 +2326,25 @@ PitBull4_Aura:SetLayoutOptionsFunction(function(self)
 				disabled = is_aura_disabled,
 				order = 5,
 			},
+			suppress_occ = {
+				type = 'toggle',
+				name = L['Suppress cooldown numbers'],
+				desc = L['Try to stop addons from showing cooldown numbers on the spiral timer.'],
+				get = get,
+				set = function(info, value)
+					PitBull4.Options.GetLayoutDB(self).suppress_occ = value
+					
+					for frame in PitBull4:IterateFrames() do
+						if self:GetLayoutDB(frame).enabled then
+							self:Clear(frame)
+							self:Update(frame)
+						end
+					end
+				end,
+				width = 'full',
+				disabled = is_aura_disabled,
+				order = 6,
+			},
 			zoom_aura = {
 				type = 'toggle',
 				name = L['Zoom icon'],
@@ -2346,7 +2352,7 @@ PitBull4_Aura:SetLayoutOptionsFunction(function(self)
 				get = get,
 				set = set,
 				disabled = is_aura_disabled,
-				order = 6,
+				order = 7,
 			},
 			click_through = {
 				type = 'toggle',
@@ -2355,7 +2361,7 @@ PitBull4_Aura:SetLayoutOptionsFunction(function(self)
 				get = get,
 				set = set,
 				disabled = is_aura_disabled,
-				order = 7,
+				order = 8,
 			},
 		},
 	},

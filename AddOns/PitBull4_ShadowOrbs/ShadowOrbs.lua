@@ -1,5 +1,3 @@
-if select(6, GetAddOnInfo("PitBull4_" .. (debugstack():match("[o%.][d%.][u%.]les\\(.-)\\") or ""))) ~= "MISSING" then return end
-
 local PitBull4 = _G.PitBull4
 if not PitBull4 then
 	error("PitBull4_ShadowOrbs requires PitBull4")
@@ -37,6 +35,7 @@ PitBull4_ShadowOrbs:SetDefaults({
 	location = "out_top",
 	position = 1,
 	vertical = false,
+	click_through = false,
 	size = 1.5,
 	active_color = { 0.79, 0.19, 1, 1 },
 	active_color = { 1, 1, 1, 1 },
@@ -65,8 +64,8 @@ local function update_player(self)
 	end
 end
 
-function PitBull4_ShadowOrbs:UNIT_POWER_FREQUENT(event, unit, kind)
-	if unit ~= "player" or kind ~= "SHADOW_ORBS" then
+function PitBull4_ShadowOrbs:UNIT_POWER_FREQUENT(event, unit, power_type)
+	if unit ~= "player" or power_type ~= "SHADOW_ORBS" then
 		return
 	end
 	
@@ -134,6 +133,7 @@ function PitBull4_ShadowOrbs:UpdateFrame(frame)
 			orb_icon:ClearAllPoints()
 			orb_icon:UpdateColors(db.active_color, db.inactive_color)
 			orb_icon:UpdateTexture()
+			orb_icon:EnableMouse(not db.click_through)
 			if not vertical then
 				orb_icon:SetPoint("CENTER", container, "LEFT", BORDER_SIZE + (i - 1) * (SPACING + STANDARD_SIZE) + HALF_STANDARD_SIZE, 0)
 			else
@@ -191,6 +191,23 @@ PitBull4_ShadowOrbs:SetLayoutOptionsFunction(function(self)
 		end,
 		order = 100,
 	},
+	'click_through', {
+		type = 'toggle',
+		name = L["Click-through"],
+		desc = L['Disable capturing clicks on indicators allowing the clicks to fall through to the window underneath the indicator.'],
+		get = function(info)
+			return PitBull4.Options.GetLayoutDB(self).click_through
+		end,
+		set = function(info, value)
+			PitBull4.Options.GetLayoutDB(self).click_through = value
+			
+			for frame in PitBull4:IterateFramesForUnitID("player") do
+				self:Clear(frame)
+				self:Update(frame)
+			end
+		end,
+		order = 101,
+	},
 	'active_color', {
 		type = 'color',
 		hasAlpha = true,
@@ -208,7 +225,7 @@ PitBull4_ShadowOrbs:SetLayoutOptionsFunction(function(self)
 				self:Update(frame)
 			end
 		end,
-		order = 101,
+		order = 102,
 	},
 	'inactive_color', {
 		type = 'color',
@@ -227,7 +244,7 @@ PitBull4_ShadowOrbs:SetLayoutOptionsFunction(function(self)
 				self:Update(frame)
 			end
 		end,
-		order = 102,
+		order = 103,
 	},
 	'background_color', {
 		type = 'color',
@@ -246,6 +263,6 @@ PitBull4_ShadowOrbs:SetLayoutOptionsFunction(function(self)
 				self:Update(frame)
 			end
 		end,
-		order = 103,
+		order = 104,
 	}
 end)

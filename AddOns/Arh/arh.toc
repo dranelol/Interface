@@ -2,9 +2,9 @@
 ## Title: Archaeo Helper |cffff7d0aby Biasha
 ## Author: Biasha and oscarucb
 ## Notes: Helps you to find archaeology fragments easy
-## Version: 1.2.5
-## X-Build: 62
-## X-ReleaseDate: 2013-12-11T17:02:36Z
+## Version: 1.3.0
+## X-Build: 65
+## X-ReleaseDate: 2014-02-12T12:00:15Z
 ## X-Revision: $Revision: 60 $
 ## DefaultState: Enabled
 ## OptionalDeps: GatherMate2, LibMapData-1.0, LibDataBroker-1.1, LibDBIcon-1.0
@@ -13,7 +13,7 @@
 ## SavedVariables: Arh_Config
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Always: delayed
-## X-Curse-Packaged-Version: 1.2.5
+## X-Curse-Packaged-Version: 1.3.0
 ## X-Curse-Project-Name: Archaeology Helper
 ## X-Curse-Project-ID: arh
 ## X-Curse-Repository-ID: wow/arh/mainline

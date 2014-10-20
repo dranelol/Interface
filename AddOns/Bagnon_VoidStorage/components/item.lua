@@ -21,12 +21,6 @@ function ItemSlot:Create()
 	return item
 end
 
-function ItemSlot:SetFrame(parent, bag, slot)
-	self:SetParent(parent)
-	self:SetID(slot)
-	self.bag = bag
-end
-
 function ItemSlot:ConstructNewItemSlot(id)
 	return CreateFrame('Button', 'BagnonVaultItemSlot' .. id, nil, 'ContainerFrameItemButtonTemplate')
 end
@@ -54,7 +48,7 @@ function ItemSlot:OnClick (button)
 			cursor:GetScript('OnClick')(cursor, 'RightButton')
 		
 		elseif isRight and self:IsLocked() and self.withdrawSlot then
-			ClickVoidTransferWithdrawalSlot(self.withdrawSlot, true)
+			ClickVoidTransferWithdrawalSlot(1, self.withdrawSlot, true)
 
 		else
 			for i = 1,9 do
@@ -64,7 +58,7 @@ function ItemSlot:OnClick (button)
 				end
 			end
 			
-			ClickVoidStorageSlot(self:GetID(), isRight)
+			ClickVoidStorageSlot(1, self:GetID(), isRight)
 		end
 	end
 end
@@ -127,7 +121,7 @@ function ItemSlot:RetrieveInfo()
 	if self.bag == 'vault' then
 		return Bagnon.ItemSlot.GetInfo(self)
 	else
-		local get = self.bag and GetVoidTransferDepositInfo or GetVoidTransferWithdrawalInfo
+		local get = self.bag == DEPOSIT and GetVoidTransferDepositInfo or GetVoidTransferWithdrawalInfo
 		local count = self:GetID()
 		
 		for i = 1,9 do
@@ -139,8 +133,4 @@ function ItemSlot:RetrieveInfo()
 			end
 		end
 	end
-end
-
-function ItemSlot:GetBag()
-	return 'vault'
 end

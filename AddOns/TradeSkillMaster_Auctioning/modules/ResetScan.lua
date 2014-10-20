@@ -91,7 +91,7 @@ function Reset:CreateSummaryST(parent)
 	local handlers = {
 		OnEnter = function(_, data, self)
 			if not data.operation then return end
-			local prices = TSM.Util:GetItemPrices(operation, data.itemString, true)
+			local prices = TSM.Util:GetItemPrices(operation, data.itemString, {resetMaxCost=true, resetMinProfit=true})
 			GameTooltip:SetOwner(self, "ANCHOR_NONE")
 			GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPLEFT")
 			GameTooltip:AddLine(data.itemLink)				
@@ -253,7 +253,7 @@ end
 
 function Reset:GetTotalQuantity(itemString)
 	local playerTotal, altTotal = TSMAPI:ModuleAPI("ItemTracker", "playertotal", itemString)
-	if playerTotal and guildTotal then
+	if playerTotal and altTotal then
 		local guildTotal = TSMAPI:ModuleAPI("ItemTracker", "guildtotal", itemString) or 0
 		local auctionTotal = TSMAPI:ModuleAPI("ItemTracker", "auctionstotal", itemString) or 0
 		return playerTotal + altTotal + guildTotal + auctionTotal
@@ -266,7 +266,7 @@ end
 
 function Reset:ValidateOperation(itemString, operation)
 	local itemLink = select(2, TSMAPI:GetSafeItemInfo(itemString)) or itemString
-	local prices = TSM.Util:GetItemPrices(operation, itemString, true)
+	local prices = TSM.Util:GetItemPrices(operation, itemString, {minPrice=true, maxPrice=true, normalPrice=true, resetMaxCost=true, resetMinProfit=true, resetResolution=true, resetMaxItemCost=true, undercut=true})
 
 	-- don't reset this item if their settings are invalid
 	if not prices.minPrice then
@@ -358,7 +358,7 @@ end
 function Reset:ProcessItemOperation(itemString, operation)
 	local scanData = TSM.Scan.auctionData[itemString]
 	if not scanData then return end
-	local prices = TSM.Util:GetItemPrices(operation, itemString, true)
+	local prices = TSM.Util:GetItemPrices(operation, itemString, {minPrice=true, maxPrice=true, normalPrice=true, resetMaxCost=true, resetMinProfit=true, resetResolution=true, resetMaxItemCost=true, undercut=true})
 	local priceLevels = {}
 	local addNormal, isFirstItem = true, true
 	local currentPriceLevel = -math.huge
@@ -417,9 +417,7 @@ end
 function Reset:ShouldShow(data)
 	local result = {validCost=true, validQuantity=true, validProfit=true, isValid=true}
 	
-	if data.cost > data.prices.resetMaxCost then
-		result.validCost = false
-	elseif data.maxItemCost > data.prices.resetMaxItemCost then
+	if data.cost > data.prices.resetMaxCost or data.maxItemCost > data.prices.resetMaxItemCost then
 		result.validCost = false
 	end
 	
@@ -523,7 +521,7 @@ end
 
 function Reset:GetAuctionSTRow(record, index)
 	local function GetSellerText(name)
-		if strlower(name) == strlower(UnitName("player")) then
+		if TSMAPI:IsPlayer(name) then
 			return "|cff99ffff" .. name .. "|r"
 		elseif TSM.db.factionrealm.whitelist[strlower(name)] then
 			return name .. " |cffff2222(" .. L["Whitelist"] .. ")|r"
@@ -613,7 +611,7 @@ function Reset:RemoveCurrentAuction()
 		resetButtons.summaryButton:Click()
 		Reset:UpdateSummaryST()
 	else
-		TSMAPI:CreateTimeDelay("resetBuyDelay", 0.2, function() Reset:SelectAuctionRow(auctionST.rowData[1]) end)
+		TSMAPI:CreateTimeDelay("resetBuyDelay", 0.2, function() Reset:SelectAuctionRow(auctionST.rowData[1]) auctionST:SetSelection(1) end)
 	end
 end
 

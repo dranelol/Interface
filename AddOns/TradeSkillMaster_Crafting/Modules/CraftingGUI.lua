@@ -56,7 +56,7 @@ function GUI:OnEnable()
 	GUI:UpdateTradeSkills()
 	GUI.gatheringFrame = GUI:CreateGatheringFrame()
 	if next(TSM.db.factionrealm.gathering.neededMats) then
-		TSMAPI:CreateTimeDelay("gatheringShowThrottle", 0.3, GUI:ShowGatheringFrame())
+		TSMAPI:CreateTimeDelay("gatheringShowThrottle", 0.3, GUI.ShowGatheringFrame)
 	end
 end
 
@@ -213,27 +213,46 @@ function GUI:UpdateTradeSkills()
 	local playerName = UnitName("player")
 	if not playerName then return end
 	TSM.db.factionrealm.tradeSkills[playerName] = TSM.db.factionrealm.tradeSkills[playerName] or {}
+	SpellBook_UpdateProfTab()
 
 	local tradeSkill1, tradeSkill2, _, _, cook, firstAid = GetProfessions()
 	local btns = { PrimaryProfession1SpellButtonBottom, PrimaryProfession2SpellButtonBottom, SecondaryProfession3SpellButtonRight, SecondaryProfession4SpellButtonRight }
 	local old = TSM.db.factionrealm.tradeSkills[playerName]
 	TSM.db.factionrealm.tradeSkills[playerName] = {}
 	for i, id in pairs({ tradeSkill1, tradeSkill2, cook, firstAid }) do -- needs to be pairs since may not be continuous indices
-		local skillName, _, level, maxLevel = GetProfessionInfo(id)
-		TSM.db.factionrealm.tradeSkills[playerName][skillName] = old[skillName] or {}
-		TSM.db.factionrealm.tradeSkills[playerName][skillName].level = level
-		TSM.db.factionrealm.tradeSkills[playerName][skillName].maxLevel = maxLevel
-		TSM.db.factionrealm.tradeSkills[playerName][skillName].isSecondary = (i > 2) and true
+		if not btns[i]:GetParent().missingHeader:IsVisible() then
+			local skillName, _, level, maxLevel = GetProfessionInfo(id)
+			TSM.db.factionrealm.tradeSkills[playerName][skillName] = old[skillName] or {}
+			TSM.db.factionrealm.tradeSkills[playerName][skillName].level = level
+			TSM.db.factionrealm.tradeSkills[playerName][skillName].maxLevel = maxLevel
+			TSM.db.factionrealm.tradeSkills[playerName][skillName].isSecondary = (i > 2) and true
 
-		local spellBookSlot = btns[i]:GetID() + btns[i]:GetParent().spellOffset
-		local _, link = GetSpellLink(spellBookSlot, BOOKTYPE_PROFESSION)
-		if link then
-			TSM.db.factionrealm.tradeSkills[playerName][skillName].link = link
-			if skillName == GetTradeSkillLine() and i <= 2 and not TSM.isSyncing then
-				TSM.db.factionrealm.tradeSkills[playerName][skillName].account = nil
-				TSM.db.factionrealm.tradeSkills[playerName][skillName].accountKey = TSMAPI.Sync:GetAccountKey()
-				TSM.Sync:BroadcastTradeSkillData()
+			local spellBookSlot = btns[i]:GetID() + btns[i]:GetParent().spellOffset
+			local _, link = GetSpellLink(spellBookSlot, BOOKTYPE_PROFESSION)
+			if link then
+				TSM.db.factionrealm.tradeSkills[playerName][skillName].link = link
+				if skillName == GetTradeSkillLine() and i <= 2 and not TSM.isSyncing then
+					TSM.db.factionrealm.tradeSkills[playerName][skillName].account = nil
+					TSM.db.factionrealm.tradeSkills[playerName][skillName].accountKey = TSMAPI.Sync:GetAccountKey()
+					TSM.Sync:BroadcastTradeSkillData()
+				end
 			end
+		end
+	end
+
+	--tidy up crafts if player unlearned a profession
+	for spellid, data in pairs(TSM.db.factionrealm.crafts) do
+		for player in pairs(data.players) do
+			if not TSM.db.factionrealm.tradeSkills[player] or not TSM.db.factionrealm.tradeSkills[player][data.profession] then
+				TSM.db.factionrealm.crafts[spellid].players[player] = nil
+			end
+		end
+	end
+
+	--remove craft if no players
+	for spellid, data in pairs(TSM.db.factionrealm.crafts) do
+		if not next(data.players) then
+			TSM.db.factionrealm.crafts[spellid] = nil
 		end
 	end
 end
@@ -303,12 +322,7 @@ function GUI:ClearFilters()
 	TradeSkillFrame_Update()
 	TradeSkillSetFilter(-1, -1)
 	SetTradeSkillItemNameFilter("")
-	for i = 1, GetNumTradeSkills() do
-		local _, t, _, e = GetTradeSkillInfo(i)
-		if not e and (t == "header" or t == "subheader") then
-			ExpandTradeSkillSubClass(i)
-		end
-	end
+	ExpandTradeSkillSubClass(0)
 	GUI.frame.content.professionsTab.searchBar:SetTextColor(1, 1, 1, 0.5)
 	GUI.frame.content.professionsTab.searchBar:SetText(SEARCH)
 	GUI.frame.content.professionsTab.searchBar:ClearFocus()
@@ -419,7 +433,6 @@ end
 
 function GUI:CreateQueueFrame(parent)
 	local frame = CreateFrame("Frame", nil, parent)
-	frame:SetFrameStrata("HIGH")
 	frame:SetPoint("TOPLEFT", parent, "TOPRIGHT", 2, 0)
 	frame:SetPoint("BOTTOMLEFT", parent, "BOTTOMRIGHT", 2, 0)
 	frame:SetWidth(300)
@@ -460,7 +473,7 @@ function GUI:CreateQueueFrame(parent)
 		end
 		for itemID, matQuantity in pairs(TSM.db.factionrealm.crafts[data.spellID].mats) do
 			local name = TSMAPI:GetSafeItemInfo(itemID) or (TSM.db.factionrealm.mats[itemID] and TSM.db.factionrealm.mats[itemID].name) or "?"
-			local inventory = TSM.Inventory:GetPlayerBagNum(itemID)
+			local inventory = TSM.Inventory:GetPlayerBagNum(itemID) + TSM.Inventory:GetPlayerReagentBankNum(itemID)
 			local need = matQuantity * data.numQueued
 			local color
 			if inventory >= need then color = "|cff00ff00" else color = "|cffff0000" end
@@ -535,8 +548,15 @@ function GUI:CreateQueueFrame(parent)
 	local function MatOnLeave(_, data)
 		GameTooltip:Hide()
 	end
+	
+	local function MatOnClick(_, data)
+		if IsModifiedClick() then
+			local link = select(2, TSMAPI:GetSafeItemInfo(data.itemString))
+			HandleModifiedItemClick(link or data.itemString)
+		end
+	end
 
-	frame.matST = TSMAPI:CreateScrollingTable(stContainer2, stCols, { OnEnter = MatOnEnter, OnLeave = MatOnLeave }, 12)
+	frame.matST = TSMAPI:CreateScrollingTable(stContainer2, stCols, { OnEnter = MatOnEnter, OnLeave = MatOnLeave, OnClick = MatOnClick }, 12)
 	frame.matST:SetData({})
 	frame.matST:DisableSelection(true)
 
@@ -658,10 +678,6 @@ function GUI:CreateNavFrame(frame)
 	btn:SetWidth(60)
 	btn:SetText(L["Gather"])
 	btn:SetScript("OnClick", function(self)
-		if select(4, GetAddOnInfo("TradeSkillMaster_ItemTracker")) ~= 1 then
-			TSM:Print(L["The 'Gather' feature of TSM_Crafting requires TSM_ItemTracker to be installed/enabled in order to know where items are located. Please install/enable TSM_ItemTracker."])
-			return
-		end
 		local queuedCrafts = TSM.Queue:GetQueue()
 		if not next(queuedCrafts) then return end
 		if GUI.frame.queue:IsVisible() then
@@ -728,7 +744,7 @@ function GUI:CreateProfessionsTab(parent)
 		local list = {}
 		for playerName, professionData in pairs(TSM.db.factionrealm.tradeSkills) do
 			for name, data in pairs(professionData) do
-				if not data.isSecondary or playerName == player then
+				if playerName == player then -- only display current player profs until blizz fix it
 					list[playerName .. "~" .. name] = format("%s %d/%d - %s", name, data.level or "?", data.maxLevel or "?", playerName)
 				end
 			end
@@ -751,7 +767,11 @@ function GUI:CreateProfessionsTab(parent)
 	local function OnValueChanged(_, _, index)
 		local playerName, profession = ("~"):split(index)
 		if playerName == player then
-			CastSpellByName(profession)
+			if profession == "Mining" then
+				CastSpellByName("Smelting")
+			else
+				CastSpellByName(profession)
+			end
 		else
 			local link = TSM.db.factionrealm.tradeSkills[playerName][profession].link
 			if not link then
@@ -1095,6 +1115,7 @@ function GUI:CreateCraftInfoFrame(parent)
 	inputBox:SetPoint("TOPLEFT", lessBtn, "TOPRIGHT", -2, -4)
 	inputBox:SetPoint("BOTTOMLEFT", lessBtn, "BOTTOMRIGHT", -2, 4)
 	inputBox:SetWidth(40)
+	inputBox:SetScript("OnEditFocusGained", function(self) self:HighlightText() end)
 	buttonsFrame.inputBox = inputBox
 
 	local moreBtn = CreateFrame("Button", nil, buttonsFrame)
@@ -1406,7 +1427,7 @@ function GUI:UpdateProfessionsTabST()
 end
 
 function GUI:UpdateSelectedTradeSkill(forceUpdate)
-	if not GUI.frame or not GUI.frame.content.professionsTab:IsVisible() then return end
+	if not GUI.frame or not GUI.frame.content or not GUI.frame.content.professionsTab:IsVisible() then return end
 	local frame = GUI.frame.content.professionsTab
 	TradeSkillFrame.selectedSkill = TradeSkillFrame.selectedSkill or 1
 	if forceUpdate or frame.st:GetSelection() - 1 ~= TradeSkillFrame.selectedSkill then
@@ -1433,7 +1454,7 @@ function GUI:UpdateQueue()
 	GUI.frame.queue.profitLabel:SetAmounts(totalCost, totalProfit)
 	local currentProfession = GetTradeSkillLine()
 	local stData = {}
-	local bagTotals = TSM.Inventory:GetTotals(itemID)
+	local bagTotals = TSM.Inventory:GetTotals()
 	for profession, crafts in pairs(queuedCrafts) do
 		local professionColor, playerColor
 		local players = {}
@@ -1588,7 +1609,7 @@ function GUI:UpdateQueue()
 
 		local color, order
 		if need == 0 then
-			if TSM.Inventory:GetPlayerBagNum(itemString) >= quantity then
+			if (TSM.Inventory:GetPlayerBagNum(itemString) + TSM.Inventory:GetPlayerReagentBankNum(itemString)) >= quantity then
 				color = "|cff00ff00"
 				order = 1
 			else
@@ -1620,12 +1641,13 @@ function GUI:UpdateQueue()
 				},
 			},
 			itemString = itemString,
+			name = TSM.db.factionrealm.mats[itemString].name,
 			order = order,
 		}
 		tinsert(stData, row)
 	end
 
-	sort(stData, function(a, b) return a.order < b.order end)
+	sort(stData, function(a, b) return a.name < b.name end)
 
 	GUI.frame.queue.matST:SetData(stData)
 	TSMAPI:CreateTimeDelay("gatheringUpdateThrottle", 0.3, GUI.UpdateGathering)
@@ -1934,7 +1956,18 @@ function GUI:CreateGatheringFrame()
 		end
 	end
 
-	frame.sourcesST = TSMAPI:CreateScrollingTable(stContainer2, stCols2, { OnClick = OnCraftRowClicked }, 12)
+	local function SrcOnEnter(_, data, col)
+		GameTooltip:SetOwner(col, "ANCHOR_RIGHT")
+		GameTooltip:SetPoint("LEFT", col, "RIGHT")
+		GameTooltip:AddLine(data.itemText)
+		GameTooltip:Show()
+	end
+
+	local function SrcOnLeave(_, data)
+		GameTooltip:Hide()
+	end
+
+	frame.sourcesST = TSMAPI:CreateScrollingTable(stContainer2, stCols2, { OnClick = OnCraftRowClicked, OnEnter = SrcOnEnter, OnLeave = SrcOnLeave }, 12)
 	frame.sourcesST:SetData({})
 	frame.sourcesST:DisableSelection(true)
 
@@ -1955,7 +1988,11 @@ function GUI:CreateGatheringFrame()
 		if data.name and data.taskType == L["Search for Mats"] then
 			if TSMAPI:AHTabIsVisible("Shopping") then
 				if data.need > 0 then
-					TSM.Gather:ShoppingSearch(data.itemString, data.need)
+					if button == "RightButton" then
+						TSM.Gather:ShoppingSearch(data.itemString, data.need, true)
+					else
+						TSM.Gather:ShoppingSearch(data.itemString, data.need)
+					end
 				end
 			else
 				TSM:Printf(L["Please switch to the Shopping Tab to perform the gathering search."])
@@ -1987,7 +2024,7 @@ function GUI:CreateGatheringFrame()
 	--checkbox:SetPoint("BOTTOMRIGHT", checkboxFrame, "BOTTOMRIGHT")
 	checkbox2:SetHeight(18)
 	checkbox2:SetValue(TSM.db.factionrealm.gathering.evenStacks)
-	checkbox2:SetLabel(L[" Even Stacks"])
+	checkbox2:SetLabel(L["Even Stacks"])
 	checkbox2:SetCallback("OnValueChanged", function(_, _, value)
 		TSM.db.factionrealm.gathering.evenStacks = value
 	end)
@@ -2076,8 +2113,9 @@ function GUI:UpdateGathering()
 	-- double check if crafter already has all the items needed
 	local shortItems = {}
 	local crafterBags = TSMAPI:ModuleAPI("ItemTracker", "playerbags", crafter) or {}
+	local crafterReagentBank = TSMAPI:ModuleAPI("ItemTracker", "playerreagentbank", crafter) or {}
 	for itemString, quantity in pairs(neededMats) do
-		local need = max(quantity - (crafterBags[itemString] or 0), 0)
+		local need = max(quantity - ((crafterBags[itemString] or 0) + (crafterReagentBank[itemString] or 0)), 0)
 		if need > 0 then
 			shortItems[itemString] = need
 		end
@@ -2203,7 +2241,7 @@ function GUI:UpdateGathering()
 									needQty = quantity
 								end
 							else
-								needQty = neededMats[itemString] - (crafterBags[itemString] or 0)
+								needQty = neededMats[itemString] - (crafterBags[itemString] or 0) - (crafterReagentBank[itemString] or 0)
 							end
 							local name = TSMAPI:GetSafeItemInfo(itemString) or itemString
 							local row
@@ -2214,6 +2252,7 @@ function GUI:UpdateGathering()
 										value = format("    %s", color .. name .. " x" .. min(needQty, quantity))
 									}
 								},
+								itemText = format("    %s", color .. name .. " x" .. min(needQty, quantity))
 							}
 							--							else
 							--								row = {
@@ -2359,4 +2398,9 @@ function GUI:GatheringEventHandler(event)
 		GUI.gatheringFrame.gatherButton:Disable()
 	end
 	TSMAPI:CreateTimeDelay("gatheringUpdateThrottle", 0.3, GUI.UpdateGathering)
+end
+
+function GUI:GetStatus()
+	if not GUI.frame or not GUI.frame:IsVisible() then return end
+	return { page = (GUI.frame.content.professionsTab:IsVisible() and "profession" or "groups"), gather = GUI.frame.gather:IsVisible() and true or false, queue = GUI.frame.queue:IsVisible() and true or false }
 end

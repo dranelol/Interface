@@ -90,6 +90,7 @@ local function Constructor()
 	label:SetJustifyH("LEFT")
 	label:SetJustifyV("TOP")
 	label:SetFont(TSMAPI.Design:GetContentFont("normal"))
+	label:SetNonSpaceWrap(true)
 
 	-- create widget
 	local widget = {

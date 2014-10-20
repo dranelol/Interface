@@ -302,6 +302,7 @@ local function ScanCallback(event, ...)
 		return filter.maxPrice
 	elseif event == "process" then
 		local itemString, auctionItem = ...
+		if auctionItem.query.itemString and not strfind(itemString, auctionItem.query.itemString) then return end
 		if auctionItem.query.maxPrice then
 			auctionItem:FilterRecords(function(record)
 					return (record:GetItemBuyout() or 0) > auctionItem.query.maxPrice
@@ -324,7 +325,8 @@ end
 function Search:StartFilterSearch(filter, callback, isCrafting)
 	TSM.isCrafting = isCrafting
 	TSM.searchCallback = callback
-	if strfind(filter, "item:([0-9]+):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?%-?([0-9]*)$") or strfind(filter, "battlepet:([0-9]+):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*)$") then
+	filter = filter:trim()
+	if strfind(filter, "^item:([0-9]+):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?%-?([0-9]*)$") or strfind(filter, "^battlepet:([0-9]+):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*)$") then
 		filter = TSMAPI:GetSafeItemInfo(filter) or filter
 	end
 	if TSM.isCrafting then
@@ -354,6 +356,7 @@ function Search:StartFilterSearch(filter, callback, isCrafting)
 			isItemList = nil
 		end
 	end
+	TSMAPI:FireEvent("SHOPPING:SEARCH:STARTFILTERSCAN")
 	if isItemList then
 		TSM.Util:StartItemScan(itemList, ScanCallback)
 	else
@@ -427,10 +430,16 @@ end
 
 local function GetSearchFilterOptions(searchTerm)
 	local parts = {("/"):split(searchTerm)}
-	local queryString, class, subClass, minLevel, maxLevel, minILevel, maxILevel, rarity, usableOnly, exactOnly, evenOnly, maxQuantity, maxPrice
+	local queryString, class, subClass, minLevel, maxLevel, minILevel, maxILevel, rarity, usableOnly, exactOnly, evenOnly, maxQuantity, maxPrice, itemString
 	
 	if #parts == 1 then
-		return true, parts[1]
+		if strfind(parts[1], "^item:([0-9]+):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?%-?([0-9]*)$") or strfind(parts[1], "^battlepet:([0-9]+):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*)$") then
+			itemString = parts[1]
+			queryString = TSMAPI:GetSafeItemInfo(itemString) or itemString
+			return true, queryString, 0, 0, 0, 0, 0, 0, 0, 0, nil, nil, 0, nil, itemString
+		else
+			return true, parts[1]
+		end
 	elseif #parts == 0 then
 		return false, L["Invalid Filter"]
 	end
@@ -499,7 +508,8 @@ local function GetSearchFilterOptions(searchTerm)
 		elseif TSMAPI:UnformatTextMoney(str) then
 			maxPrice = TSMAPI:UnformatTextMoney(str)
 		elseif i == 1 then
-			if strfind(str, "item:([0-9]+):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?%-?([0-9]*)$") or strfind(str, "battlepet:([0-9]+):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*)$") then
+			if strfind(str, "^item:([0-9]+):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?%-?([0-9]*)$") or strfind(str, "^battlepet:([0-9]+):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*):?([0-9]*)$") then
+				itemString = str
 				queryString = TSMAPI:GetSafeItemInfo(str)
 			else
 				queryString = str
@@ -521,7 +531,7 @@ local function GetSearchFilterOptions(searchTerm)
 		minILevel = oldMaxILevel
 	end
 	
-	return true, queryString or "", class or 0, subClass or 0, minLevel or 0, maxLevel or 0, minILevel or 0, maxILevel or 0, rarity or 0, usableOnly or 0, exactOnly or nil, evenOnly or nil, maxQuantity or 0, maxPrice
+	return true, queryString or "", class or 0, subClass or 0, minLevel or 0, maxLevel or 0, minILevel or 0, maxILevel or 0, rarity or 0, usableOnly or 0, exactOnly or nil, evenOnly or nil, maxQuantity or 0, maxPrice, itemString
 end
 
 -- gets all the filters for a given search term (possibly semicolon-deliminated list of search terms)
@@ -549,7 +559,7 @@ function Search:GetFilters(searchQuery)
 				end
 			end
 		else
-			local isValid, queryString, class, subClass, minLevel, maxLevel, minILevel, maxILevel, rarity, usableOnly, exactOnly, evenOnly, maxQuantity, maxPrice = GetSearchFilterOptions(searchTerm)
+			local isValid, queryString, class, subClass, minLevel, maxLevel, minILevel, maxILevel, rarity, usableOnly, exactOnly, evenOnly, maxQuantity, maxPrice, itemString = GetSearchFilterOptions(searchTerm)
 			
 			if not isValid then
 				TSM:Print(L["Skipped the following search term because it's invalid."])
@@ -572,10 +582,14 @@ function Search:GetFilters(searchQuery)
 				else
 					filters.currentSearchTerm = searchTerm
 				end
-				tinsert(filters, {name=queryString, usable=usableOnly, minLevel=minLevel, maxLevel=maxLevel, quality=rarity, class=class, subClass=subClass, minILevel=minILevel, maxILevel=maxILevel, exactOnly=exactOnly, evenOnly=evenOnly, maxQuantity=maxQuantity, maxPrice=maxPrice})
+				tinsert(filters, {name=queryString, usable=usableOnly, minLevel=minLevel, maxLevel=maxLevel, quality=rarity, class=class, subClass=subClass, minILevel=minILevel, maxILevel=maxILevel, exactOnly=exactOnly, evenOnly=evenOnly, maxQuantity=maxQuantity, maxPrice=maxPrice, itemString=itemString})
 			end
 		end
 	end
 	
 	return filters
+end
+
+function Search:GetCurrentSearchMode()
+	return private.mode
 end

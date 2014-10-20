@@ -18,7 +18,7 @@ local isScanning, GUI
 
 function Post:ValidateOperation(itemString, operation)
 	local itemLink, salePrice = TSMAPI:Select({2, 11}, TSMAPI:GetSafeItemInfo(itemString))
-	local prices = TSM.Util:GetItemPrices(operation, itemString)
+	local prices = TSM.Util:GetItemPrices(operation, itemString, {minPrice=true, normalPrice=true, maxPrice=true, undercut=true})
 
 	-- don't post this item if their settings are invalid
 	if operation.postCap == 0 then
@@ -129,7 +129,8 @@ function Post:GetScanListAndSetup(GUIRef, options)
 			tinsert(scanList, itemString)
 		end
 	end
-
+	
+	TSMAPI:FireEvent("AUCTIONING:POST:START", {numItems=#scanList, isGroup=true})
 	return scanList
 end
 
@@ -187,24 +188,24 @@ function Post:ShouldPost(itemString, operation, numInBags)
 
 	local activeAuctions = 0
 	local extraStack
-	local buyout, bid, _, isWhitelist, isPlayer, isInvalidSeller = TSM.Scan:GetLowestAuction(itemString, operation)
+	local buyout, bid, _, isWhitelist, isBlacklist, isPlayer, isInvalidSeller = TSM.Scan:GetLowestAuction(itemString, operation)
 
 	if isInvalidSeller then
 		TSM:Printf(L["Seller name of lowest auction for item %s was not returned from server. Skipping this item."], select(2, TSMAPI:GetSafeItemInfo(itemString)))
 		return nil, "invalidSeller", numInBags
 	end
 
-	local prices = TSM.Util:GetItemPrices(operation, itemString)
-	if buyout and buyout <= prices.minPrice then
+	local prices = TSM.Util:GetItemPrices(operation, itemString, {minPrice=true, resetPrice=true})
+	if buyout and buyout <= prices.minPrice and not isBlacklist then
 		-- lowest is below min price
-		if not prices.resetPrice then
-			-- lowest is below the min price and there's no reset price
-			return nil, "belowMinPrice", numInBags
-		else
+		if prices.resetPrice then
 			-- lowest is below the min price, but there is a reset price
 			local priceResetBuyout = prices.resetPrice
 			local priceResetBid = priceResetBuyout * operation.bidPercent
 			activeAuctions = TSM.Scan:GetPlayerAuctionCount(itemString, priceResetBuyout, priceResetBid, perAuction, operation)
+		else
+			-- lowest is below the min price and we're not going to post this item
+			return nil, "belowMinPrice", numInBags
 		end
 	elseif isWhitelist and not isPlayer and not TSM.db.global.matchWhitelist then
 		-- lowest is somebody on the whitelist and we aren't price matching
@@ -242,15 +243,15 @@ function Post:ShouldPost(itemString, operation, numInBags)
 end
 
 function Post:GetPostPrice(itemString, operation)
-	local lowestBuyout, lowestBid, lowestOwner, isWhitelist, isPlayer = TSM.Scan:GetLowestAuction(itemString, operation)
+	local lowestBuyout, lowestBid, lowestOwner, isWhitelist, isBlacklist, isPlayer = TSM.Scan:GetLowestAuction(itemString, operation)
 	local bid, buyout, info
-	local prices = TSM.Util:GetItemPrices(operation, itemString)
+	local prices = TSM.Util:GetItemPrices(operation, itemString, {minPrice=true, maxPrice=true, normalPrice=true, resetPrice=true, undercut=true, aboveMax=true})
 
 	if not lowestOwner then
 		-- No other auctions up, default to normalPrice
 		info = "postingNormal"
 		buyout = prices.normalPrice
-	elseif prices.resetPrice and lowestBuyout <= prices.minPrice then
+	elseif prices.resetPrice and lowestBuyout <= prices.minPrice and not isBlacklist then
 		-- item is below min price and a priceReset is set
 		if operation.priceReset == "minPrice" then
 			info = "postingResetMin"
@@ -284,11 +285,16 @@ function Post:GetPostPrice(itemString, operation)
 			end
 			buyout = prices.aboveMax
 		end
-		-- make sure the buyout and bid aren't below the minPrice
-		buyout = max(buyout, prices.minPrice)
-		-- Check if the bid is too low
-		bid = max(buyout * operation.bidPercent, prices.minPrice)
-		info = info or "postingUndercut"
+		if isBlacklist and buyout < prices.minPrice then
+			-- we don't care if the buyout/bid are below the min price since we're undercutting a blacklisted player
+			info = "undercuttingBlacklist"
+		else
+			-- make sure the buyout and bid aren't below the minPrice
+			buyout = max(buyout, prices.minPrice)
+			-- Check if the bid is too low
+			bid = max(buyout * operation.bidPercent, prices.minPrice)
+			info = info or "postingUndercut"
+		end
 	end
 
 	-- set the bid if it hasn't been set
@@ -423,9 +429,15 @@ function Post:DoAction()
 		-- Fix in case Blizzard_AuctionUI hasn't set this value yet (which could cause an error)
 		AuctionFrameAuctions.duration = 2
 	end
+	
+	if not currentItem.itemString then
+		timeout:Hide()
+		Post:SkipItem()
+		return
+	end
 
 	if type(currentItem.bag) ~= "number" or type(currentItem.slot) ~= "number" then
-		local bag, slot = Post:FindItemSlot(itemString)
+		local bag, slot = Post:FindItemSlot(currentItem.itemString)
 		if not bag or not slot then
 			local link = select(2, TSMAPI:GetSafeItemInfo(currentItem.itemString)) or currentItem.itemString
 			TSM:Printf(L["Auctioning could not find %s in your bags so has skipped posting it. Running the scan again should resolve this issue."], link)
@@ -474,6 +486,7 @@ function Post:Stop()
 	GUI:Stopped()
 	TSMAPI:CancelFrame("postDelayFrame")
 	Post:UnregisterAllEvents()
+	TSMAPI:FireEvent("AUCTIONING:POST:STOPPED")
 
 	wipe(currentItem)
 	totalToPost, totalPosted = 0, 0

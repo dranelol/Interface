@@ -1,5 +1,3 @@
-if select(6, GetAddOnInfo("PitBull4_" .. (debugstack():match("[o%.][d%.][u%.]les\\(.-)\\") or ""))) ~= "MISSING" then return end
-
 local PitBull4 = _G.PitBull4
 if not PitBull4 then
 	error("PitBull4_LuaTexts requires PitBull4")
@@ -233,7 +231,7 @@ end]],
 	},
 	[L["Power"]] = {
 		[L["Absolute"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 local max = MaxPower(unit)
 if max > 0 then
@@ -241,7 +239,7 @@ if max > 0 then
 end]],
 		},
 		[L["Absolute short"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 local max = MaxPower(unit)
 if max > 0 then
@@ -249,12 +247,12 @@ if max > 0 then
 end]],
 		},
 		[L["Difference"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 return "-%d",MaxPower(unit) - Power(unit)]],
 		},
 		[L["Percent"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 local max = MaxPower(unit)
 if max > 0 then
@@ -262,7 +260,7 @@ if max > 0 then
 end]],
 		},
 		[L["Absolute and percent"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 local cur,max = Power(unit),MaxPower(unit)
 if max > 0 then
@@ -270,7 +268,7 @@ if max > 0 then
 end]],
 		},
 		[L["Mini"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 local max = MaxPower(unit)
 if max > 0 then
@@ -278,7 +276,7 @@ if max > 0 then
 end]],
 		},
 		[L["Smart"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 local miss = MaxPower(unit) - Power(unit)
 if miss ~= 0 then
@@ -288,28 +286,28 @@ end]],
 	},
 	[L["Druid mana"]] = {
 		[L["Absolute"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true,['UNIT_DISPLAYPOWER']=true},
 			code = [[
 if UnitPowerType(unit) ~= 0 then
   return "%s/%s",Power(unit,0),MaxPower(unit,0)
 end]],
 		},
 		[L["Absolute short"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true,['UNIT_DISPLAYPOWER']=true},
 			code = [[
 if UnitPowerType(unit) ~= 0 then
   return "%s/%s",Short(Power(unit,0),true),Short(MaxPower(unit,0),true)
 end]],
 		},
 		[L["Difference"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true,['UNIT_DISPLAYPOWER']=true},
 			code = [[
 if UnitPowerType(unit) ~= 0 then
   return -(MaxPower(unit,0) - Power(unit,0))
 end]],
 		},
 		[L["Percent"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true,['UNIT_DISPLAYPOWER']=true},
 			code = [[
 if UnitPowerType(unit) ~= 0 then
   local max = MaxPower(unit,0)
@@ -319,14 +317,14 @@ if UnitPowerType(unit) ~= 0 then
 end]],
 		},
 		[L["Mini"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true,['UNIT_DISPLAYPOWER']=true},
 			code = [[
 if UnitPowerType(unit) ~= 0 then
   return VeryShort(Power(unit,0))
 end]],
 		},
 		[L["Smart"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true,['UNIT_DISPLAYPOWER']=true},
 			code = [[
 if UnitPowerType(unit) ~= 0 then
   local miss = MaxPower(unit,0) - Power(unit,0)
@@ -338,7 +336,7 @@ end]],
 	},
 	[L["Alternate power"]] = {
 		[L["Absolute"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 local max = MaxPower(unit,ALTERNATE_POWER_INDEX)
 if max > 0 then
@@ -347,7 +345,7 @@ end
 return ConfigMode()]],
 		},
 		[L["Absolute short"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 local max = MaxPower(unit,ALTERNATE_POWER_INDEX)
 if max > 0 then
@@ -356,7 +354,7 @@ end
 return ConfigMode()]],
 		},
 		[L["Difference"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 local max = MaxPower(unit, ALTERNATE_POWER_INDEX)
 if max > 0 then
@@ -365,7 +363,7 @@ end
 return ConfigMode()]],
 		},
 		[L["Percent"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 local max = MaxPower(unit,ALTERNATE_POWER_INDEX)
 if max > 0 then
@@ -374,7 +372,7 @@ end
 return ConfigMode()]],
 		},
 		[L["Mini"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 local max = MaxPower(unit,ALTERNATE_POWER_INDEX)
 if max > 0 then
@@ -383,7 +381,7 @@ end
 return ConfigMode()]],
 		},
 		[L["Smart"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 local max = MaxPower(unit, ALTERNATE_POWER_INDEX)
 if max > 0 then
@@ -567,7 +565,7 @@ return ConfigMode()]],
 	},
 	[L["Eclipse"]] = {
 		[L["Absolute"]] = {
-			events = {['UNIT_POWER']=true,['UNIT_MAXPOWER']=true},
+			events = {['UNIT_POWER_FREQUENT']=true,['UNIT_MAXPOWER']=true},
 			code = [[
 return math.abs(Power(unit,SPELL_POWER_ECLIPSE))
 ]],
@@ -697,18 +695,18 @@ local protected_events = {
 -- Provide a way to map changed events so existing LuaTexts configs
 -- continue to work transparently to end users.
 local compat_event_map = {}
-compat_event_map.UNIT_MANA = 'UNIT_POWER'
-compat_event_map.UNIT_MAXMANA = 'UNIT_POWER'
-compat_event_map.UNIT_RAGE = 'UNIT_POWER'
-compat_event_map.UNIT_MAXRAGE = 'UNIT_POWER'
-compat_event_map.UNIT_ENERGY = 'UNIT_POWER'
-compat_event_map.UNIT_MAXENERGY = 'UNIT_POWER'
-compat_event_map.UNIT_FOCUS = 'UNIT_POWER'
-compat_event_map.UNIT_MAXFOCUS = 'UNIT_POWER'
-compat_event_map.UNIT_HAPPINESS = 'UNIT_POWER'
-compat_event_map.UNIT_MAXHAPPINESS = 'UNIT_POWER'
-compat_event_map.UNIT_RUNIC_POWER = 'UNIT_POWER'
-compat_event_map.UNIT_MAXRUNIC_POWER = 'UNIT_POWER'
+compat_event_map.UNIT_MANA = 'UNIT_POWER_FREQUENT'
+compat_event_map.UNIT_MAXMANA = 'UNIT_POWER_FREQUENT'
+compat_event_map.UNIT_RAGE = 'UNIT_POWER_FREQUENT'
+compat_event_map.UNIT_MAXRAGE = 'UNIT_POWER_FREQUENT'
+compat_event_map.UNIT_ENERGY = 'UNIT_POWER_FREQUENT'
+compat_event_map.UNIT_MAXENERGY = 'UNIT_POWER_FREQUENT'
+compat_event_map.UNIT_FOCUS = 'UNIT_POWER_FREQUENT'
+compat_event_map.UNIT_MAXFOCUS = 'UNIT_POWER_FREQUENT'
+compat_event_map.UNIT_HAPPINESS = 'UNIT_POWER_FREQUENT'
+compat_event_map.UNIT_MAXHAPPINESS = 'UNIT_POWER_FREQUENT'
+compat_event_map.UNIT_RUNIC_POWER = 'UNIT_POWER_FREQUENT'
+compat_event_map.UNIT_MAXRUNIC_POWER = 'UNIT_POWER_FREQUENT'
 compat_event_map.PARTY_MEMBERS_CHANGED = 'GROUP_ROSTER_UPDATE'
 compat_event_map.RAID_ROSTER_UPDATE = 'GROUP_ROSTER_UPDATE'
 

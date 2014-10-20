@@ -1,4 +1,4 @@
--- $Id: constants.en.lua 3299 2011-02-16 13:31:21Z lag123 $
+-- $Id: constants.en.lua 4293 2014-05-23 08:55:03Z Dynaletik $
 --[[
 constants.en.lua
 This file defines an AceLocale table for all the various text strings needed
@@ -6,6 +6,9 @@ by AtlasLoot.  In this implementation, if a translation is missing, it will fall
 back to the English translation.
 
 The AL["text"] = true; shortcut can ONLY be used for English (the root translation).
+
+Before adding a new string, check first if it can be acquired from GetItemInfo, GetSpellInfo or GetAchievementCriteriaInfo.
+Also check if it should be added instead to one of the Babble libraries we use.
 ]]
 
 	-- Table holding all loot tables is initialised here as it loads early
@@ -23,24 +26,78 @@ if AL then
 	-- #########
 	-- UI things
 	-- #########
+	-- compare frame
+	AL["Compare Frame"] = true;
+	AL["Show in Compare Frame"] = true;
+	AL["Name"] = true;
+	AL["ItemLvl"] = true;
+	AL["Normal"] = true;
+	AL["%d items"] = true;
+	AL["All"] = true;
+	AL["Stats"] = true;
+	AL["Show \"Base Stats list\""] = true;
+	AL["Show \"Extra Stats list\""] = true;
+	AL["Base Stats list"] = true;
+	AL["Extra Stats list"] = true;	
+	AL["Add Stats list"] = true;
+	AL["Are you sure you want to delete Sort list |cff1eff00%s|r?"] = true;
+	AL["Delete Stats list"] = true;
+	AL["Stats color"] = true;
+	AL["Stats list name:"] = true;
+	AL["Select Stats list"] = true;
+	AL["You cant set more then %d item stats."] = true;
+	AL["Slot"] = true;
+	AL["AtlasLoot has detected some corrupted items on your Wishlist. You can now run an automatic check to fix it. Please be aware that this could take a few moments."] = true;
+	AL["BonusRoll:"] = true;
+	AL["|cffFF0000Shift+Click: |cffFFFFFFOpen filter configuration"] = true;
+
+	-- Stats short
+	AL["iLvl"] = true;	-- Item lvl
+	AL["str"] = true;	-- Strength
+	AL["agi"] = true;	-- Agility
+	AL["sta"] = true;	-- Stamina
+	AL["int"] = true;	-- Intellect
+	AL["spi"] = true;	-- Spirit
+	AL["Crit"] = true;	-- Crit Rating
+	AL["Dodge"] = true;	-- Dodge Rating
+	AL["Exp"] = true;	-- Expertise Rating
+	AL["Hit"] = true;	-- Hit Rating
+	AL["Haste"] = true;	-- Haste Rating
+	AL["Parry"] = true;	-- Parry Rating
+	AL["Spell"] = true;	-- Spell Power
+	AL["Resi"] = true;	-- Resilience Rating
+	AL["Mast"] = true;	-- Mastery
+
+	-- Stats
+	AL["Resilience Rating"] = true;
+	AL["Base Stats"] = true;
+	AL["Extra Stats"] = true;
+
 	-- Loader
 	AL["Load AtlasLoot"] = true;
 	AL["Module \"%s\" is disabled."] = true;
 	AL["Module \"%s\" is missing."] = true;
-	
+
+	-- MiniMap-Button
+	AL["|cffFF0000Click: |cffFFFFFFOpen AtlasLoot\n|cffFF0000Shift+Click: |cffFFFFFFOpen AtlasLoot-Options "] = true;
+
 	-- AtlasLootFu 
 	AL["AtlasLootFu is no longer in use.\nDelete it from your AddOns folder"] = true;
+
+	-- Atlas Incompatible
+	AL["Please note that AtlasLoot v%s is only compatible with Atlas v%s. AtlasLoot detected that you have an older Atlas version installed and thus Atlas integration was disabled."] = true;
 
 	-- Options
 	AL["Options"] = true;
 	AL["Load Loot Modules at Startup"] = true;
-	AL["Minimap Button"] = true;
+	AL["Toggle Minimap Button"] = true;
+	AL["Toggles the display of the minimap icon"] = true;
 	AL["Show itemIDs"] = true;
 	AL["Show Droprates"] = true;
 	AL["Safe Chat Links"] = true;
-	AL["Comparison TT"] = true;
+	AL["Comparison Tooltips"] = true;
+	AL["Show Boss Tooltip"] = true;
 	AL["Show Comparison Tooltips"] = true;
-	AL["Supress item query text"] = true;
 	AL["Opaque"] = true;
 	AL["Make Loot Table Opaque"] = true;
 	AL["Treat Crafted Items:"] = true;
@@ -51,6 +108,10 @@ if AL then
 	AL["Profiles"] = true;
 	AL["Item Buttons"] = true;
 	AL["Loot Table"] = true;
+	AL["Enable mouse on item descriptions"] = true;
+	AL["Upgrade Level:"] = true;
+	AL["Show BonusRoll info"] = true;
+	AL["Shows if a item is available with bonus roll or raid finder loot."] = true;
 
 	-- Default Frame
 	AL["Default Frame"] = true;
@@ -89,8 +150,10 @@ if AL then
 	AL["DKP"] = true;
 	AL["Priority:"] = true;
 	AL["Show price and slot if possible"] = true;
+	AL["Show wishlist items in bosses tooltip"] = true;
 	AL["Use GameTooltip"] = true;
 	AL["Use the standard GameTooltip instead of the custom AtlasLoot tooltip"] = true;
+	AL["%d / %d ( Bank: %d )"] = true;
 	-- Unsafe Item
 	AL["Item Unavailable"] = true;
 	AL["|cff0070ddItemID: %d |r\nThis item is unsafe.  To view this item without the risk of disconnection, you need to have first seen it in the game world.\n\nYou can right-click to attempt to query the server.  You may be disconnected."] = true;
@@ -108,7 +171,7 @@ if AL then
 	AL["Item Slot"] = true;
 	AL["Item Quality"] = true;
 
-	-- Wishlist 
+	-- Wishlist
 	AL["Wishlist"] = true;
 	AL["Wishlists"] = true;
 	AL["Own"] = true;
@@ -133,6 +196,8 @@ if AL then
 	AL["Table Sort"] = true;
 	AL["Table Sort:"] = true;
 	AL["Item Sort:"] = true;
+	AL["Show own wishlists"] = true;
+	AL["Show all wishlists"] = true;
 
 	-- Filter
 	AL["Filter"] = true;
@@ -210,6 +275,7 @@ if AL then
 	AL["Level 70"] = true;
 	AL["Level 80"] = true;
 	AL["Level 85"] = true;
+	AL["Level 90"] = true;
 	AL["|cffff0000(unsafe)"] = true;
 	AL["Misc"] = true;
 	AL["Rewards"] = true;
@@ -279,33 +345,39 @@ if AL then
 	AL["Crafted Epic Weapons"] = true;
 	AL["Dragon's Eye"] = true;
 	AL["Chimera's Eye"] = true;
+	AL["Serpent's Eye"] = true;
 
 	-- Sets/Collections Menu
 	AL["Sets"] = true;
 	AL["Set"] = true;
 	AL["Justice Points"] = true;
 	AL["Valor Points"] = true;
-	AL["Badge of Justice"] = true; --should be removed
-	AL["Emblem Rewards"] = true; --should be removed
-	AL["Emblem of Valor"] = true; --should be removed
-	AL["Emblem of Heroism"] = true; --should be removed
-	AL["Emblem of Conquest"] = true; --should be removed
-	AL["Emblem of Triumph"] = true; --should be removed
-	AL["Emblem of Frost"] = true; --should be removed
 	AL["BoE World Epics"] = true;
 	AL["Legendary Items"] = true;
 	AL["Misc Sets"] = true;
+	AL["Tier Sets"] = true;
 	AL["Tier 1/2 Set"] = true;
 	AL["Tier 1/2/3 Set"] = true;
 	AL["Tier 3 Set"] = true;
 	AL["Tier 4/5/6 Set"] = true;
 	AL["Tier 7/8 Set"] = true;
-	AL["Tier 8 Set"] = true;
 	AL["Tier 9 Set"] = true;
 	AL["Tier 10 Set"] = true;
-	AL["Tier 11 Set"] = true;
+	AL["Tier 11/12 Set"] = true;
+	AL["Tier 13 Set"] = true;
+	AL["Tier 14 Set"] = true;
+	AL["Tier 15 Set"] = true;
+	AL["Tier 16 Set"] = true;
 	AL["TCG Items"] = true; -- Trading Card Game Items
-	AL["Transformation Items"] = true;
+	AL["Rare Mobs"] = true;
+	AL["Grand Marshal"] = true;
+	AL["Gladiator"] = true;
+	AL["Vengeful"] = true;
+	AL["Merciless"] = true;
+	AL["Brutal"] = true;
+	AL["Wrathful"] = true;
+	AL["Cataclysmic"] = true;
+	AL["ilvl %d"] = true; -- usage: string.format(AL["ilvl %d"], 522)
 
 	-- PvP Menu
 	AL["Arathi Basin Sets"] = true;
@@ -314,12 +386,9 @@ if AL then
 	AL["PvP Weapons"] = true;
 	AL["PvP Non-Set Epics"] = true;
 	AL["PvP Reputation Sets"] = true;
-	AL["Arena PvP Weapons"] = true;
 	AL["PvP Misc"] = true;
 	AL["PVP Gems/Enchants/Jewelcrafting Designs"] = true;
-	AL["PvP Class Items"] = true;
 	AL["PvP Trinkets"] = true;
-	AL["NOT AVAILABLE ANYMORE"] = true;
 
 	-- World Events
 	AL["Abyssal Council"] = true;
@@ -328,7 +397,6 @@ if AL then
 	AL["Brewfest"] = true;
 	AL["Children's Week"] = true;
 	AL["Day of the Dead"] = true;
-	AL["Elemental Invasion"] = true;
 	AL["Ethereum Prison"] = true;
 	AL["Feast of Winter Veil"] = true;
 	AL["Gurubashi Arena Booty Run"] = true;
@@ -342,7 +410,17 @@ if AL then
 	AL["Skettis"] = true;
 	AL["Stranglethorn Fishing Extravaganza"] = true;
 	AL["Kalu'ak Fishing Derby"] = true;
-	AL["Elemental Unrest"] = true;
+	AL["Fishing Contests"] = true;
+
+	-- World Events	Menu Names
+	AL["Special Rewards"] = true; 			-- Brewfest, Feast of Winter Veil
+	AL["Brew of the Month Club"] = true; 	-- Brewfest
+	AL["Food and Drinks"] = true; 			-- Brewfest
+	AL["Gifts & Presents"] = true; 			-- Feast of Winter Veil
+	AL["Playable Race Masks"] = true; 		-- Hallow's End
+	AL["Non-Playable Race Masks"] = true; 	-- Hallow's End
+	AL["Schematics & Patterns"] = true; 	-- Lunar Festival
+	AL["Toys"] = true; 						-- Darkmoon Faire
 
 	-- Minimap Button
 	AL["|cff1eff00Left-Click|r Browse Loot Tables"] = true;
@@ -388,9 +466,6 @@ if AL then
 	AL["Banner"] = true;
 	AL["Set"] = true;
 	AL["Token"] = true;
-	AL["Tokens"] = true;
-	AL["Token Hand-Ins"] = true;
-	AL["Skinning Knife"] = true;
 	AL["Combat Pet"] = true;
 	AL["Fireworks"] = true;
 	AL["Transformation Item"] = true;
@@ -409,12 +484,16 @@ if AL then
 	AL["Potions"] = true;
 	AL["Transmutes"] = true;
 	AL["Flasks"] = true;
-	AL["Guild"] = true;
 
 	-- Blacksmithing
-	AL["Cataclysm Vendor Sold Plans"] = true;
 	AL["Armor Enhancements"] = true;
 	AL["Weapon Enhancements"] = true;
+	AL["Cataclysm Vendor Sold Plans"] = true;
+	AL["Mists of Pandaria Vendor Sold Plans"] = true;
+	AL["Training Projects"] = true;
+
+	-- Cooking
+	AL["Banquets/Feasts"] = true;
 
 	-- Enchanting
 	AL["Enchant Boots"] = true;
@@ -423,7 +502,7 @@ if AL then
 	AL["Enchant Cloak"] = true;
 	AL["Enchant Gloves"] = true;
 	AL["Enchant Ring"] = true;
-	AL["Enchant Shield"] = true;
+	AL["Enchant Shield & Off-Hand"] = true;
 	AL["Enchant 2H Weapon"] = true;
 	AL["Enchant Weapon"] = true;
 	AL["Cataclysm Vendor Sold Formulas"] = true;
@@ -431,20 +510,20 @@ if AL then
 	-- Engineering
 	AL["Tinker"] = true;
 
+	-- Fishing
+	AL["Fish Weapons"] = true;
+	AL["Fishing Gear"] = true;
+	AL["Fishing Lines"] = true;
+
 	-- Inscription
-	AL["Glyph"] = true;
-	AL["Prime Glyph"] = true;
 	AL["Major Glyph"] = true;
 	AL["Minor Glyph"] = true;
 	AL["Runescrolls"] = true;
 	AL["Recall"] = true;
 	AL["Scrolls"] = true;
 	AL["Off-Hand Items"] = true;
-	AL["Relics/Shoulder Enchants"] = true;
-	AL["Relics"] = true;
 	AL["Shoulder Enchants"] = true;
 	AL["Reagents"] = true;
-	AL["Book of Glyph Mastery"] = true;
 
 	-- Leatherworking
 	AL["Leather Armor"] = true;
@@ -454,10 +533,10 @@ if AL then
 	AL["Drums, Bags and Misc."] = true;
 
 	-- Tailoring
-	AL["Cloth Armor"] = true;
 	AL["Shirts"] = true;
 	AL["Bags"] = true;
 	AL["Cataclysm Vendor Sold Patterns"] = true;
+	AL["Mists of Pandaria Vendor Sold Patterns"] = true;
 
 	-- Labels for loot descriptions
 	AL["Classes:"] = true;
@@ -467,16 +546,9 @@ if AL then
 	AL["Quest Reward"] = true;
 	AL["Old Quest Reward"] = true;
 	AL["Shared"] = true;
-	AL["Unique"] = true;
 	AL["Right Half"] = true;
 	AL["Left Half"] = true;
-	AL["28 Slot Soul Shard"] = true;--is this still an item?
-	AL["20 Slot"] = true;
-	AL["18 Slot"] = true;
-	AL["16 Slot"] = true;
-	AL["10 Slot"] = true;
 	AL["Currency"] = true;
-	AL["Conjured Item"] = true;
 	AL["Used to summon boss"] = true;
 	AL["Tradable for sunmote + item above"] = true;
 	AL["Card Game Item"] = true;
@@ -485,45 +557,32 @@ if AL then
 	AL["Random Heroic Reward"] = true;
 	AL["Fishing Daily Reward"] = true;
 	AL["Collector's Edition"] = true;
-	AL["Blizzcon"] = true;
-	AL["WoW Anniversary Celebration"] = true;
 	AL["Daily Reward"] = true;
 	AL["No Longer Available"] = true;
+	AL["Shared Boss Loot"] = true;
+	AL["Shared Zone Loot"] = true;
+	AL["Black Market Auction House"] = true;
 
 	-- Minor Labels for loot table descriptions
 	AL["Classic WoW"] = true;
 	AL["Burning Crusade"] = true;
 	AL["Wrath of the Lich King"] = true;
 	AL["Cataclysm"] = true;
+	AL["Mists of Pandaria"] = true;
 	AL["Entrance"] = true;
 	AL["Dungeon Set 1"] = true;
 	AL["Dungeon Set 2"] = true;
 	AL["Dungeon Set 1/2"] = true;
+	AL["Replica"] = true;
 	AL["Dungeon Set 3"] = true;
-	AL["Tier 1"] = true;
-	AL["Tier 2"] = true;
-	AL["Tier 3"] = true;
-	AL["Tier 4"] = true;
-	AL["Tier 5"] = true;
-	AL["Tier 6"] = true;
-	AL["Tier 7"] = true;
-	AL["Tier 8"] = true;
-	AL["Tier 9"] = true;
-	AL["Tier 10"] = true;
-	AL["Tier 11"] = true;
+	AL["Dungeon Set 4"] = true;
+	AL["Tier %d"] = true; -- usage: string.format(AL["Tier %d"], 1)
+	AL["Challenge Mode Armor Sets"] = true;
 	AL["10 Man"] = true;
 	AL["10/25 Man"] = true;
 	AL["Epic Set"] = true;
 	AL["Rare Set"] = true;
-	AL["Season 1"] = true;
-	AL["Season 2"] = true;
-	AL["Season 3"] = true;
-	AL["Season 4"] = true;
-	AL["Season 5"] = true;
-	AL["Season 6"] = true;
-	AL["Season 7"] = true;
-	AL["Season 8"] = true;
-	AL["Season 9"] = true;
+	AL["Season %d"] = true; -- usage: string.format(AL["Season %d"], 6)
 	AL["Fire"] = true;
 	AL["Water"] = true;
 	AL["Wind"] = true;
@@ -534,13 +593,11 @@ if AL then
 	AL["Nature Resistance Gear"] = true;
 	AL["Frost Resistance Gear"] = true;
 	AL["Shadow Resistance Gear"] = true;
-	AL["Classic Sets"] = true;
 
 	-- Labels for loot table sections
 	AL["Additional Heroic Loot"] = true;
 	AL["Heroic Mode"] = true;
 	AL["Normal Mode"] = true;
-	AL["Raid"] = true;
 	AL["Hard Mode"] = true;
 	AL["Bonus Loot"] = true;
 	AL["Arena Reward"] = true;
@@ -551,36 +608,36 @@ if AL then
 	AL["First Prize"] = true;
 	AL["Rare Fish Rewards"] = true;
 	AL["Rare Fish"] = true;
-	AL["Heirloom"] = true;
 	AL["Weapons"] = true;
 	AL["Accessories"] = true;
-	AL["Low Level"] = true;
-	AL["High Level"] = true;
 	AL["Rare"] = true;
 	AL["Specializations"] = true;
+	AL["Flexible"] = true;
+	AL["Raid Finder"] = true;
+	AL["Thunderforged"] = true;
+	AL["Warforged"] = true;
+	AL["Pandaria World Bosses"] = true;
+	AL["Elite"] = true;
+	AL["Vegetables"] = true;
 
 	-- Loot Table Names
-	AL["Level 30-39"] = true;
-	AL["Level 40-49"] = true;
-	AL["Level 50-60"] = true;
+	AL["Level %s"] = true; -- usage: string.format(AL["Level %s"], "85-89")
 	AL["Summon"] = true;
 	AL["Random"] = true;
-	AL["Brew of the Month Club"] = true;
 
 	-- Profession descriptions
 	AL["Buff"] = true;
 	AL["Agility"] = true;
+	AL["Attributes"] = true;
 	AL["Intellect"] = true;
 	AL["Strength"] = true;
 	AL["Spirit"] = true;
 	AL["Stamina"] = true;
-	AL["Agility, Intellect, Strength"] = true;
 	AL["Spell Power"] = true;
 	AL["Attack Power"] = true;
 	AL["Spell/Attack Power"] = true;
 	AL["Hit Rating"] = true;
 	AL["Crit Rating"] = true;
-	AL["Crit/Hit Rating"] = true;
 	AL["Haste Rating"] = true;
 	AL["Dodge Rating"] = true;
 	AL["Expertise Rating"] = true;
@@ -588,8 +645,6 @@ if AL then
 	AL["Parry Rating"] = true;
 	AL["Other Ratings"] = true;
 	AL["Ratings"] = true;
-	AL["Resistance"] = true;
-	AL["Specific Resistance"] = true;
 	AL["Damage Absorption"] = true;
 	AL["Health / Second"] = true;
 	AL["Mana / Second"] = true;
@@ -606,61 +661,53 @@ if AL then
 	AL["Special"] = true;
 	AL["Feasts"] = true;
 	AL["Speed"] = true;
-	AL["Rod"] = true;
-	AL["Oil"] = true;
-	AL["Dwarf"] = true;
+	AL["Oil"] = true; -- Used in categorizing Enchating Misc, ex: Superior Wizard Oil, Wizard Oil
+	AL["Culture"] = true;
+	AL["Description"] = true;
 	AL["Draenei"] = true;
-	AL["Night Elf"] = true;
+	AL["Dwarf"] = true;
 	AL["Fossil"] = true;
+	AL["Mantid"] = true;
+	AL["Mogu"] = true;
 	AL["Nerubian"] = true;
-	AL["Vrykul"] = true;
-	AL["Troll"] = true;
-	AL["Tol'vir"] = true;
+	AL["Night Elf"] = true;
 	AL["Orc"] = true;
+	AL["Pandaren"] = true;
+	AL["Tol'vir"] = true;
+	AL["Troll"] = true;
+	AL["Vrykul"] = true;
 	AL["Stats"] = true;
 	AL["Resilience"] = true;
 	AL["Professions"] = true;
 	AL["Damage"] = true;
+	AL["Proc"] = true;
 
 	-- Extra Text in Boss lists
-	AL["Set: Embrace of the Viper"] = true;
-	AL["Set: Defias Leather"] = true;
-	AL["Set: The Gladiator"] = true;
-	AL["Set: Chain of the Scarlet Crusade"] = true;
-	AL["Set: The Postmaster"] = true;
-	AL["Set: Necropile Raiment"] = true;
-	AL["Set: Cadaverous Garb"] = true;
-	AL["Set: Bloodmail Regalia"] = true;
-	AL["Set: Deathbone Guardian"] = true;
-	AL["Set: Dal'Rend's Arms"] = true;
-	AL["Set: Spider's Kiss"] = true;
 	AL["AQ20 Class Sets"] = true;
 	AL["AQ Enchants"] = true;
 	AL["AQ40 Class Sets"] = true;
 	AL["AQ Opening Quest Chain"] = true;
-	AL["ZG Class Sets"] = true;
-	AL["ZG Enchants"] = true;
-	AL["Class Books"] = true;
 	AL["Tribute Run"] = true;
 	AL["Dire Maul Books"] = true;
 	AL["Random Boss Loot"] = true;
-	AL["BT Patterns/Plans"] = true;
-	AL["Hyjal Summit Designs"] = true;
-	AL["SP Patterns/Plans"] = true;
-	AL["Ulduar Formula/Patterns/Plans"] = true;
-	AL["Trial of the Crusader Patterns/Plans"] = true;
+	AL["Formula/Patterns/Plans"] = true;
 	AL["BRD Blacksmithing Plans"] = true;
+	AL["Patterns/Plans"] = true;
 
 	-- General titles
 	AL["Achievement"] = true;
-	AL["Promotional & Card Game"] = true;
+	AL["Dungeon"] = true;
+	AL["Outdoor"] = true;
+	AL["Promotional"] = true;
+	AL["PvP"] = true;
+	AL["Raid"] = true;
 
 	-- Companions
-	AL["Achievement & Faction Reward Companions"] = true;
-	AL["Achievement & Faction Reward"] = true;
+	AL["Achievement Companions"] = true;
+	AL["Faction Companions"] = true;
 	AL["Card Game Companions"] = true;
 	AL["Companion Accessories"] = true;
-	AL["Companion Store"] = true;
+	AL["Blizzard Store"] = true;
 	AL["Crafted Companions"] = true;
 	AL["Dungeon/Raid"] = true;
 	AL["Faction"] = true;
@@ -670,12 +717,17 @@ if AL then
 	AL["Quest Reward Companions"] = true;
 	AL["Rare Companions"] = true;
 	AL["Unobtainable Companions"] = true;
+	AL["New Companions"] = true;
+	--- Drop Locations
+	AL["Bogflare Needler"] = true;
+	AL["Deviate Ravager/Deviate Guardian"] = true;
+	AL["Gundrak Raptor"] = true;
+	AL["Noxious Whelp"] = true;
 
 	-- Mounts
-	AL["Alliance Flying Mounts"] = true;
 	AL["Alliance Mounts"] = true;
-	AL["Horde Flying Mounts"] = true;
 	AL["Horde Mounts"] = true;
+	AL["Flying Mounts"] = true;
 	AL["Card Game Mounts"] = true;
 	AL["Crafted Mounts"] = true;
 	AL["Event Mounts"] = true;
@@ -687,6 +739,8 @@ if AL then
 	AL["Promotional Mounts"] = true;
 	AL["Rare Mounts"] = true;
 	AL["Unobtainable Mounts"] = true;
+	AL["New Mounts"] = true;
+	AL["Mount Collecting"] = true;
 
 	-- Tabards
 	AL["Achievement & Quest Reward Tabards"] = true;
@@ -697,14 +751,24 @@ if AL then
 	AL["PvP Tabards"] = true;
 	AL["Unobtainable Tabards"] = true;
 
+	-- Transformation Items
+	AL["Transformation Items"] = true;
+	AL["Additional Effects Transformation Items"] = true;
+	AL["Consumable Transformation Items"] = true;
+	AL["Non-consumed Transformation Items"] = true;
+
+	-- Heirloom and BoA Items
+	AL["Heirloom"] = true;
+	AL["PvP Heirlooms"] = true;
+	AL["Bind on Account"] = true;
+	AL["Bind on Account Armor"] = true;
+	AL["Bind on Account Weapons"] = true;
+
 	-- Darkmoon Faire
 	AL["Darkmoon Faire Rewards"] = true;
 	AL["Low Level Decks"] = true;
-	AL["Level 60 Trinkets"] = true;
-	AL["Level 70 Trinkets"] = true;
 	AL["Level 60 & 70 Trinkets"] = true;
-	AL["Level 80 Trinkets"] = true;
-	AL["Level 85 Trinkets"] = true;
+	AL["Trinkets"] = true;
 
 	-- Card Game Decks and descriptions
 	AL["Loot Card Items"] = true;
@@ -788,17 +852,29 @@ if AL then
 	AL["Grim Campfire"] = true;
 	AL["Landro's Lil' XT"] = true;
 
+	-- Fourteenth set
+	AL["War of the Elements"] = true;
+
+	-- Fifteenth set
+	AL["Twilight of the Dragons"] = true;
+
+	-- Seventeenth set
+	AL["Crown of Heaven"] = true;
+
+	-- Eighteenth set
+	AL["Tomb of the Forgotten"] = true;
+
+	-- Nineteenth set
+	AL["War of the Ancients"] = true;
+
+	-- Twentieth set
+	AL["Betrayal of the Guardian"] = true;
+
 	-- Battleground Brackets
 	AL["Old PvP Rewards"] = true;
 	AL["BG/Open PvP Rewards"] = true;
 	AL["Misc. Rewards"] = true;
-	AL["Level 10-19 Rewards"] = true;
-	AL["Level 20-39 Rewards"] = true;
-	AL["Level 20-29 Rewards"] = true;
-	AL["Level 30-39 Rewards"] = true;
-	AL["Level 40-49 Rewards"] = true;
-	AL["Level 50-59 Rewards"] = true;
-	AL["Level 60 Rewards"] = true;
+	AL["Level %s Rewards"] = true; -- usage: string.format(AL["Level %s Rewards"], "60")
 
 	-- Brood of Nozdormu Paths
 	AL["Path of the Conqueror"] = true;
@@ -831,7 +907,6 @@ if AL then
 	AL["Venture Bay"] = true;
 
 	-- Karazhan Opera Event Headings
-	AL["Shared Drops"] = true;
 	AL["Wizard of Oz"] = true;
 	AL["Red Riding Hood"] = true;
 
@@ -839,17 +914,6 @@ if AL then
 	AL["Spider"] = true;
 	AL["Darkhound"] = true;
 	AL["Bat"] = true;
-
-	-- ZG Tokens
-	AL["Primal Hakkari Kossack"] = true;
-	AL["Primal Hakkari Shawl"] = true;
-	AL["Primal Hakkari Bindings"] = true;
-	AL["Primal Hakkari Sash"] = true;
-	AL["Primal Hakkari Stanchion"] = true;
-	AL["Primal Hakkari Aegis"] = true;
-	AL["Primal Hakkari Girdle"] = true;
-	AL["Primal Hakkari Armsplint"] = true;
-	AL["Primal Hakkari Tabard"] = true;
 
 	-- AQ20 Tokens
 	AL["Qiraji Ornate Hilt"] = true;
@@ -869,89 +933,49 @@ if AL then
 	AL["Husk of the Old God"] = true;
 	AL["Carapace of the Old God"] = true;
 
-	-- Classic WoW Sets
-	AL["Zul'Gurub Rings"] = true;
+	-- Faction related strings
+	AL["Neutral"] = true;
+	AL["Friendly"] = true;
+	AL["Honored"] = true;
+	AL["Revered"] = true;
+	AL["Exalted"] = true;
+	AL["Best Friend"] = true;
+	AL["Rank %d"] = true; -- usage: string.format(AL["Rank %d"], 1)
+	AL["Winterfin Retreat"] = true;
 
 	-- Recipe origin strings
-	AL["Trainer"] = true;
-	AL["Discovery"] = true;
-	AL["World Drop"] = true;
-	AL["Drop"] = true;
-	AL["Vendor"] = true;
 	AL["Crafted"] = true;
-
-	-- Level 80 PvP Weapons
-	AL["Wrathful Gladiator\'s Weapons"] = true;
-
-	-- Months
-	AL["January"] = true;
-	AL["February"] = true;
-	AL["March"] = true;
-	AL["April"] = true;
-	AL["May"] = true;
-	AL["June"] = true;
-	AL["July"] = true;
-	AL["August"] = true;
-	AL["September"] = true;
-	AL["October"] = true;
-	AL["November"] = true;
-	AL["December"] = true;
+	AL["Discovery"] = true;
+	AL["Drop"] = true;
+	AL["Fished From"] = true;
+	AL["Trainer"] = true;
+	AL["Vendor"] = true;	
+	AL["World Drop"] = true;
 
 	-- Specs
-	AL["Balance"] = true;
-	AL["Feral"] = true;
-	AL["Restoration"] = true;
-	AL["Holy"] = true;
-	AL["Discipline"] = true;
-	AL["Protection"] = true;
-	AL["Retribution"] = true;
-	AL["Shadow"] = true;
-	AL["Elemental"] = true;
-	AL["Enhancement"] = true;
-	AL["Fury"] = true;
-	AL["Demonology"] = true;
-	AL["Destruction"] = true;
 	AL["Tanking"] = true;
 	AL["DPS"] = true;
 
-	-- Naxx Zones
-	AL["Construct Quarter"] = true;
-	AL["Arachnid Quarter"] = true;
-	AL["Military Quarter"] = true;
-	AL["Plague Quarter"] = true;
-	AL["Frostwyrm Lair"] = true;
-
 	-- NPCs missing from BabbleBoss
 	AL["Trash Mobs"] = true;
+	--- Classic WoW
 	AL["Dungeon Set 2 Summonable"] = true;
-	AL["Theldren"] = true;
-	AL["Sothos and Jarien"] = true;
+	AL["Theldren"] = true; --- If still in game needs to be moved to BabbleBoss
+	AL["Sothos and Jarien"] = true; --- If still in game needs to be moved to BabbleBoss
 	AL["Druid of the Fang"] = true;
 	AL["Defias Strip Miner"] = true;
 	AL["Defias Overseer/Taskmaster"] = true;
-	AL["Scarlet Defender/Myrmidon"] = true;
-	AL["Scarlet Champion"] = true;
-	AL["Scarlet Centurion"] = true;
-	AL["Scarlet Trainee"] = true;
-	AL["Herod/Mograine"] = true;
-	AL["Scarlet Protector/Guardsman"] = true;
+	AL["Scarlet Trainee"] = true; --- mob removed from game
 	AL["Shadowforge Flame Keeper"] = true;
-	AL["Avatar of the Martyred"] = true;
-	AL["Nexus Stalker"] = true;
-	AL["Auchenai Monk"] = true;
-	AL["Cabal Fanatic"] = true;
-	AL["Unchained Doombringer"] = true;
-	AL["Crimson Sorcerer"] = true;
+	AL["Crimson Sorcerer"] = true; --- mob removed from game. Formula: Enchant 2H Weapon - Major Intellect drops now from Risen Sorcerer
 	AL["Thuzadin Shadowcaster"] = true;
-	AL["Crimson Inquisitor"] = true;
-	AL["Crimson Battle Mage"] = true;
+	AL["Crimson Inquisitor"] = true; --- mob removed from game. Schematic: Voice Amplification Modulator and Schematic: Ultra-Flash Shadow Reflector drops now from Risen Inquisitor
+	AL["Crimson Battle Mage"] = true; --- mob removed from game?
 	AL["Ghoul Ravener"] = true;
 	AL["Spectral Citizen"] = true;
-	AL["Spectral Researcher"] = true;
-	AL["Scholomance Adept"] = true;
-	AL["Scholomance Dark Summoner"] = true;
+	AL["Scholomance Adept"] = true; --- Drops Formula: Enchant 2H Weapon - Major Spirit along with Scholomance Acolyte and needs to be added back to trash loot of Scholomance.
+	AL["Scholomance Dark Summoner"] = true; --- mob might have been removed. No idea where we used this.
 	AL["Blackhand Elite"] = true;
-	AL["Blackhand Assassin"] = true;
 	AL["Firebrand Pyromancer"] = true;
 	AL["Firebrand Invoker"] = true;
 	AL["Firebrand Grunt"] = true;
@@ -963,8 +987,28 @@ if AL then
 	AL["Doomforge Arcanasmith"] = true;
 	AL["Weapon Technician"] = true;
 	AL["Doomforge Craftsman"] = true;
-	AL["Murk Worm"] = true;
-	AL["Atal'ai Witch Doctor"] = true;
+	AL["Murk Worm"] = true;  --- mob removed from game
+	AL["Scarshield Quartermaster"] = true;
+	AL["Knot Thimblejack"] = true; --- Might not give any items anymore, needs to be checked.
+	AL["Shen'dralar Provisioner"] = true;
+	AL["The Nameles Prophet"] = true;
+	AL["Rajaxx's Captains"] = true;
+	AL["Razorfen Spearhide"] = true;
+	AL["Felsteed"] = true; --- NPC name is Fel Steed. Drops Eerie Stable Lantern in SFK.
+	AL["Master Elemental Shaper Krixix"] = true; --- Needs to be added to BabbleBoss
+	AL["Rotted One"] = true;
+	AL["Tex Vortacoil"] = true;
+	AL["Sprinkle Noggenfogger"] = true;
+	--- Burning Crusade
+	AL["Avatar of the Martyred"] = true; --- Needs to be moved to BabbleBoss
+	AL["Nexus Stalker"] = true;
+	AL["Auchenai Monk"] = true;
+	AL["Cabal Fanatic"] = true;
+	AL["Unchained Doombringer"] = true;
+	AL["Aether-tech Assistant"] = true;
+	AL["Aether-tech Adept"] = true;
+	AL["Aether-tech Master"] = true;
+	AL["Thomas Yance"] = true;
 	AL["Raging Skeleton"] = true;
 	AL["Ethereal Priest"] = true;
 	AL["Sethekk Ravenguard"] = true;
@@ -979,142 +1023,95 @@ if AL then
 	AL["Sunseeker Astromage"] = true;
 	AL["Durnholde Rifleman"] = true;
 	AL["Rift Keeper/Rift Lord"] = true;
-	AL["Crimson Templar"] = true;
-	AL["Azure Templar"] = true;
-	AL["Hoary Templar"] = true;
-	AL["Earthen Templar"] = true;
-	AL["The Duke of Cynders"] = true;
-	AL["The Duke of Fathoms"] = true;
-	AL["The Duke of Zephyrs"] = true;
-	AL["The Duke of Shards"] = true;
-	AL["Aether-tech Assistant"] = true;
-	AL["Aether-tech Adept"] = true;
-	AL["Aether-tech Master"] = true;
-	AL["Trelopades"] = true;
-	AL["King Dorfbruiser"] = true;
-	AL["Gorgolon the All-seeing"] = true;
-	AL["Matron Li-sahar"] = true;
-	AL["Solus the Eternal"] = true;
-	AL["Smokywood Pastures Vendor"] = true;
-	AL["Darkscreecher Akkarai"] = true;
-	AL["Karrog"] = true;
-	AL["Gezzarak the Huntress"] = true;
-	AL["Vakkiz the Windrager"] = true;
-	AL["Terokk"] = true;
-	AL["Armbreaker Huffaz"] = true;
-	AL["Fel Tinkerer Zortan"] = true;
-	AL["Forgosh"] = true;
-	AL["Gul'bor"] = true;
-	AL["Malevus the Mad"] = true;
-	AL["Porfus the Gem Gorger"] = true;
-	AL["Wrathbringer Laz-tarash"] = true;
-	AL["Bash'ir Landing Stasis Chambers"] = true;
-	AL["Templars"] = true;
-	AL["Dukes"] = true;
-	AL["High Council"] = true;
-	AL["Barleybrew Brewery"] = true;
-	AL["Thunderbrew Brewery"] = true;
-	AL["Gordok Brewery"] = true;
-	AL["Drohn's Distillery"] = true;
-	AL["T'chali's Voodoo Brewery"] = true;
-	AL["Scarshield Quartermaster"] = true;
-	AL["Father Flame"] = true;
-	AL["Thomas Yance"] = true;
-	AL["Knot Thimblejack"] = true;
-	AL["Shen'dralar Provisioner"] = true;
-	AL["The Nameles Prophet"] = true;
-	AL["Rajaxx's Captains"] = true;
-	AL["Razorfen Spearhide"] = true;
-	AL["Magregan Deepshadow"] = true;
-	AL["Don Carlos"] = true;
-	AL["Thomas Yance"] = true;
+	AL["Don Carlos"] = true; --- Needs to be moved to BabbleBoss
 	AL["Aged Dalaran Wizard"] = true;
-	AL["Felsteed"] = true;
 	AL["Shattered Hand Executioner"] = true;
-	AL["Time-Lost Proto Drake"] = true;
-	AL["Razzashi Raptor"] = true;
-	AL["Deviate Ravager/Deviate Guardian"] = true;
 	AL["Servant's Quarter Animal Bosses"] = true;
-	AL["Jadefang"] = true;
-	AL["Aeonaxx"] = true;
-	AL["Prince Sarsarun"] = true;
-	AL["Highlord Kruul"] = true; -- added until decided if the set gets removed
-	AL["Dormus the Camel-Hoarder"] = true;
-	AL["The Behemoth"] = true;
-	AL["Master Elemental Shaper Krixix"] = true;
+	AL["Wyrmcult Provisioner"] = true;
+	--- Wrath of the Lich King
+	AL["Olut Alegut"] = true;
+	AL["Rork Sharpchin"] = true;
+	--- Cataclysm
+	AL["Zen'Vorka"] = true;
+	AL["Ayla Shadowstorm"] = true;
+	AL["Damek Bloombeard"] = true;
+	AL["Varlan Highbough"] = true;
+	AL["Firestone Vendor"] = true;
+	AL["Baradin Fox"] = true;
+	--- Mists of Pandaria
+	AL["Uncle Bigpocket"] = true;
+	AL["Auntie Stormstout"] = true;
+	AL["Luo Luo"] = true;
+	AL["Meng Meng"] = true;
+	AL["Moonfang"] = true;
+	AL["Nice Sprite"] = true;
+	AL["Ongrom Black Tooth"] = true;
+	AL["Proveditor Grantley"] = true;
+	--- World Events
+	AL["Crimson Templar"] = true;  --- mob removed from game?
+	AL["Azure Templar"] = true;  --- mob removed from game?
+	AL["Hoary Templar"] = true;  --- mob removed from game?
+	AL["Earthen Templar"] = true;  --- mob removed from game?
+	AL["The Duke of Cynders"] = true;  --- mob removed from game?
+	AL["The Duke of Fathoms"] = true;  --- mob removed from game?
+	AL["The Duke of Zephyrs"] = true;  --- mob removed from game?
+	AL["The Duke of Shards"] = true;  --- mob removed from game?
+	AL["Templars"] = true;  --- mob removed from game?
+	AL["Dukes"] = true;  --- mob removed from game?
+	AL["High Council"] = true;  --- mob removed from game?
+	AL["Smokywood Pastures Vendor"] = true;
+	AL["Bash'ir Landing Stasis Chambers"] = true;
+	AL["Battle Pet Trainer"] = true;
 
-	-- Zones
-	AL["World Drop"] = true;
-	AL["Trial of the Grand Crusader"] = true;
+	-- Zone related strings
+	AL["Azeroth"] = true;
+	AL["Blackrock Mountain"] = true;
+	AL["Caverns of Time"] = true;
 	AL["Crusader's Square"] = true;
+	AL["Darkmoon Island"] = true;
+	AL["East"] = true;
+	AL["Halfhill Farm"] = true;
+	AL["North"] = true;
 	AL["The Gauntlet"] = true;
+	AL["Trial of the Grand Crusader"] = true;
+	AL["West"] = true;
 
 	-- Shortcuts for Bossname files
-	AL["LBRS"] = true;
-	AL["UBRS"] = true;
-	AL["CoT1"] = true;
-	AL["CoT2"] = true;
-	AL["Scholo"] = true;
-	AL["Strat"] = true;
-	AL["Serpentshrine"] = true;
 	AL["Avatar"] = true; -- Avatar of the Martyred
 
 	-- Chests, etc
-	AL["Ring of Law"] = true;
-	AL["Monument of Franclorn Forgewright"] = true;
+	AL["Father Flame"] = true; --- If still in game, should be used in IngameLocales
 	AL["The Grim Guzzler"] = true;
-	AL["Summoner's Tomb"] = true;
 	AL["The Secret Safe"] = true;
 	AL["The Vault"] = true;
 	AL["Ogre Tannin Basket"] = true;
-	AL["Fengus's Chest"] = true;
 	AL["Unfinished Painting"] = true;
-	AL["Felvine Shard"] = true;
-	AL["Baelog's Chest"] = true;
-	AL["Lorgalis Manuscript"] = true;
-	AL["Fathom Core"] = true;
-	AL["Gift of Adoration"] = true;
-	AL["Box of Chocolates"] = true;
-	AL["Treat Bag"] = true;
-	AL["Gaily Wrapped Present"] = true;
-	AL["Festive Gift"] = true;
-	AL["Ticking Present"] = true;
-	AL["Gently Shaken Gift"] = true;
-	AL["Carefully Wrapped Present"] = true;
-	AL["Winter Veil Gift"] = true;
-	AL["Smokywood Pastures Extra-Special Gift"] = true;
-	AL["Brightly Colored Egg"] = true;
-	AL["Lunar Festival Fireworks Pack"] = true;
-	AL["Lucky Red Envelope"] = true;
-	AL["Small Rocket Recipes"] = true;
-	AL["Large Rocket Recipes"] = true;
-	AL["Cluster Rocket Recipes"] = true;
-	AL["Large Cluster Rocket Recipes"] = true;
+	AL["Felvine Shard"] = true; --- If still in game, should be used in IngameLocales
+	AL["Gift of Adoration"] = true; --- If still in game, should be used in IngameLocales
+	AL["Treat Bag"] = true; --- If still in game, should be used in IngameLocales
+	AL["The Cache of Madness"] = true;
 	AL["Timed Reward Chest"] = true;
 	AL["Timed Reward Chest 1"] = true;
 	AL["Timed Reward Chest 2"] = true;
 	AL["Timed Reward Chest 3"] = true;
-	AL["Timed Reward Chest 4"] = true;
 	AL["The Talon King's Coffer"] = true;
 	AL["Krom Stoutarm's Chest"] = true;
 	AL["Garrett Family Chest"] = true;
 	AL["Reinforced Fel Iron Chest"] = true;
 	AL["DM North Tribute Chest"] = true;
-	AL["The Saga of Terokk"] = true;
+	AL["The Saga of Terokk"] = true; --- If still in game, should be used in IngameLocales
 	AL["First Fragment Guardian"] = true;
 	AL["Second Fragment Guardian"] = true;
 	AL["Third Fragment Guardian"] = true;
-	AL["Overcharged Manacell"] = true;
-	AL["Mysterious Egg"] = true;
-	AL["Hyldnir Spoils"] = true;
-	AL["Ripe Disgusting Jar"] = true;
-	AL["Cracked Egg"] = true;
-	AL["Small Spice Bag"] = true;
-	AL["Handful of Candy"] = true;
-	AL["Lovely Dress Box"] = true;
-	AL["Dinner Suit Box"] = true;
-	AL["Bag of Heart Candies"] = true;
-	AL["Hidden Stash"] = true;
+	AL["Overcharged Manacell"] = true; --- If still in game, should be used in IngameLocales
+	AL["Shellfish Trap"] = true;
+	AL["Fishing Pools"] = true;
+	AL["Timeless Chest"] = true;
+
+	-- Blizzard Promotions
+	AL["Annual Pass"] = true;
+	AL["Scroll of Resurrection"] = true;
+	AL["Recruit-A-Friend"] = true;
 
 	-- Error Messages and warnings
 	AL["AtlasLoot Error!"] = true;

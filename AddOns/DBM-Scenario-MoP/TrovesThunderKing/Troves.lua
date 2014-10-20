@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("d620", "DBM-Scenario-MoP")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10370 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetZone()
 
 mod:RegisterCombat("scenario", 1135)
@@ -11,6 +11,7 @@ mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED",
 	"UNIT_AURA player"
 )
+mod.onlyNormal = true
 
 --Todo, get luck enough to have a treasure goblin spawn and capture event for it so we can special warn for it.
 local warnStoneSmash		= mod:NewCastAnnounce(139777, 3, nil, nil, false)
@@ -29,6 +30,14 @@ mod:RemoveOption("HealthFrame")
 
 local timerDebuff = GetSpellInfo(140000)
 local timerStarted = false
+
+local function endCombatDelay()
+	DBM:EndCombat(mod)
+end
+
+function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
+end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 139777 then
@@ -49,6 +58,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
+function mod:LOADING_SCREEN_DISABLED()
+	self:Schedule(2, endCombatDelay)--Then, wait even longer to ensure even slow computers have completed LOADING_SCREEN_DISABLED stuff in core.
+end
+
 --Apparently this doesn't fire in combat log, have to use UNIT_AURA instead.
 function mod:UNIT_AURA(uId)
 	if UnitDebuff("player", timerDebuff) and not timerStarted then
@@ -59,6 +72,8 @@ function mod:UNIT_AURA(uId)
 		timerStarted = false
 		timerEvent:Cancel()
 		countdownEvent:Cancel()
-		DBM:EndCombat(self)--Consider as a victory if you do a loot run.
+		self:RegisterShortTermEvents(--First need to wait until after loading screen disabled fires before we end combat, to prevent auto recombat.
+			"LOADING_SCREEN_DISABLED"
+		)
 	end
 end

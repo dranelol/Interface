@@ -208,7 +208,7 @@ function private:ScanAuctions()
 	local totalPages = ceil(total / NUM_AUCTION_ITEMS_PER_PAGE)
 
 	if private.scanType == "numPages" then
-		local cacheData = TSM.db.factionrealm.numPagesCache[private.query.cacheKey]
+		local cacheData = TSM.db.realm.numPagesCache[private.query.cacheKey]
 		cacheData.lastScan = time()
 		local confidence = (120 - cacheData.confidence) / (CACHE_DECAY_PER_DAY * 2)
 		local diff = abs(cacheData.avg - totalPages)
@@ -387,7 +387,7 @@ function TSMAPI.AuctionScan:GetNumPages(query, callbackHandler)
 		temp[i] = tostring(query[field])
 	end
 	local cacheKey = table.concat(temp, "~")
-	local cacheData = TSM.db.factionrealm.numPagesCache[cacheKey]
+	local cacheData = TSM.db.realm.numPagesCache[cacheKey]
 	if cacheData then
 		local cacheHit
 		if time() - cacheData.lastScan < CACHE_AUTO_HIT_TIME then
@@ -406,7 +406,7 @@ function TSMAPI.AuctionScan:GetNumPages(query, callbackHandler)
 			return 2
 		end
 	else
-		TSM.db.factionrealm.numPagesCache[cacheKey] = { avg = 0, confidence = 0, numScans = 0, lastScan = 0 }
+		TSM.db.realm.numPagesCache[cacheKey] = { avg = 0, confidence = 0, numScans = 0, lastScan = 0 }
 	end
 
 	-- setup the query

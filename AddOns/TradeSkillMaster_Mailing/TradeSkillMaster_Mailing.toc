@@ -1,11 +1,11 @@
-## Interface: 50400
+## Interface: 60000
 ## Title: |cff00ff00TradeSkillMaster_Mailing|r
 ## Notes: Provides Auto-Opening and Auto-Sending features to the mailbox.
 ## Author: Sapu94, Bart39
-## Version: v2.1.3
+## Version: v2.2.3
 ## SavedVariables: TradeSkillMaster_MailingDB
 ## Dependency: TradeSkillMaster
-## X-Curse-Packaged-Version: v2.1.3
+## X-Curse-Packaged-Version: v2.2.3
 ## X-Curse-Project-Name: TradeSkillMaster_Mailing
 ## X-Curse-Project-ID: tradeskillmaster_mailing
 ## X-Curse-Repository-ID: wow/tradeskillmaster_mailing/mainline

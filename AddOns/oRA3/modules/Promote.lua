@@ -8,7 +8,7 @@ local module = oRA:NewModule("Promote", "AceTimer-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("oRA3")
 local AceGUI = LibStub("AceGUI-3.0")
 
-module.VERSION = tonumber(("$Revision: 737 $"):sub(12, -3))
+module.VERSION = tonumber(("$Revision: 741 $"):sub(12, -3))
 
 --------------------------------------------------------------------------------
 -- Locals
@@ -63,7 +63,7 @@ do
 	end
 
 	local function addCallback(widget, event, value)
-		if type(value) ~= "string" or value:trim():len() < 3 then return true end
+		if type(value) ~= "string" then return true end
 		if util.inTable(factionDb.promotes, value) then return true end
 		table.insert(factionDb.promotes, value)
 		add:SetText()

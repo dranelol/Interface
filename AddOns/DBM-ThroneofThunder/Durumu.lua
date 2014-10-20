@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(818, "DBM-ThroneofThunder", nil, 362)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10977 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetCreatureID(68036)--Crimson Fog 69050
 mod:SetEncounterID(1572)
 mod:SetZone()
@@ -35,8 +35,8 @@ local warnLifeDrain					= mod:NewTargetAnnounce(133795, 3)--Some times needs to 
 local warnDarkParasite				= mod:NewTargetAnnounce(133597, 3, nil, mod:IsHealer())--Heroic
 local warnIceWall					= mod:NewSpellAnnounce(134587, 3, 111231)
 
-local specWarnSeriousWound			= mod:NewSpecialWarningStack(133767, mod:IsTank(), 5)--This we will use debuff on though.
-local specWarnSeriousWoundOther		= mod:NewSpecialWarningTarget(133767, mod:IsTank())
+local specWarnSeriousWound			= mod:NewSpecialWarningStack(133767, nil, 5)--This we will use debuff on though.
+local specWarnSeriousWoundOther		= mod:NewSpecialWarningTaunt(133767)
 local specWarnForceOfWill			= mod:NewSpecialWarningYou(136413, nil, nil, nil, 3)--VERY important, if you get hit by this you are out of fight for rest of pull.
 local specWarnForceOfWillNear		= mod:NewSpecialWarningClose(136413, nil, nil, nil, 3)
 local yellForceOfWill				= mod:NewYell(136413)
@@ -98,6 +98,7 @@ local playerName = UnitName("player")
 local firstIcewall = false
 local CVAR = nil
 local yellowRevealed = 0
+local scanTime = 0
 
 local function warnBeam()
 	if mod:IsDifficulty("heroic10", "heroic25", "lfr25") then
@@ -116,7 +117,7 @@ end
 local function BeamEnded()
 	timerLingeringGazeCD:Start(17)
 	timerForceOfWillCD:Start(19)
-	if mod:IsDifficulty("heroic10", "heroic25") then
+	if mod:IsHeroic() then
 		timerDarkParasiteCD:Start(10)
 		timerIceWallCD:Start(32)
 		firstIcewall = true
@@ -133,6 +134,7 @@ local function BeamEnded()
 end
 
 local function findBeamJump(spellName, spellId)
+	scanTime = scanTime + 1
 	for uId in DBM:GetGroupMembers() do
 		local name = DBM:GetUnitFullName(uId)
 		if spellId == 139202 and UnitDebuff(uId, spellName) and lastBlue ~= name then
@@ -159,7 +161,9 @@ local function findBeamJump(spellName, spellId)
 			return
 		end
 	end
-	mod:Schedule(0.1, findBeamJump, spellName, spellId)--Check again if we didn't return from either debuff (We checked too soon)
+	if scanTime < 30 then--Scan for 3 sec but not forever.
+		mod:Schedule(0.1, findBeamJump, spellName, spellId)--Check again if we didn't return from either debuff (We checked too soon)
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -178,7 +182,7 @@ function mod:OnCombatStart(delay)
 	timerForceOfWillCD:Start(33.5-delay)
 	timerLightSpectrumCD:Start(40-delay)
 	countdownLightSpectrum:Start(40-delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		timerDarkParasiteCD:Start(-delay)
 		timerIceWallCD:Start(127-delay)
 		firstIcewall = false--On pull, we only get one icewall and the CD behavior of parasite unaltered so we make sure to treat first icewall like a 2nd
@@ -246,12 +250,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if uId then
-				local x, y = GetPlayerMapPosition(uId)
-				if x == 0 and y == 0 then
-					SetMapToCurrentZone()
-					x, y = GetPlayerMapPosition(uId)
-				end
-				local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+				local inRange = DBM.RangeCheck:GetDistance("player", uId)
 				if inRange and inRange < 21 then--Range hard to get perfect, a player 30 yards away might still be in it. I say 15 is probably good middle ground to catch most of the "near"
 					specWarnForceOfWillNear:Show(args.destName)
 				end
@@ -293,7 +292,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		lfrAmberFogRevealed = false
 		lfrAzureFogRevealed = false
 		timerForceOfWillCD:Cancel()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerObliterateCD:Start()
 			if lifeDrained then -- Check 1st Beam ended.
 				timerIceWallCD:Start(88.5)
@@ -310,6 +309,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(139202, 139204) then
 		--The SPELL_CAST_SUCCESS event works, it's the SPELL_AURA_APPLIED/REMOVED events that are busted/
 		--SUCCESS has no target. Still have to find target with UnitDebuff checks
+		scanTime = 0
 		self:Schedule(0.1, findBeamJump, args.spellName, spellId)
 	end
 end
@@ -467,7 +467,6 @@ function mod:UNIT_DIED(args)
 		if self:IsDifficulty("lfr25") then
 			totalFogs = totalFogs - 1
 			if totalFogs >= 1 then
-				self:Unschedule(findBeamJump)
 				--LFR does something completely different than kill 3 crimson adds to end phase. in LFR, they kill 1 of each color (which is completely against what you do in 10N, 25N, 10H, 25H)
 				warnAddsLeft:Show(totalFogs)
 			else--No adds left, force ability is re-enabled
@@ -485,9 +484,7 @@ function mod:UNIT_DIED(args)
 			end
 		end
 	elseif cid == 69052 then--Azure Fog (endlessly respawn in all but LFR, so we ignore them dying anywhere else)
-		--Maybe do something for heroic here too, if timers for the crap this thing does gets added.
 		if self:IsDifficulty("lfr25") then
-			self:Unschedule(findBeamJump)
 			totalFogs = totalFogs - 1
 			if totalFogs >= 1 then
 				--LFR does something completely different than kill 3 crimson adds to end phase. in LFR, they kill 1 of each color (which is completely against what you do in 10N, 25N, 10H, 25H)

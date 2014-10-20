@@ -182,6 +182,7 @@ MRT_L.Options["MP_Debug"] = "Habilidar mensajes de debug"
 MRT_L.Options["MP_Description"] = "Registrar raids, botín y asistencia"
 MRT_L.Options["MP_Enabled"] = "Habilitar MRT" -- Needs review
 -- MRT_L.Options["MP_MinimapIcon"] = "Show minimap icon"
+-- MRT_L.Options["MP_ResetGuiPos"] = "Reset GUI position"
 MRT_L.Options["MP_SlashCmd"] = "Comando"
 MRT_L.Options["TP_AskForDKPValue"] = "Preguntar por el valor del objeto"
 MRT_L.Options["TP_CreateNewRaidOnNewZone"] = "Crear una nueva raid en una nueva zona."

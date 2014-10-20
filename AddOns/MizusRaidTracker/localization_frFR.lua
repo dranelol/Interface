@@ -70,6 +70,12 @@ MRT_L.Bossyells = {
         ["Je vous remercie, étrangers. J'ai été libéré."] = "Tsulong", 
         ["Je… ah… oh ! J’ai… ? Tout était… si… embrouillé."] = "Lei Shi",
     },
+    
+    -- Siege of Orgrimmar
+    [953] = {
+        ["Ah, vous avez réussi ! Les eaux ont retrouvé leur pureté."] = "Immerseus",
+        ["Système en cours de réinitialisation. Veuillez ne pas le débrancher, ou il pourrait vous sauter à la figure."] = "Spoils of Pandaria",
+    },
 }
 
 
@@ -176,6 +182,7 @@ MRT_L.Options["MP_Debug"] = "Activer les messages de debug"
 MRT_L.Options["MP_Description"] = "Suits les raids, loot et participation"
 MRT_L.Options["MP_Enabled"] = "Activer le suivi automatique"
 MRT_L.Options["MP_MinimapIcon"] = "Afficher le bouton de la minicarte"
+-- MRT_L.Options["MP_ResetGuiPos"] = "Reset GUI position"
 MRT_L.Options["MP_SlashCmd"] = "Commande \"slash\""
 MRT_L.Options["TP_AskForDKPValue"] = "Demander le prix des objets"
 MRT_L.Options["TP_CreateNewRaidOnNewZone"] = "Créer un nouveau raid en entrant dans une nouvelle zone"

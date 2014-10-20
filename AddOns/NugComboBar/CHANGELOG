@@ -1,3 +1,24 @@
+6.0.3:
+ - ToC updated to 60000
+ - added Starsurge charges
+ - added Lacerate stacks when pulverize talent is chosen
+ - added Unyielding Strikes
+ - arcane mage arcane missle proc counter removed
+
+5.2.17:
+ - added sound notification
+
+5.2.16:
+ - fixed a bug with older skins causing crash
+
+5.2.15:
+ - vertical orientation is now possible
+ - aspect ratio autodetection for 3 monitor setups, 16:10, 16:9, 4:3
+ - searing flames enabled for shamans
+
+5.2.13:
+ - Resoration Druid mushroom now counts as 3 to match Balance setup
+
 5.2.12:
  - new preset: glowHoly
 
@@ -37,12 +58,14 @@
  - fixed glitchy animation of second layer transitions
  - updated ruRU localization
  - Makina and Striped skins updated
+
 5.2.2:
  - Anticipation as second layer
  - Colored light for 3d effects
  - PlayerModel type support (unused, buggy)
  - Evangelism bugfix
  - Druid 2pc setbonus should no longer cause bug with 1st point animation
+
 5.2.0a:
  - Arcane Mage now using 4 point layout
 
@@ -140,7 +163,8 @@
 4.2.3:
  - TOC Update
  - Fixed Ready Set Aim for MM hunters
- 4.2.2:
+
+4.2.2:
  - When CPs drop to 0, bar will fade only after few seconds, /ncb hideslowly to toggle it
  - Option to disable blizzard holypower bar, shard bar and combo bar
  - Arena/bg leaving bug should be fixed

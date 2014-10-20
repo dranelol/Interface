@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(829, "DBM-ThroneofThunder", nil, 362)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10977 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetCreatureID(68905, 68904)--Lu'lin 68905, Suen 68904
 mod:SetEncounterID(1560)
 mod:SetZone()
@@ -55,8 +55,8 @@ local specWarnTearsOfSun				= mod:NewSpecialWarningSpell(137404, nil, nil, nil, 
 local specWarnBeastOfNightmares			= mod:NewSpecialWarningTarget(137375, mod:IsTank() or mod:IsHealer())
 local specWarnCorruptedHealing			= mod:NewSpecialWarningStack(137360, mod:IsHealer())
 --Light
-local specWarnFanOfFlames				= mod:NewSpecialWarningStack(137408, mod:IsTank(), 2)
-local specWarnFanOfFlamesOther			= mod:NewSpecialWarningTarget(137408, mod:IsTank())
+local specWarnFanOfFlames				= mod:NewSpecialWarningStack(137408, nil, 2)
+local specWarnFanOfFlamesOther			= mod:NewSpecialWarningTaunt(137408)
 local specWarnFlamesofPassionMove		= mod:NewSpecialWarningMove(137417)
 local specWarnIceComet					= mod:NewSpecialWarningSpell(137419, false)
 local specWarnNuclearInferno			= mod:NewSpecialWarningCount(137491, nil, nil, nil, 2)--Heroic
@@ -219,7 +219,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg) -- Switch to yell. INSTANCE_ENCOUNTER_EN
 end
 
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT(event) -- still remains backup trigger for phase3.
-	if UnitExists("boss2") and tonumber(UnitGUID("boss2"):sub(6, 10), 16) == 68905 then--Make sure we don't trigger it off another engage such as wipe engage event
+	if UnitExists("boss2") and self:GetCIDFromGUID(UnitGUID("boss2")) == 68905 then--Make sure we don't trigger it off another engage such as wipe engage event
 		self:SendSync("Phase3")
 	end
 end
@@ -288,7 +288,7 @@ function mod:OnSync(msg)
 		timerIceCometCD:Start()--TODO, update timer for late 5.3 hotfix.
 		timerFanOfFlamesCD:Start(6)
 		--timerFlamesOfPassionCD:Start(12.5)
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerNuclearInfernoCD:Start(45, 1)--45-50 second variation (cd is 45, but there is hard code failsafe that if a commet has spawned recently it's extended?
 		end
 		self:RegisterShortTermEvents(
@@ -301,7 +301,7 @@ function mod:OnSync(msg)
 		warnDusk:Show()
 		timerIceCometCD:Start(17)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
 		timerTidalForceCD:Start(26)
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerNuclearInfernoCD:Cancel()
 			timerNuclearInfernoCD:Start(67, 1)
 		end
@@ -316,7 +316,7 @@ function mod:OnSync(msg)
 			infernoCount = 0
 			timerIceCometCD:Start(11)--This seems to reset, despite what last CD was (this can be a bad thing if it was do any second)
 			timerTidalForceCD:Start(20)
-			if self:IsDifficulty("heroic10", "heroic25") then
+			if self:IsHeroic() then
 				timerNuclearInfernoCD:Cancel()
 				timerNuclearInfernoCD:Start(61, infernoCount+1)
 			end

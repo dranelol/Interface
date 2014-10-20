@@ -2,11 +2,11 @@
 
 if not L then return end
 
-L.ARENA_START					= "Le combat d’arène commence !"
+L.ARENA_START					= "Le combat commence !"
 L.ARENA_60						= "Le combat d’arène commence dans une minute !"
 L.ARENA_45						= "Le combat d’arène commence dans quarante-cinq secondes !"
 L.ARENA_30						= "Le combat d’arène commence dans trente secondes !"
-L.ARENA_15						= "Le combat d’arène commence dans quinze secondes !"
+L.ARENA_15						= "Le combat commence dans quinze secondes !"
 
 L.AAV_LOADED					= "chargé! Tapez /aav pour plus d'options."
 L.AAV_VERSION_OUTDATED			= "Votre version d'AAV est dépassée!"

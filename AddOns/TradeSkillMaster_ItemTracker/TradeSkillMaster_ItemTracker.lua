@@ -35,11 +35,12 @@ local characterDefaults = {
 	-- anything added to the characters table will have these defaults
 	bags = {},
 	bank = {},
+	reagentbank = {},
 	auctions = {},
 	guild = nil,
 	mail = {},
 	mailInbox = {},
-	lastUpdate = { bags = 0, bank = 0, auctions = 0, mail = 0, guild = 0 },
+	lastUpdate = { bags = 0, bank = 0, reagentbank = 0, auctions = 0, mail = 0, guild = 0 },
 	account = nil,
 }
 TSM.characterDefaults = characterDefaults
@@ -60,6 +61,17 @@ function TSM:OnInitialize()
 	TSM.db = LibStub:GetLibrary("AceDB-3.0"):New("TradeSkillMaster_ItemTrackerDB", savedDBDefaults, true)
 	TSM.characters = TSM.db.factionrealm.characters
 	TSM.guilds = TSM.db.factionrealm.guilds
+	
+	-- handle connected realms for characters
+	local connectedRealms = TSMAPI.GetConnectedRealms and TSMAPI:GetConnectedRealms() or {}
+	for _, realm in ipairs(connectedRealms) do
+		local connectedRealmData = TSM.db.sv.factionrealm[TSM.db.keys.faction.." - "..realm]
+		if connectedRealmData and connectedRealmData.characters then
+			for player, data in pairs(connectedRealmData.characters) do
+				TSM.characters[player.."-"..realm] = data
+			end
+		end
+	end
 
 	-- register this module with TSM
 	TSM:RegisterModule()
@@ -70,6 +82,7 @@ function TSM:OnInitialize()
 			data.lastUpdate = CopyTable(characterDefaults.lastUpdate)
 		end
 		data.mail = data.mail or {}
+		data.reagentbank = data.reagentbank or {}
 	end
 	for guild, data in pairs(TSM.guilds) do
 		data.lastUpdate = data.lastUpdate or guildDefaults.lastUpdate
@@ -99,6 +112,7 @@ function TSM:OnInitialize()
 	for _, playerData in pairs(TSM.characters) do
 		ClearItemIDs(playerData.bags)
 		ClearItemIDs(playerData.bank)
+		ClearItemIDs(playerData.reagentbank)
 		ClearItemIDs(playerData.auctions)
 		ClearItemIDs(playerData.mail)
 	end
@@ -131,6 +145,7 @@ function TSM:RegisterModule()
 		{ key = "guildlist", callback = "GetGuilds" },
 		{ key = "playerbags", callback = "GetPlayerBags" },
 		{ key = "playerbank", callback = "GetPlayerBank" },
+		{ key = "playerreagentbank", callback = "GetPlayerReagentBank" },
 		{ key = "playermail", callback = "GetPlayerMail" },
 		{ key = "guildbank", callback = "GetGuildBank" },
 		{ key = "playerauctions", callback = "GetPlayerAuctions" },
@@ -164,7 +179,7 @@ function TSM:GetTooltip(itemString)
 	elseif TSM.db.global.tooltip == "full" then
 		for name, data in pairs(TSM.characters) do
 			local bags = data.bags[itemString] or 0
-			local bank = data.bank[itemString] or 0
+			local bank = (data.bank[itemString] or 0) + (data.reagentbank[itemString] or 0)
 			local auctions = data.auctions[itemString] or 0
 			local mail = data.mail[itemString] or 0
 			local total = bags + bank + auctions + mail
@@ -200,6 +215,28 @@ function TSM:GetTooltip(itemString)
 	end
 
 	return text
+end
+
+function TSM:OnTSMDBShutdown()
+	TSM.db.factionrealm.characters = {}
+	local faction = TSM.db.keys.faction
+	for name, playerData in pairs(TSM.characters) do
+		local player, realm = ("-"):split(name)
+		if realm and realm ~= "" then
+			local factionrealm = faction.." - "..realm
+			for key, data in pairs(TSM.db.sv.factionrealm) do
+				if key == factionrealm then
+					data[player] = playerData
+					break
+				end
+			end
+		else
+			TSM.db.factionrealm.characters[player] = playerData
+		end
+	end
+	
+	-- not yet handling guilds for connected realms
+	TSM.db.factionrealm.guilds = TSM.guilds
 end
 
 function TSM:UpdatePlayerLookup()
@@ -239,6 +276,13 @@ function TSM:GetPlayerBank(player)
 	return TSM.characters[player].bank
 end
 
+function TSM:GetPlayerReagentBank(player)
+	player = player or TSM.CURRENT_PLAYER
+	player = TSM.playerLookup[player] or player
+	if not player or not TSM.characters[player] then return end
+	return TSM.characters[player].reagentbank
+end
+
 function TSM:GetPlayerMail(player)
 	player = player or TSM.CURRENT_PLAYER
 	player = TSM.playerLookup[player] or player
@@ -266,10 +310,12 @@ function TSM:GetPlayerTotal(itemString)
 		if name == TSM.CURRENT_PLAYER then
 			playerTotal = playerTotal + (data.bags[itemString] or 0)
 			playerTotal = playerTotal + (data.bank[itemString] or 0)
+			playerTotal = playerTotal + (data.reagentbank[itemString] or 0)
 			playerTotal = playerTotal + (data.mail[itemString] or 0)
 		else
 			altTotal = altTotal + (data.bags[itemString] or 0)
 			altTotal = altTotal + (data.bank[itemString] or 0)
+			altTotal = altTotal + (data.reagentbank[itemString] or 0)
 			altTotal = altTotal + (data.mail[itemString] or 0)
 		end
 	end

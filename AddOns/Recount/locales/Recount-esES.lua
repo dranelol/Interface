@@ -1,10 +1,10 @@
--- Recount Locale 
--- Please use the Localization App on WoWAce to Update this 
+-- Recount Locale
+-- Please use the Localization App on WoWAce to Update this
 -- http://www.wowace.com/projects/recount/localization/
- 
-local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "esES") 
-if not L then return end 
- 
+
+local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "esES")
+if not L then return end
+
 L["Ability"] = "Habilidad"
 L["Ability Name"] = "Nombre de Habilidad"
 L["Absorbed"] = "Absorbido"
@@ -196,6 +196,7 @@ L["Mana Gained"] = "Mana Conseguido"
 L["Mana Sources"] = "Fuentes de Mana"
 L["Max"] = "Max"
 L["Melee"] = "Melee"
+L["Merge Absorbs w/ Heals"] = "Unir absorción y sanación"
 L["Merge Pets w/ Owners"] = "Unir mascotas y dueños"
 L["Messages"] = "Mensajes"
 L["Min"] = "Min"
@@ -217,6 +218,7 @@ L["No"] = "No"
 L["No Absorb"] = "No Absorbe"
 L["No Block"] = "No Bloquea"
 L["Non-Trivial"] = "No Trivial"
+L["No other Recount users found."] = "No se encuentran otros usarios de Recount."
 L["No Pet"] = "Sin Mascota"
 L["No Resist"] = "No Resiste"
 L["Normalize"] = "Normalizar"
@@ -300,7 +302,7 @@ L["Runic Power Gained"] = "Poder Runico Ganado"
 L["RunicPower Sources"] = "Fuentes de Poder Runico"
 L["'s Absorbs"] = "absorvió"
 L["Say"] = "Decir"
--- L["Scenario Instances"] = "Scenario Instances"
+L["Scenario Instances"] = "Gestas"
 L["'s Dispels"] = "-> disipados"
 L["'s DOT Uptime"] = "-> DOT Arriba"
 L["'s DPS"] = "-> DPS"
@@ -310,6 +312,7 @@ L["'s Effective Healing"] = "-> Curaciones Efectivas"
 L["Self"] = "Propio"
 L["'s Energy Gained"] = "-> Energia Ganada"
 L["'s Energy Gained From"] = "-> Energia Ganada de"
+L["Server Name"] = "Nombre de reino"
 L["Set Combat Log Range"] = "Establecer Rango del log de Combate"
 L["Set the maximum number of lines to report"] = "Ajustar el número máximo de líneas a informar"
 L["Set the maximum number of recorded fight segments"] = "Ajusta el maximo numero de segmentos de batalla almacenados"
@@ -418,7 +421,6 @@ L["Window Color Selection"] = "Seleccion de color de ventana"
 L["Window Options"] = "Opciones de Ventana"
 L["Window Scaling"] = "Escala de ventana"
 L["X Gridlines Represent"] = "X Representar en Cuadricula"
-L["Yds"] = "Yds"
 L["Yes"] = "Si"
- 
+
 

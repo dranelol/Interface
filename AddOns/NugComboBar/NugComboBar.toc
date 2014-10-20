@@ -1,10 +1,10 @@
-## Interface: 50400
+## Interface: 60000
 ## Title: NugComboBar
 ## Notes: Combopoints counter
 ## Author: d87
 ## SavedVariablesPerCharacter: NugComboBarDB_Character
 ## SavedVariables: NugComboBarDB_Global
-## X-Curse-Packaged-Version: 5.2.13
+## X-Curse-Packaged-Version: 6.0.3
 ## X-Curse-Project-Name: NugComboBar
 ## X-Curse-Project-ID: nugie-combo-bar
 ## X-Curse-Repository-ID: wow/nugie-combo-bar/mainline

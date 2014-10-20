@@ -29,13 +29,13 @@ function private.Create(parent)
 	startBtn:SetHeight(20)
 	startBtn:SetText(L["Start Vendor Search"])
 	startBtn:SetScript("OnClick", private.StartVendorSearch)
-	
-	TSMAPI.GUI:CreateHorizontalLine(frame, -75)
 
-	
+	TSMAPI.GUI:CreateHorizontalLine(frame, -65)
+
+
 	local helpText2 = TSMAPI.GUI:CreateLabel(frame)
-	helpText2:SetPoint("TOPLEFT", 0, -80)
-	helpText2:SetPoint("TOPRIGHT", 0, -80)
+	helpText2:SetPoint("TOPLEFT", 0, -70)
+	helpText2:SetPoint("TOPRIGHT", 0, -70)
 	helpText2:SetHeight(75)
 	helpText2:SetJustifyH("CENTER")
 	helpText2:SetJustifyV("CENTER")
@@ -47,18 +47,18 @@ function private.Create(parent)
 	startBtn2:SetHeight(20)
 	startBtn2:SetText(L["Start Disenchant Search"])
 	startBtn2:SetScript("OnClick", private.StartDisenchantSearch)
-	
-	TSMAPI.GUI:CreateHorizontalLine(frame, -200)
-	
-	
+
+	TSMAPI.GUI:CreateHorizontalLine(frame, -175)
+
+
 	local helpText3 = TSMAPI.GUI:CreateLabel(frame)
-	helpText3:SetPoint("TOPLEFT", 0, -225)
-	helpText3:SetPoint("TOPRIGHT", 0, -225)
+	helpText3:SetPoint("TOPLEFT", 0, -180)
+	helpText3:SetPoint("TOPRIGHT", 0, -180)
 	helpText3:SetHeight(80)
 	helpText3:SetJustifyH("CENTER")
 	helpText3:SetJustifyV("CENTER")
 	helpText3:SetText(L["The Sniper feature will look in real-time for items that have recently been posted to the AH which are worth snatching! You can configure the parameters of Sniper in the Shopping options."])
-	
+
 	local helpText4 = TSMAPI.GUI:CreateLabel(frame)
 	helpText4:SetPoint("TOPLEFT", helpText3, "BOTTOMLEFT", 0, -5)
 	helpText4:SetPoint("TOPRIGHT", helpText3, "BOTTOMRIGHT", 0, -5)
@@ -66,22 +66,64 @@ function private.Create(parent)
 	helpText4:SetJustifyH("CENTER")
 	helpText4:SetJustifyV("CENTER")
 	helpText4:SetText(L["NOTE: The scan must be stopped before you can buy anything."])
-	
+
 	local startBtn = TSMAPI.GUI:CreateButton(frame, 16)
 	startBtn:SetPoint("TOPLEFT", helpText4, "BOTTOMLEFT", 0, -5)
-	startBtn:SetWidth((frame:GetWidth()/2)-2.5)
+	startBtn:SetWidth((frame:GetWidth() / 2) - 2.5)
 	startBtn:SetHeight(20)
 	startBtn:SetText(L["Start Sniper"])
 	startBtn:SetScript("OnClick", private.StartSniperSearch)
-	
+
 	local stopBtn = TSMAPI.GUI:CreateButton(frame, 16)
 	stopBtn:SetPoint("TOPRIGHT", helpText4, "BOTTOMRIGHT", 0, -5)
-	stopBtn:SetWidth((frame:GetWidth()/2)-2.5)
+	stopBtn:SetWidth((frame:GetWidth() / 2) - 2.5)
 	stopBtn:SetHeight(20)
 	stopBtn:SetText(L["Stop Sniper"])
 	stopBtn:SetScript("OnClick", private.StopSniperSearch)
+
+	TSMAPI.GUI:CreateHorizontalLine(frame, -330)
+
 	
-	
+	local appData = TSMAPI:GetAppData("shoppingSearches")
+	if appData then
+		local helpText5 = TSMAPI.GUI:CreateLabel(frame)
+		helpText5:SetPoint("TOPLEFT", 0, -335)
+		helpText5:SetPoint("TOPRIGHT", 0, -335)
+		helpText5:SetHeight(35)
+		helpText5:SetJustifyH("CENTER")
+		helpText5:SetJustifyV("CENTER")
+		helpText5:SetText("The buttons below run searches which are collected via the TSM Desktop Application.")
+
+		local greatDealsBtn = TSMAPI.GUI:CreateButton(frame, 16)
+		greatDealsBtn:SetPoint("TOPLEFT", helpText5, "BOTTOMLEFT", 0, -5)
+		greatDealsBtn:SetWidth((frame:GetWidth() / 2) - 2.5)
+		greatDealsBtn:SetHeight(20)
+		greatDealsBtn:SetText("Great Deals")
+		greatDealsBtn:SetScript("OnClick", private.StartAppScan)
+		greatDealsBtn.searchStr = appData.greatDeals
+		if greatDealsBtn.searchStr then
+			-- populate item info cache
+			local items = {(";"):split(appData.greatDeals)}
+			for _, item in ipairs(items) do
+				item = ("/"):split(item)
+				TSMAPI:GetSafeItemInfo(item)
+			end
+		else
+			greatDealsBtn:Disable()
+		end
+
+		local itemBtn = TSMAPI.GUI:CreateButton(frame, 16)
+		itemBtn:SetPoint("TOPRIGHT", helpText5, "BOTTOMRIGHT", 0, -5)
+		itemBtn:SetWidth((frame:GetWidth() / 2) - 2.5)
+		itemBtn:SetHeight(20)
+		itemBtn:SetText("Item Notifications")
+		itemBtn:SetScript("OnClick", private.StartAppScan)
+		itemBtn.searchStr = appData.itemNotifications
+		if not itemBtn.searchStr then
+			itemBtn:Disable()
+		end
+	end
+
 	return frame
 end
 
@@ -140,10 +182,11 @@ function private:StartVendorSearch()
 	TSM.Search:SetSearchBarDisabled(true)
 	TSM.Util:ShowSearchFrame(nil, L["% Vendor Price"])
 	TSM.Util:StartItemScan(itemList, private.VendorSearchCallback)
+	TSMAPI:FireEvent("SHOPPING:SEARCH:STARTVENDORSCAN", {num=#itemList})
 end
 
 do
-	TSM:AddSidebarFeature(L["Other"], private.Create)
+	TSM:AddSidebarFeature(OTHER, private.Create)
 end
 
 function private:StartDisenchantSearch()
@@ -157,10 +200,13 @@ function private:StartDisenchantSearch()
 
 	for itemID, data in pairs(lastScan) do
 		-- this must be GetItemInfo since these are itemIDs
-		local link = select(2, GetItemInfo(itemID))
-		local deValue = TSMAPI:ModuleAPI("TradeSkillMaster", "deValue", link)
-		if link and data.minBuyout and deValue * (TSM.db.global.maxDeSearchPercent or 1) > data.minBuyout then
-			tinsert(itemList, TSMAPI:GetItemString(link))
+		local _, link, _, iLvl = GetItemInfo(itemID)
+		if iLvl and iLvl >= TSM.db.global.minDeSearchLvl and iLvl <= TSM.db.global.maxDeSearchLvl then
+			local deValue = TSMAPI:ModuleAPI("TradeSkillMaster", "deValue", link)
+--			if link and data.minBuyout and deValue * (TSM.db.global.maxDeSearchPercent or 1) > data.minBuyout then
+			if link and data.minBuyout and (data.minBuyout / deValue) < (TSM.db.global.maxDeSearchPercent or 1) then
+				tinsert(itemList, TSMAPI:GetItemString(link))
+			end
 		end
 	end
 
@@ -209,6 +255,7 @@ function private:StartSniperSearch()
 	TSM.Util:ShowSearchFrame(nil, L["% Market Value"])
 	TSM.Search:SetSearchBarDisabled(true)
 	TSM.Util:StartLastPageScan(private.SniperScanCallback)
+	TSMAPI:FireEvent("SHOPPING:SEARCH:STARTSNIPER")
 end
 
 function private:StopSniperSearch()
@@ -232,23 +279,29 @@ function private.SniperScanCallback(event, itemString, auctionItem)
 			customPrice = TSM:GetMaxPrice(TSM.db.global.sniperCustomPrice, itemString)
 		end
 		auctionItem:FilterRecords(function(record)
-				local itemBuyout = record:GetItemBuyout()
-				if not itemBuyout or itemBuyout == 0 then return true end
-				if TSM.db.global.sniperVendorPrice and vendorPrice and itemBuyout <= vendorPrice then
-					return false
-				end
-				if TSM.db.global.sniperMaxPrice and maxPrice and itemBuyout <= maxPrice then
-					return false
-				end
-				if customPrice and itemBuyout <= customPrice then
-					return false
-				end
-				return true
-			end)
+			local itemBuyout = record:GetItemBuyout()
+			if not itemBuyout or itemBuyout == 0 then return true end
+			if TSM.db.global.sniperVendorPrice and vendorPrice and itemBuyout <= vendorPrice then
+				return false
+			end
+			if TSM.db.global.sniperMaxPrice and maxPrice and itemBuyout <= maxPrice then
+				return false
+			end
+			if customPrice and itemBuyout <= customPrice then
+				return false
+			end
+			return true
+		end)
 		auctionItem:SetMarketValue(TSM:GetMaxPrice(TSM.db.global.marketValueSource, itemString))
 		if #auctionItem.records == 0 then return end
 		auctionItem.shouldCompact = true
 		auctionItem:PopulateCompactRecords()
 		return auctionItem
 	end
+end
+
+
+
+function private.StartAppScan(btn)
+	TSM.Search:StartFilterSearch(btn.searchStr)
 end

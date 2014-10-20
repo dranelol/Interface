@@ -1,27 +1,24 @@
-﻿--[[
+--[[
 Name: Sink-2.0
-Revision: $Rev: 85 $
-Author(s): Rabbit (rabbit.magtheridon@gmail.com), Antiarc (cheal@gmail.com)
-Website: http://rabbit.nihilum.eu
-Documentation: http://wiki.wowace.com/index.php/Sink-2.0
-SVN: http://svn.wowace.com/wowace/trunk/SinkLib/Sink-2.0
+Revision: $Rev: 97 $
+Author(s): Funkydude, Rabbit
 Description: Library that handles chat output.
 Dependencies: LibStub, SharedMedia-3.0 (optional)
 License: CC-BY-NC-SA 3.0
 ]]
 
 --[[
-Copyright (C) 2008-2011 Rabbit
+Copyright (C) 2008-2013
 For the attribution bit of the license, as long as you distribute the library unmodified,
 no attribution is required.
-If you derive from the library or change it in any way, you are required to contact me.
+If you derive from the library or change it in any way, you are required to contact the author(s).
 ]]
 
 -----------------------------------------------------------------------
 -- Sink-2.0
 
 local SINK20 = "LibSink-2.0"
-local SINK20_MINOR = 90000 + tonumber(("$Revision: 85 $"):match("(%d+)"))
+local SINK20_MINOR = 90000 + tonumber(("$Revision: 97 $"):match("(%d+)"))
 
 local sink = LibStub:NewLibrary(SINK20, SINK20_MINOR)
 if not sink then return end
@@ -38,10 +35,11 @@ sink.stickyAddons = sink.stickyAddons or {
 	MikSBT = true,
 	SCT = true,
 	Parrot = true,
-	BCF = true,
 }
 
 -- Upgrade complete
+
+local format = string.format
 
 local L_DEFAULT = "Default"
 local L_DEFAULT_DESC = "Route output from this addon through the first available handler, preferring scrolling combat text addons if available."
@@ -49,7 +47,6 @@ local L_ROUTE = "Route output from this addon through %s."
 local L_SCT = "Scrolling Combat Text"
 local L_MSBT = "MikSBT"
 local L_BIGWIGS = "BigWigs"
-local L_BCF = "BlinkCombatFeedback"
 local L_UIERROR = "Blizzard Error Frame"
 local L_CHAT = "Chat"
 local L_BLIZZARD = "Blizzard FCT"
@@ -74,7 +71,6 @@ if l == "koKR" then
 	L_SCT = "Scrolling Combat Text"
 	L_MSBT = "MikSBT"
 	L_BIGWIGS = "BigWigs"
-	L_BCF = "블링크의 전투 메세지"
 	L_UIERROR = "블리자드 오류 창"
 	L_CHAT = "대화창"
 	L_BLIZZARD = "블리자드 FCT"
@@ -95,7 +91,6 @@ elseif l == "frFR" then
 	L_SCT = "Scrolling Combat Text"
 	L_MSBT = "MikSBT"
 	L_BIGWIGS = "BigWigs"
-	L_BCF = "BlinkCombatFeedback"
 	L_UIERROR = "Cadre des erreurs"
 	L_CHAT = "Fenêtre de discussion"
 	L_BLIZZARD = "TCF de Blizzard"
@@ -117,7 +112,6 @@ elseif l == "deDE" then
 	L_SCT = "Scrolling Combat Text(SCT)"
 	L_MSBT = "MikSBT"
 	L_BIGWIGS = "BigWigs"
-	L_BCF = "BlinkCombatFeedback"
 	L_UIERROR = "Blizzard's Fehler Fenster"
 	L_CHAT = "Im Chat"
 	L_BLIZZARD = "Blizzard's schwebenden Kampftext"
@@ -138,7 +132,6 @@ elseif l == "zhCN" then
 	L_SCT = "SCT"
 	L_MSBT = "MikSBT"
 	L_BIGWIGS = "BigWigs"
-	L_BCF = "BlinkCombatFeedback"
 	L_UIERROR = "Blizzard 错误框体"
 	L_CHAT = "聊天框体"
 	L_BLIZZARD = "系统自带滚动战斗信息"
@@ -161,7 +154,6 @@ elseif l == "zhTW" then
 	L_SCT = "SCT"
 	L_MSBT = "MikSBT"
 	L_BIGWIGS = "BigWigs"
-	L_BCF = "BlinkCombatFeedback"
 	L_UIERROR = "Blizzard 錯誤訊息框架"
 	L_CHAT = "聊天視窗"
 	L_BLIZZARD = "Blizzard 浮動戰鬥文字"
@@ -184,7 +176,6 @@ elseif l == "ruRU" then
 	L_SCT = "SCT"
 	L_MSBT = "MikSBT"
 	L_BIGWIGS = "BigWigs"
-	L_BCF = "BlinkCombatFeedback"
 	L_UIERROR = "Фрейм ошибок Blizzard"
 	L_CHAT = "Чат"
 	L_BLIZZARD = "Blizzard FCT"
@@ -206,7 +197,6 @@ elseif l == "esES" or l == "esMX" then
 	L_SCT = "Scrolling Combat Text"
 	L_MSBT = "MikSBT"
 	L_BIGWIGS = "BigWigs"
-	L_BCF = "BlinkCombatFeedback"
 	L_UIERROR = "Marco de errores de Blizzard"
 	L_CHAT = "Chat"
 	L_BLIZZARD = "Texto flotante de Blizzard"
@@ -221,6 +211,10 @@ elseif l == "esES" or l == "esMX" then
 	L_STICKY_DESC = "Especifica que los mensajes deberán mostrarse de forma destacada.\n\nSólo disponible en algunas opciones de salida."
 	L_NONE = "Ninguno"
 	L_NONE_DESC = "Oculta todos los mensajes de este addon."
+elseif l == "ptBR" then
+	-- Missing
+elseif l == "itIT" then
+	-- Missing
 end
 
 local SML = LibStub("LibSharedMedia-3.0", true)
@@ -258,14 +252,6 @@ local function msbt(addon, text, r, g, b, font, size, outline, sticky, _, icon)
 	MikSBT.DisplayMessage(text, location, s, r * 255, g * 255, b * 255, size, font, msbt_outlines[outline], icon)
 end
 
-local bcf_outlines = {NORMAL = "", OUTLINE = "OUTLINE", THICKOUTLINE = "THICKOUTLINE"}
-local function bcf(addon, text, r, g, b, font, size, outline, sticky, _, icon)
-	if icon then text = "|T"..icon..":20:20:-5|t"..text end
-	local loc = sink.storageForAddon[addon] and sink.storageForAddon[addon].sink20ScrollArea or "Sticky"
-	local s = getSticky(addon) or sticky
-	BlinkCombatFeedback:DisplayCustomEvent({display = {msg = text, color = ("%02x%02x%02x"):format(r * 255, g * 255, b * 255), scrollArea = loc, scrollType = s and "Sticky" or "up", size = size, outling = bcf_outlines[outline], align = "center", font = font}})
-end
-
 local function blizzard(addon, text, r, g, b, font, size, outline, sticky, _, icon)
 	if icon then text = "|T"..icon..":20:20:-5|t"..text end
 	if tostring(SHOW_COMBAT_TEXT) ~= "0" then
@@ -290,24 +276,24 @@ sink.channelMapping = sink.channelMapping or {
 	[RAID_WARNING] = "RAID_WARNING",
 	[GROUP] = "GROUP",
 }
+sink.channelMappingIds = sink.channelMappingIds or {}
 sink.frame = sink.frame or CreateFrame("Frame")
 sink.frame:UnregisterAllEvents()
 sink.frame:RegisterEvent("CHANNEL_UI_UPDATE")
 sink.frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 do
-	local newChannels = {}
 	local function loop(...)
-		wipe(newChannels)
+		wipe(sink.channelMappingIds)
 		for i = 1, select("#", ...), 2 do
 			local id, name = select(i, ...)
-			newChannels[name] = true
+			sink.channelMappingIds[name] = id
 		end
-		for k, v in pairs(sink.channelMapping) do
-			if v == "CHANNEL" and not newChannels[k] then
+		for k, v in next, sink.channelMapping do
+			if v == "CHANNEL" and not sink.channelMappingIds[k] then
 				sink.channelMapping[k] = nil
 			end
 		end
-		for k in pairs(newChannels) do sink.channelMapping[k] = "CHANNEL" end
+		for k in next, sink.channelMappingIds do sink.channelMapping[k] = "CHANNEL" end
 	end
 	local function rescanChannels() loop(GetChannelList()) end
 	sink.frame:SetScript("OnEvent", rescanChannels)
@@ -328,14 +314,13 @@ local function channel(addon, text)
 	local loc = sink.storageForAddon[addon] and sink.storageForAddon[addon].sink20ScrollArea or "SAY"
 	local chan = sink.channelMapping[loc]
 	if chan == "GROUP" then
-		chan = select(2, IsInInstance()) == "pvp" and "INSTANCE_CHAT" or (UnitInRaid("player") and "RAID" or "PARTY")
-		if chan == "PARTY" and GetNumSubgroupMembers() == 0 then chan = "SAY" end
+		chan = (IsInGroup(2) and "INSTANCE_CHAT") or (IsInRaid() and "RAID") or (IsInGroup() and "PARTY") or "SAY"
 	elseif chan == "CHANNEL" then
-		local id, name = GetChannelName(loc)
+		local id, name = GetChannelName(sink.channelMappingIds[loc])
 		if name then
 			SendChatMessage(text, "CHANNEL", nil, id)
 		else
-			print(text .. L_NOTINCHANNEL)
+			print("LibSink:", text, L_NOTINCHANNEL:format(loc))
 		end
 		return
 	end
@@ -357,18 +342,16 @@ do
 	local white = {r = 1, g = 1, b = 1}
 	function rw(addon, text, r, g, b, _, _, _, _, _, icon)
 		if r or g or b then
-			local c = "|cff" .. string.format("%02x%02x%02x", (r or 0) * 255, (g or 0) * 255, (b or 0) * 255)
-			text = c .. text .. "|r"
+			text = format("\124cff%02x%02x%02x%s\124r", (r or 0) * 255, (g or 0) * 255, (b or 0) * 255, text)
 		end
-		if icon then text = "|T"..icon..":20:20:-5|t"..text end
+		if icon then text = "\124T"..icon..":20:20:-5\124t"..text end
 		RaidNotice_AddMessage(RaidWarningFrame, text, white)
 	end
 end
 
 local function noop() --[[ noop! ]] end
 
-local handlerPriority = { "Parrot", "SCT", "MikSBT", "BCF" }
--- Thanks to ckk for these
+local handlerPriority = { "Parrot", "SCT", "MikSBT" }
 local customHandlersEnabled = {
 	Parrot = function()
 		if not _G.Parrot then return end
@@ -377,23 +360,10 @@ local customHandlersEnabled = {
 	SCT = function()
 		return _G.SCT and _G.SCT:IsEnabled()
 	end,
-	BCF = function()
-		return bcfDB and bcfDB["enable"]
+	MikSBT = function()
+		return _G.MikSBT and not _G.MikSBT.IsModDisabled()
 	end,
 }
-
--- Default to version 5 or higher now
-local msbtVersion = tonumber(string.match(GetAddOnMetadata("MikScrollingBattleText", "Version") or "","^%d+\.%d+")) or 5
-local isMSBTFive = math.floor(msbtVersion) > 4 and true or nil
-if isMSBTFive then
-	customHandlersEnabled.MikSBT = function()
-		return _G.MikSBT and not _G.MikSBT.IsModDisabled()
-	end
-else
-	customHandlersEnabled.MikSBT = function()
-		return _G.MikSBT and _G.MSBTProfiles and _G.MSBTProfiles.GetSavedVariables() and not MSBTProfiles.GetSavedVariables().UserDisabled
-	end
-end
 
 local currentHandler = nil
 local function getPrioritizedSink()
@@ -455,9 +425,6 @@ do
 	local function shouldDisableMSBT()
 		return not _G.MikSBT
 	end
-	local function shouldDisableBCF()
-		return not ( bcfDB and bcfDB["enable"] )
-	end
 	local function shouldDisableParrot()
 		return not _G.Parrot
 	end
@@ -477,30 +444,18 @@ do
 				return Parrot:GetScrollAreasValidate()
 			end
 		elseif addon == "MikSBT" then
-			if isMSBTFive then
-				if not msbtFrames then
-					msbtFrames = {}
-					for key, name in MikSBT.IterateScrollAreas() do
-						table.insert(msbtFrames, name)
-					end
+			if not msbtFrames then
+				msbtFrames = {}
+				for key, name in MikSBT.IterateScrollAreas() do
+					msbtFrames[#msbtFrames+1] = name
 				end
-				return msbtFrames
-			else
-				return MikSBT.GetScrollAreaList()
 			end
-		elseif addon == "BCF" then
-			if bcfDB then
-				local bcfAreas = {}
-				for i = 1, #bcfDB["scrollAreas"] do
-					bcfAreas[#bcfAreas + 1] = bcfDB["scrollAreas"][i]["name"]
-				end
-				return bcfAreas
-			end
+			return msbtFrames
 		elseif addon == "SCT" then
 			return sctFrames
 		elseif addon == "Channel" then
 			wipe(tmp)
-			for k in pairs(sink.channelMapping) do
+			for k in next, sink.channelMapping do
 				tmp[#tmp + 1] = k
 			end
 			return tmp
@@ -515,7 +470,6 @@ do
 		Default = {L_DEFAULT, L_DEFAULT_DESC},
 		SCT = {L_SCT, nil, shouldDisableSCT},
 		MikSBT = {L_MSBT, nil, shouldDisableMSBT},
-		BCF = {L_BCF, nil, shouldDisableBCF},
 		Parrot = {L_PARROT, nil, shouldDisableParrot},
 		Blizzard = {L_BLIZZARD, nil, shouldDisableFCT},
 		RaidWarning = {L_RW},
@@ -530,7 +484,7 @@ do
 		args["Ace2"][key] = {
 			type = "toggle",
 			name = name,
-			desc = desc or L_ROUTE:format(name),
+			desc = desc or format(L_ROUTE, name),
 			isRadio = true,
 			hidden = hidden
 		}
@@ -595,7 +549,7 @@ do
 		args["Ace3"][key] = {
 			type = "toggle",
 			name = name,
-			desc = desc or L_ROUTE:format(name),
+			desc = desc or format(L_ROUTE, name),
 			hidden = hidden
 		}
 	end
@@ -670,10 +624,10 @@ do
 		["Ace2"] = getAce2SinkOptions,
 		["Ace3"] = getAce3SinkOptions
 	}
-	for generatorName, generator in pairs(sinkOptionGenerators) do
+	for generatorName, generator in next, sinkOptionGenerators do
 		options[generatorName] = options[generatorName] or {}
 		args[generatorName] = args[generatorName] or {}
-		for name, opts in pairs(sinks) do
+		for name, opts in next, sinks do
 			generator(name, opts)
 		end
 	end
@@ -716,7 +670,7 @@ do
 		assert(type(name) == "string")
 		assert(type(desc) == "string" or desc == nil)
 		assert(type(func) == "function" or type(func) == "string")
-		assert(type(scrollAreas) == "function" or scrollAreas == nil)
+		assert(type(scrollAreaFunc) == "function" or scrollAreaFunc == nil)
 		assert(type(hasSticky) == "boolean" or hasSticky == nil)
 
 		if sinks[shortName] or sink.handlers[shortName] then
@@ -743,7 +697,7 @@ do
 		end
 		sink.stickyAddons[shortName] = hasSticky and true or nil
 
-		for k, v in pairs(sinkOptionGenerators) do
+		for k, v in next, sinkOptionGenerators do
 			v(shortName, sinks[shortName])
 		end
 	end
@@ -769,7 +723,6 @@ local handlers = {
 	Parrot = parrot,
 	SCT = sct,
 	MikSBT = msbt,
-	BCF = bcf,
 	ChatFrame = chat,
 	Channel = channel,
 	UIErrorsFrame = uierror,
@@ -778,7 +731,7 @@ local handlers = {
 	None = noop,
 }
 -- Overwrite any handler functions from the old library
-for k, v in pairs(handlers) do
+for k, v in next, handlers do
 	sink.handlers[k] = v
 end
 
@@ -794,13 +747,13 @@ local mixins = {
 
 function sink:Embed(target)
 	sink.embeds[target] = true
-	for _,v in pairs(mixins) do
+	for _,v in next, mixins do
 		target[v] = sink[v]
 	end
 	return target
 end
 
-for addon in pairs(sink.embeds) do
+for addon in next, sink.embeds do
 	sink:Embed(addon)
 end
 

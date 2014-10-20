@@ -1,10 +1,10 @@
 -------------------------------------------------------------------------------
 -- Constants.lua
 -------------------------------------------------------------------------------
--- File date: 2013-11-13T06:57:08Z
--- File hash: 1999a59
--- Project hash: e8a8419
--- Project version: 2.5.13
+-- File date: 2014-05-29T04:08:52Z
+-- File hash: 9f07fa1
+-- Project hash: 5b35dab
+-- Project version: 3.0.5
 -------------------------------------------------------------------------------
 -- Please see http://www.wowace.com/addons/arl/ for more information.
 -------------------------------------------------------------------------------
@@ -25,13 +25,19 @@ local FOLDER_NAME, private = ...
 private.addon_name = "Ackis Recipe List"
 
 local LibStub = _G.LibStub
-local L		= LibStub("AceLocale-3.0"):GetLocale(private.addon_name)
+local L = LibStub("AceLocale-3.0"):GetLocale(private.addon_name)
+
+-- Required so constants can be assigned to the AddOn object in Core.lua in order to be accessible from profession modules
+local constants = {}
+private.constants = constants
 
 -------------------------------------------------------------------------------
 -- General constants.
 -------------------------------------------------------------------------------
 private.PLAYER_NAME = _G.UnitName("player")
 private.REALM_NAME = _G.GetRealmName()
+
+private.COORDINATES_FORMAT = "(%.2f, %.2f)"
 
 -------------------------------------------------------------------------------
 -- Profession data.
@@ -40,29 +46,24 @@ private.REALM_NAME = _G.GetRealmName()
 private.MINING_PROFESSION_NAME = _G.GetSpellInfo(2575)
 
 private.PROFESSION_SPELL_IDS = {
-	ALCHEMY		= 2259,
-	BLACKSMITHING	= 2018,
-	COOKING		= 2550,
-	ENCHANTING	= 7411,
-	ENGINEERING	= 4036,
-	FIRSTAID	= 3273,
-	INSCRIPTION	= 45357,
-	JEWELCRAFTING	= 25229,
-	LEATHERWORKING	= 2108,
-	RUNEFORGING	= 53428,
-	SMELTING	= 2656,
-	TAILORING	= 3908,
+	ALCHEMY = 2259,
+	BLACKSMITHING = 2018,
+	COOKING = 2550,
+	ENCHANTING = 7411,
+	ENGINEERING = 4036,
+	FIRSTAID = 3273,
+	INSCRIPTION = 45357,
+	JEWELCRAFTING = 25229,
+	LEATHERWORKING = 2108,
+	SMELTING = 2656,
+	TAILORING = 3908,
 }
+constants.PROFESSION_SPELL_IDS = private.PROFESSION_SPELL_IDS
 
 private.LOCALIZED_PROFESSION_NAMES = {}
 
 for name, spell_id in pairs(private.PROFESSION_SPELL_IDS) do
 	private.LOCALIZED_PROFESSION_NAMES[name] = _G.GetSpellInfo(spell_id)
-end
-
--- Special case for Runeforging is needed because the French translation is non-conforming.
-if _G.GetLocale() == "frFR" then
-	private.LOCALIZED_PROFESSION_NAMES.RUNEFORGING = "Runeforger"
 end
 
 -- This is needed due to Pandaren cooking spells.
@@ -90,9 +91,8 @@ private.PROFESSION_LABELS = {
 	"inscription",		-- 7
 	"jewelcrafting",	-- 8
 	"leatherworking",	-- 9
-	"runeforging",		-- 10
-	"smelting",		-- 11
-	"tailoring",		-- 12
+	"smelting",		-- 10
+	"tailoring",		-- 11
 }
 
 private.ORDERED_PROFESSIONS = {
@@ -105,9 +105,23 @@ private.ORDERED_PROFESSIONS = {
 	private.LOCALIZED_PROFESSION_NAMES.INSCRIPTION,		-- 7
 	private.LOCALIZED_PROFESSION_NAMES.JEWELCRAFTING, 	-- 8
 	private.LOCALIZED_PROFESSION_NAMES.LEATHERWORKING, 	-- 9
-	private.LOCALIZED_PROFESSION_NAMES.RUNEFORGING,		-- 10
-	private.LOCALIZED_PROFESSION_NAMES.SMELTING,		-- 11
-	private.LOCALIZED_PROFESSION_NAMES.TAILORING,		-- 12
+	private.LOCALIZED_PROFESSION_NAMES.SMELTING,		-- 10
+	private.LOCALIZED_PROFESSION_NAMES.TAILORING,		-- 11
+}
+
+-- Required for loading profession modules.
+private.PROFESSION_MODULE_NAMES = {
+	[private.LOCALIZED_PROFESSION_NAMES.ALCHEMY] = "Alchemy",
+	[private.LOCALIZED_PROFESSION_NAMES.BLACKSMITHING] = "Blacksmithing",
+	[private.LOCALIZED_PROFESSION_NAMES.COOKING] = "Cooking",
+	[private.LOCALIZED_PROFESSION_NAMES.ENCHANTING] = "Enchanting",
+	[private.LOCALIZED_PROFESSION_NAMES.ENGINEERING] = "Engineering",
+	[private.LOCALIZED_PROFESSION_NAMES.FIRSTAID] = "FirstAid",
+	[private.LOCALIZED_PROFESSION_NAMES.INSCRIPTION] = "Inscription",
+	[private.LOCALIZED_PROFESSION_NAMES.JEWELCRAFTING] = "Jewelcrafting",
+	[private.LOCALIZED_PROFESSION_NAMES.LEATHERWORKING] = "Leatherworking",
+	[private.LOCALIZED_PROFESSION_NAMES.SMELTING] = "Smelting",
+	[private.LOCALIZED_PROFESSION_NAMES.TAILORING] = "Tailoring",
 }
 
 private.PROFESSION_IDS = {}
@@ -126,9 +140,8 @@ private.PROFESSION_TEXTURES = {
 	[[INV_Inscription_Tradeskill01]],	-- 07 (Inscription)
 	[[INV_Misc_Gem_01]],			-- 08 (Jewelcrafting)
 	[[Trade_LeatherWorking]],		-- 09 (Leatherworking)
-	[[Spell_DeathKnight_FrozenRuneWeapon]],	-- 10 (Runeforging)
-	[[Spell_Fire_FlameBlades]],		-- 11 (Smelting)
-	[[Trade_Tailoring]],			-- 12 (Tailoring)
+	[[Spell_Fire_FlameBlades]],		-- 10 (Smelting)
+	[[Trade_Tailoring]],			-- 11 (Tailoring)
 }
 
 -------------------------------------------------------------------------------
@@ -144,6 +157,7 @@ private.ITEM_QUALITY_NAMES = {
 }
 
 private.ITEM_QUALITIES = {}
+constants.ITEM_QUALITIES = private.ITEM_QUALITIES
 
 for index = 1, #private.ITEM_QUALITY_NAMES do
 	private.ITEM_QUALITIES[private.ITEM_QUALITY_NAMES[index]] = index
@@ -161,6 +175,7 @@ private.GAME_VERSION_NAMES = {
 }
 
 private.GAME_VERSIONS = {}
+constants.GAME_VERSIONS = private.GAME_VERSIONS
 
 for index = 1, #private.GAME_VERSION_NAMES do
 	private.GAME_VERSIONS[private.GAME_VERSION_NAMES[index]] = index
@@ -182,7 +197,7 @@ private.COMMON_FLAGS_WORD1 = {
 	VENDOR		= 0x00000008,	-- 4
 	INSTANCE	= 0x00000010,	-- 5
 	RAID		= 0x00000020,	-- 6
-	SEASONAL	= 0x00000040,	-- 7
+	WORLD_EVENTS	= 0x00000040,	-- 7
 	QUEST		= 0x00000080,	-- 8
 	PVP		= 0x00000100,	-- 9
 	WORLD_DROP	= 0x00000200,	-- 10
@@ -318,6 +333,7 @@ for index = 1, #private.FLAG_WORDS do
 end
 
 private.FILTER_IDS = {}
+constants.FILTER_IDS = private.FILTER_IDS
 
 for index = 1, #private.FILTER_STRINGS do
 	private.FILTER_IDS[private.FILTER_STRINGS[index]] = index
@@ -326,187 +342,7 @@ end
 -------------------------------------------------------------------------------
 -- Item filter types.
 -------------------------------------------------------------------------------
-private.ITEM_FILTER_TYPES = {
-	-------------------------------------------------------------------------------
-	-- Alchemy
-	-------------------------------------------------------------------------------
-	ALCHEMY_CAULDRON = true,
-	ALCHEMY_ELIXIR = true,
-	ALCHEMY_FLASK = true,
-	ALCHEMY_MISC = true,
-	ALCHEMY_OIL = true,
-	ALCHEMY_POTION = true,
-	ALCHEMY_TRANSMUTE = true,
-	ALCHEMY_TRINKET = true,
-	ALCHEMY_MOUNT = true,
-	-------------------------------------------------------------------------------
-	-- Blacksmithing
-	-------------------------------------------------------------------------------
-	BLACKSMITHING_CHEST = true,
-	BLACKSMITHING_DAGGER = true,
-	BLACKSMITHING_FEET = true,
-	BLACKSMITHING_HANDS = true,
-	BLACKSMITHING_HEAD = true,
-	BLACKSMITHING_ITEM_ENHANCEMENT = true,
-	BLACKSMITHING_LEGS = true,
-	BLACKSMITHING_MATERIALS = true,
-	BLACKSMITHING_ONE_HAND_AXE = true,
-	BLACKSMITHING_ONE_HAND_MACE = true,
-	BLACKSMITHING_ONE_HAND_SWORD = true,
-	BLACKSMITHING_POLEARM = true,
-	BLACKSMITHING_ROD = true,
-	BLACKSMITHING_SHIELD = true,
-	BLACKSMITHING_SHOULDER = true,
-	BLACKSMITHING_SKELETON_KEY = true,
-	BLACKSMITHING_THROWN = true,
-	BLACKSMITHING_TWO_HAND_AXE = true,
-	BLACKSMITHING_TWO_HAND_MACE = true,
-	BLACKSMITHING_TWO_HAND_SWORD = true,
-	BLACKSMITHING_WAIST = true,
-	BLACKSMITHING_WRIST = true,
-	-------------------------------------------------------------------------------
-	-- Enchanting
-	-------------------------------------------------------------------------------
-	ENCHANTING_BOOTS = true,
-	ENCHANTING_BRACER = true,
-	ENCHANTING_CHEST = true,
-	ENCHANTING_CLOAK = true,
-	ENCHANTING_GLOVES = true,
-	ENCHANTING_RING = true,
-	ENCHANTING_SHIELD = true,
-	ENCHANTING_WEAPON = true,
-	ENCHANTING_2H_WEAPON = true,
-	ENCHANTING_STAFF = true,
-	ENCHANTING_OIL = true,
-	ENCHANTING_ROD = true,
-	ENCHANTING_WAND = true,
-	ENCHANTING_MISC = true,
-	-------------------------------------------------------------------------------
-	-- Engineering
-	-------------------------------------------------------------------------------
-	ENGINEERING_BACK = true,
-	ENGINEERING_BAG = true,
-	ENGINEERING_BOW = true,
-	ENGINEERING_CREATED_ITEM = true,
-	ENGINEERING_CROSSBOW = true,
-	ENGINEERING_FEET = true,
-	ENGINEERING_GUN = true,
-	ENGINEERING_HEAD = true,
-	ENGINEERING_ITEM_ENHANCEMENT = true,
-	ENGINEERING_MAIN_HAND = true,
-	ENGINEERING_MATERIALS = true,
-	ENGINEERING_MOUNT = true,
-	ENGINEERING_NECK = true,
-	ENGINEERING_PET = true,
-	ENGINEERING_SHIELD = true,
-	ENGINEERING_TRINKET = true,
-	-------------------------------------------------------------------------------
-	-- Inscription
-	-------------------------------------------------------------------------------
-	INSCRIPTION_CREATED_ITEM = true,
-	INSCRIPTION_ITEM_ENHANCEMENT = true,
-	INSCRIPTION_MAJOR_GLYPH = true,
-	INSCRIPTION_MATERIALS = true,
-	INSCRIPTION_MINOR_GLYPH = true,
-	INSCRIPTION_OFF_HAND = true,
-	INSCRIPTION_STAFF = true,
-	INSCRIPTION_SCROLL = true,
-	INSCRIPTION_PET = true,
-	INSCRIPTION_TRINKET = true,
-	-------------------------------------------------------------------------------
-	-- Jewelcrafting
-	-------------------------------------------------------------------------------
-	JEWELCRAFTING_CREATED_ITEM = true,
-	JEWELCRAFTING_FIST_WEAPON = true,
-	JEWELCRAFTING_HEAD = true,
-	JEWELCRAFTING_MATERIALS = true,
-	JEWELCRAFTING_NECK = true,
-	JEWELCRAFTING_RING = true,
-	JEWELCRAFTING_TRINKET = true,
-	JEWELCRAFTING_GEM_BLUE = true,
-	JEWELCRAFTING_GEM_GREEN = true,
-	JEWELCRAFTING_GEM_META = true,
-	JEWELCRAFTING_GEM_ORANGE = true,
-	JEWELCRAFTING_GEM_PRISMATIC = true,
-	JEWELCRAFTING_GEM_PURPLE = true,
-	JEWELCRAFTING_GEM_RED = true,
-	JEWELCRAFTING_GEM_YELLOW = true,
-	JEWELCRAFTING_MOUNT = true,
-	JEWELCRAFTING_PET = true,
-	-------------------------------------------------------------------------------
-	-- Leatherworking
-	-------------------------------------------------------------------------------
-	LEATHERWORKING_BACK = true,
-	LEATHERWORKING_BAG = true,
-	LEATHERWORKING_CHEST = true,
-	LEATHERWORKING_CREATED_ITEM = true,
-	LEATHERWORKING_FEET = true,
-	LEATHERWORKING_HANDS = true,
-	LEATHERWORKING_HEAD = true,
-	LEATHERWORKING_ITEM_ENHANCEMENT = true,
-	LEATHERWORKING_LEGS = true,
-	LEATHERWORKING_MATERIALS = true,
-	LEATHERWORKING_SHIELD = true,
-	LEATHERWORKING_SHOULDER = true,
-	LEATHERWORKING_THROWN = true,
-	LEATHERWORKING_WAIST = true,
-	LEATHERWORKING_WRIST = true,
-	-------------------------------------------------------------------------------
-	-- Tailoring
-	-------------------------------------------------------------------------------
-	TAILORING_BACK = true,
-	TAILORING_BAG = true,
-	TAILORING_CHEST = true,
-	TAILORING_FEET = true,
-	TAILORING_HANDS = true,
-	TAILORING_HEAD = true,
-	TAILORING_ITEM_ENHANCEMENT = true,
-	TAILORING_LEGS = true,
-	TAILORING_MATERIALS = true,
-	TAILORING_MISC = true,
-	TAILORING_SHIRT = true,
-	TAILORING_SHOULDER = true,
-	TAILORING_WAIST = true,
-	TAILORING_WRIST = true,
-}
-
--------------------------------------------------------------------------------
--- Acquire types.
--------------------------------------------------------------------------------
-private.ACQUIRE_NAMES = {
-	L["Trainer"],
-	L["Vendor"],
-	L["Mob Drop"],
-	L["Quest"],
-	_G.GetCategoryInfo(155),
-	_G.REPUTATION,
-	L["World Drop"],
-	_G.ACHIEVEMENTS,
-	L["Discovery"],
-	_G.MISCELLANEOUS,
-	L["Retired"],
-
-}
-
-private.ACQUIRE_STRINGS = {
-	"TRAINER",
-	"VENDOR",
-	"MOB_DROP",
-	"QUEST",
-	"SEASONAL",
-	"REPUTATION",
-	"WORLD_DROP",
-	"ACHIEVEMENT",
-	"DISCOVERY",
-	"CUSTOM",
-	"RETIRED",
-}
-
-private.ACQUIRE_TYPES = {}
-
-for index = 1, #private.ACQUIRE_STRINGS do
-	private.ACQUIRE_TYPES[private.ACQUIRE_STRINGS[index]] = index
-end
+constants.ITEM_FILTER_TYPES = {} -- Populated via profession modules.
 
 -------------------------------------------------------------------------------
 -- Reputation levels.
@@ -519,6 +355,7 @@ private.REP_LEVEL_STRINGS = {
 }
 
 private.REP_LEVELS = {}
+constants.REP_LEVELS = private.REP_LEVELS
 
 for index = 1, #private.REP_LEVEL_STRINGS do
 	private.REP_LEVELS[private.REP_LEVEL_STRINGS[index]] = index
@@ -689,93 +526,9 @@ private.LOCALIZED_FACTION_STRINGS = {
 	["Nat Pagle"] = _G.GetFactionInfoByID(1358),
 	["The Black Prince"] = _G.GetFactionInfoByID(1359),
 }
---[[
-private.LOCALIZED_FACTION_STRINGS = {
-	["Neutral"] = _G.FACTION_STANDING_LABEL4,
-	["Friendly"] = _G.FACTION_STANDING_LABEL5,
-	["Honored"] = _G.FACTION_STANDING_LABEL6,
-	["Revered"] = _G.FACTION_STANDING_LABEL7,
-	["Exalted"] = _G.FACTION_STANDING_LABEL8,
-	["Horde"] = _G.GetFactionInfoByID(67),
-	["Alliance"] = _G.GetFactionInfoByID(469),
-	["THORIUM_BROTHERHOOD"] = _G.GetFactionInfoByID(59),
-	["ZANDALAR_TRIBE"] = _G.GetFactionInfoByID(270),
-	["ARGENT_DAWN"] = _G.GetFactionInfoByID(529),
-	["TIMBERMAW_HOLD"] = _G.GetFactionInfoByID(576),
-	["WINTERSABER_TRAINERS"] = _G.GetFactionInfoByID(589),
-	["CENARION_CIRCLE"] = _G.GetFactionInfoByID(609),
-	["THE_ALDOR"] = _G.GetFactionInfoByID(932),
-	["THE_CONSORTIUM"] = _G.GetFactionInfoByID(933),
-	["THE_SCRYERS"] = _G.GetFactionInfoByID(934),
-	["THE_SHATAR"] = _G.GetFactionInfoByID(935),
-	["THE_MAGHAR"] = _G.GetFactionInfoByID(941),
-	["CENARION_EXPEDITION"] = _G.GetFactionInfoByID(942),
-	["HONOR_HOLD"] = _G.GetFactionInfoByID(946),
-	["THRALLMAR"] = _G.GetFactionInfoByID(947),
-	["THE_VIOLET_EYE"] = _G.GetFactionInfoByID(967),
-	["SPOREGGAR"] = _G.GetFactionInfoByID(970),
-	["KURENAI"] = _G.GetFactionInfoByID(978),
-	["KEEPERS_OF_TIME"] = _G.GetFactionInfoByID(989),
-	["THE_SCALE_OF_THE_SANDS"] = _G.GetFactionInfoByID(990),
-	["LOWER_CITY"] = _G.GetFactionInfoByID(1011),
-	["ASHTONGUE_DEATHSWORN"] = _G.GetFactionInfoByID(1012),
-	["ALLIANCE_VANGUARD"] = _G.GetFactionInfoByID(1037),
-	["VALIANCE_EXPEDITION"] = _G.GetFactionInfoByID(1050),
-	["HORDE_EXPEDITION"] = _G.GetFactionInfoByID(1052),
-	["THE_TAUNKA"] = _G.GetFactionInfoByID(1064),
-	["THE_HAND_OF_VENGEANCE"] = _G.GetFactionInfoByID(1067),
-	["EXPLORERS_LEAGUE"] = _G.GetFactionInfoByID(1068),
-	["THE_KALUAK"] = _G.GetFactionInfoByID(1073),
-	["SHATTERED_SUN_OFFENSIVE"] = _G.GetFactionInfoByID(1077),
-	["WARSONG_OFFENSIVE"] = _G.GetFactionInfoByID(1085),
-	["KIRIN_TOR"] = _G.GetFactionInfoByID(1090),
-	["THE_WYRMREST_ACCORD"] = _G.GetFactionInfoByID(1091),
-	["THE_SILVER_COVENANT"] = _G.GetFactionInfoByID(1094),
-	["KNIGHTS_OF_THE_EBON_BLADE"] = _G.GetFactionInfoByID(1098),
-	["FRENZYHEART_TRIBE"] = _G.GetFactionInfoByID(1104),
-	["THE_ORACLES"] = _G.GetFactionInfoByID(1105),
-	["ARGENT_CRUSADE"] = _G.GetFactionInfoByID(1106),
-	["THE_SONS_OF_HODIR"] = _G.GetFactionInfoByID(1119),
-	["THE_SUNREAVERS"] = _G.GetFactionInfoByID(1124),
-	["THE_EARTHEN_RING"] = _G.GetFactionInfoByID(1135),
-	["TRANQUILLIEN_CONVERSION"] = _G.GetFactionInfoByID(1136),
-	["THE_ASHEN_VERDICT"] = _G.GetFactionInfoByID(1156),
-	["GUARDIANS_OF_HYJAL"] = _G.GetFactionInfoByID(1158),
-	["THERAZANE"] = _G.GetFactionInfoByID(1171),
-	["DRAGONMAW_CLAN"] = _G.GetFactionInfoByID(1172),
-	["RAMKAHEN"] = _G.GetFactionInfoByID(1173),
-	["WILDHAMMER_CLAN"] = _G.GetFactionInfoByID(1174),
-	["BARADINS_WARDENS"] = _G.GetFactionInfoByID(1177),
-	["HELLSCREAMS_REACH"] = _G.GetFactionInfoByID(1178),
-	["SHANG_XIS_ACADEMY"] = _G.GetFactionInfoByID(1216),
-	["FOREST_HOZEN"] = _G.GetFactionInfoByID(1228),
-	["PEARLFIN_JINYU"] = _G.GetFactionInfoByID(1242),
-	["GOLDEN_LOTUS"] = _G.GetFactionInfoByID(1269),
-	["SHADO_PAN"] = _G.GetFactionInfoByID(1270),
-	["ORDER_OF_THE_CLOUD_SERPENT"] = _G.GetFactionInfoByID(1271),
-	["THE_TILLERS"] = _G.GetFactionInfoByID(1272),
-	["JOGU_THE_DRUNK"] = _G.GetFactionInfoByID(1273),
-	["ELLA"] = _G.GetFactionInfoByID(1275),
-	["OLD_HILLPAW"] = _G.GetFactionInfoByID(1276),
-	["CHEE_CHEE"] = _G.GetFactionInfoByID(1277),
-	["SHO"] = _G.GetFactionInfoByID(1278),
-	["HAOHAN_MUDCLAW"] = _G.GetFactionInfoByID(1279),
-	["TINA_MUDCLAW"] = _G.GetFactionInfoByID(1280),
-	["GINA_MUDCLAW"] = _G.GetFactionInfoByID(1281),
-	["FISH_FELLREED"] = _G.GetFactionInfoByID(1282),
-	["FARMER_FUNG"] = _G.GetFactionInfoByID(1283),
-	["THE_ANGLERS"] = _G.GetFactionInfoByID(1302),
-	["THE_KLAXXI"] = _G.GetFactionInfoByID(1337),
-	["THE_AUGUST_CELESTIALS"] = _G.GetFactionInfoByID(1341),
-	["THE_LOREWALKERS"] = _G.GetFactionInfoByID(1345),
-	["THE_BREWMASTERS"] = _G.GetFactionInfoByID(1351),
-	["HUOJIN_PANDAREN"] = _G.GetFactionInfoByID(1352),
-	["TUSHUI_PANDAREN"] = _G.GetFactionInfoByID(1353),
-	["NAT_PAGLE"] = _G.GetFactionInfoByID(1358),
-	["THE_BLACK_PRINCE"] = _G.GetFactionInfoByID(1359),
-}
-]]--
+
 private.FACTION_IDS = {}
+constants.FACTION_IDS = private.FACTION_IDS
 
 for id, name in pairs(private.FACTION_STRINGS) do
 	private.FACTION_IDS[name] = id
@@ -937,6 +690,8 @@ private.ZONE_NAMES = {
 	TIMELESS_ISLE = _G.GetMapNameByID(951),
 }
 
+constants.ZONE_NAMES = private.ZONE_NAMES
+
 do
 	local continent_names = { _G.GetMapContinents() }
 
@@ -997,6 +752,8 @@ private.BOSS_NAMES = {
 	DARKMASTER_GANDLING = _G.EJ_GetEncounterInfo(684),
 }
 
+constants.BOSS_NAMES = private.BOSS_NAMES
+
 -------------------------------------------------------------------------------
 -- Colors.
 -------------------------------------------------------------------------------
@@ -1041,18 +798,6 @@ private.BASIC_COLORS = {
 
 -- Colors used in tooltips and the recipe list.
 private.CATEGORY_COLORS = {
-	-- Acquire type colors
-	achievement	= { hex = "faeb98",	r = 0.98,	g = 0.92,	b = 0.59 },
-	custom		= { hex = "73b7ff",	r = 0.45,	g = 0.71,	b = 1 },
-	discovery	= { hex = "ff9500",	r = 1,		g = 0.58,	b = 0 },
-	mobdrop		= { hex = "962626",	r = 0.59,	g = 0.15,	b = 0.15 },
-	quest		= { hex = "dbdb2c",	r = 0.86,	g = 0.86,	b = 0.17 },
-	reputation	= { hex = "855a99",	r = 0.52,	g = 0.35,	b = 0.6 },
-	retired		= { hex = "bfb863",     r = 0.75,       g = 0.72,       b = 0.39 },
-	seasonal	= { hex = "80590e",	r = 0.50,	g = 0.35,	b = 0.05 },
-	trainer		= { hex = "c98e26",	r = 0.79,	g = 0.56,	b = 0.14 },
-	vendor		= { hex = "aad372",	r = 0.67,	g = 0.83,	b = 0.45 },
-
 	-- Miscellaneous
 	coords		= { hex = "d1ce6f",	r = 0.82,	g = 0.81,	b = 0.44 },
 	hint		= { hex = "c9c781",	r = 0.79,	g = 0.78,	b = 0.51 },

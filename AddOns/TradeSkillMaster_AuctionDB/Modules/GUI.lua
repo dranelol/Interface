@@ -114,7 +114,7 @@ function private:CreateStartScanContent(parent)
 	text:SetHeight(55)
 	text:SetJustifyH("LEFT")
 	text:SetJustifyV("TOP")
-	text:SetText(format(L["Download the FREE TSM desktop application which will automatically update your TSM_AuctionDB prices using Blizzard's online APIs (and does MUCH more). Visit %s for more info and never scan the AH again! This is the best way to update your AuctionDB prices."], TSMAPI.Design:GetInlineColor("link").."http://tradeskillmaster.com/tsm_app".."|r"))
+	text:SetText(format(L["Download the FREE TSM desktop application which will automatically update your TSM_AuctionDB prices using Blizzard's online APIs (and does MUCH more). Visit %s for more info and never scan the AH again! This is the best way to update your AuctionDB prices."], TSMAPI.Design:GetInlineColor("link").."http://tradeskillmaster.com/app/overview".."|r"))
 
 	
 	local content = CreateFrame("Frame", nil, frame)

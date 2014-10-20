@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(821, "DBM-ThroneofThunder", nil, 362)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10977 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetCreatureID(68065, 70235, 70247)--Frozen 70235, Venomous 70247 (only 2 heads that ever start in front, so no need to look for combat with arcane or fire for combat detection)
 mod:SetEncounterID(1578)
 mod:SetMainBossID(68065)
@@ -44,10 +44,10 @@ local warnNetherTear			= mod:NewSpellAnnounce(140138, 3)--Heroic
 
 local specWarnRampage			= mod:NewSpecialWarningCount(139458, nil, nil, nil, 2)
 local specWarnRampageFaded		= mod:NewSpecialWarningFades(139458)--Spread back out quickly (plus for tanks to get back to heads and face them correctly)
-local specWarnArcticFreeze		= mod:NewSpecialWarningStack(139843, mod:IsTank(), 2)
-local specWarnIgniteFlesh		= mod:NewSpecialWarningStack(137731, mod:IsTank(), 2)
-local specWarnRotArmor			= mod:NewSpecialWarningStack(139840, mod:IsTank(), 2)
-local specWarnArcaneDiffusion	= mod:NewSpecialWarningStack(139993, mod:IsTank(), 2)
+local specWarnArcticFreeze		= mod:NewSpecialWarningStack(139843, nil, 2)
+local specWarnIgniteFlesh		= mod:NewSpecialWarningStack(137731, nil, 2)
+local specWarnRotArmor			= mod:NewSpecialWarningStack(139840, nil, 2)
+local specWarnArcaneDiffusion	= mod:NewSpecialWarningStack(139993, nil, 2)
 local specWarnCinders			= mod:NewSpecialWarningYou(139822)
 local specWarnCindersMove		= mod:NewSpecialWarningMove(139836)--Fire left on ground after the fact
 local yellCinders				= mod:NewYell(139822)
@@ -108,13 +108,8 @@ local function warnTorrent(name)
 		end
 	else
 		local uId = DBM:GetRaidUnitId(name)
-			if uId then
-				local x, y = GetPlayerMapPosition(uId)
-				if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+		if uId then
+			local inRange = DBM.RangeCheck:GetDistance("player", uId)
 			if inRange and inRange < 6 then
 				specWarnTorrentofIceNear:Show(name)
 			end
@@ -194,7 +189,7 @@ function mod:OnCombatStart(delay)
 	cinderIcon = 7
 	iceIcon = 6
 	table.wipe(torrentExpires)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		arcaneBehind = 1
 		arcaneInFront = 0
 		arcaneRecent = false
@@ -358,7 +353,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		end
 		--timers below may need adjusting by 1-2 seconds as I had to substitute last rampage SPELL_DAMAGE event for rampage ends emote when i reg expressioned these timers on WoL
 --[[		if iceBehind > 0 then
-			if self:IsDifficulty("heroic10", "heroic25") then
+			if self:IsHeroic() then
 				timerTorrentofIceCD:Start(12)--12-17 second variation on heroic
 			else
 				timerTorrentofIceCD:Start(8)--8-12 second variation on normal

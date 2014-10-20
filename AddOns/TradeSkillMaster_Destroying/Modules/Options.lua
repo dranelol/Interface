@@ -89,7 +89,7 @@ function Options:UpdateLogST()
 			local name, link = TSMAPI:GetSafeItemInfo(entry.item)
 			name = name or entry.item
 			link = link or entry.item
-			local resultStr = table.concat(result, ", ")
+			local resultStr = table.concat(result, ", ") or ""
 			local row = {
 				cols = {
 					{
@@ -106,7 +106,7 @@ function Options:UpdateLogST()
 					},
 					{
 						value = Options:GetFormattedTime(entry.time),
-						sortArg = entry.time,
+						sortArg = entry.time or 0,
 					},
 				},
 			}
@@ -191,7 +191,7 @@ function Options:UpdateAverageST()
 		local name, link = TSMAPI:GetSafeItemInfo(destroyedItem)
 		name = name or destroyedItem
 		link = link or destroyedItem
-		local resultStr = table.concat(result, ", ")
+		local resultStr = table.concat(result, ", ") or ""
 		local row = {
 			cols = {
 				{

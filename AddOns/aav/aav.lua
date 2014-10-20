@@ -21,6 +21,7 @@ local tempdebuffs = {} -- used for determining new debuffs
 local exceptauras = { -- these auras won't be tracked
 	32727,	-- Arena Preparation
 }
+local guids = {} -- used to temp save guids of your arenamates ( needed to fix some other shit when someone already left the arena)
 ----
 -- reused for packet sending
 local message = {
@@ -36,7 +37,7 @@ local message = {
 -------------------------
 AAV_VERSIONMAJOR = 1
 AAV_VERSIONMINOR = 2
-AAV_VERSIONBUGFIX = 6
+AAV_VERSIONBUGFIX = 9
 AAV_UPDATESPEED = 60
 AAV_AURAFULLINDEXSTEP = 1
 AAV_INITOFFTIME = 0.5
@@ -154,6 +155,7 @@ function atroxArenaViewer:OnInitialize()
 				healthdisplay = 3, -- deficit percentage
 				shortauras = true, -- don't exceed debuff buff bar
 				uniquecolor = false, -- use class color as hp bar
+				showBySpec = true, -- show the matchesTable with specs instead of names
 			}
 		}
 	}
@@ -169,6 +171,7 @@ function atroxArenaViewer:OnInitialize()
 		interval = 0.1,
 		update = 0.1,
 		communication = "GUILD",
+		showBySpec = true,
 	}
     
     local minimap = AAV_Gui:createMinimapIcon(self)
@@ -220,6 +223,20 @@ function atroxArenaViewer:getCommMethod()
 end
 
 ----
+-- from playerName-ServerName to playerName   used to fix stream issues
+-- @param a player name
+-- @return a player name without servername in it
+function atroxArenaViewer:removeServerName(name)
+	local nameReturned = name
+	
+	for nome,server in string.gmatch(name, "(%S+)-(%S+)") do
+		nameReturned = nome
+	end
+	
+	return nameReturned
+end
+
+----
 -- used for broadcasts. if message contains the player's name, then stream will be listed.
 -- @param prefix addon prefix
 -- @param msg delivered msg
@@ -227,6 +244,8 @@ end
 -- @param sender player
 function atroxArenaViewer:lookupBroadcast(prefix, msg, dist, sender)
 	local b, sd = self:Deserialize(msg)
+	
+	sender = self:removeServerName(sender)
 	
 	if (b and sd.event == AAV_COMM_EVENT["cmd_versioncheck"]) then
 	-- VERSION CHECK
@@ -469,6 +488,9 @@ end
 -- incoming match data.
 function atroxArenaViewer:handleMatchData(prefix, msg, dist, sender)
 	local message = AAV_Util:split(msg, '^')
+	
+	sender = self:removeServerName(sender)
+	
 	if (atroxArenaViewerData.current.listening == sender) then
 		for k,v in pairs(message) do
 			local post = AAV_Util:split("0," .. v, ',')
@@ -600,39 +622,56 @@ function atroxArenaViewer:UPDATE_BATTLEFIELD_STATUS(event, status)
 			message["std"].state = nil
 			
 		elseif (status == 1 and atroxArenaViewerData.current.inArena) then
+		
+			local arenaPlayers = GetNumBattlefieldScores()  -- Number of participant scores available in the current battleground; 0 if not in a battleground (number)
+			local playerName = GetUnitName("player")
+			local _, _, _, greenBeforeMMR = GetBattlefieldTeamInfo(0)
+			local _, _, _, goldBeforeMMR = GetBattlefieldTeamInfo(1)
+			local bracketIndex = {}
+			bracketIndex[2] = 1
+			bracketIndex[3] = 2
+			bracketIndex[5] = 3
+			local mmr = 0
+			local rating = 0
 			
-			local found
-			for i=0,1 do
-				found = false
-				local teamName, oldRating, newRating, teamSkill = GetBattlefieldTeamInfo(i)
-				if (teamName ~= "") then
-					for j=1,3 do
-						local name = GetArenaTeam(j)
-						if (name == teamName) then
-							M:setTeams(0, teamName, newRating, newRating - oldRating, teamSkill)
-							found = true
-							break
+			for j=1, arenaPlayers do
+				local name, killingBlows, _, _, _, faction, _, _, classToken, damageDone, healingDone, personalRating, personalRatingChange, _, _, specName = GetBattlefieldScore(j); -- http://wowprogramming.com/docs/api/GetBattlefieldScore
+				name = self:removeServerName(name)
+				if (name == playerName) then -- we can only know the rating of the streamer
+					local groupNum = max(GetNumGroupMembers())
+					if(M and bracketIndex[M.bracket]) then 
+						rating = GetPersonalRatedInfo(bracketIndex[M.bracket])
+					elseif (bracketIndex[groupNum]) then -- Called if M gives a bad value, the preferred method in gladius
+						rating = GetPersonalRatedInfo(bracketIndex[groupNum])
+					else
+						local mpla = ceil(arenaPlayers/2)
+						if(bracketIndex[mpla]) then -- Not enough people joined on either team, one more attempt to guess the bracket
+							rating = GetPersonalRatedInfo(bracketIndex[mpla])
+						else
+							rating = "0"
 						end
 					end
-				end
-				if not (found) then
-					--local teamName, oldRating, newRating, teamSkill = GetBattlefieldTeamInfo(i)
-					if (teamName ~= "") then
-						M:setTeams(1, teamName, newRating, newRating - oldRating, teamSkill)
-					else
-						M:setTeams(i, "Team " .. (i+1), 0, 0, 0)
-					end
-				end
-				
-				if (atroxArenaViewerData.current.broadcast) then
-					message["stats"] = {
-						event = AAV_COMM_EVENT["cmd_matchend"],
-						match = M:getTeams(),
-						dudes = M:getDudesData(),
-						--bracket = self:getCurrentBracket(),
-					}
-					self:SendCommMessage(AAV_COMM_LOOKUPBROADCAST, self:Serialize(message["stats"]), self:getCommMethod(), nil)
-				end
+				else
+					rating = "0"
+				end						
+					
+				if (faction == 0) then mmr = greenBeforeMMR	else mmr = goldBeforeMMR end		
+
+				M:setPlayer(guids,name, rating, damageDone, healingDone, personalRatingChange, mmr, specName)
+			end
+			
+			for i=0,1 do			
+				M:setTeams(i, "Team " .. (i+1), 0, 0, 0)  --we pass 0 0 0 because anyway we don't longer use these stats we instead set them for each player using M:setPlayer(..)
+			end
+			
+			if (atroxArenaViewerData.current.broadcast) then
+				message["stats"] = {
+					event = AAV_COMM_EVENT["cmd_matchend"],
+					match = M:getTeams(),
+					dudes = M:getDudesData(),
+					--bracket = self:getCurrentBracket(),
+				}
+				self:SendCommMessage(AAV_COMM_LOOKUPBROADCAST, self:Serialize(message["stats"]), self:getCommMethod(), nil)
 			end
 			
 		elseif (atroxArenaViewerData.current.broadcast and status == 2) then
@@ -665,8 +704,12 @@ function atroxArenaViewer:CHAT_MSG_BG_SYSTEM_NEUTRAL(event, msg)
 			
 			self:sendNewMatchInfo() -- match starts
 			
+			guids = {} -- reset guids
+			NotifyInspect("raid" .. 1) -- triggers INSPECT_READY which will get the specs of all party members.
 			for i = 1, 5 do
 				if (UnitExists("raid" .. i)) then
+					local name, _ = UnitName("raid" .. i)					
+					guids[name] = UnitGUID("raid" .. i)		
 					local key, player = M:updateMatchPlayers(1, "raid" .. i)
 					self:sendPlayerInfo(key, player)
 				end
@@ -748,13 +791,37 @@ function atroxArenaViewer:CHAT_MSG_BG_SYSTEM_NEUTRAL(event, msg)
 	end
 end
 
+---
+-- Sets the specs for all party members. Only added as party specs wouldn't be set if the player left the game prematurely (eg if there was an obvious loss).
+-- @param event
+-- @param guid Guid used to find who to inspect
+-- @param other
+function atroxArenaViewer:INSPECT_READY(event, guid, other)
+	if(M and M:getDudesData()[guid]) then
+		for i = 1, 5 do
+			if (UnitExists("raid" .. i)) then
+				if(guid == UnitGUID("raid" .. i)) then --should only happen once
+					if(M:getDudesData()[guid].spec == nil or strlen(M:getDudesData()[guid].spec) == 0) then
+						local specID = GetInspectSpecialization("raid" .. i)
+						local _, specName = GetSpecializationInfoByID(specID)
+						if(specName) then 
+							M.combatans.dudes[guid].spec = specName
+						end
+					end
+					if(i<5) then NotifyInspect("raid" .. i+1) end
+				end
+			end
+		end
+	end
+end
 
 function atroxArenaViewer:ZONE_CHANGED_NEW_AREA(event, unit)
 	
-	CombatLogClearEntries() -- fixes combat log parse overflow problem
 	
 	if (GetZonePVPInfo() == "arena") then
 	
+		CombatLogClearEntries() -- fixes combat log parse overflow problem		
+		self:RegisterEvent("INSPECT_READY")
 		self:RegisterEvent("CHAT_MSG_BG_SYSTEM_NEUTRAL")
 		
 		atroxArenaViewerData.current.inArena = true
@@ -768,6 +835,7 @@ function atroxArenaViewer:ZONE_CHANGED_NEW_AREA(event, unit)
 			
 			self:handleEvents("unregister")
 			self:handleQueueTimer("stop")
+			self:UnregisterEvent("INSPECT_READY")
 			self:UnregisterEvent("CHAT_MSG_BG_SYSTEM_NEUTRAL")
 			
 			if (atroxArenaViewerData.current.record) then
@@ -806,8 +874,7 @@ function atroxArenaViewer:handleEvents(val)
 	if (val == "register") then
 		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 		self:RegisterEvent("UNIT_HEALTH")
-		--self:RegisterEvent("UNIT_MANA") -- deprecated
-		self:RegisterEvent("UNIT_POWER") -- new in 4.0.3
+		self:RegisterEvent("UNIT_POWER") 
 		self:RegisterEvent("ARENA_OPPONENT_UPDATE")
 		--self:RegisterEvent("UPDATE_BATTLEFIELD_SCORE")
 		self:RegisterEvent("UNIT_NAME_UPDATE")
@@ -819,8 +886,7 @@ function atroxArenaViewer:handleEvents(val)
 	elseif (val == "unregister") then
 		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 		self:UnregisterEvent("UNIT_HEALTH")
-		--self:UnregisterEvent("UNIT_MANA") -- deprecated
-		self:UnregisterEvent("UNIT_POWER") -- new in 4.0.3
+		self:UnregisterEvent("UNIT_POWER") 
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE")
 		--self:UnregisterEvent("UPDATE_BATTLEFIELD_SCORE")
 		self:UnregisterEvent("UNIT_NAME_UPDATE")
@@ -896,7 +962,7 @@ function atroxArenaViewer:createMessage(tick, msg)
 end
 
 function atroxArenaViewer:handleQueueTimer(val)
-	if (val == "start" and not self:TimeLeft(queuetimer)) then
+	if (val == "start" and self:TimeLeft(queuetimer)==0) then
 		queuetimer = self:ScheduleRepeatingTimer("queueMatchData", AAV_QUEUESENDTIME)
 	elseif (val == "stop" and self:TimeLeft(queuetimer)) then
 		self:CancelTimer(queuetimer)
@@ -1030,6 +1096,10 @@ function atroxArenaViewer:UNIT_AURA(event, unit)
 	
 end
 
+----
+-- Called when a name update is available, will set the name and spec
+-- @param event
+-- @param unit arena1, arena2...
 function atroxArenaViewer:UNIT_NAME_UPDATE(event, unit)
 	if (UnitIsPlayer(unit)) then
 		if (not M) then return end
@@ -1037,6 +1107,10 @@ function atroxArenaViewer:UNIT_NAME_UPDATE(event, unit)
 		
 		M:getDudesData()[sourceGUID].name = UnitName(unit)
 		self:sendPlayerInfo(sourceGUID, M:getDudesData()[sourceGUID])
+		
+		if(strsub(unit, 1, strlen(unit)-1) ~= "raid") then
+			M:SetOpponentSpec(sourceGUID, strsub(unit, strlen(unit)))
+		end
 	end
 end
 
@@ -1047,6 +1121,9 @@ function atroxArenaViewer:ARENA_OPPONENT_UPDATE(event, unit, type)
 		if (not u) then
 			local key, player = M:updateMatchPlayers(2, unit)
 			self:sendPlayerInfo(key, player)
+			if (UnitIsPlayer(unit)) then
+				M:SetOpponentSpec(UnitGUID(unit), strsub(unit, strlen(unit)))
+			end
 			
 			--self:ScheduleTimer("initArenaMatchUnits", AAV_INITOFFTIME, {unit, 2})
 			--self:initArenaMatchUnits({unit, 2})
@@ -1101,39 +1178,39 @@ function atroxArenaViewer:COMBAT_LOG_EVENT_UNFILTERED(event, ...)
 	
 	if (type == "SWING_DAMAGE") then
 		eventType = 3
-		timestamp, type, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _, amount, overkill, school, resisted, blocked, absorbed, critical = select(1, ...)
+		timestamp, type, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _, amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing = select(1, ...)
 		if (not critical) then critical = 0 end
 		if (not absorbed) then absorbed = 0 end
 		if (source and dest and amount) then -- dont track damage from unknown sources and destinations
 			self:createMessage(self:getDiffTime(), eventType .. "," .. source .. "," .. dest .. "," .. amount .. "," .. critical)
-			M:addStats(1, sourceGUID, amount + absorbed)
+			M:addStats(1, sourceGUID, amount + absorbed, "Melee")
 		end
 	elseif (type == "SPELL_DAMAGE") then
 		eventType = 4
-		timestamp, type, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _, spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical = select(1, ...)
+		timestamp, type, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _, spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing = select(1, ...)
 		if (not critical) then critical = 0 end
 		if (not absorbed) then absorbed = 0 end
 		if (source and dest and amount) then -- dont track damage from unknown sources and destinations
 			self:createMessage(self:getDiffTime(), eventType .. "," .. source .. "," .. dest .. "," .. amount .. "," .. critical)
-			M:addStats(1, sourceGUID, amount + absorbed)
+			M:addStats(1, sourceGUID, amount + absorbed, spellName)
 		end
 	elseif (type == "SPELL_PERIODIC_DAMAGE") then
 		eventType = 5
-		timestamp, type, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _, spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical = select(1, ...)
+		timestamp, type, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _, spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing = select(1, ...)
 		if (not critical) then critical = 0 end
 		if (not absorbed) then absorbed = 0 end
 		if (source and dest and amount) then -- dont track damage from unknown sources and destinations
 			self:createMessage(self:getDiffTime(), eventType .. "," .. source .. "," .. dest .. "," .. amount .. "," .. critical)
-			M:addStats(1, sourceGUID, amount + absorbed)
+			M:addStats(1, sourceGUID, amount + absorbed, spellName)
 		end
 	elseif (type == "RANGE_DAMAGE") then
 		eventType = 6
-		timestamp, type, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _, spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical = select(1, ...)
+		timestamp, type, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _, spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing = select(1, ...)
 		if (not critical) then critical = 0 end
 		if (not absorbed) then absorbed = 0 end
 		if (source and dest and amount) then -- dont track damage from unknown sources and destinations
 			self:createMessage(self:getDiffTime(), eventType .. "," .. source .. "," .. dest .. "," .. amount .. "," .. critical)
-			M:addStats(1, sourceGUID, amount + absorbed)
+			M:addStats(1, sourceGUID, amount + absorbed, spellName)
 		end
 	elseif (type == "SPELL_HEAL") then
 		eventType = 7
@@ -1141,7 +1218,7 @@ function atroxArenaViewer:COMBAT_LOG_EVENT_UNFILTERED(event, ...)
 		if (not critical) then critical = 0 end
 		if (source and dest and amount) then -- dont track damage from unknown sources and destinations
 			self:createMessage(self:getDiffTime(), eventType .. "," .. source .. "," .. dest .. "," .. amount .. "," .. critical)
-			M:addStats(2, sourceGUID, amount - overkill)
+			M:addStats(2, sourceGUID, amount - overkill, nil)
 		end
 	elseif (type == "SPELL_PERIODIC_HEAL") then
 		eventType = 8
@@ -1149,7 +1226,7 @@ function atroxArenaViewer:COMBAT_LOG_EVENT_UNFILTERED(event, ...)
 		if (not critical) then critical = 0 end
 		if (source and dest and amount) then -- dont track damage from unknown sources and destinations
 			self:createMessage(self:getDiffTime(), eventType .. "," .. source .. "," .. dest .. "," .. amount .. "," .. critical)
-			M:addStats(2, sourceGUID, amount - overkill)
+			M:addStats(2, sourceGUID, amount - overkill, nil)
 		end
 	elseif (type == "SPELL_CAST_START") then
 		eventType = 9
@@ -1458,6 +1535,8 @@ end
 
 
 function atroxArenaViewer:commEvaluateBroadcastData(prefix, msg, dist, sender)
+	sender = self:removeServerName(sender)
+	
 	if (atroxArenaViewerData.current.listening == sender) then
 		
 	end
@@ -1518,6 +1597,7 @@ function atroxArenaViewer:executeMatchData(tick, data)
 		
 	-- cast success
 	elseif (t == 10) then
+		--print("cast succes ".. data[1] .. " ".. data[2] .." ".. data[3] .." " .. data[4].." "..data[5].. " " ..data[6] )
 		T:addSkillIcon(tonumber(data[3]), tonumber(data[5]), false, tonumber(data[4]))
 		
 		if (tonumber(data[6]) and AAV_CCSKILS[tonumber(data[5])]) then
@@ -1534,6 +1614,7 @@ function atroxArenaViewer:executeMatchData(tick, data)
 	elseif (t == 13) then
 		-- spell_aura_applied
 		T:addAura(tonumber(data[3]), tonumber(data[4]), tonumber(data[5]))
+		--print("aura_applied ".. tonumber(data[4]).. " ".. data[6])
 		if (data[6] and tonumber(data[6]) > 0 and AAV_IMPORTANTSKILLS[tonumber(data[4])]) then
 			T:addCC(tonumber(data[3]), tonumber(data[4]), tonumber(data[6]), AAV_IMPORTANTSKILLS[tonumber(data[4])])
 		end

@@ -1,4 +1,5 @@
-﻿--[[
+﻿-- $Id: AtlasLoot_Loader.lua 4017 2012-11-28 22:25:55Z lag123 $
+--[[
 Atlasloot Enhanced
 Author Hegarol
 Loot browser associating loot with instance bosses
@@ -19,14 +20,21 @@ AtlasLoot.Modules = {
 	{"AtlasLootBurningCrusade", "AtlasLoot_BurningCrusade", false, "", AL["Burning Crusade"] },
 	{"AtlasLootWotLK", "AtlasLoot_WrathoftheLichKing", false, "", AL["Wrath of the Lich King"] },
 	{"AtlasLootCataclysm", "AtlasLoot_Cataclysm", false, "", AL["Cataclysm"] },
+	{"AtlasLootMoP", "AtlasLoot_MistsofPandaria", false, "", AL["Mists of Pandaria"] },
 	{"AtlasLootCrafting", "AtlasLoot_Crafting", false, ""},
 	{"AtlasLootWorldEvents", "AtlasLoot_WorldEvents", false, ""},
 }
 
+local allLoaded = false
+local spamProtect = {}
+
 
 function AtlasLoot:OnInitialize()
 	--[===[@debug@ 
-	self:OnLoaderLoad()
+	if self.OnLoaderLoad then
+		self:OnLoaderLoad()
+		allLoaded = true
+	end
 	--@end-debug@]===]
 	
 	-- Warning if AtlasLootFu is enabled
@@ -60,26 +68,31 @@ function AtlasLoot:OnInitialize()
 	-- MiniMap Button
 	self:MiniMapButtonInitialize()
 	
-	
+	-- Atlas loader
+	if AtlasFrame then
+		local loaded = false
+		local function onShow(...)
+			if not loaded then
+				loaded = true
+				AtlasLoot:LoadModule("AtlasLoot")
+				AtlasFrame:Hide()
+				AtlasFrame:Show()
+			end
+		end
+		AtlasFrame:HookScript("OnShow", onShow)
+	end
 end
-
-
-local allLoaded = false
-local spamProtect = {}
-local atlasLootIsLoaded = false
 
 --- Loads a AtlasLoot module
 -- @param module AtlasLootClassicWoW, AtlasLootBurningCrusade, AtlasLootWotLK, AtlasLootCataclysm, AtlasLootCrafting, AtlasLootWorldEvents, all
 -- @usage AtlasLoot:LoadModule(module)
 function AtlasLoot:LoadModule(module)
-	if not module then return end
+	if not module or type(module) ~= "string" then return end
 	if allLoaded then return true end
 	local loadedRET,reasonRET = true, ""
-	if module == "AtlasLoot" or not atlasLootIsLoaded then
+	if module == "AtlasLoot" or not IsAddOnLoaded("AtlasLoot") then
 		if not IsAddOnLoaded(module) then
 			LoadAddOn("AtlasLoot")
-			self:OnLoaderLoad()
-			atlasLootIsLoaded = true
 		end
 		return loadedRET, reasonRET
 	end
@@ -137,11 +150,17 @@ function AtlasLoot:LoadModule(module)
 	return loadedRET,reasonRET
 end
 
+local slashCalled = false
 -- This only loads the AtlasLoot Core
 -- After first call this function is replaced
 function AtlasLoot:SlashCommand(msg)
-	self:LoadModule("AtlasLoot")
-	self:SlashCommand(msg)
+	if slashCalled then
+		slashCalled = false
+	else
+		self:LoadModule("AtlasLoot")
+		self:SlashCommand(msg)
+		slashCalled = true
+	end
 end
 
 -- Create the Slashs /al and /atlasloot
@@ -163,7 +182,14 @@ function AtlasLoot:CheckDataID(dataID)
 	else
 		local tLocation = self:GetTableLoaction(dataID)
 		if tLocation and AtlasLoot_LootTableRegister[tLocation[1]][tLocation[2]]["Info"][2] then
-			return self:LoadModule(AtlasLoot_LootTableRegister[tLocation[1]][tLocation[2]]["Info"][2])
+			if type(AtlasLoot_LootTableRegister[tLocation[1]][tLocation[2]]["Info"][2]) == "table" then
+				for k,v in ipairs(AtlasLoot_LootTableRegister[tLocation[1]][tLocation[2]]["Info"][2]) do
+					self:LoadModule(v)
+				end
+				return true
+			else
+				return self:LoadModule(AtlasLoot_LootTableRegister[tLocation[1]][tLocation[2]]["Info"][2])
+			end
 		else
 			return false, "MISSING"
 		end
@@ -187,6 +213,9 @@ end
 
 --[===[@debug@ 
 function AtlasLoot:CheckModule(module)
+	return true
+end
+function AtlasLoot:LoadModule(module)
 	return true
 end
 --@end-debug@]===]

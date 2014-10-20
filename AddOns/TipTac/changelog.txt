@@ -1,7 +1,11 @@
+TipTac Changes | 2014 May 24
+----------------------------
+- TipTacItemRef: Updated the "GetUpgradedItemLevel.lua" library, to include the new upgrade IDs.
+
 TipTac Changes | 2013 Sep 21
 ----------------------------
 - Changed the TOC version to 50400 for the 5.4 patch.
-- Tooltip height is now updated slightly different, this should hopefully fix some issues where the health/power bars could overlap text in the tooltip.
+- Tooltip height is now updated when a new line is added or removed. Before updates only occured on the configured update frequency. This should hopefully fix some issues where the health/power bars could overlap text in the tooltip.
 - Added option to hide the new realm text "Coalesced Realm (*)\nGroup, Whisper" as well as the future "Interactive Realm" text.
 
 TipTac Changes | 2013 May 22

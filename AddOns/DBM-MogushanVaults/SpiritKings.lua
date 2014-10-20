@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(687, "DBM-MogushanVaults", nil, 317)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10980 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetCreatureID(60701, 60708, 60709, 60710)--Adds: 60731 Undying Shadow, 60958 Pinning Arrow
 mod:SetEncounterID(1436)
 mod:SetZone()
@@ -130,7 +130,7 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	timerAnnihilateCD:Start(10.5)
 	timerFlankingOrdersCD:Start(25)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		rainTimerText = DBM_CORE_AUTO_TIMER_TEXTS.next:format(GetSpellInfo(118122))
 		timerImperviousShieldCD:Start(40.7)
 		countdownImperviousShield:Start(40.7)
@@ -246,7 +246,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 117948 then
 		warnAnnihilate:Show()
 		specWarnAnnihilate:Show()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerAnnihilateCD:Start(32.5)
 		else
 			timerAnnihilateCD:Start()
@@ -256,7 +256,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnImperviousShield:Show(args.sourceName)
 		timerImperviousShieldCD:Start()
 		countdownImperviousShield:Cancel()
-		if self:IsDifficulty("heroic10") then
+		if self:IsDifficulty("heroic10") then--Is this still different?
 			warnImperviousShieldSoon:Schedule(57)
 			timerImperviousShieldCD:Start(62)
 			countdownImperviousShield:Start(62)
@@ -283,7 +283,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		specWarnVolley:Show()
 		timerVolleyCD:Start()
 	elseif spellId == 118121 and self:AntiSpam(2, 2) then--Rain of Arrows
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerRainOfArrowsCD:Start(41, rainTimerText)
 		else
 			timerRainOfArrowsCD:Start(nil, rainTimerText)
@@ -353,12 +353,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			else
 				local uId = DBM:GetRaidUnitId(target)
 				if uId then
-					local x, y = GetPlayerMapPosition(uId)
-					if x == 0 and y == 0 then
-						SetMapToCurrentZone()
-						x, y = GetPlayerMapPosition(uId)
-					end
-					local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+					local inRange = DBM.RangeCheck:GetDistance("player", uId)
 					if inRange and inRange < 9 then
 						specWarnPillage:Show()
 					end
@@ -377,7 +372,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, boss)
 		zianActive = true
 		timerChargingShadowsCD:Start()
 		timerUndyingShadowsCD:Start(20)
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			warnShieldOfDarknessSoon:Schedule(35, 5)--Start pre warning with regular warnings only as you don't move at this point yet.
 			warnShieldOfDarknessSoon:Schedule(36, 4)
 			warnShieldOfDarknessSoon:Schedule(37, 3)
@@ -395,7 +390,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, boss)
 	elseif boss == Meng then
 		warnActivated:Show(boss)
 		mengActive = true
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerDeliriousCD:Start()
 			timerMaddeningShoutCD:Start(40)--On heroic, he skips first cast as a failsafe unless you manage to kill it within 20 seconds. otherwise, first cast will actually be after about 40-45 seconds. Since this is VERY hard to do right now, lets just automatically skip it for now. Maybe find a better way to fix it later if it becomes a problem this expansion
 		else
@@ -411,7 +406,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, boss)
 		subetaiActive = true
 		timerVolleyCD:Start(5)
 		timerPillageCD:Start(25)
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerSleightOfHandCD:Start(40.7)
 			timerRainOfArrowsCD:Start(40, rainTimerText)
 		else

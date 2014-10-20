@@ -18,7 +18,7 @@ local itemsCancelled, itemsMissed = {}, {}
 
 function Cancel:ValidateOperation(itemString, operation)
 	local _, itemLink = TSMAPI:GetSafeItemInfo(itemString)
-	local prices = TSM.Util:GetItemPrices(operation, itemString)
+	local prices = TSM.Util:GetItemPrices(operation, itemString, {minPrice=true, normalPrice=true, maxPrice=true, cancelRepostThreshold=true, undercut=true})
 
 	-- don't cancel this item if their settings are invalid
 	if not prices.minPrice then
@@ -159,6 +159,7 @@ function Cancel:GetScanListAndSetup(GUIRef, options)
 				tinsert(scanList, itemString)
 			end
 		end
+		TSMAPI:FireEvent("AUCTIONING:CANCEL:START", {num=#scanList})
 	end
 	
 	return scanList
@@ -172,18 +173,20 @@ function Cancel:ProcessItem(itemString, noLog)
 	local operations = TSM.operationLookup[itemString]
 	if not operations then return end
 	for _, operation in pairs(operations) do
-		local toCancel, reasonToCancel, reasonNotToCancel, buyout
+		local toCancel, reasonToCancel, reasonNotToCancel
+		local lowBuyout
 		local cancelAuctions = {}
 		for i=GetNumAuctionItems("owner"), 1, -1 do
-			if select(16, GetAuctionItemInfo("owner", i)) == 0 and itemString == TSMAPI:GetBaseItemString(GetAuctionItemLink("owner", i), true) then
+			local buyout, isSold = TSMAPI:Select({10, 16}, GetAuctionItemInfo("owner", i))
+			if isSold == 0 and itemString == TSMAPI:GetBaseItemString(GetAuctionItemLink("owner", i), true) then
 				local shouldCancel, reason = Cancel:ShouldCancel(i, operation)
 				if shouldCancel then
 					shouldCancel.reason = reason
 					tinsert(cancelAuctions, shouldCancel)
-					buyout = select(10, GetAuctionItemInfo("owner", i))
+					lowBuyout = lowBuyout and min(lowBuyout, buyout) or buyout
 				else
 					reasonNotToCancel = reasonNotToCancel or reason
-					buyout = buyout or select(10, GetAuctionItemInfo("owner", i))
+					lowBuyout = lowBuyout and min(lowBuyout, buyout) or buyout
 				end
 			end
 		end
@@ -208,9 +211,9 @@ function Cancel:ProcessItem(itemString, noLog)
 		
 		if not noLog then
 			if toCancel then
-				TSM.Log:AddLogRecord(itemString, "cancel", "Cancel", reasonToCancel, operation, buyout)
+				TSM.Log:AddLogRecord(itemString, "cancel", "Cancel", reasonToCancel, operation, lowBuyout)
 			elseif reasonNotToCancel then
-				TSM.Log:AddLogRecord(itemString, "cancel", "Skip", reasonNotToCancel, operation, buyout)
+				TSM.Log:AddLogRecord(itemString, "cancel", "Skip", reasonNotToCancel, operation, lowBuyout)
 			end
 		end
 		
@@ -286,7 +289,7 @@ function Cancel:ShouldCancel(index, operation)
 	local cancelData = {itemString=itemString, stackSize=quantity, buyout=buyout, bid=bid, index=index, numStacks=1, operation=operation}
 	
 	local auctionItem = TSM.Scan.auctionData[itemString]
-	local lowestBuyout, lowestBid, lowestOwner, isWhitelist, isPlayer, isInvalidSeller = TSM.Scan:GetLowestAuction(itemString, operation)
+	local lowestBuyout, lowestBid, lowestOwner, isWhitelist, isBlacklist, isPlayer, isInvalidSeller = TSM.Scan:GetLowestAuction(itemString, operation)
 	local secondLowest = TSM.Scan:GetSecondLowest(itemString, lowestBuyout, operation) or 0
 	
 	if wasSold == 1 or not lowestOwner then
@@ -306,15 +309,15 @@ function Cancel:ShouldCancel(index, operation)
 		return false, "bid"
 	end
 	
-	local prices = TSM.Util:GetItemPrices(operation, itemString)
-	if buyoutPerItem < prices.minPrice then
+	local prices = TSM.Util:GetItemPrices(operation, itemString, {minPrice=true, normalPrice=true, maxPrice=true, resetPrice=true, cancelRepostThreshold=true, undercut=true, aboveMax=true})
+	if buyoutPerItem < prices.minPrice and not isBlacklist then
 		-- this auction is below min price
 		if operation.cancelRepost and prices.resetPrice and buyoutPerItem < (prices.resetPrice - prices.cancelRepostThreshold) then
 			-- canceling to post at reset price
 			return cancelData, "reset"
 		end
 		return false, "belowMinPrice"
-	elseif lowestBuyout < prices.minPrice then
+	elseif lowestBuyout < prices.minPrice and not isBlacklist then
 		-- lowest buyout is below min price, so do nothing
 		return false, "belowMinPrice"
 	else

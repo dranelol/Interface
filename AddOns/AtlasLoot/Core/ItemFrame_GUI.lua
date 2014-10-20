@@ -1,3 +1,4 @@
+-- $Id: ItemFrame_GUI.lua 4249 2013-09-10 09:43:39Z lag123 $
 local AtlasLoot = LibStub("AceAddon-3.0"):GetAddon("AtlasLoot")
 
 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
@@ -10,6 +11,11 @@ local PURPLE = "|cff9F3FFF"
 local BLUE = "|cff0070dd"
 local ORANGE = "|cffFF8400"
 
+local function onShow(self)
+	if self:GetParent():GetFrameStrata() ~= self:GetFrameStrata() then
+		self:SetFrameStrata(self:GetParent():GetFrameStrata())
+	end
+end
 
 function AtlasLoot:CreateItemFrame()
 	if AtlasLoot.ItemFrame then return end
@@ -23,11 +29,12 @@ function AtlasLoot:CreateItemFrame()
 	Frame:SetWidth(510)
 	Frame:SetHeight(510)
 	Frame:SetScript("OnHide", self.ItemsFrameOnCloseButton)
+	Frame:SetScript("OnShow", onShow)	
 		
 	Frame.CloseButton = CreateFrame("Button","AtlasLootItemsFrame_CloseButton",Frame,"UIPanelCloseButton")
 	Frame.CloseButton:SetPoint("TOPRIGHT", Frame, "TOPRIGHT", -5, -5)
 	Frame.CloseButton:SetScript("OnClick", AtlasLoot.ItemsFrameOnCloseButton)
-	Frame.CloseButton:SetScript("OnShow",function(self) self:SetFrameLevel( self:GetParent():GetFrameLevel() + 1 ) end)
+	--Frame.CloseButton:SetScript("OnShow",function(self) self:SetFrameLevel( self:GetParent():GetFrameLevel() + 1 ) end)
 	Frame.CloseButton:Hide()
 	
 	---------------
@@ -58,7 +65,7 @@ function AtlasLoot:CreateItemFrame()
 		Frame.ItemButtons[i].buttonID = i
 	end
 
-	Frame.Switch = CreateFrame("Button","AtlasLoot10Man25ManSwitch",Frame,"UIPanelButtonTemplate2")
+	Frame.Switch = CreateFrame("Button","AtlasLoot10Man25ManSwitch",Frame,"UIPanelButtonTemplate")
 	Frame.Switch:SetWidth(160)
 	Frame.Switch:SetHeight(23)
 	Frame.Switch:SetPoint("BOTTOM", Frame, "BOTTOM", -120, 4)
@@ -76,10 +83,45 @@ function AtlasLoot:CreateItemFrame()
 	Frame.Heroic:SetScript("OnClick", AtlasLoot.HeroicModeToggle)
 	Frame.Heroic:Hide()
 	
-	Frame.Back = CreateFrame("Button","AtlasLootItemsFrame_BACK",Frame,"UIPanelButtonTemplate2")
+	Frame.RaidFinder = CreateFrame("CheckButton", "AtlasLootItemsFrame_RaidFinder", Frame, "OptionsCheckButtonTemplate")
+	Frame.RaidFinder:SetPoint("TOPLEFT", Frame.Heroic, "BOTTOMLEFT", 0, 5)
+	Frame.RaidFinder:SetWidth(25)
+	Frame.RaidFinder:SetHeight(25)
+	_G[Frame.RaidFinder:GetName().."Text"]:SetText(AL["Raid Finder"])
+	Frame.RaidFinder:SetScript("OnShow", function(self)
+		self:SetFrameLevel( (self:GetParent()):GetFrameLevel() + 1 )
+	end)
+	Frame.RaidFinder:SetScript("OnClick", AtlasLoot.RaidFinderToggle)
+	Frame.RaidFinder:Hide()
+	
+	-- Flexible
+	Frame.Flexible = CreateFrame("CheckButton", "AtlasLootItemsFrame_Flexible", Frame, "OptionsCheckButtonTemplate")
+	Frame.Flexible:SetPoint("TOPLEFT", Frame.RaidFinder, "TOPRIGHT", Frame.RaidFinder:GetWidth()+_G[Frame.RaidFinder:GetName().."Text"]:GetWidth()+5, 0) --_G[Frame.RaidFinder:GetName().."Text"]
+	Frame.Flexible:SetWidth(25)
+	Frame.Flexible:SetHeight(25)
+	_G[Frame.Flexible:GetName().."Text"]:SetText(AL["Flexible"])
+	Frame.Flexible:SetScript("OnShow", function(self)
+		self:SetFrameLevel( (self:GetParent()):GetFrameLevel() + 1 )
+	end)
+	Frame.Flexible:SetScript("OnClick", AtlasLoot.FlexibleToggle)
+	Frame.Flexible:Hide()
+	
+	Frame.Thunderforged = CreateFrame("CheckButton", "AtlasLootItemsFrame_Thunderforged", Frame, "OptionsCheckButtonTemplate")
+	--Frame.Thunderforged:SetPoint("TOPLEFT", Frame.RaidFinder, "TOPRIGHT", Frame.RaidFinder:GetWidth()+_G[Frame.RaidFinder:GetName().."Text"]:GetWidth()+Frame.Flexible:GetWidth()+_G[Frame.Flexible:GetName().."Text"]:GetWidth()+10, 0) --_G[Frame.RaidFinder:GetName().."Text"]
+	Frame.Thunderforged:SetPoint("TOPLEFT", Frame.Flexible, "TOPRIGHT", Frame.Flexible:GetWidth()+_G[Frame.Flexible:GetName().."Text"]:GetWidth()+5, 0)
+	Frame.Thunderforged:SetWidth(25)
+	Frame.Thunderforged:SetHeight(25)
+	_G[Frame.Thunderforged:GetName().."Text"]:SetText(AL["Thunderforged"])
+	Frame.Thunderforged:SetScript("OnShow", function(self)
+		self:SetFrameLevel( (self:GetParent()):GetFrameLevel() + 1 )
+	end)
+	Frame.Thunderforged:SetScript("OnClick", AtlasLoot.ThunderforgedToggle)
+	Frame.Thunderforged:Hide()
+	
+	Frame.Back = CreateFrame("Button","AtlasLootItemsFrame_BACK",Frame,"UIPanelButtonTemplate")
 	Frame.Back:SetWidth(80)
 	Frame.Back:SetText(AL["Back"])
-	Frame.Back:SetPoint("BOTTOM", Frame, "BOTTOM", 0, 4)
+	Frame.Back:SetPoint("BOTTOMRIGHT", Frame, "BOTTOMRIGHT", -40, 4)
 	Frame.Back:SetScript("OnClick", AtlasLoot.NavButton_OnClick)
 	Frame.Back:Hide()
 	
@@ -120,11 +162,12 @@ function AtlasLoot:CreateItemFrame()
 	Frame.PrevBack:SetHeight(30)
 	Frame.PrevBack:SetWidth(30)
 	Frame.Prev:Hide()
-
-	Frame.ServerQuery = CreateFrame("Button","AtlasLootServerQueryButton",Frame,"UIPanelButtonTemplate2")
-	Frame.ServerQuery:SetWidth(160)
+	
+	--[[ Maybe change position in a later version
+	Frame.ServerQuery = CreateFrame("Button","AtlasLootServerQueryButton",Frame,"UIPanelButtonTemplate")
+	Frame.ServerQuery:SetWidth(140)
 	Frame.ServerQuery:SetHeight(23)
-	Frame.ServerQuery:SetPoint("BOTTOM", Frame, "BOTTOM", 120, 4)
+	Frame.ServerQuery:SetPoint("BOTTOM", Frame, "BOTTOM", 130, 4)
 	Frame.ServerQuery:SetScript("OnShow", function(self)
 		self:SetText(AL["Query Server"])
 		self:SetFrameLevel( (self:GetParent()):GetFrameLevel() + 1 )
@@ -143,6 +186,7 @@ function AtlasLoot:CreateItemFrame()
 		GameTooltip:Hide()
 		AtlasLoot:QueryLootPage()
 	end)
+	]]--
 	
 	Frame.QuickLooks = CreateFrame("Button","AtlasLootQuickLooksButton",Frame)
 	Frame.QuickLooks:SetWidth(23)

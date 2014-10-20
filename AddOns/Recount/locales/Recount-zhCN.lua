@@ -1,10 +1,10 @@
--- Recount Locale 
--- Please use the Localization App on WoWAce to Update this 
+-- Recount Locale
+-- Please use the Localization App on WoWAce to Update this
 -- http://www.wowace.com/projects/recount/localization/
- 
-local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "zhCN") 
-if not L then return end 
- 
+
+local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "zhCN")
+if not L then return end
+
 L["Ability"] = "技能"
 L["Ability Name"] = "技能名称"
 L["Absorbed"] = "被吸收"
@@ -196,10 +196,11 @@ L["Mana Gained"] = "法力获取"
 L["Mana Sources"] = "法力来源"
 L["Max"] = "最大"
 L["Melee"] = "肉搏"
+L["Merge Absorbs w/ Heals"] = "合并吸收和治疗"
 L["Merge Pets w/ Owners"] = "将宠物和主人合并"
 L["Messages"] = "信息"
 L["Min"] = "最小"
-L["Misc"] = "其它"
+L["Misc"] = "其他"
 L["Miss"] = "未击中"
 L["Mob"] = "怪物"
 L["Mobs"] = "怪物"
@@ -217,6 +218,7 @@ L["No"] = "否"
 L["No Absorb"] = "未被吸收"
 L["No Block"] = "未被格挡"
 L["Non-Trivial"] = "有价值"
+L["No other Recount users found."] = "未找到其他 Recount 用户。"
 L["No Pet"] = "无宠物"
 L["No Resist"] = "未被抵抗"
 L["Normalize"] = "标准化"
@@ -310,6 +312,7 @@ L["'s Effective Healing"] = "的有效治疗"
 L["Self"] = "自己"
 L["'s Energy Gained"] = "的能量获取"
 L["'s Energy Gained From"] = "的能量获取自"
+L["Server Name"] = "服务器名称"
 L["Set Combat Log Range"] = "设置战斗日志范围"
 L["Set the maximum number of lines to report"] = "设置最大报告行数为："
 L["Set the maximum number of recorded fight segments"] = "设定最高数量战斗记录分段"
@@ -418,7 +421,6 @@ L["Window Color Selection"] = "窗口颜色选择"
 L["Window Options"] = "窗口选项"
 L["Window Scaling"] = "窗口缩放"
 L["X Gridlines Represent"] = "X 轴每格代表"
-L["Yds"] = "码"
 L["Yes"] = "是"
- 
+
 

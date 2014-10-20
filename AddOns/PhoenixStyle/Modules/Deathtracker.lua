@@ -1,5 +1,10 @@
 ﻿function psdeathrepevent(type,marksource,mark,name,guid,spellid,spellname,dmg,overkill,crit,whokill,resist,block,absorbed,spellschool)
 
+-- в ЛФР не трекерить !! psdeathrepsavemain[5]
+if select(3,GetInstanceInfo())==7 and psdeathrepsavemain[5]==1 then
+  return
+end
+
 --type: 0=death, 1 - instakill, 2 - ENVIRONMENTAL_DAMAGE, 10 - normal damage
 
 local chatname=name

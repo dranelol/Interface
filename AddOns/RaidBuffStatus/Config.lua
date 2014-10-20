@@ -1,7 +1,7 @@
 local addonName, vars = ...
 local addon = RaidBuffStatus
 local L = vars.L
-RBS_svnrev["Config.lua"] = select(3,string.find("$Revision: 655 $", ".* (.*) .*"))
+RBS_svnrev["Config.lua"] = select(3,string.find("$Revision: 677 $", ".* (.*) .*"))
 
 local profile
 function addon:UpdateProfileConfig()
@@ -175,6 +175,7 @@ local options = {
 					name = L["Old flasks and elixirs"],
 					desc = L["Allow raiders to use flasks and elixirs from last expansion"],
 					order = 1,
+					width = "double",
 					get = function(info) return profile.OldFlasksElixirs end,
 					set = function(info, v)
 						profile.OldFlasksElixirs = v
@@ -194,11 +195,23 @@ local options = {
 						profile.foodlevel = v
 					end,
 				},
+				ignoreeating = {
+					type = 'toggle',
+					name = L["Treat eating as Well Fed"],
+					desc = L["Treat players who are currently eating as Well Fed. This assumes they are eating acceptable food."],
+					order = 2.5,
+					width = "double",
+					get = function(info) return profile.ignoreeating end,
+					set = function(info, v)
+						profile.ignoreeating = v
+					end,
+				},
 				feasttt = {
 					type = 'toggle',
 					name = L["Augment Banquet Tooltips"],
 					desc = L["Augment Banquet Tooltips with stat bonus information"],
 					order = 3,
+					width = "double",
 					get = function(info) return profile.FeastTT end,
 					set = function(info, v)
 						profile.FeastTT = v
@@ -572,7 +585,7 @@ local options = {
 							name = L["Dashboard columns"],
 							desc = L["Number of columns to display on the dashboard"],
 							order = 3,
-							min = 5,
+							min = 6,
 							max = 25,
 							step = 1,
 							bigStep = 1,
@@ -2085,6 +2098,11 @@ local options = {
 			desc = L["Announcement options for raid utilities like Feasts"],
 			order = 14,
 			args = {
+				announceHeader = {
+					type = 'header',
+					name = L["Utility announcements"],
+					order = 0.9,
+				},
 				announceFeast = {
 					type = 'toggle',
 					name = L["Feasts"],
@@ -2095,11 +2113,8 @@ local options = {
 					type = 'toggle',
 					name = L["Feast auto whisper"],
 					desc = L["Automatically whisper anyone missing Well Fed when your Feast expire warnings appear"],
-					order = 2,
-					get = function(info) return profile.feastautowhisper end,
-					set = function(info, v)
-						profile.feastautowhisper = v
-					end,
+					disabled = function() return not profile.announceExpiration end,
+					order = 110,
 				},
 				announceCart = {
 					type = 'toggle',
@@ -2119,15 +2134,12 @@ local options = {
 					desc = L["Announce to raid warning when a %s is prepared"]:format(L["Cauldron"]),
 					order = 3,
 				},
-				cauldronsautowhisper = {
+				cauldronautowhisper = {
 					type = 'toggle',
 					name = L["Cauldron auto whisper"],
 					desc = L["Automatically whisper anyone missing flasks or elixirs when your Cauldron expire warnings appear"],
-					order = 4,
-					get = function(info) return profile.cauldronautowhisper end,
-					set = function(info, v)
-						profile.cauldronautowhisper = v
-					end,
+					disabled = function() return not profile.announceExpiration end,
+					order = 120,
 				},
 				announceSoulwell = {
 					type = 'toggle',
@@ -2139,7 +2151,8 @@ local options = {
 					type = 'toggle',
 					name = L["Well auto whisper"],
 					desc = L["Automatically whisper anyone missing a Healthstone when your Soul Well expire warnings appear"],
-					order = 6.5,
+					disabled = function() return not profile.announceExpiration end,
+					order = 130,
 				},
 				announceRepair = {
 					type = 'toggle',
@@ -2165,11 +2178,22 @@ local options = {
 					desc = L["Announce to raid warning when a %s is prepared"]:format(L["Blingtron"]),
 					order = 10,
 				},
+				expireHeader = {
+					type = 'header',
+					name = L["Expiration announcements"],
+					order = 100,
+				},
+				announceExpiration = {
+					type = 'toggle',
+					name = L["Announce expiration"],
+					desc = L["Announce to raid warning when a utility is expiring"],
+					order = 101,
+				},
 				antispam = {
 					type = 'toggle',
 					name = L["Anti spam"],
 					desc = L["Wait before announcing to see if others have announced first in order to reduce spam"],
-					order = 20,
+					order = 0.1,
 					get = function(info) return profile.antispam end,
 					set = function(info, v)
 						profile.antispam = v
@@ -2179,7 +2203,7 @@ local options = {
 					type = 'toggle',
 					name = L["Announce without lead"],
 					desc = L["Announce even when you don't have assist or lead"],
-					order = 30,
+					order = 0.2,
 					get = function(info) return profile.nonleadspeak end,
 					set = function(info, v)
 						profile.nonleadspeak = v

@@ -1,16 +1,15 @@
 ## Interface: 50400
-## X-Min-Interface: 50000
+## Version: r1269
 ## Title: Recount
-## Notes: Records Damage and Healing for Graph Based Display
-## Notes-ruRU: Записывает урон и исцеления и отоброжает различные графики
-## Notes-zhCN: 基于 Graph 裤开发的伤害/治疗统计插件
-## Notes-zhTW: 圖形化顯示的傷害/治療統計插件
-## Author: Cryect, ported to 2.4 by Elsia
-## OptionalDeps:  Ace3, LibDropdown-1.0, LibSharedMedia-3.0, LibBossIDs-1.0, LibGraph-2.0, !ClassColors
+## Notes: Records Damage and Healing for Graph Based Display.
+## Notes-ruRU: Записывает урон и исцеления и отоброжает различные графики.
+## Notes-zhCN: 基于 Graph 裤开发的伤害/治疗统计插件.
+## Notes-zhTW: 圖形化顯示的傷害/治療統計插件.
+## Author: Cryect, ported to 2.4 by Elsia, maintained by Resike from 5.4
+## OptionalDeps:  Ace3, LibDropdown-1.0, LibSharedMedia-3.0, LibBossIDs-1.0, LibGraph-2.0
 ## SavedVariables: RecountDB
 ## SavedVariablesPerCharacter: RecountPerCharDB
-## X-Category: Combat
-## X-Curse-Packaged-Version: v5.4.0b release
+## X-Curse-Packaged-Version: r1269
 ## X-Curse-Project-Name: Recount
 ## X-Curse-Project-ID: recount
 ## X-Curse-Repository-ID: wow/recount/mainline
@@ -20,14 +19,15 @@ embeds.xml
 #@end-no-lib-strip@
 
 locales\Recount-enUS.lua
-locales\Recount-ruRU.lua
-locales\Recount-frFR.lua
 locales\Recount-deDE.lua
-locales\Recount-koKR.lua
 locales\Recount-esES.lua
+locales\Recount-esMX.lua
+locales\Recount-frFR.lua
+locales\Recount-ptBR.lua
+locales\Recount-ruRU.lua
+locales\Recount-koKR.lua
 locales\Recount-zhTW.lua
 locales\Recount-zhCN.lua
-locales\Recount-ptBR.lua
 
 Recount.lua
 

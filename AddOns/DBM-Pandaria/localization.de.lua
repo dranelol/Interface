@@ -38,7 +38,7 @@ L:SetMiscLocalization({
 L= DBM:GetModLocalization(814)
 
 L:SetMiscLocalization({
-	Pull				= "Könnt Ihr den kalten Hauch spüren?"
+	Pull				= "Könnt Ihr den kalten Hauch spüren? Ein Sturm naht..."
 })
 
 ---------------------------
@@ -96,4 +96,13 @@ L= DBM:GetModLocalization(861)
 
 L:SetMiscLocalization({
 	Pull					= "Ihr werdet meinen Platz in den ewigen Flammen einnehmen."
+})
+
+-----------------
+--  Zandalari  --
+-----------------
+L = DBM:GetModLocalization("Zandalari")
+
+L:SetGeneralLocalization({
+	name =	"Zandalari"
 })

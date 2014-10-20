@@ -2,7 +2,7 @@
 ## Title: Archy - Archaeology Assistant
 ## Title-zhCN: Archy - 考古学助手
 ## Title-zhTW: Archy - 考古學助手
-## Version: 1.8.43
+## Version: 1.8.44
 ## Notes: Archaeology assistant
 ## Notes-zhCN: 考古学助手
 ## Notes-zhTW: 考古學助手
@@ -11,7 +11,7 @@
 ## X-Category: Archaeology
 ## SavedVariables: ArchyDB
 ## OptionalDeps: Ace3, LibDBIcon-1.0, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibSink-2.0, TomTom, LibAboutPanel, LibQTip-1.0, LibBabble-DigSites-3.0, LibBabble-Artifacts-3.0, LibDialog-1.0, LibToast-1.0
-## X-Curse-Packaged-Version: 1.8.43
+## X-Curse-Packaged-Version: 1.8.44
 ## X-Curse-Project-Name: Archy - Archaeology Assistant
 ## X-Curse-Project-ID: archy
 ## X-Curse-Repository-ID: wow/archy/mainline

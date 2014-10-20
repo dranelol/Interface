@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(827, "DBM-ThroneofThunder", nil, 362)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10977 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetCreatureID(69465)
 mod:SetEncounterID(1577)
 mod:SetZone()
@@ -24,10 +24,10 @@ local warnIonization				= mod:NewSpellAnnounce(138732, 4)
 
 local specWarnFocusedLightning		= mod:NewSpecialWarningRun(137422)
 local yellFocusedLightning			= mod:NewYell(137422)
-local specWarnStaticBurst			= mod:NewSpecialWarningYou(137162, mod:IsTank())
-local specWarnStaticBurstOther		= mod:NewSpecialWarningTarget(137162, mod:IsTank())
-local specWarnThrow					= mod:NewSpecialWarningYou(137175, mod:IsTank())
-local specWarnThrowOther			= mod:NewSpecialWarningTarget(137175, mod:IsTank())
+local specWarnStaticBurst			= mod:NewSpecialWarningYou(137162)
+local specWarnStaticBurstOther		= mod:NewSpecialWarningTaunt(137162)
+local specWarnThrow					= mod:NewSpecialWarningYou(137175)
+local specWarnThrowOther			= mod:NewSpecialWarningTaunt(137175)
 local specWarnWaterMove				= mod:NewSpecialWarning("specWarnWaterMove")
 local specWarnStorm					= mod:NewSpecialWarningSpell(137313, nil, nil, nil, 2)
 local specWarnElectrifiedWaters		= mod:NewSpecialWarningMove(138006)
@@ -85,7 +85,7 @@ function mod:OnCombatStart(delay)
 	timerFocusedLightningCD:Start(8-delay)
 	timerStaticBurstCD:Start(13-delay)
 	timerThrowCD:Start(30-delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		timerIonizationCD:Start(60-delay)
 		countdownIonization:Start(60-delay)
 		berserkTimer:Start(360-delay)
@@ -112,7 +112,7 @@ function mod:SPELL_CAST_START(args)
 		timerStorm:Start()
 		timerStaticBurstCD:Start(20.5)--May need tweaking (20.1-24.2)
 		timerThrowCD:Start()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerIonizationCD:Start()
 			countdownIonization:Start()
 		end

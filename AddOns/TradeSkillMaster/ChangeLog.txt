@@ -1,3 +1,151 @@
+v2.9.10
+*Fixed an issue with warehousing bank slots if the reagent bank has been purchased
+
+v2.9.9
+*Fixed an issue with warehousing bank slots if the reagent bank hasn't been purchased
+
+v2.9.8
+*Updated libs for patch 6.0.2
+
+v2.9.7
+*Updated for patch 6.0.2
+
+v2.9.6
+*Added support for shopping searches in the TSM app data.
+*Fixed the TSM App URL.
+*Rewrote most of the TSM threading code to add functionality and make it more robust.
+
+v2.9.5
+*Grabbing latest version of AccurateTime which should fix conflicts with other addons.
+
+v2.9.4
+*Grabbing latest version of LibParse which should fix some issues that users with large amounts of group data were experiencing.
+
+v2.9.3
+*Fixed another bug with data for TSM App not being saved properly.
+
+v2.9.2
+*Removed TUJ price sources.
+*Fixed bug with data for TSM App not being saved properly.
+*Fixed bug affecting WoD beta.
+
+v2.9.1
+*Fixed bug with ruRU localization causing lua error.
+
+v2.9
+*Updated to support the new TSM Desktop Application.
+*Custom price sources will now be listed in the popup that shows when changing a custom price.
+*Changed popups to hopefully avoid tainting Blizzard's UI code.
+
+v2.8.3
+*Made TSMAPI:IsSoulbound() MUCH more efficient which will GREATLY reduce the interface log of all modules..
+
+v2.8.2
+*Added LibChatAnims to fix Blizzard bug with adding chat filters.
+
+v2.8.1
+*Updated connected realms.
+*Added some more validation to price sources to avoid lua errors.
+
+v2.8
+*Fixed issue with TSM error handler.
+*Removed 1.x dealfinding / shopping list support for importing items to groups.
+*Added options for displaying prospect and mill values in tooltips (enabled by default).
+*Reorganized general tooltip options slightly.
+*Fixed bug with "/tsm version" not going in the right chat tab.
+*Added confirmation for copying a profile.
+
+v2.7
+*Added new "check" function for doing logic operations in custom prices.
+*Fixed bug with multiple fixed gold values in custom prices being invalid in certain situations.
+*Removed "Status / Credits" tab and put credits at the bottom of the first tab instead.
+*Modified the "New Group Name" editbox to contain the current group name by default.
+*Made external price sources (mainly from Auctioneer) more consistent with TSM price sources.
+
+v2.6.2
+*Added verify for a sync setup which has been corrupted due to manual copying of saved variables.
+*Added help button to main TSM frame for opening TSM assistant.
+*Made lines under icons in main TSM frame shorter so they don't interfere with the title text.
+
+v2.6.1
+*Fixed typo in Assistant step.
+*Made Assistant window wider.
+
+v2.6
+*Added new TSM Assistant feature!
+*Removed SetUnit hook from LibExtraTip to avoid errors.
+*Updated localized strings.
+*Updated hard-coded list of connected realms.
+
+v2.5.14
+*Added line to TSM Info / Help page.
+
+v2.5.13
+*Fixed issue with importing groups with spaces in the subgroup names.
+*Fixed bug with post confirmation window and removed coloring of g/s/c letters.
+
+v2.5.12
+*Fixed bug introduced in v2.5.11 with percentages in price sources.
+
+v2.5.11
+*Fixed bug with parsing price sources with multiple percentages.
+
+v2.5.10
+*Added functionality to TSMAPI functions including auto-complete support for editboxes.
+*Minor code cleanup.
+
+v2.5.9
+*Fixed bug which was causing lua errors in TSM_Shopping.
+
+v2.5.8
+*Minor bug fix.
+
+v2.5.7
+*Improved TSM:GROUPS:* events for external usage.
+
+v2.5.6
+*Added TUJ as optional dependency to ensure it loads first.
+
+v2.5.5
+*Fixed bug with importing operations.
+
+v2.5.4
+*Cleaned up some code in the error handler and made it more resilient.
+
+v2.5.3
+*No change - fixing issue with curse packager.
+
+v2.5.2
+*Fixed bug with new change in v2.5.1.
+
+v2.5.1
+*Fixed bug with preparing filters taking a very long time.
+*Removed name from auction results row.
+*Removed some debug code.
+
+v2.5
+*Added error message when you try and move a group to one of its subgroups.
+*Reorganized and cleaned up the code.
+*Added option for embedding TSM's tooltip lines (enabled by default to maintain prior behavior).
+*TSM's error handler will now ignore errors from auc-stat-wowuction.
+*Fixed issue with multi-account syncing in patch 5.4.7.
+
+v2.4.5
+*Fixed issue with resizing the TSM window.
+*Added some debug code.
+*Potentially fixed bug with scans scanning too many pages due to missing item info.
+*Fixed bug with main window not correctly saving its position and size between sessions.
+*Fixed bug with moving the main window from the TSM icon
+*Added TSMAPI:Assert for unexpected conditions which should be reported as errors to the TSM team.
+*Added TSMAPI:Verify for conditions which require corrective action by the user and are not addon bugs.
+*Soulbound items will no longer be moved for warehousing/auctioning options on the BankUI.
+*Added events and event logger. Improved error handler.
+*Fixed bug with tooltips having a delayed update after modifier keys are pressed.
+*Errors occurring within threads should now be properly reported.
+*Added vanilla gems to conversions.
+*Added TSMAPI:GetConnectedRealms() to allow for basic connected realm support.
+*Fixed bug with multi-account code constantly trying to add people to the friends list.
+
 v2.4.4
 *Fixed bug with TSM tooltip.
 *Cleaned up some code.

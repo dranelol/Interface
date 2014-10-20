@@ -40,24 +40,36 @@ local function GetItemPrice(operationPrice, itemString)
 	return price ~= 0 and price or nil
 end
 
-function Util:GetItemPrices(operation, itemString, isResetScan)
+function Util:GetItemPrices(operation, itemString, isResetScan, keys)
 	local prices = {}
-	prices.undercut = GetItemPrice(operation.undercut, itemString)
-	prices.minPrice = GetItemPrice(operation.minPrice, itemString)
-	prices.maxPrice = GetItemPrice(operation.maxPrice, itemString)
-	prices.normalPrice = GetItemPrice(operation.normalPrice, itemString)
-	prices.cancelRepostThreshold = GetItemPrice(operation.cancelRepostThreshold, itemString)
+	keys = keys or {undercut=true, minPrice=true, maxPrice=true, normalPrice=true, cancelRepostThreshold=true, resetPrice=true, aboveMax=true}
 	if isResetScan then
-		prices.resetMaxCost = GetItemPrice(operation.resetMaxCost, itemString)
-		prices.resetMinProfit = GetItemPrice(operation.resetMinProfit, itemString)
-		prices.resetResolution = GetItemPrice(operation.resetResolution, itemString)
-		prices.resetMaxItemCost = GetItemPrice(operation.resetMaxItemCost, itemString)
+		keys.resetMaxCost = true
+		keys.resetMinProfit = true
+		keys.resetResolution = true
+		keys.resetMaxItemCost = true
 	end
+	if keys.resetPrice and operation.priceReset ~= "none" and operation.priceReset ~= "ignore" then
+		keys[operation.priceReset] = true
+	end
+	if keys.aboveMax and operation.aboveMax ~= "none" then
+		keys[operation.aboveMax] = true
+	end
+	
+	prices.undercut = keys.undercut and GetItemPrice(operation.undercut, itemString)
+	prices.minPrice = keys.minPrice and GetItemPrice(operation.minPrice, itemString)
+	prices.maxPrice = keys.maxPrice and GetItemPrice(operation.maxPrice, itemString)
+	prices.normalPrice = keys.normalPrice and GetItemPrice(operation.normalPrice, itemString)
 	if TSM.db.global.roundNormalPrice and prices.normalPrice then
 		prices.normalPrice = ceil(prices.normalPrice / COPPER_PER_GOLD) * COPPER_PER_GOLD
 	end
-	prices.resetPrice = operation.priceReset ~= "none" and operation.priceReset ~= "ignore" and prices[operation.priceReset]
-	prices.aboveMax = operation.aboveMax ~= "none" and prices[operation.aboveMax]
+	prices.cancelRepostThreshold = keys.cancelRepostThreshold and GetItemPrice(operation.cancelRepostThreshold, itemString)
+	prices.resetMaxCost = keys.resetMaxCost and GetItemPrice(operation.resetMaxCost, itemString)
+	prices.resetMinProfit = keys.resetMinProfit and GetItemPrice(operation.resetMinProfit, itemString)
+	prices.resetResolution = keys.resetResolution and GetItemPrice(operation.resetResolution, itemString)
+	prices.resetMaxItemCost = keys.resetMaxItemCost and GetItemPrice(operation.resetMaxItemCost, itemString)
+	prices.resetPrice = keys.resetPrice and operation.priceReset ~= "none" and operation.priceReset ~= "ignore" and prices[operation.priceReset]
+	prices.aboveMax = keys.aboveMax and operation.aboveMax ~= "none" and prices[operation.aboveMax]
 	return prices
 end
 

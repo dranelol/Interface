@@ -291,6 +291,14 @@ function SavedFrameSettings:HasSearchToggle()
 	return self:GetDB().hasSearchToggle
 end
 
+function SavedFrameSettings:EnableSortButton(enable)
+	self:GetDB().hasSortButton = enable or false
+end
+
+function SavedFrameSettings:HasSortButton()
+	return self:GetDB().hasSortButton
+end
+
 function SavedFrameSettings:SetHasOptionsToggle(enable)
 	self:GetDB().hasOptionsToggle = enable or false
 end
@@ -403,7 +411,6 @@ function SavedFrameSettings:GetDefaultInventorySettings()
 	local defaults = SavedFrameSettings.invDefaults or {
 		--bag settings
 		availableBags = {BACKPACK_CONTAINER, 1, 2, 3, 4},
-	
 		hiddenBags = {			
 			[BACKPACK_CONTAINER] = false,
 			[1] = false,
@@ -426,6 +433,7 @@ function SavedFrameSettings:GetDefaultInventorySettings()
 		itemFrameColumns = 8,
 		itemFrameSpacing = 2,
 		bagBreak = false,
+		reverseSlotOrder = false,
 
 		--optional components
 		hasMoneyFrame = true,
@@ -433,12 +441,8 @@ function SavedFrameSettings:GetDefaultInventorySettings()
 		hasDBOFrame = true,
 		hasSearchToggle = true,
 		hasOptionsToggle = true,
-
-		--dbo display object
+		hasSortButton = true,
 		dataBrokerObject = 'BagnonLauncher',
-		
-		--slot ordering
-		reverseSlotOrder = false,
 	}
 
 	SavedFrameSettings.invDefaults = defaults
@@ -449,9 +453,10 @@ end
 function SavedFrameSettings:GetDefaultBankSettings()
 	local defaults = SavedFrameSettings.bankDefaults or {
 		--bag settings
-		availableBags = {BANK_CONTAINER, 5, 6, 7, 8, 9, 10, 11},
+		availableBags = {BANK_CONTAINER, 5, 6, 7, 8, 9, 10, 11, REAGENTBANK_CONTAINER},
 		hiddenBags = {
 			[BANK_CONTAINER] = false,
+			[REAGENTBANK_CONTAINER] = false,
 			[5] = false,
 			[6] = false,
 			[7] = false,
@@ -472,9 +477,10 @@ function SavedFrameSettings:GetDefaultBankSettings()
 		frameLayer = 'HIGH',
 
 		--itemFrame
-		itemFrameColumns = 10,
+		itemFrameColumns = 16,
 		itemFrameSpacing = 2,
 		bagBreak = false,
+		reverseSlotOrder = false,
 
 		--optional components
 		hasMoneyFrame = true,
@@ -482,21 +488,13 @@ function SavedFrameSettings:GetDefaultBankSettings()
 		hasDBOFrame = true,
 		hasSearchToggle = true,
 		hasOptionsToggle = true,
-
-		--dbo display object
+		hasSortButton = true,
 		dataBrokerObject = 'BagnonLauncher',
-		
-		--slot ordering
-		reverseSlotOrder = false,
 	}
+	
 	SavedFrameSettings.bankDefaults = defaults
 	return defaults
 end
 
-function SavedFrameSettings:GetDefaultGuildBankSettings()
-	return self:GetDefaultInventorySettings()
-end
-
-function SavedFrameSettings:GetDefaultVaultSettings()
-	return self:GetDefaultInventorySettings()
-end
+SavedFrameSettings.GetDefaultGuildBankSettings = SavedFrameSettings.GetDefaultInventorySettings
+SavedFrameSettings.GetDefaultVaultSettings = SavedFrameSettings.GetDefaultInventorySettings

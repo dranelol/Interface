@@ -18,14 +18,25 @@ function Inventory:GetPlayerBagNum(itemString)
 
 	if TSMAPI.SOULBOUND_MATS[itemString] then
 		return GetItemCount(itemString)
-	elseif select(4, GetAddOnInfo("TradeSkillMaster_ItemTracker")) == 1 then
+	else
 		local bags = TSMAPI:ModuleAPI("ItemTracker", "playerbags", UnitName("player")) or {}
 		return bags and bags[itemString] or 0
-	else
-		-- If they don't have ItemTracker, they get the very inaccurate GetItemCount result for bags/bank
-		return GetItemCount(itemString)
 	end
 end
+
+
+-- gets the number of an item in the current player's reagent bank
+function Inventory:GetPlayerReagentBankNum(itemString)
+	if not itemString then return end
+
+	if TSMAPI.SOULBOUND_MATS[itemString] then
+		return GetItemCount(itemString)
+	else
+		local reagentBank = TSMAPI:ModuleAPI("ItemTracker", "playerreagentbank", UnitName("player")) or {}
+		return reagentBank and reagentBank[itemString] or 0
+	end
+end
+
 
 function Inventory:GetTotals()
 	local bagTotal, auctionTotal, otherTotal, total = {}, {}, {}, {}
@@ -34,8 +45,10 @@ function Inventory:GetTotals()
 		if player == UnitName("player") or not TSM.db.global.ignoreCharacters[player] then
 			local bags = TSMAPI:ModuleAPI("ItemTracker", "playerbags", player) or {}
 			local bank = TSMAPI:ModuleAPI("ItemTracker", "playerbank", player) or {}
+			local reagent = TSMAPI:ModuleAPI("ItemTracker", "playerreagentbank", player) or {}
 			local mail = TSMAPI:ModuleAPI("ItemTracker", "playermail", player) or {}
 			local auctions = TSMAPI:ModuleAPI("ItemTracker", "playerauctions", player) or {}
+			local reagentBank = TSMAPI:ModuleAPI("ItemTracker", "playerreagentbank", player) or {}
 			for itemString, quantity in pairs(bags) do
 				if player == UnitName("player") then
 					bagTotal[itemString] = (bagTotal[itemString] or 0) + quantity
@@ -47,6 +60,14 @@ function Inventory:GetTotals()
 			end
 			for itemString, quantity in pairs(bank) do
 				otherTotal[itemString] = (otherTotal[itemString] or 0) + quantity
+				total[itemString] = (total[itemString] or 0) + quantity
+			end
+			for itemString, quantity in pairs(reagent) do
+				if player == UnitName("player") then
+					bagTotal[itemString] = (bagTotal[itemString] or 0) + quantity
+				else
+					otherTotal[itemString] = (otherTotal[itemString] or 0) + quantity
+				end
 				total[itemString] = (total[itemString] or 0) + quantity
 			end
 			for itemString, quantity in pairs(mail) do
@@ -78,12 +99,13 @@ function Inventory:GetTotals()
 			end
 		end
 	end
+
 	return bagTotal, auctionTotal, otherTotal, total
 end
 
 -- gets the total number of some item that they have
 function Inventory:GetTotalQuantity(itemString)
-	if not itemString or select(4, GetAddOnInfo("TradeSkillMaster_ItemTracker")) ~= 1 then return 0 end
+	if not itemString then return 0 end
 	local count = 0
 
 	-- add bags/bank/mail/auction counts of all non-ignored characters (always including current character)
@@ -91,10 +113,12 @@ function Inventory:GetTotalQuantity(itemString)
 		if player == UnitName("player") or not TSM.db.global.ignoreCharacters[player] then
 			local bags = TSMAPI:ModuleAPI("ItemTracker", "playerbags", player) or {}
 			local bank = TSMAPI:ModuleAPI("ItemTracker", "playerbank", player) or {}
+			local reagentBank = TSMAPI:ModuleAPI("ItemTracker", "playerreagentbank", player) or {}
 			local mail = TSMAPI:ModuleAPI("ItemTracker", "playermail", player) or {}
 			local auctions = TSMAPI:ModuleAPI("ItemTracker", "playerauctions", player) or {}
 			count = count + (bags[itemString] or 0)
 			count = count + (bank[itemString] or 0)
+			count = count + (reagentBank[itemString] or 0)
 			count = count + (mail[itemString] or 0)
 			count = count + (auctions[itemString] or 0)
 		end
@@ -115,20 +139,21 @@ function Inventory:GetTotalQuantity(itemString)
 end
 
 function Inventory:GetItemSources(crafter, neededMats)
-	if not neededMats or select(4, GetAddOnInfo("TradeSkillMaster_ItemTracker")) ~= 1 then return end
+	if not neededMats then return end
 	local sources = {}
 	local gbank = {}
 	local next = next
 	local crafterBags = TSMAPI:ModuleAPI("ItemTracker", "playerbags", crafter) or {}
 	local crafterMail = TSMAPI:ModuleAPI("ItemTracker", "playermail", crafter) or {}
 	local crafterBank = TSMAPI:ModuleAPI("ItemTracker", "playerbank", crafter) or {}
+	local crafterReagentBank = TSMAPI:ModuleAPI("ItemTracker", "playerreagentbank", crafter) or {}
 
 	-- add vendor items
 	local task = {}
 	local items = {}
 	for itemString, quantity in pairs(neededMats) do
 		if TSMAPI:GetVendorCost(itemString) then
-			local vendorNeed = quantity - ((crafterBags[itemString] or 0) + (crafterMail[itemString] or 0) + (crafterBank[itemString] or 0))
+			local vendorNeed = quantity - ((crafterBags[itemString] or 0) + (crafterMail[itemString] or 0) + (crafterBank[itemString] or 0) + (crafterReagentBank[itemString] or 0))
 			if vendorNeed > 0 then
 				items[itemString] = vendorNeed
 			end
@@ -155,7 +180,7 @@ function Inventory:GetItemSources(crafter, neededMats)
 		if TSMAPI.SOULBOUND_MATS[itemString] then
 			soulboundBagCount = GetItemCount(itemString)
 		end
-		local need = max(quantity - (crafterBags[itemString] or soulboundBagCount or 0), 0)
+		local need = max(quantity - ((crafterBags[itemString] or 0) + (crafterReagentBank[itemString] or 0) + (soulboundBagCount or 0)), 0)
 		if need > 0 then
 			shortItems[itemString] = need
 		end
@@ -169,6 +194,7 @@ function Inventory:GetItemSources(crafter, neededMats)
 			local bags = TSMAPI:ModuleAPI("ItemTracker", "playerbags", player) or {}
 			local bank = TSMAPI:ModuleAPI("ItemTracker", "playerbank", player) or {}
 			local guild = TSMAPI:ModuleAPI("ItemTracker", "playerguild", player) or {}
+			local reagent = TSMAPI:ModuleAPI("ItemTracker", "playerreagentbank", player) or {}
 			local gbank = {}
 			if guild and not TSM.db.global.ignoreGuilds[guild] then
 				gbank = TSMAPI:ModuleAPI("ItemTracker", "guildbank", guild) or {}
@@ -185,9 +211,14 @@ function Inventory:GetItemSources(crafter, neededMats)
 					soulboundBagCount = GetItemCount(itemString)
 					soulboundBankCount = GetItemCount(itemString, true) - soulboundBagCount
 				end
-				if (bank[itemString] or (soulboundBankCount and soulboundBankCount > 0)) and shortItems[itemString] then
+				if (bank[itemString] or reagent[itemString] or (soulboundBankCount and soulboundBankCount > 0)) and shortItems[itemString] then
 					if shortItems[itemString] - (crafterMail[itemString] or 0) - (player ~= crafter and bags[itemString] or 0) > 0 then
 						bankItems[itemString] = bank[itemString] or soulboundBankCount
+						if bankItems[itemString] and reagent[itemString] then
+							bankItems[itemString] = bankItems[itemString] + (reagent[itemString] or 0)
+						else
+							bankItems[itemString] = reagent[itemString]
+						end
 					end
 				end
 				if gbank[itemString] and shortItems[itemString] then

@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("d492", "DBM-Scenario-MoP")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 9883 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetZone()
 
 mod:RegisterCombat("scenario", 1024)
@@ -12,6 +12,7 @@ mod:RegisterEventsInCombat(
 --	"SPELL_CAST_SUCCESS",
 	"UNIT_DIED"
 )
+mod.onlyNormal = true
 
 --Cursed Brew
 local warnBrewBubble			= mod:NewTargetAnnounce(131143, 3)

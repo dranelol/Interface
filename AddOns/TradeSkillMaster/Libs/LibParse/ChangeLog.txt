@@ -1,3 +1,9 @@
+v1.5
+*Bumped minor version number from 1 to 2.
+
+v1.4
+*Fixed buffer overflow issues with encoding large amounts of data.
+
 v1.3
 *Implemented custom string split function to avoid stack overflows.
 *Fixed bug in JSONWriter where consecutive JSONEncode calls were sharing buffers.

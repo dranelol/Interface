@@ -9,53 +9,73 @@
 local TSM = select(2, ...)
 local Scan = TSM:NewModule("Scan", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("TradeSkillMaster_Auctioning") -- loads the localization table
+local private = {eventThreadId=nil}
+TSMAPI:RegisterForTracing(private, "TSM_Auctioning.ScanUtil_private")
 
 Scan.auctionData = {}
-Scan.skipped = {}
 
 
-local function CallbackHandler(event, ...)
-	if event == "QUERY_COMPLETE" then
-		local filterList = ...
-		local numItems = 0
-		for _, v in ipairs(filterList) do
-			numItems = numItems + #v.items
-		end
-		Scan.filterList = filterList
-		Scan.numFilters = #filterList
-		Scan:ScanNextFilter()
-	elseif event == "QUERY_UPDATE" then
-		local current, total, skipped = ...
-		TSM.Manage:UpdateStatus("query", current, total)
-		for _, itemString in ipairs(skipped) do
-			TSM.Manage:ProcessScannedItem(itemString)
-			tinsert(Scan.skipped, itemString)
-		end
-	elseif event == "SCAN_PAGE_UPDATE" then
-		TSM.Manage:UpdateStatus("page", ...)
-	elseif event == "SCAN_INTERRUPTED" then
-		TSM.Manage:ScanComplete(true)
-	elseif event == "SCAN_TIMEOUT" then
-		tremove(Scan.filterList, 1)
-		Scan:ScanNextFilter()
-	elseif event == "SCAN_COMPLETE" then
-		local data = ...
-		for _, itemString in ipairs(Scan.filterList[1].items) do
-			-- make sure we haven't already scanned this item (possible with common search terms)
-			if not Scan.auctionData[itemString] then
-				Scan:ProcessItem(itemString, data[itemString])
-				TSM.Manage:ProcessScannedItem(itemString)
+function private.ProcessEventThread(self)
+	while true do -- receive messages forever
+		local args = self:ReceiveMsg()
+		local event = tremove(args, 1)
+		if event == "QUERY_COMPLETE" then
+			local filterList = unpack(args)
+			local numItems = 0
+			for _, v in ipairs(filterList) do
+				numItems = numItems + #v.items
 			end
+			Scan.filterList = filterList
+			Scan.numFilters = #filterList
+			Scan:ScanNextFilter()
+		elseif event == "QUERY_UPDATE" then
+			local current, total, skipped = unpack(args)
+			TSM.Manage:UpdateStatus("query", current, total)
+			for _, itemString in ipairs(skipped) do
+				TSM.Manage:ProcessScannedItem(itemString)
+				self:Yield()
+			end
+		elseif event == "SCAN_PAGE_UPDATE" then
+			TSM.Manage:UpdateStatus("page", unpack(args))
+		elseif event == "SCAN_INTERRUPTED" then
+			TSM.Manage:ScanComplete(true)
+		elseif event == "SCAN_TIMEOUT" then
+			tremove(Scan.filterList, 1)
+			Scan:ScanNextFilter()
+		elseif event == "SCAN_COMPLETE" then
+			local data = unpack(args)
+			for _, itemString in ipairs(Scan.filterList[1].items) do
+				-- make sure we haven't already scanned this item (possible with common search terms)
+				if not Scan.auctionData[itemString] then
+					Scan:ProcessItem(itemString, data[itemString])
+					TSM.Manage:ProcessScannedItem(itemString)
+				end
+				self:Yield()
+			end
+			tremove(Scan.filterList, 1)
+			Scan:ScanNextFilter()
 		end
-		tremove(Scan.filterList, 1)
-		Scan:ScanNextFilter()
+		self:Yield()
+	end
+end
+
+function Scan:KillEventThread()
+	if private.eventThreadId and TSMAPI.Threading:IsValid(private.eventThreadId) then
+		TSMAPI.Threading:Kill(private.eventThreadId)
+	end
+end
+
+function private.SendScanEventMsg(...)
+	if private.eventThreadId and TSMAPI.Threading:IsValid(private.eventThreadId) then
+		TSMAPI.Threading:SendMessage(private.eventThreadId, {...})
 	end
 end
 
 function Scan:StartItemScan(itemList)
 	wipe(Scan.auctionData)
-	wipe(Scan.skipped)
-	TSMAPI:GenerateQueries(itemList, CallbackHandler)
+	Scan:KillEventThread()
+	private.eventThreadId = TSMAPI.Threading:Start(private.ProcessEventThread, 0.7)
+	TSMAPI:GenerateQueries(itemList, private.SendScanEventMsg)
 	TSM.Manage:UpdateStatus("query", 0, -1)
 end
 
@@ -65,7 +85,7 @@ function Scan:ScanNextFilter()
 		return TSM.Manage:ScanComplete()
 	end
 	TSM.Manage:UpdateStatus("scan", Scan.numFilters-#Scan.filterList, Scan.numFilters)
-	TSMAPI.AuctionScan:RunQuery(Scan.filterList[1], CallbackHandler, true)
+	TSMAPI.AuctionScan:RunQuery(Scan.filterList[1], private.SendScanEventMsg, true)
 end
 
 function Scan:ProcessItem(itemString, auctionItem)
@@ -87,9 +107,9 @@ function Scan:ShouldIgnoreAuction(record, operation)
 	elseif operation.matchStackSize and record.count ~= operation.stackSize then	
 		-- matching stack size
 		return true
-	else
-		local minPrice = TSM.Util:GetItemPrices(operation, record.parent:GetItemString()).minPrice
-		if operation.priceReset == "ignore" and minPrice and record:GetItemBuyout() and record:GetItemBuyout() <= minPrice then	
+	elseif operation.priceReset == "ignore" and record:GetItemBuyout() then
+		local minPrice = TSM.Util:GetItemPrices(operation, record.parent:GetItemString(), {minPrice=true}).minPrice
+		if minPrice and record:GetItemBuyout() <= minPrice then	
 			-- ignoring auctions below threshold
 			return true
 		end
@@ -142,7 +162,8 @@ function Scan:GetLowestAuction(auctionItem, operation)
 	-- Find lowest
 	local buyout, bid, owner, invalidSellerEntry
 	for _, record in ipairs(auctionItem.compactRecords) do
-		if not Scan:ShouldIgnoreAuction(record, operation) then
+		local shouldIgnore = Scan:ShouldIgnoreAuction(record, operation)
+		if not shouldIgnore then
 			local recordBuyout = record:GetItemBuyout()
 			if recordBuyout then
 				local recordBid = record:GetItemDisplayedBid()
@@ -159,7 +180,7 @@ function Scan:GetLowestAuction(auctionItem, operation)
 	-- Now that we know the lowest, find out if this price "level" is a friendly person
 	-- the reason we do it like this, is so if Apple posts an item at 50g, Orange posts one at 50g
 	-- but you only have Apple on your white list, it'll undercut it because Orange posted it as well
-	local isWhitelist, isPlayer = true, true
+	local isWhitelist, isBlacklist, isPlayer = true, true, true
 	for _, record in ipairs(auctionItem.compactRecords) do
 		if not Scan:ShouldIgnoreAuction(record, operation) then
 			local recordBuyout = record:GetItemBuyout()
@@ -167,6 +188,17 @@ function Scan:GetLowestAuction(auctionItem, operation)
 				isPlayer = nil
 				if not TSM.db.factionrealm.whitelist[strlower(record.seller)] then
 					isWhitelist = nil
+				end
+				local playerOnBlacklist = false
+				local blacklist = (type(operation) == "table" and operation.blacklist and {(","):split(operation.blacklist)}) or {}
+				for _, player in ipairs(blacklist) do
+					if strlower(player:trim()) == strlower(record.seller) then
+						playerOnBlacklist = true
+						break
+					end
+				end
+				if not playerOnBlacklist then
+					isBlacklist = nil
 				end
 				
 				-- If the lowest we found was from the player, but someone else is matching it (and they aren't on our white list)
@@ -179,7 +211,7 @@ function Scan:GetLowestAuction(auctionItem, operation)
 		invalidSellerEntry = true
 	end
 
-	return buyout, bid, owner, isWhitelist, isPlayer, invalidSellerEntry
+	return buyout, bid, owner, isWhitelist, isBlacklist, isPlayer, invalidSellerEntry
 end
 
 function Scan:GetPlayerLowestBuyout(auctionItem, operation)

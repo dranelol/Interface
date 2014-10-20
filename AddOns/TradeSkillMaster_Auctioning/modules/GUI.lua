@@ -348,17 +348,22 @@ function private:CreateInfoText(parent)
 	tex:SetAllPoints(icon)
 	icon:SetNormalTexture(tex)
 	icon:SetScript("OnEnter", function(self)
-			if self.link and self.link ~= "" then
-				GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-				TSMAPI:SafeTooltipLink(self.link)
-				GameTooltip:Show()
-			end
-		end)
+		if self.link and self.link ~= "" then
+			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+			TSMAPI:SafeTooltipLink(self.link)
+			GameTooltip:Show()
+		end
+	end)
 	icon:SetScript("OnLeave", function()
-			BattlePetTooltip:Hide()
-			GameTooltip:ClearLines()
-			GameTooltip:Hide()
-		end)
+		BattlePetTooltip:Hide()
+		GameTooltip:ClearLines()
+		GameTooltip:Hide()
+	end)
+	icon:SetScript("OnClick", function(self)
+		if IsModifiedClick() then
+			HandleModifiedItemClick(self.link)
+		end
+	end)
 	frame.icon = icon
 	
 	local linkText = TSMAPI.GUI:CreateLabel(frame)
@@ -486,7 +491,7 @@ function private:CreateLogST(parent)
 	local handlers = {
 		OnEnter = function(_, data, self)
 			if not data.operation then return end
-			local prices = TSM.Util:GetItemPrices(data.operation, data.itemString)
+			local prices = TSM.Util:GetItemPrices(data.operation, data.itemString, {minPrice=true, maxPrice=true, normalPrice=true})
 			
 			GameTooltip:SetOwner(self, "ANCHOR_NONE")
 			GameTooltip:SetPoint("BOTTOMLEFT", self, "TOPLEFT")
@@ -498,7 +503,7 @@ function private:CreateLogST(parent)
 			GameTooltip:AddLine(L["Log Info:"].." "..data.info)
 			GameTooltip:AddLine("\n"..TSMAPI.Design:GetInlineColor("link2")..L["Click to show auctions for this item."].."|r")
 			GameTooltip:AddLine(TSMAPI.Design:GetInlineColor("link2")..format(L["Right-Click to add %s to your friends list."], "|r"..(data.seller or "---")..TSMAPI.Design:GetInlineColor("link2")).."|r")
-			GameTooltip:AddLine(TSMAPI.Design:GetInlineColor("link2")..L["Shift-Right-Click to show the options for this operation.".."|r"])
+			GameTooltip:AddLine(TSMAPI.Design:GetInlineColor("link2")..L["Shift-Right-Click to show the options for this operation."].."|r")
 			GameTooltip:Show()
 		end,
 		OnLeave = function()
@@ -575,7 +580,7 @@ function private:GetLogSTRow(record, recordIndex)
 	local name, link = TSMAPI:GetSafeItemInfo(record.itemString)
 	local buyout, seller, isWhitelist, isPlayer, lowestBuyout, _
 	if record.reason ~= "cancelAll" then
-		buyout, _, seller, isWhitelist, isPlayer = TSM.Scan:GetLowestAuction(record.itemString, record.operation)
+		buyout, _, seller, isWhitelist, _, isPlayer = TSM.Scan:GetLowestAuction(record.itemString, record.operation)
 		lowestBuyout = buyout
 		if TSM.db.global.priceColumn == 1 then
 			buyout = record.buyout

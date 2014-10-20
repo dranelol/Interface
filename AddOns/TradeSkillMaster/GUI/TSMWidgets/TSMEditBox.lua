@@ -143,6 +143,7 @@ local methods = {
 		self:SetText()
 		self:DisableButton()
 		self:SetMaxLetters(0)
+		TSMAPI.GUI:SetAutoComplete(self.editbox, nil)
 	end,
 
 	["OnRelease"] = function(self)
@@ -211,6 +212,10 @@ local methods = {
 		if not self.frame:IsShown() then
 			self.frame:SetScript("OnShow", Frame_OnShowFocus)
 		end
+	end,
+	
+	["SetAutoComplete"] = function(self, params)
+		TSMAPI.GUI:SetAutoComplete(self.editbox, params)
 	end,
 }
 

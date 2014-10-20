@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(817, "DBM-ThroneofThunder", nil, 362)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 11001 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetCreatureID(68078, 68079, 68080, 68081)--Ro'shak 68079, Quet'zal 68080, Dam'ren 68081, Iron Qon 68078
 mod:SetEncounterID(1559)
 mod:SetMainBossID(68078)
@@ -41,8 +41,8 @@ local warnPhase4						= mod:NewPhaseAnnounce(4)
 local warnRisingAnger					= mod:NewStackAnnounce(136323, 2, nil, false)
 local warnFistSmash						= mod:NewCountAnnounce(136146, 3)
 
-local specWarnImpale					= mod:NewSpecialWarningStack(134691, mod:IsTank(), 2)
-local specWarnImpaleOther				= mod:NewSpecialWarningTarget(134691, mod:IsTank())
+local specWarnImpale					= mod:NewSpecialWarningStack(134691, nil, 2)
+local specWarnImpaleOther				= mod:NewSpecialWarningTaunt(134691)
 local specWarnThrowSpear				= mod:NewSpecialWarningSpell(134926, nil, nil, nil, 2)
 local specWarnThrowSpearYou				= mod:NewSpecialWarningYou(134926)
 local specWarnThrowSpearNear			= mod:NewSpecialWarningClose(134926)
@@ -101,7 +101,7 @@ local function updateHealthFrame()
 			DBM.BossHealth:AddBoss(68081, Damren)
 		elseif mod.vb.phase == 4 then
 			DBM.BossHealth:AddBoss(68078, L.name)
-			if mod:IsDifficulty("heroic10", "heroic25") then
+			if mod:IsHeroic() then
 				DBM.BossHealth:AddBoss(68081, Damren)
 				DBM.BossHealth:AddBoss(68080, Quetzal)
 				DBM.BossHealth:AddBoss(68079, Roshak)
@@ -151,12 +151,7 @@ local function checkSpear()
 			specWarnThrowSpearYou:Show()
 			yellThrowSpear:Yell()
 		else--Not spear target
-			local x, y = GetPlayerMapPosition("boss1target")
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition("boss1target")
-			end
-			local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+			local inRange = DBM.RangeCheck:GetDistance("player", "boss1target")
 			if inRange and inRange < 10 then
 				specWarnThrowSpearNear:Show(targetname)--Near spear target
 			elseif mod:AntiSpam(15, 6) then--Smart way to do a failsafe in case we never get a valid target
@@ -371,7 +366,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 			timerImpaleCD:Cancel()
 			warnPhase2:Show()
 			self:Schedule(25, checkSpear)
-			if self:IsDifficulty("heroic10", "heroic25") then
+			if self:IsHeroic() then
 				timerFreezeCD:Start(13)
 				timerFrostSpikeCD:Start(15)
 			end
@@ -435,7 +430,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		warnFistSmash:Show(self.vb.fistSmashCount)
 		specWarnFistSmash:Show()
 		timerFistSmash:Start()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerFistSmashCD:Start(28, self.vb.fistSmashCount+1) -- heroic cd longer.
 		else
 			timerFistSmashCD:Start(nil, self.vb.fistSmashCount+1)
@@ -448,7 +443,7 @@ function mod:UNIT_DIED(args)
 	if cid == 68079 then--Ro'shak
 		timerUnleashedFlameCD:Cancel()
 		timerMoltenOverload:Cancel()
-		if self:IsDifficulty("heroic10", "heroic25") and DBM.BossHealth:IsShown() then--In heroic, all mounts die in phase 4.
+		if self:IsHeroic() and DBM.BossHealth:IsShown() then--In heroic, all mounts die in phase 4.
 			DBM.BossHealth:RemoveBoss(cid)
 		else
 			if self.Options.RangeFrame then
@@ -484,7 +479,7 @@ function mod:UNIT_DIED(args)
 				DBM.RangeCheck:Hide()
 			end
 		end
-		if self:IsDifficulty("heroic10", "heroic25") and DBM.BossHealth:IsShown() then--In heroic, all mounts die in phase 4.
+		if self:IsHeroic() and DBM.BossHealth:IsShown() then--In heroic, all mounts die in phase 4.
 			DBM.BossHealth:RemoveBoss(cid)
 		else
 			self.vb.phase = 3
@@ -499,7 +494,7 @@ function mod:UNIT_DIED(args)
 	elseif cid == 68081 then--Dam'ren
 		timerDeadZoneCD:Cancel()
 		timerFreezeCD:Cancel()
-		if self:IsDifficulty("heroic10", "heroic25") and DBM.BossHealth:IsShown() then--In heroic, all mounts die in phase 4.
+		if self:IsHeroic() and DBM.BossHealth:IsShown() then--In heroic, all mounts die in phase 4.
 			DBM.BossHealth:RemoveBoss(cid)
 		else
 			self.vb.phase = 4

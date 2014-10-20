@@ -1,13 +1,13 @@
 --[[
 Name: LibDogTag-3.0
-Revision: $Rev: 259 $
+Revision: $Rev: 263 $
 Author: Cameron Kenneth Knight (ckknight@gmail.com)
 Website: http://www.wowace.com/
 Description: A library to provide a markup syntax
 ]]
 
 local MAJOR_VERSION = "LibDogTag-Unit-3.0"
-local MINOR_VERSION = 90000 + tonumber(("$Revision: 259 $"):match("%d+")) or 0
+local MINOR_VERSION = 90000 + tonumber(("$Revision: 263 $"):match("%d+")) or 0
 
 if MINOR_VERSION > _G.DogTag_Unit_MINOR_VERSION then
 	_G.DogTag_Unit_MINOR_VERSION = MINOR_VERSION
@@ -270,7 +270,7 @@ local function refreshGUID(unit)
 	end
 
 	for wackyUnit in pairs(WACKY_UNITS) do
-		if wackyUnitToBestUnit[wackyUnit] == unit or unitToGUID[wackyUnit] == guid then
+		if wackyUnitToBestUnit[wackyUnit] == unit or (guid and unitToGUID[wackyUnit] == guid) then
 			calculateBestUnit(wackyUnit)
 		end
 	end

@@ -57,6 +57,16 @@ function TSM:OnEnable()
 		end
 	end
 
+	--add stackSize to operation if it doesn't exist
+	for name in pairs(TSM.operations) do
+		TSMAPI:UpdateOperation("Warehousing", name)
+		local settings = TSM.operations[name]
+		if not settings then return end
+		if not settings.stackSize then
+			settings.stackSize = 5
+		end
+	end
+
 	TSM:RegisterEvent("GUILDBANKFRAME_OPENED", function(event)
 		bank = "guildbank"
 	end)
@@ -94,6 +104,8 @@ TSM.operationDefaults = {
 	keepBankQuantity = 1, --keep 1 in bank
 	restockQtyEnabled = nil,
 	restockQuantity = 1, --restock 1
+	stackSize = 5,
+	stackSizeEnabled = nil,
 	ignorePlayer = {},
 	ignoreFactionrealm = {},
 	relationships = {},

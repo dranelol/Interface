@@ -1,11 +1,10 @@
 local mod	= DBM:NewMod(737, "DBM-HeartofFear", nil, 330)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10980 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 3 $"):sub(12, -3))
 mod:SetCreatureID(62511)
 mod:SetEncounterID(1499)
 mod:SetZone()
-mod:SetMinSyncRevision(8052)
 
 mod:RegisterCombat("combat")
 
@@ -87,7 +86,7 @@ local countdownAmberExplosion	= mod:NewCountdown(49, 122398)
 local berserkTimer				= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("InfoFrame", true)
-mod:AddBoolOption("FixNameplates", false)--Because having 215937495273598637205175t9 hostile nameplates on screen when you enter a construct is not cool.
+mod:AddBoolOption("FixNameplates", true)--Because having 215937495273598637205175t9 hostile nameplates on screen when you enter a construct is not cool.
 
 local Phase = 1
 local Puddles = 0
@@ -162,20 +161,33 @@ function mod:OnCombatStart(delay)
 		Guardians = GetCVarBool("nameplateShowEnemyGuardians")
 		Pets = GetCVarBool("nameplateShowEnemyPets")
 		--Now change all settings to make the nameplates while in constructs not terrible.
-		if Totems then
-			SetCVar("nameplateShowEnemyTotems", 0)
-		end
-		if Guardians then
-			SetCVar("nameplateShowEnemyGuardians", 0)
-		end
-		if Pets then
-			SetCVar("nameplateShowEnemyPets", 0)
+		if not InCombatLockdown() then--Now restricted functions in combat in 5.4.8. My hope is that startcombat fires first, if not, prevent lua errors.
+			if Totems then
+				SetCVar("nameplateShowEnemyTotems", 0)
+			end
+			if Guardians then
+				SetCVar("nameplateShowEnemyGuardians", 0)
+			end
+			if Pets then
+				SetCVar("nameplateShowEnemyPets", 0)
+			end
 		end
 		--Check for threat plates on pull and save users setting.
 		if IsAddOnLoaded("TidyPlates_ThreatPlates") then
 			TPTPNormal = TidyPlatesThreat.db.profile.nameplate.toggle["Normal"]--Returns true or false, use TidyPlatesNormal to save that value on pull
 		end
+	end
+end
 
+local function delayNamePlateRestore()
+	if Totems then
+		SetCVar("nameplateShowEnemyTotems", 1)
+	end
+	if Guardians then
+		SetCVar("nameplateShowEnemyGuardians", 1)
+	end
+	if Pets then
+		SetCVar("nameplateShowEnemyPets", 1)
 	end
 end
 
@@ -186,14 +198,18 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.FixNameplates then
 		--if any of settings were on before pull, we put them back to way they were.
-		if Totems then
-			SetCVar("nameplateShowEnemyTotems", 1)
-		end
-		if Guardians then
-			SetCVar("nameplateShowEnemyGuardians", 1)
-		end
-		if Pets then
-			SetCVar("nameplateShowEnemyPets", 1)
+		if not InCombatLockdown() then--Can't change options back yet
+			if Totems then
+				SetCVar("nameplateShowEnemyTotems", 1)
+			end
+			if Guardians then
+				SetCVar("nameplateShowEnemyGuardians", 1)
+			end
+			if Pets then
+				SetCVar("nameplateShowEnemyPets", 1)
+			end
+		else
+			self:Schedule(3, delayNamePlateRestore)--So try again in 3 seconds. Hopefuly PLAYER_REGEN_ENABLED fired by then (mod:stop called before mod:oncombatend so this scheduling SHOULD work)
 		end
 		if IsAddOnLoaded("TidyPlates_ThreatPlates") then
 			if TPTPNormal == true and not TidyPlatesThreat.db.profile.nameplate.toggle["Normal"] then--Normal plates were on when we pulled but aren't on now.

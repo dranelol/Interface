@@ -85,7 +85,7 @@ function private:StartSending()
 					if numAvailable > 0 then
 						local quantity = 0
 						if operation.maxQtyEnabled then
-							if strlower(UnitName("player")) == strlower(operation.target) then
+							if TSMAPI:IsPlayer(operation.target) or not operation.restock then
 								quantity = min(numAvailable, operation.maxQty)
 							else
 								local targetQty = private:GetTargetQuantity(operation.target, itemString, operation.restockGBank)
@@ -106,7 +106,7 @@ function private:StartSending()
 	end
 
 	for target in pairs(targets) do
-		if strlower(UnitName("player")) == strlower(target) then
+		if TSMAPI:IsPlayer(target) then
 			targets[target] = nil
 		end
 	end

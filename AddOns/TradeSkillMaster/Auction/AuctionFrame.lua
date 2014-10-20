@@ -71,7 +71,7 @@ function private:CreateTSMAHTab(moduleName, callbackShow, callbackHide)
 	iconText:SetJustifyV("CENTER")
 	iconText:SetFont(TSMAPI.Design:GetContentFont("normal"))
 	iconText:SetTextColor(165/255, 168/255, 188/255, .7)
-	local version = strfind(TSM._version, "@") and "Dev" or TSM._version
+	local version = TSM._version
 	iconText:SetText(version)
 	local ag = iconFrame:CreateAnimationGroup()
 	local spin = ag:CreateAnimation("Rotation")

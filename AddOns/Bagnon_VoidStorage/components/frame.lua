@@ -7,6 +7,8 @@ local Frame = Bagnon:NewClass('VoidstorageFrame', 'Frame', Bagnon.Frame)
 Frame.Title = LibStub('AceLocale-3.0'):GetLocale('Bagnon-VoidStorage').Title
 Frame.OpenSound = 'UI_EtherealWindow_Open'
 Frame.CloseSound = 'UI_EtherealWindow_Close'
+Frame.ItemFrame = Bagnon.VaultItemFrame
+Frame.MoneyFrame = Bagnon.TransferButton
 
 
 --[[ Events ]]--
@@ -55,6 +57,10 @@ end
 
 --[[ Transfer Frame ]]--
 
+function Frame:GetTransferFrame()
+	return self.transferFrame or self:CreateTransferFrame()
+end
+
 function Frame:CreateTransferFrame()
 	local item = self:GetItemFrame()
 	local frame = Bagnon.TransferFrame:New(self:GetFrameID(), self)
@@ -64,38 +70,17 @@ function Frame:CreateTransferFrame()
 	return frame
 end
 
-function Frame:GetTransferFrame()
-	return self.transferFrame or self:CreateTransferFrame()
-end
-
 
 --[[ Other Components ]]--
-
-function Frame:CreateItemFrame()
-	local f = Bagnon.VaultItemFrame:New(self:GetFrameID(), self, 'vault')
-	self.itemFrame = f
-	return f
-end
-
-function Frame:CreateMoneyFrame()
-	local f = Bagnon.TransferButton:New(self:GetFrameID(), self)
-	self.moneyFrame = f
-	return f
-end
 
 function Frame:PlaceBrokerDisplayFrame()
 	if self:HasBrokerDisplay() then
 		local frame = self:GetBrokerDisplay() or self:CreateBrokerDisplay()
 		frame:ClearAllPoints()
 		frame:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', 16, 20)
-
-		if self:HasMoneyFrame() then
-			frame:SetPoint('RIGHT', self:GetMoneyFrame(), 'LEFT', -8, 10)
-		else
-			frame:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', -8, 20)
-		end
-
+		frame:SetPoint('RIGHT', self:GetMoneyFrame(), 'LEFT', -8, 10)
 		frame:Show()
+		
 		return frame:GetWidth(), 24
 	end
 
@@ -106,6 +91,7 @@ function Frame:PlaceBrokerDisplayFrame()
 	return 0, 0
 end
 
-function Frame:HasBagFrame()
-	return nil
+function Frame:GetSpecialButtons() end
+function Frame:HasMoneyFrame()
+	return true
 end

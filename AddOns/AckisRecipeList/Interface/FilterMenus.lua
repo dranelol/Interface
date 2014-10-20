@@ -94,6 +94,7 @@ do
 			parent[section].text:SetText(data.text)
 		end
 	end
+	addon.GenerateCheckBoxes = private.GenerateCheckBoxes -- TODO: Move this somewhere more sensical.
 end	-- do
 
 -------------------------------------------------------------------------------
@@ -378,10 +379,9 @@ function private.InitializeFilterPanel()
 	local general_buttons = {
 		faction		= { tt = faction_desc,		text = faction_text,		row = 1, col = 1 },
 		known		= { tt = L["KNOWN_DESC"],	text = L["Show Known"],		row = 1, col = 2 },
-		retired		= { tt = L["RETIRED_DESC"],	text = L["Retired"],		row = 2, col = 1 },
-		skill		= { tt = L["SKILL_DESC"],	text = _G.SKILL,		row = 2, col = 2 },
-		specialty	= { tt = L["SPECIALTY_DESC"],	text = L["Specialties"],	row = 3, col = 1 },
-		unknown		= { tt = L["UNKNOWN_DESC"],	text = _G.UNKNOWN,		row = 3, col = 2 },
+		skill		= { tt = L["SKILL_DESC"],	text = _G.SKILL,		row = 2, col = 1 },
+		specialty	= { tt = L["SPECIALTY_DESC"],	text = L["Specialties"],	row = 2, col = 2 },
+		unknown		= { tt = L["UNKNOWN_DESC"],	text = _G.UNKNOWN,		row = 3, col = 1 },
 	}
 
 	local general_panel = _G.CreateFrame("Frame", nil, general_frame)
@@ -452,7 +452,7 @@ function private.InitializeFilterPanel()
 	-- Create FilterPanel.obtain, and set its scripts.
 	-------------------------------------------------------------------------------
 	do
-		local A = private.ACQUIRE_TYPES
+		local A = private.ACQUIRE_TYPE_IDS
 		local obtain_frame = FilterPanel:CreateSubMenu("obtain")
 
 		-------------------------------------------------------------------------------
@@ -486,23 +486,24 @@ function private.InitializeFilterPanel()
 		obtain_frame.acquire_toggle = acquire_toggle
 
 		local acquire_buttons = {
-			achievement	= { tt = L["ACHIEVEMENT_DESC"],		text = _G.ACHIEVEMENTS,				row = 1, col = 1 },
-			discovery	= { tt = L["DISCOVERY_DESC"],		text = L["Discovery"],				row = 1, col = 2 },
-			instance	= { tt = L["INSTANCE_DESC"],		text = _G.INSTANCE,				row = 2, col = 1 },
-			mobdrop		= { tt = L["MOB_DROP_DESC"],		text = L["Mob Drop"],				row = 2, col = 2 },
-			pvp		= { tt = L["PVP_DESC"],			text = _G.PVP,					row = 3, col = 1 },
-			quest		= { tt = L["QUEST_DESC"],		text = L["Quest"],				row = 3, col = 2 },
-			raid		= { tt = L["RAID_DESC"],		text = _G.RAID,					row = 4, col = 1 },
-			reputation	= { tt = L["REPUTATION_DESC"],		text = _G.REPUTATION,				row = 4, col = 2 },
-			seasonal	= { tt = L["SEASONAL_DESC"],		text = private.ACQUIRE_NAMES[A.SEASONAL],	row = 5, col = 1 },
-			trainer		= { tt = L["TRAINER_DESC"],		text = L["Trainer"],				row = 5, col = 2 },
-			vendor		= { tt = L["VENDOR_DESC"],		text = L["Vendor"],				row = 6, col = 1 },
-			worlddrop	= { tt = L["WORLD_DROP_DESC"],		text = L["World Drop"],				row = 6, col = 2 },
-			misc1		= { tt = L["MISC_DESC"],		text = _G.MISCELLANEOUS,			row = 7, col = 1 },
+			achievement	= { tt = L["ACHIEVEMENT_DESC"],		text = _G.ACHIEVEMENTS,					row = 1, col = 1 },
+			discovery	= { tt = L["DISCOVERY_DESC"],		text = L["Discovery"],					row = 1, col = 2 },
+			instance	= { tt = L["INSTANCE_DESC"],		text = _G.INSTANCE,					row = 2, col = 1 },
+			misc1		= { tt = L["MISC_DESC"],		text = _G.MISCELLANEOUS,				row = 2, col = 2 },
+			mobdrop		= { tt = L["MOB_DROP_DESC"],		text = L["Mob Drop"],					row = 3, col = 1 },
+			pvp		= { tt = L["PVP_DESC"],			text = _G.PVP,						row = 3, col = 2 },
+			quest		= { tt = L["QUEST_DESC"],		text = L["Quest"],					row = 4, col = 1 },
+			raid		= { tt = L["RAID_DESC"],		text = _G.RAID,						row = 4, col = 2 },
+			reputation	= { tt = L["REPUTATION_DESC"],		text = _G.REPUTATION,					row = 5, col = 1 },
+			retired		= { tt = L["RETIRED_DESC"],		text = L["Retired"],					row = 5, col = 2 },
+			trainer		= { tt = L["TRAINER_DESC"],		text = L["Trainer"],					row = 6, col = 1 },
+			vendor		= { tt = L["VENDOR_DESC"],		text = L["Vendor"],					row = 6, col = 2 },
+			worlddrop	= { tt = L["WORLD_DROP_DESC"],		text = L["World Drop"],					row = 7, col = 1 },
+			seasonal	= { tt = L["SEASONAL_DESC"],		text = private.AcquireTypes.WorldEvents:Name(),		row = 7, col = 2 },
 		}
 
 		local acquire_panel = _G.CreateFrame("Frame", nil, obtain_frame)
-		acquire_panel:SetHeight(120)
+		acquire_panel:SetHeight(140)
 		acquire_panel:SetPoint("TOP", acquire_toggle, "BOTTOM")
 		acquire_panel:SetPoint("LEFT", obtain_frame, "LEFT")
 		acquire_panel:SetPoint("RIGHT", obtain_frame, "RIGHT")
@@ -1409,7 +1410,6 @@ function private.InitializeFilterPanel()
 		faction			= { cb = FilterPanel.general.faction,			svroot = filterdb.general },
 		known			= { cb = FilterPanel.general.known,			svroot = filterdb.general },
 		unknown			= { cb = FilterPanel.general.unknown,			svroot = filterdb.general },
-		retired			= { cb = FilterPanel.general.retired,			svroot = filterdb.general },
 		------------------------------------------------------------------------------------------------
 		-- Classes
 		------------------------------------------------------------------------------------------------
@@ -1440,6 +1440,7 @@ function private.InitializeFilterPanel()
 		quest			= { cb = FilterPanel.obtain.quest,			svroot = filterdb.obtain },
 		raid			= { cb = FilterPanel.obtain.raid,			svroot = filterdb.obtain },
 		reputation		= { cb = FilterPanel.obtain.reputation,			svroot = filterdb.obtain },
+		retired			= { cb = FilterPanel.obtain.retired,			svroot = filterdb.obtain },
 		seasonal		= { cb = FilterPanel.obtain.seasonal,			svroot = filterdb.obtain },
 		trainer			= { cb = FilterPanel.obtain.trainer,			svroot = filterdb.obtain },
 		vendor			= { cb = FilterPanel.obtain.vendor,			svroot = filterdb.obtain },

@@ -32,6 +32,7 @@ end
 
 function Queue:CreateRestockQueue(groupInfo)
 	TSM:UpdateCraftReverseLookup()
+	local numItems = 0
 
 	for _, data in pairs(groupInfo) do
 		for _, opName in ipairs(data.operations) do
@@ -46,10 +47,10 @@ function Queue:CreateRestockQueue(groupInfo)
 						local maxQueueCount = max(opSettings.maxRestock - TSM.Inventory:GetTotalQuantity(itemString), 0)
 						local numToQueue = 0
 
-						if spellID and not opSettings.minProfit then
+						if not opSettings.minProfit then
 							-- no minimum, so queue as many as we can
 							numToQueue = maxQueueCount
-						elseif spellID then
+						else
 							-- queue it if the profit is at least the min profit
 							local cheapestSpellID, cost, _, profit = TSM.Cost:GetLowestCraftPrices(itemString)
 							local minProfit = TSM:GetCustomPrice(opSettings.minProfit, itemString)
@@ -62,11 +63,16 @@ function Queue:CreateRestockQueue(groupInfo)
 						local craft = TSM.db.factionrealm.crafts[spellID]
 						craft.queued = floor(numToQueue / craft.numResult)
 						craft.queued = craft.queued >= opSettings.minRestock and craft.queued or 0
+						if craft.queued > 0 then
+							numItems = numItems + 1
+						end
 					end
 				end
 			end
 		end
 	end
+	
+	TSMAPI:FireEvent("CRAFTING:QUEUE:RESTOCKED", numItems)
 end
 
 function Queue:HasLoop(itemString, steps, visited)

@@ -1,27 +1,30 @@
-## Interface: 40200
+## Interface: 60000
 ## Title: ErrorMonster
-## Author: Rabbit
+## Author: Funkydude
 ## Notes: Redirecter for errors, system messages and information messages.
-## Version: 3
-## X-Credits: Allara for RogueSpam.
+## X-Credits: Allara, Rabbit
 ## X-Category: Combat
-## X-eMail: rabbit.magtheridon@gmail.com
-## X-Website: http://www.wowace.com
-## X-License: CC-BY-NC-SA-3.0
+## X-License: All Rights Reserved
 ## SavedVariables: ErrorMonsterDB
 ## OptionalDeps: Ace3, LibSink-2.0
-## X-Curse-Packaged-Version: r89
+## X-Curse-Packaged-Version: r98-release
 ## X-Curse-Project-Name: ErrorMonster
 ## X-Curse-Project-ID: error-monster
 ## X-Curse-Repository-ID: wow/error-monster/mainline
 
 embeds.xml
 
-ErrorMonster-enUS.lua
-ErrorMonster-koKR.lua
-ErrorMonster-esES.lua
-ErrorMonster-zhCN.lua
-ErrorMonster-zhTW.lua
+Locales\enUS.lua
+Locales\ptBR.lua
+Locales\frFR.lua
+Locales\deDE.lua
+Locales\itIT.lua
+Locales\koKR.lua
+Locales\esMX.lua
+Locales\ruRU.lua
+Locales\zhCN.lua
+Locales\esES.lua
+Locales\zhTW.lua
 
 ErrorMonster.lua
 

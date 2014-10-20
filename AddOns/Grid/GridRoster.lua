@@ -140,9 +140,10 @@ function GridRoster:GetOwnerUnitidByUnitid(unitid)
 	return owner_of_unit[unitid]
 end
 
-function GridRoster:IsGUIDInRaid(guid)
+function GridRoster:IsGUIDInGroup(guid)
 	return roster.guid[guid] ~= nil
 end
+GridRoster.IsGUIDInRaid = GridRoster.IsGUIDInGroup -- deprecated
 
 function GridRoster:IterateRoster()
 	return pairs(roster.unitid)
@@ -260,6 +261,7 @@ do
 		"raid_25",
 		"raid_10",
 		"raid_40",
+		"raid_flex",
 		"arena",
 		"bg",
 	}
@@ -277,8 +279,8 @@ do
 
 		if IsInRaid() then
 			if instanceType == "raid" then
-				local _, _, _, _, maxPlayers = GetInstanceInfo()
-				return maxPlayers == 10 and "raid_10" or maxPlayers == 25 and "raid_25" or "raid_40"
+				local _, _, difficultyID, _, maxPlayers = GetInstanceInfo()
+				return difficultyID == 14 and "raid_flex" or maxPlayers == 10 and "raid_10" or maxPlayers == 25 and "raid_25" or "raid_40"
 			else
 				return "raid_40"
 			end

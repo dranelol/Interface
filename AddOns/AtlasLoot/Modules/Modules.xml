@@ -2,4 +2,6 @@
 	<Script file="DefaultFrame.lua"/>
 	<Script file="Filter.lua"/>
 	<Script file="WishList.lua"/>
+	<Script file="BossTooltipMatch.lua"/>
+	<Script file="BossTooltip.lua"/>
 </Ui>

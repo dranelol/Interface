@@ -2,7 +2,7 @@ LibResInfo-1.0
 ==================
 
 * Library to provide information about resurrections cast in your group.
-* Copyright (c) 2012 A. "Phanx" Kinley. All rights reserved.
+* Copyright (c) 2012-2014 A. "Phanx" Kinley. All rights reserved.
 * See the accompanying LICENSE file for details.
 * http://www.wowinterface.com/downloads/info21467-LibResInfo-1.0.html
 * http://wow.curseforge.com/addons/libresinfo/
@@ -13,7 +13,7 @@ Description
 
 LibResInfo detects resurrection spell casts and identifies who they are
 being cast on, and provides that information to addons through callbacks
-and API functions.
+and API functions. It also supports Mass Resurrection and Soulstone.
 
 LibResInfo was written to replace LibResComm. It works locally without
 the need for addon communication, so it is not necessary for anyone else

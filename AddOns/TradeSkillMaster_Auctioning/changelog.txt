@@ -1,3 +1,24 @@
+v2.4.2
+*Updated for patch 6.0.2
+
+v2.4.1
+*Fixed lua error with post / cancel scan caused by new blacklist code.
+
+v2.4
+*Shortened "Ignore Auctions Below Minimum" to "Ignore Auctions Below Min" so it'd fit in the dropdown better.
+*Added a blacklist option to Auctioning operations.
+*Made the item icon at the top of the Auctioning AH tab while posting/canceling clickable.
+*Minor visual changes to Auctioning options.
+*Fixed reset scan not selecting proper row after buying an auction.
+*Scans with large filters should no longer cause interface lag while the results are beeing processed.
+
+v2.3.3
+*Fixed typo in normal price tooltip.
+*Taking advantage of TSMAPI:IsPlayer() for better connected realm support.
+
+v2.3.2
+*Fixed bug with max inventory quantity not working for reset scan.
+
 v2.3.1
 *No update. Trying to fix issue with curse.
 

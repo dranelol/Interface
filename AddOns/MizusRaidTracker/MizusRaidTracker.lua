@@ -4,7 +4,7 @@
 -- ********************************************************
 --
 -- This addon is written and copyrighted by:
---    * Mîzukichan @ EU-Antonidas (2010-2013)
+--    * Mîzukichan @ EU-Antonidas (2010-2014)
 --
 -- Contributors:
 --    * Kevin (HTML-Export) (2010)
@@ -448,6 +448,7 @@ function MRT_Initialize(frame)
             if (button == "LeftButton") then
                 MRT_GUI_Toggle();
             elseif (button == "RightButton") then
+                InterfaceOptionsFrame_OpenToCategory("Mizus RaidTracker");
                 InterfaceOptionsFrame_OpenToCategory("Mizus RaidTracker");
             end
         end,
@@ -1714,12 +1715,23 @@ end
 
 -- GetNPCID - returns the NPCID or nil, if GUID was no NPC
 function MRT_GetNPCID(GUID)
-    local first3 = tonumber("0x"..strsub(GUID, 3, 5));
-    local unitType = bit.band(first3, 0x007);
-    if ((unitType == 0x003) or (unitType == 0x005)) then
-        return tonumber("0x"..strsub(GUID, 6, 10));
+    if (uiVersion < 60000) then
+        local first3 = tonumber("0x"..strsub(GUID, 3, 5));
+        local unitType = bit.band(first3, 0x007);
+        if ((unitType == 0x003) or (unitType == 0x005)) then
+            return tonumber("0x"..strsub(GUID, 6, 10));
+        else
+            return nil;
+        end
     else
-        return nil;
+        -- Player-GUID: Player-[server ID]-[player UID]
+        -- other GUID: [Unit type]-0-[server ID]-[instance ID]-[zone UID]-[ID]-[Spawn UID]
+        local unitType, _, _, _, _, ID = strsplit("-", GUID);
+        if (unitType == "Creature") or (unitType == "Vehicle") then
+            return tonumber(ID);
+        else
+            return nil;
+        end
     end
 end
 
@@ -1791,6 +1803,11 @@ end
 
 function MRT_GetInstanceDifficulty()
     if (uiVersion < 50001) then
+        -- legacy instance difficulty IDs, needs a big workaround for Draenor:
+        -- 1 = 5, 10 or 40 players normal
+        -- 2 = 5 or 25 players heroic
+        -- 3 = 10 players heroic
+        -- 4 = 25 players heroic
         return GetInstanceDifficulty();
     else
         local _, _, iniDiff = GetInstanceInfo();
@@ -1808,6 +1825,8 @@ function MRT_GetInstanceDifficulty()
             [11] = 0,
             [12] = 0,
 			[14] = 2,
+            [15] = 2,
+            [16] = 4,
         };
         return iniDiffMapping[iniDiff];
     end

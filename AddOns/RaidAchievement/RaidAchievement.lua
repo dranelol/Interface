@@ -6,7 +6,7 @@ if GetLocale()=="deDE" or GetLocale()=="ruRU" or GetLocale()=="zhTW" or GetLocal
 end
 
 
-	raversion=5.421
+	raversion=5.425
 	local raverstiptext="alpha"
 	if string.len(raversion)==6 then
 		raverstiptext="beta"
@@ -214,6 +214,13 @@ end
 end
 
 if event == "CHAT_MSG_ADDON" then
+
+--изменяем ник свой в чате
+if arg4 and string.find(arg4,"%-") then
+	if string.sub(arg4,1,string.find(arg4,"%-")-1) == UnitName("player") then
+		arg4=UnitName("player")
+	end
+end
 
 if arg1=="RaidAc" and ramsgwaiting>0 then
 
@@ -1636,7 +1643,7 @@ raquantrepdone=1
 end
 
 function rasliderch1()
-raquantrepeatach = PSFeamainmanyach_slider1:GetValue()
+raquantrepeatach = math.floor(PSFeamainmanyach_slider1:GetValue())
 local text=""
 if ramanyachon then
 text=text.."|cff00ff00"
@@ -1651,7 +1658,7 @@ end
 end
 
 function rasliderch2()
-raquantrepeatachtm = PSFeamainmanyach_slider2:GetValue()/10
+raquantrepeatachtm = math.floor(PSFeamainmanyach_slider2:GetValue())/10
 if ramanyachoninfotxtt then
 local text=""
 if ramanyachon then
@@ -1779,7 +1786,6 @@ end
 
 function RA_MinimapButton_Details(tt, ldb)
 	tt:SetText("RaidAchievement")
-
 end
 
 
@@ -1823,10 +1829,8 @@ UIDropDownMenu_SetSelectedID(DropDownrasound1, self:GetID())
 
 rasoundtoplay[4]=self:GetID()
 raplaysound2(rasoundtoplay[4])
-
-
-
 end
+
 
 local function initialize(self, level)
 local info = UIDropDownMenu_CreateInfo()
@@ -2155,18 +2159,22 @@ function raaddonloadedcheckspam()
 if radonateq1==nil then
   radonateq1=0
 end
-if radonateq1<25 then
+if radonateq1<50 then
   radonateq1=radonateq1+1
 end
 
-if radonateq1==25 then
+if radonateq1==50 then
 if UnitInRaid("player")==nil and UnitInParty("player")==nil then
   radonateq1=radonateq1+1
   --сообщение
-  local text="|cff00ff00RaidAchievement|r |cffff0000important update:|r to track achieves from Cataclysm and WotLK you have to |cff00ff00download RaidAchievement_OldModules|r (from curse). |cff00ff00AchievementsReminder|r - is now a separate addon and will have new features soon, if you need it - take it from curse too."
+  --local text="|cff00ff00RaidAchievement|r |cffff0000important update:|r to track achieves from Cataclysm and WotLK you have to |cff00ff00download RaidAchievement_OldModules|r (from curse). |cff00ff00AchievementsReminder|r - is now a separate addon and will have new features soon, if you need it - take it from curse too."
+  local text="|cff00ff00RaidAchievement|r > need your help, so addon will be available in |cff00ff00Warlords of Draenor|r too. More info: http://www.phoenixstyle.com/help"
   if GetLocale()=="ruRU" then
-    text="|cff00ff00RaidAchievement|r |cffff0000важное обновление:|r для трекера достижений Катаклизма и ЛК требуется |cff00ff00скачать RaidAchievement_OldModules|r (с curse сайта). |cff00ff00AchievementsReminder|r - теперь отдельный независимый аддон, скоро с новыми функциями, если он вам тоже нужен - скачайте его отдельно."
+    --text="|cff00ff00RaidAchievement|r |cffff0000важное обновление:|r для трекера достижений Катаклизма и ЛК требуется |cff00ff00скачать RaidAchievement_OldModules|r (с curse сайта). |cff00ff00AchievementsReminder|r - теперь отдельный независимый аддон, скоро с новыми функциями, если он вам тоже нужен - скачайте его отдельно."
+	text="|cff00ff00RaidAchievement|r > требуется Ваша помощь, чтобы аддон продолжил свое существование в |cff00ff00Warlords of Draenor!|r Детальнее: http://www.phoenixstyle.com/help"
   end
+  
+  out(text)
   
   if psdonaspanvar==nil then
     psdonaspanvar=1

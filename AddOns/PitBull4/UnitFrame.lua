@@ -5,8 +5,6 @@ local L = PitBull4.L
 local DEBUG = PitBull4.DEBUG
 local expect = PitBull4.expect
 
-local mop_520 = select(4,GetBuildInfo()) >= 50200
-
 -- CONSTANTS ----------------------------------------------------------------
 
 local MODULE_UPDATE_ORDER = {
@@ -48,7 +46,7 @@ local Singleton_OnAttributeChanged = [[
 
 --- Make a singleton unit frame.
 -- @param unit the UnitID of the frame in question
--- @usage local frame = PitBull4:MakeSingletonFrame("player")
+-- @usage PitBull4:MakeSingletonFrame("player")
 function PitBull4:MakeSingletonFrame(unit)
 	if DEBUG then
 		expect(unit, 'typeof', 'string')
@@ -201,6 +199,14 @@ UnitPopupFrames[#UnitPopupFrames+1] = "PitBull4_UnitFrame_DropDown"
 
 -- from a unit, figure out the proper menu and, if appropriate, the corresponding ID
 local function figure_unit_menu(unit)
+	if unit:match("^boss%d$") then
+		return "BOSS"
+	end
+
+	if unit:match("^arena%d$") or unit:match("^arenapet%d$") then
+		return "ARENAENEMY"
+	end
+
 	if unit == "focus" then
 		return "FOCUS"
 	end
@@ -210,8 +216,6 @@ local function figure_unit_menu(unit)
 	end
 
 	if UnitIsUnit(unit, "vehicle") then
-		-- NOTE: vehicle check must come before pet check for accuracy's sake because
-		-- a vehicle may also be considered your pet
 		return "VEHICLE"
 	end
 
@@ -436,16 +440,6 @@ function UnitFrame__scripts:OnAttributeChanged(key, value)
 			PitBull4.unit_id_to_frames_with_wacky[new_unit][self] = true
 		end
 
-		-- Hackaround Clique forcing the frames to use togglemenu, which
-		-- is broken on raid frames.  Idea borrowed from ShadowedUF
-		if new_unit and new_unit:sub(1, 4) == "raid" then
-			self:WrapScript(self, "OnAttributeChanged", [[
-        if value == "togglemenu" and self:GetAttribute("clique-shiv") == "1" then
-          self:SetAttribute(name, "menu")
-        end
-      ]])
-		end
-
 		if not updated then
 			self:Update(false)
 		end
@@ -565,7 +559,7 @@ function PitBull4:ConvertIntoUnitFrame(frame, isExampleFrame)
 			if frame.is_singleton then
 				frame:SetMovable(true)
 			  frame:SetAttribute("*type1", "target")
-			  frame:SetAttribute("*type2", mop_520 and "togglemenu" or "menu")
+			  frame:SetAttribute("*type2", "togglemenu")
 			end
 			frame:RegisterForDrag("LeftButton")
 			frame:RegisterForClicks("AnyUp")
@@ -802,7 +796,6 @@ function UnitFrame:Update(same_guid, update_layout)
 	end
 	
 	local changed = update_layout
-	
 	for _, module_type in ipairs(MODULE_UPDATE_ORDER) do
 		for _, module in PitBull4:IterateModulesOfType(module_type) do
 			changed = module:Update(self, true, same_guid) or changed

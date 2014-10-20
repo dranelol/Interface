@@ -242,9 +242,9 @@ end
 
 function rscsliderflaskchan()
 	if psversion then
-rscminflaskgood=PSFrscflask_min:GetValue()
+rscminflaskgood=math.floor(PSFrscflask_min:GetValue())
 	else
-rscminflaskgood=rscmain4_min:GetValue()
+rscminflaskgood=math.floor(rscmain4_min:GetValue())
 	end
 
 rscflaskout2:SetText("|cffff0000< "..rscminflaskgood.." "..rscmin.."|r")
@@ -528,10 +528,18 @@ if #rscwillcheckthem>0 and rscflaskcheckb[6]==1 then
         end
       end
     end
+	if byl==0 and byl~=100 then
+		if UnitAura(rscwillcheckthem[yy],GetSpellInfo(430)) or UnitAura(rscwillcheckthem[yy],GetSpellInfo(433)) then
+			--персонаж ест
+			byl=99
+		end
+	end
 		if byl==0 then
 			table.insert(rscnofoodbuff,rscwillcheckthem[yy])
+		elseif byl==99 then
+			table.insert(rscnofoodbuff,rscwillcheckthem[yy].." ("..rsceating..")")
 		elseif byl~=100 then
-      rscfoodexpitealmost=rscfoodexpitealmost+1
+			rscfoodexpitealmost=rscfoodexpitealmost+1
 			table.insert(rscnofoodbuff,rscwillcheckthem[yy].." ("..byl..")")
 		end
 	end

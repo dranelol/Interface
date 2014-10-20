@@ -1,5 +1,3 @@
-if select(6, GetAddOnInfo("PitBull4_" .. (debugstack():match("[o%.][d%.][u%.]les\\(.-)\\") or ""))) ~= "MISSING" then return end
-
 local PitBull4 = _G.PitBull4
 if not PitBull4 then
 	error("PitBull4_SoulShards requires PitBull4")
@@ -38,6 +36,7 @@ PitBull4_SoulShards:SetDefaults({
 	location = "out_top",
 	position = 1,
 	vertical = false,
+	click_through = false,
 	size = 1.5,
 	background_color = { 0, 0, 0, 0.5 }
 })
@@ -46,7 +45,7 @@ local player_level = UnitLevel("player")
 
 function PitBull4_SoulShards:OnEnable()
 	player_level = UnitLevel("player")
-	self:RegisterEvent("UNIT_POWER")
+	self:RegisterEvent("UNIT_POWER_FREQUENT")
 	self:RegisterEvent("UNIT_DISPLAYPOWER")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("PLAYER_TALENT_UPDATE","PLAYER_ENTERING_WORLD")
@@ -61,8 +60,8 @@ local function update_player(self)
 	end
 end
 
-function PitBull4_SoulShards:UNIT_POWER(event, unit, kind)
-	if unit ~= "player" or kind ~= "SOUL_SHARDS" then
+function PitBull4_SoulShards:UNIT_POWER_FREQUENT(event, unit, power_type)
+	if unit ~= "player" or power_type ~= "SOUL_SHARDS" then
 		return
 	end
 	
@@ -138,6 +137,7 @@ function PitBull4_SoulShards:UpdateFrame(frame)
 			container[i] = soul_shard
 			soul_shard:UpdateTexture()
 			soul_shard:ClearAllPoints()
+			soul_shard:EnableMouse(not db.click_through)
 			if not vertical then
 				soul_shard:SetPoint("CENTER", container, "LEFT", BORDER_SIZE + (i - 1) * (SPACING + STANDARD_SIZE) + HALF_STANDARD_SIZE, 0)
 			else
@@ -193,6 +193,23 @@ PitBull4_SoulShards:SetLayoutOptionsFunction(function(self)
 			end
 		end,
 		order = 100,
+	},
+	'click_through', {
+		type = 'toggle',
+		name = L["Click-through"],
+		desc = L['Disable capturing clicks on indicators allowing the clicks to fall through to the window underneath the indicator.'],
+		get = function(info)
+			return PitBull4.Options.GetLayoutDB(self).click_through
+		end,
+		set = function(info, value)
+			PitBull4.Options.GetLayoutDB(self).click_through = value
+			
+			for frame in PitBull4:IterateFramesForUnitID("player") do
+				self:Clear(frame)
+				self:Update(frame)
+			end
+		end,
+		order = 101,
 	},
 	'background_color', {
 		type = 'color',

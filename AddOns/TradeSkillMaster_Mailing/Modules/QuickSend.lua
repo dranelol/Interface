@@ -88,7 +88,7 @@ function QuickSend:CreateTab(parent)
 			self:ClearFocus()
 		end)
 	targetBox:SetScript("OnEditFocusLost", function(self)
-			self:HighlightText()
+			self:HighlightText(0, 0)
 			private.target = self:GetText():trim()
 			private.btn:Update()
 		end)
@@ -97,17 +97,7 @@ function QuickSend:CreateTab(parent)
 			frame.qtyBox:SetFocus()
 			frame.qtyBox:HighlightText()
 		end)
-	targetBox:SetScript("OnChar", function(self)
-			local text = self:GetText()
-			for character in pairs(TSMAPI:GetCharacters()) do
-				character = strlower(character)
-				if strsub(character, 1, #text) == strlower(text) then
-					self:SetText(character)
-					self:HighlightText(#text, -1)
-					break
-				end
-			end
-		end)
+	TSMAPI.GUI:SetAutoComplete(targetBox, AUTOCOMPLETE_LIST.MAIL)
 	targetBox.tooltip = L["Enter the name of the player you want to send this item to."].."\n\n"..TSM.SPELLING_WARNING
 	
 	
@@ -128,7 +118,7 @@ function QuickSend:CreateTab(parent)
 			self:ClearFocus()
 		end)
 	qtyBox:SetScript("OnEditFocusLost", function(self)
-			self:HighlightText()
+			self:HighlightText(0, 0)
 			private.quantity = self:GetNumber()
 			private.btn:Update()
 		end)

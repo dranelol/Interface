@@ -1,14 +1,14 @@
--- Recount Locale 
--- Please use the Localization App on WoWAce to Update this 
+-- Recount Locale
+-- Please use the Localization App on WoWAce to Update this
 -- http://www.wowace.com/projects/recount/localization/
- 
-local debug = false 
---[===[@debug@ 
-debug = true 
---@end-debug@]===] 
- 
-local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "enUS", true, debug) 
- 
+
+local debug = false
+--[===[@debug@
+debug = true
+--@end-debug@]===]
+
+local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "enUS", true, debug)
+
 L["Ability"] = true
 L["Ability Name"] = true
 L["Absorbed"] = true
@@ -200,6 +200,7 @@ L["Mana Gained"] = true
 L["Mana Sources"] = true
 L["Max"] = true
 L["Melee"] = true
+L["Merge Absorbs w/ Heals"] = true
 L["Merge Pets w/ Owners"] = true
 L["Messages"] = true
 L["Min"] = true
@@ -221,6 +222,7 @@ L["No"] = true
 L["No Absorb"] = true
 L["No Block"] = true
 L["Non-Trivial"] = true
+L["No other Recount users found."] = true
 L["No Pet"] = true
 L["No Resist"] = true
 L["Normalize"] = true
@@ -314,6 +316,7 @@ L["'s Effective Healing"] = true
 L["Self"] = true
 L["'s Energy Gained"] = true
 L["'s Energy Gained From"] = true
+L["Server Name"] = true
 L["Set Combat Log Range"] = true
 L["Set the maximum number of lines to report"] = true
 L["Set the maximum number of recorded fight segments"] = true
@@ -422,7 +425,6 @@ L["Window Color Selection"] = true
 L["Window Options"] = true
 L["Window Scaling"] = true
 L["X Gridlines Represent"] = true
-L["Yds"] = true
 L["Yes"] = true
- 
- 
+
+

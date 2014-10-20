@@ -5,49 +5,61 @@ local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 local SM = LibStub:GetLibrary("LibSharedMedia-3.0")
 local AceLocale = LibStub("AceLocale-3.0")
 local L = AceLocale:GetLocale( "Recount" )
- 
-local _
- 
+
 local DataVersion	= "1.3"
 local FilterSize	= 20
 local RampUp		= 5
 local RampDown		= 10
-      
-Recount.Version = tonumber(string.sub("$Revision: 1237 $", 12, -3))
 
-local UnitLevel = UnitLevel
-local UnitClass = UnitClass
-local UnitIsTrivial = UnitIsTrivial
-local UnitIsPlayer = UnitIsPlayer
-local UnitExists = UnitExists
-local UnitName = UnitName
-local UnitGUID = UnitGUID
-local GetTime = GetTime
-local UnitIsFriend = UnitIsFriend
-local GetNumRaidMembers = GetNumRaidMembers or GetNumGroupMembers
-local GetNumPartyMembers = GetNumPartyMembers or GetNumSubgroupMembers
+Recount.Version = tonumber(string.sub("$Revision: 1269 $", 12, -3))
 
-local type = type
-local pairs = pairs
+local _G = _G
+local abs = abs
+local assert = assert
+local collectgarbage = collectgarbage
+local date = date
+local getmetatable = getmetatable
 local ipairs = ipairs
-local tonumber = tonumber
-local string_format = string.format
-local string_match = string.match
-local string_lower = string.lower
-local tinsert = table.insert
-local tremove = table.remove
 local math_floor = math.floor
 local math_fmod = math.fmod
+local pairs = pairs
+local setmetatable = setmetatable
+local string_format = string.format
+local string_lower = string.lower
+local string_match = string.match
 local time = time
-local date = date
-local abs = abs
+local tinsert = table.insert
+local tonumber = tonumber
+local tremove = table.remove
+local type = type
+local unpack = unpack
 
-local dbCombatants  
-  
--- Elsia: This is straight from GUIDRegistryLib-0.1 by ArrowMaster.
+local GetNumPartyMembers = GetNumPartyMembers or GetNumSubgroupMembers
+local GetNumRaidMembers = GetNumRaidMembers or GetNumGroupMembers
+local GetTime = GetTime
+local IsInRaid = IsInRaid
+local UnitAffectingCombat = UnitAffectingCombat
+local UnitClass = UnitClass
+local UnitExists = UnitExists
+local UnitGUID = UnitGUID
+local UnitIsFriend = UnitIsFriend
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsTrivial = UnitIsTrivial
+local UnitLevel = UnitLevel
+local UnitName = UnitName
+
+local CreateFrame = CreateFrame
+
+local InterfaceOptionsFrame = InterfaceOptionsFrame
+local UIParent = UIParent
+
+local RecountTempTooltip = RecountTempTooltip
+
+local dbCombatants
+-- Elsia: This is straight from GUIDRegistryLib-0.1 by ArrowMaster
 local bit_bor	= bit.bor
-local bit_band  = bit.band
-   
+local bit_band	= bit.band
+
 local COMBATLOG_OBJECT_AFFILIATION_MINE		= COMBATLOG_OBJECT_AFFILIATION_MINE		or 0x00000001
 local COMBATLOG_OBJECT_AFFILIATION_PARTY	= COMBATLOG_OBJECT_AFFILIATION_PARTY	or 0x00000002
 local COMBATLOG_OBJECT_AFFILIATION_RAID		= COMBATLOG_OBJECT_AFFILIATION_RAID		or 0x00000004
@@ -94,345 +106,340 @@ local LIB_FILTER_ME = bit_bor(
 	COMBATLOG_OBJECT_AFFILIATION_MINE, COMBATLOG_OBJECT_REACTION_FRIENDLY, COMBATLOG_OBJECT_CONTROL_PLAYER, COMBATLOG_OBJECT_TYPE_PLAYER
 )
 local LIB_FILTER_MY_PET = bit_bor(
-						COMBATLOG_OBJECT_AFFILIATION_MINE,
-						COMBATLOG_OBJECT_REACTION_FRIENDLY,
-						COMBATLOG_OBJECT_CONTROL_PLAYER,
-						COMBATLOG_OBJECT_TYPE_PET
-						)
-local LIB_FILTER_PARTY = bit_bor(COMBATLOG_OBJECT_TYPE_PLAYER, COMBATLOG_OBJECT_AFFILIATION_PARTY)
-local LIB_FILTER_RAID  = bit_bor(COMBATLOG_OBJECT_TYPE_PLAYER, COMBATLOG_OBJECT_AFFILIATION_RAID)
-local LIB_FILTER_GROUP = bit_bor(LIB_FILTER_PARTY, LIB_FILTER_RAID)
+	COMBATLOG_OBJECT_AFFILIATION_MINE,
+	COMBATLOG_OBJECT_REACTION_FRIENDLY,
+	COMBATLOG_OBJECT_CONTROL_PLAYER,
+	COMBATLOG_OBJECT_TYPE_PET
+)
+local LIB_FILTER_PARTY	= bit_bor(COMBATLOG_OBJECT_TYPE_PLAYER, COMBATLOG_OBJECT_AFFILIATION_PARTY)
+local LIB_FILTER_RAID	= bit_bor(COMBATLOG_OBJECT_TYPE_PLAYER, COMBATLOG_OBJECT_AFFILIATION_RAID)
+local LIB_FILTER_GROUP	= bit_bor(LIB_FILTER_PARTY, LIB_FILTER_RAID)
 
 --[[local DefaultConfig={
 	char={
 		combatants={
 			['*'] = {
-				Init=false,
-				Owner=false,
-				AbilityType={},
-				TimeLast={},
-				TimeData={
-					Damage={{},{}},
-					DamageTaken={{},{}},
-					Healing={{},{}},
-					Overhealing={{},{}},
-					HealingTaken={{},{}},
-					Threat={{},{}}
+				Init = false,
+				Owner = false,
+				AbilityType = {},
+				TimeLast = {},
+				TimeData = {
+					Damage = {{}, {}},
+					DamageTaken = {{}, {}},
+					Healing = {{}, {}},
+					Overhealing = {{}, {}},
+					HealingTaken = {{}, {}},
+					Threat = {{}, {}}
 				},
 
-				TimeWindows={
-					Damage={['*']=0},
-					DamageTaken={['*']=0},
-					Healing={['*']=0},
-					HealingTaken={['*']=0},
-					Overhealing={['*']=0},
-					Threat={['*']=0},
+				TimeWindows = {
+					Damage = {['*'] = 0},
+					DamageTaken = {['*'] = 0},
+					Healing = {['*'] = 0},
+					HealingTaken = {['*'] = 0},
+					Overhealing = {['*'] = 0},
+					Threat = {['*'] = 0},
 				},
-				Fights={
-					['*']={
-						Damage=0,
-						FDamage=0,
-						DamageTaken=0,
-						Healing=0,
-						HealingTaken=0,
-						Overhealing=0,
-						DeathCount=0,
-						DOT_Time=0,
-						HOT_Time=0,
-						Interrupts=0,
-						Dispels=0,
-						Dispelled=0,
-						ActiveTime=0,
-						TimeHeal=0,
-						TimeDamage=0,
-						CCBreak=0,
-						Threat=0,
-						ThreatNonZero=0,
-						ManaGain=0,
-						EnergyGain=0,
-						RageGain=0,
-						Ressed=0,
+				Fights = {
+					['*'] = {
+						Damage = 0,
+						FDamage = 0,
+						DamageTaken = 0,
+						Healing = 0,
+						HealingTaken = 0,
+						Overhealing = 0,
+						DeathCount = 0,
+						DOT_Time = 0,
+						HOT_Time = 0,
+						Interrupts = 0,
+						Dispels = 0,
+						Dispelled = 0,
+						ActiveTime = 0,
+						TimeHeal = 0,
+						TimeDamage = 0,
+						CCBreak = 0,
+						Threat = 0,
+						ThreatNonZero = 0,
+						ManaGain = 0,
+						EnergyGain = 0,
+						RageGain = 0,
+						Ressed = 0,
 
 						--Ability Data
-						Attacks={},
-						FAttacks={},
-						Heals={},
-						OverHeals={},
-						DOTs={},
-						HOTs={},
-						InterruptData={},
-						CCBroken={},
+						Attacks = {},
+						FAttacks = {},
+						Heals = {},
+						OverHeals = {},
+						DOTs = {},
+						HOTs = {},
+						InterruptData = {},
+						CCBroken = {},
 
 						--Interaction Data
-						DamagedWho={}, --Who did I damage?
-						FDamagedWho={}, --Who did I damage?
-						WhoDamaged={}, --Who damaged me?
-						HealedWho={}, --Who did I heal?
-						WhoHealed={}, --Who healed me?
-						DispelledWho={}, --Who did I dispel?
-						WhoDispelled={}, --Who dispelled me?
-						PartialResist={},	--What spells partially resisted
-						PartialBlock={}, -- What attacks partially blocked
-						PartialAbsorb={}, -- What damage partially absorbed
-						TimeSpent={},	--Where did I spend my time
-						TimeDamaging={},	--Where did I spend my time attacking
-						TimeHealing={},	--Where did I spend my time healing
-						ManaGained={},	--Where did I gain mana
-						EnergyGained={}, --Where did I gain energy
-						RageGained={}, --Where did I gain rage
-						ManaGainedFrom={},	--Where did I gain mana
-						EnergyGainedFrom={}, --Where did I gain energy
-						RageGainedFrom={}, --Where did I gain rage
-						RessedWho={},
+						DamagedWho = {}, --Who did I damage?
+						FDamagedWho = {}, --Who did I damage?
+						WhoDamaged = {}, --Who damaged me?
+						HealedWho = {}, --Who did I heal?
+						WhoHealed = {}, --Who healed me?
+						DispelledWho = {}, --Who did I dispel?
+						WhoDispelled = {}, --Who dispelled me?
+						PartialResist = {},	--What spells partially resisted
+						PartialBlock = {}, -- What attacks partially blocked
+						PartialAbsorb = {}, -- What damage partially absorbed
+						TimeSpent = {}, --Where did I spend my time
+						TimeDamaging = {}, --Where did I spend my time attacking
+						TimeHealing = {}, --Where did I spend my time healing
+						ManaGained = {}, --Where did I gain mana
+						EnergyGained = {}, --Where did I gain energy
+						RageGained = {}, --Where did I gain rage
+						ManaGainedFrom = {}, --Where did I gain mana
+						EnergyGainedFrom = {}, --Where did I gain energy
+						RageGainedFrom = {}, --Where did I gain rage
+						RessedWho = {},
 
 						--Elemental Tracking
-						ElementDone={},
-						ElementDoneResist={},
-						ElementDoneBlock={},
-						ElementDoneAbsorb={},
-						ElementTaken={},
-						ElementTakenResist={},
-						ElementTakenBlock={},
-						ElementTakenAbsorb={},
+						ElementDone = {},
+						ElementDoneResist = {},
+						ElementDoneBlock = {},
+						ElementDoneAbsorb = {},
+						ElementTaken = {},
+						ElementTakenResist = {},
+						ElementTakenBlock = {},
+						ElementTakenAbsorb = {},
 
-						ElementHitsDone={},
-						ElementHitsTaken={},
+						ElementHitsDone = {},
+						ElementHitsTaken = {},
 					}
 				},
 
+				TimeNeedZero = {},
 
+				LastEvents = {},
+				LastEventHealth = {},
+				LastEventHealthNum = {},
+				LastEventTimes = {},
+				LastEventType = {},
+				LastEventIncoming = {},
+				LastEventNum = {},
 
+				NextEventNum = 1,
 
+				LastThreat = 0,
+				LastAbility = 0,
+				LastActive = 0,
 
-				TimeNeedZero={},
+				LastFightIn = 0,
+				UnitLockout = 0,
 
-				LastEvents={},
-				LastEventHealth={},
-				LastEventHealthNum={},
-				LastEventTimes={},
-				LastEventType={},
-				LastEventIncoming={},
-				LastEventNum={},
+				HealBuffHas = nil,
+				HealBuffName = nil,
 
-				NextEventNum=1,
+				DeathLogs = {},
 
-				LastThreat=0,
-				LastAbility=0,
-				LastActive=0,
+				FightsSaved = 0,
 
-				LastFightIn=0,
-				UnitLockout=0,
+				Sync = {
+					MsgNum = 0,
+					LastSent = 0,
+					LastChanged = 0,
 
-				HealBuffHas=nil,
-				HealBuffName=nil,
+					Damage = 0,
+					DamageTaken = 0,
+					FDamage = 0,
+					Healing = 0,
+					HealingTaken = 0,
+					Overhealing = 0,
 
-				DeathLogs={},
+					ActiveTime = 0,
 
-				FightsSaved=0,
-
-				Sync={
-					MsgNum=0,
-					LastSent=0,
-					LastChanged=0,
-
-					Damage=0,
-					DamageTaken=0,
-					FDamage=0,
-					Healing=0,
-					HealingTaken=0,
-					Overhealing=0,
-
-					ActiveTime=0,
-					
-					OverhealCorrection=0,
-					HealingCorrection=0,
+					OverhealCorrection = 0,
+					HealingCorrection = 0,
 				},
 			}
 		},
-		GUID=nil,
-		PetGUID=nil,
-		FoughtWho={},
-		FightNum=0,
-		CombatTimes={},
-		version=0,
+		GUID = nil,
+		PetGUID = nil,
+		FoughtWho = {},
+		FightNum = 0,
+		CombatTimes = {},
+		version = 0,
 	}
-}
-]]
+}]]
 
-local Default_Profile={
-	profile={
-		Colors={
-			["Window"]={
+local Default_Profile = {
+	profile = {
+		Colors = {
+			["Window"] = {
 				["Title"] = { r = 1, g = 0, b = 0, a = 1},
-				["Background"]= { r = 24/255, g = 24/255, b = 24/255, a = 1},
+				["Background"]= { r = 24 / 255, g = 24 / 255, b = 24 / 255, a = 1},
 				["Title Text"] = {r = 1, g = 1, b = 1, a = 1},
 			},
-			["Bar"]={
+			["Bar"] = {
 				["Bar Text"] = {r = 1, g = 1, b = 1},
 				["Total Bar"] = { r = 0.75, g = 0.75, b = 0.75},
 			},
-			["Other Windows"]={
+			["Other Windows"] = {
 				["Title"] = { r = 1, g = 0, b = 0, a = 1},
-				["Background"]= { r = 24/255, g = 24/255, b = 24/255, a = 1},
+				["Background"] = { r = 24 / 255, g = 24 / 255, b = 24 / 255, a = 1},
 				["Title Text"] = {r = 1, g = 1, b = 1, a = 1},
 			},
-			["Detail Window"]={
+			["Detail Window"] = {
 			},
-			["Class"]={
-				["HUNTER"] = { r = 0.67, g = 0.83, b = 0.45, a=1 },
-				["WARLOCK"] = { r = 0.58, g = 0.51, b = 0.79, a=1 },
-				["PRIEST"] = { r = 1.0, g = 1.0, b = 1.0, a=1 },
-				["PALADIN"] = { r = 0.96, g = 0.55, b = 0.73, a=1 },
-				["MAGE"] = { r = 0.41, g = 0.8, b = 0.94, a=1 },
-				["ROGUE"] = { r = 1.0, g = 0.96, b = 0.41, a=1 },
-				["DRUID"] = { r = 1.0, g = 0.49, b = 0.04, a=1 },
-				["SHAMAN"] = { r = 0.14, g = 0.35, b = 1.0, a=1 },
-				["WARRIOR"] = { r = 0.78, g = 0.61, b = 0.43, a=1 },
-				["DEATHKNIGHT"] = { r = 0.77, g = 0.12, b = 0.23, a=1 },
-				["PET"] = { r = 0.09, g = 0.61, b = 0.55, a=1 },
+			["Class"] = {
+				["HUNTER"] = { r = 0.67, g = 0.83, b = 0.45, a = 1 },
+				["WARLOCK"] = { r = 0.58, g = 0.51, b = 0.79, a = 1 },
+				["PRIEST"] = { r = 1.0, g = 1.0, b = 1.0, a = 1 },
+				["PALADIN"] = { r = 0.96, g = 0.55, b = 0.73, a = 1 },
+				["MAGE"] = { r = 0.41, g = 0.8, b = 0.94, a = 1 },
+				["ROGUE"] = { r = 1.0, g = 0.96, b = 0.41, a = 1 },
+				["DRUID"] = { r = 1.0, g = 0.49, b = 0.04, a = 1 },
+				["SHAMAN"] = { r = 0.14, g = 0.35, b = 1.0, a = 1 },
+				["WARRIOR"] = { r = 0.78, g = 0.61, b = 0.43, a = 1 },
+				["DEATHKNIGHT"] = { r = 0.77, g = 0.12, b = 0.23, a = 1 },
+				["PET"] = { r = 0.09, g = 0.61, b = 0.55, a = 1 },
 --				["GUARDIAN"] = { r = 0.61, g = 0.09, b = 0.09 },
-				["MOB"] = { r = 0.58, g = 0.24, b = 0.63, a=1 },
-				["UNKNOWN"] = { r = 0.1, g = 0.1, b = 0.1, a=1 },
-				["HOSTILE"] = { r = 0.7, g = 0.1, b = 0.1, a=1 },
-				["UNGROUPED"] = { r = 0.63, g = 0.58, b = 0.24, a=1 },
+				["MOB"] = { r = 0.58, g = 0.24, b = 0.63, a = 1 },
+				["UNKNOWN"] = { r = 0.1, g = 0.1, b = 0.1, a = 1 },
+				["HOSTILE"] = { r = 0.7, g = 0.1, b = 0.1, a = 1 },
+				["UNGROUPED"] = { r = 0.63, g = 0.58, b = 0.24, a = 1 },
 			},
-			["Realtime"]={
+			["Realtime"] = {
 			},
-			["Names"]={
+			["Names"] = {
 			}
 		},
-		MaxFights=5,
-		--Window={
-			--ShowCurAndLast=false,
-		--},
-		ReportLines=10,
-		MessagesTracked=50,
-		GlobalStatusBar=false,
-		AutoDelete=true,
-		AutoDeleteCombatants=true, -- Elsia: set this to true to reduce data accumulation
-		AutoDeleteTime=180,
-		AutoDeleteNewInstance=true, -- Elsia: set this to true
-		ConfirmDeleteInstance=true, -- Elsia: Get annoying popup box?
-		LastInstanceName="", -- Elsia: Last instance is empty by default
-		DeleteNewInstanceOnly=true,
+		MaxFights = 5,
+		--[[Window = {
+			--ShowCurAndLast = false,
+		},]]
+		ReportLines = 10,
+		MessagesTracked = 50,
+		GlobalStatusBar = false,
+		AutoDelete = true,
+		AutoDeleteCombatants = true, -- Elsia: set this to true to reduce data accumulation
+		AutoDeleteTime = 180,
+		AutoDeleteNewInstance = true, -- Elsia: set this to true
+		ConfirmDeleteInstance = true, -- Elsia: Get annoying popup box?
+		LastInstanceName = "", -- Elsia: Last instance is empty by default
+		DeleteNewInstanceOnly = true,
 		DeleteJoinRaid = true,
 		ConfirmDeleteRaid = true,
 		DeleteJoinGroup = true,
 		ConfirmDeleteGroup = true,
-		BarTexture="BantoBar",
-		MergePets=true,
-		MergeAbsorbs=true,
-		RecordCombatOnly=true,
-		SegmentBosses=false,
-		MainWindowVis=true,
-		MainWindowMode=1,
-		Locked=false,
-		EnableSync=true, -- Elsia: Default enable sync is set to true again now, thanks to lazy syncing.
-		GlobalDataCollect=true, -- Elsia: Global toggle for data collection
-		HideCollect=false, -- Elsia: Hide Recount window when not collecting data
-		Font="Arial Narrow",
-		Scaling=1,
-		MainWindow={
-			Buttons={
-				ReportButton=true,
-				FileButton=true,
-				ConfigButton=true,
-				ResetButton=true,
-				LeftButton=true,
-				RightButton=true,
-				CloseButton=true,
+		BarTexture = "BantoBar",
+		MergePets = true,
+		MergeAbsorbs = true,
+		RecordCombatOnly = true,
+		SegmentBosses = false,
+		MainWindowVis = true,
+		MainWindowMode = 1,
+		Locked = false,
+		EnableSync = false, -- Elsia: Default enable sync is set to true again now, thanks to lazy syncing.
+		GlobalDataCollect = true, -- Elsia: Global toggle for data collection
+		HideCollect = false, -- Elsia: Hide Recount window when not collecting data
+		Font = "Arial Narrow",
+		Scaling = 1,
+		MainWindow = {
+			Buttons = {
+				ReportButton = true,
+				FileButton = true,
+				ConfigButton = true,
+				ResetButton = true,
+				LeftButton = true,
+				RightButton = true,
+				CloseButton = true,
 			},
-			RowHeight=14,
-			RowSpacing=1,
-			AutoHide=false,
-			ShowScrollbar=true, -- Elsia: Allow toggle of scrollbar
-			HideTotalBar=true,
-			BarText=
-			{
-				RankNum =true,
+			RowHeight = 14,
+			RowSpacing = 1,
+			AutoHide = false,
+			ShowScrollbar = true, -- Elsia: Allow toggle of scrollbar
+			HideTotalBar = true,
+			BarText = {
+				RankNum = true,
+				ServerName = false,
 				PerSec = true,
 				Percent = true,
 				NumFormat = 1,
 			},
-			Position={
+			Position = {
 				x = 0,
 				y = 0,
 				w = 140,
 				h = 200,
 			},
 		},
-		Filters={
-			Show={
-				Self=true,
-				Grouped=true,
-				Ungrouped=true, -- Elsia: Default show leaving party members
-				Hostile=false,
-				Pet=false,
-				Trivial=false,
-				Nontrivial=false,
-				Boss=false,
-				Unknown=false,
+		Filters = {
+			Show = {
+				Self = true,
+				Grouped = true,
+				Ungrouped = true, -- Elsia: Default show leaving party members
+				Hostile = false,
+				Pet = false,
+				Trivial = false,
+				Nontrivial = false,
+				Boss = false,
+				Unknown = false,
 			},
-			Data={
-				Self=true,
-				Grouped=true,
-				Ungrouped=false, -- Elsia: Removed to reduce default data accumulation
-				Hostile=false,
-				Pet=true,
-				Trivial=false,
-				Nontrivial=false,
-				Boss=true,
-				Unknown=true,
+			Data = {
+				Self = true,
+				Grouped = true,
+				Ungrouped = false, -- Elsia: Removed to reduce default data accumulation
+				Hostile = false,
+				Pet = true,
+				Trivial = false,
+				Nontrivial = false,
+				Boss = true,
+				Unknown = true,
 			},
-			TimeData={
-				Self=false,
-				Grouped=false, -- Elsia: Removed Default timed on for groups
-				Ungrouped=false,
-				Hostile=false,
-				Pet=false,
-				Trivial=false,
-				Nontrivial=false,
-				Boss=false, -- Elsia:Removed Default timed on for bosses
-				Unknown=false,
+			TimeData = {
+				Self = false,
+				Grouped = false, -- Elsia: Removed Default timed on for groups
+				Ungrouped = false,
+				Hostile = false,
+				Pet = false,
+				Trivial = false,
+				Nontrivial = false,
+				Boss = false, -- Elsia:Removed Default timed on for bosses
+				Unknown = false,
 			},
-			TrackDeaths={
-				Self=true,
-				Grouped=true,
-				Ungrouped=false,
-				Hostile=false,
-				Pet=true,
-				Trivial=false,
-				Nontrivial=false,
-				Boss=true,
-				Unknown=false,
+			TrackDeaths = {
+				Self = true,
+				Grouped = true,
+				Ungrouped = false,
+				Hostile = false,
+				Pet = true,
+				Trivial = false,
+				Nontrivial = false,
+				Boss = true,
+				Unknown = false,
 			},
 		},
-		ZoneFilters={
-			none=true, -- Elsia: These fields are named after what IsInInstance() returns for types.
-			pvp=true,
-			arena=true,
-			scenario=true,
-			party=true,
-			raid=true,
+		ZoneFilters = {
+			none = true, -- Elsia: These fields are named after what IsInInstance() returns for types.
+			pvp = true,
+			arena = true,
+			scenario = true,
+			party = true,
+			raid = true,
 		},
-		GroupFilters={
-			[1]=true, -- Solo
-			[2]=true, -- Party
-			[3]=true, -- Raid	
+		GroupFilters = {
+			[1] = true, -- Solo
+			[2] = true, -- Party
+			[3] = true, -- Raid	
 		},
-		FilterDeathType={
-			DAMAGE=true,
-			HEAL=true,
-			MISC=true,
+		FilterDeathType = {
+			DAMAGE = true,
+			HEAL = true,
+			MISC = true,
 		},
-		FilterDeathIncoming={
-			[true]=true,
-			[false]=false
+		FilterDeathIncoming = {
+			[true] = true,
+			[false] = false
 		},
-		RealtimeWindows={},
+		RealtimeWindows = {},
 		ClampToScreen = false,
 	},
-} 
+}
 
 SM:Register("statusbar", "Aluminium",			[[Interface\Addons\Recount\Textures\statusbar\Aluminium]])
 SM:Register("statusbar", "Armory",				[[Interface\Addons\Recount\Textures\statusbar\Armory]])
@@ -440,7 +447,7 @@ SM:Register("statusbar", "BantoBar",			[[Interface\Addons\Recount\Textures\statu
 SM:Register("statusbar", "Flat",				[[Interface\Addons\Recount\Textures\statusbar\Flat]])
 SM:Register("statusbar", "Minimalist",			[[Interface\Addons\Recount\Textures\statusbar\Minimalist]])
 SM:Register("statusbar", "Otravi",				[[Interface\Addons\Recount\Textures\statusbar\Otravi]])
-SM:Register("statusbar", "Empty",               [[Interface\Addons\Recount\Textures\statusbar\Empty]])
+SM:Register("statusbar", "Empty",				[[Interface\Addons\Recount\Textures\statusbar\Empty]])
 
 BINDING_HEADER_RECOUNT = "Recount"
 BINDING_NAME_RECOUNT_PREVIOUSPAGE = L["Show previous main page"]
@@ -528,26 +535,28 @@ Recount.consoleOptions = {
 			desc = L["Open Ace3 Config GUI"],
 			type = 'execute',
 			func = function()
+				-- Resike: Throws an error in AceConfigDialog if clicked twice.
 				InterfaceOptionsFrame:Hide()
 				AceConfigDialog:SetDefaultSize("Recount", 500, 550)
-				AceConfigDialog:Open("Recount") end
+				AceConfigDialog:Open("Recount")
+			end
 		},
 		[L["sync"]] = {
 			order = 21,
-			name  = L["Sync"],
+			name = L["Sync"],
 			desc = L["Toggles sending synchronization messages"],
 			type = 'toggle',
-			get = function(info) return Recount.db.profile.EnableSync end,
-			set = function(info,v)
+			get = function(info)
+				return Recount.db.profile.EnableSync
+			end,
+			set = function(info, v)
 				if v then -- Elsia: Make sure it's on before enabling, an event might intervene
-					Recount:ConfigComm(); 
+					Recount:ConfigComm()
 					Recount:Print("Lazy Sync enabled")
 				end
-					
-				Recount.db.profile.EnableSync=v
-				
+				Recount.db.profile.EnableSync = v
 				if not v then -- Elsia: Make sure it's off before disabling, an event might intervene
-					Recount:FreeComm();
+					Recount:FreeComm()
 					Recount:Print("Lazy Sync disabled")
 				end
 			end,
@@ -557,21 +566,28 @@ Recount.consoleOptions = {
 			name = L["Reset"],
 			desc = L["Resets the data"],
 			type = 'execute',
-			func = function() Recount:ResetData() end
+			func = function()
+				Recount:ResetData()
+			end
 		},
 		[L["verChk"]] = {
 			order = 22,
 			name = L["VerChk"],
 			desc = L["Displays the versions of players in the raid"],
 			type = 'execute',
-			func = function() Recount:ReportVersions() end
+			func = function()
+				Recount:ReportVersions()
+			end
 		},
 		[L["show"]] = {
 			order = 12,
 			name = L["Show"],
 			desc = L["Shows the main window"],
 			type = 'execute',
-			func = function() Recount.MainWindow:Show();Recount:RefreshMainWindow() end,
+			func = function()
+				Recount.MainWindow:Show()
+				Recount:RefreshMainWindow()
+			end,
 			dialogHidden = true
 		},
 		[L["pause"]] = {
@@ -579,20 +595,24 @@ Recount.consoleOptions = {
 			name = L["Pause"],
 			desc = L["Toggle pause of global data collection"],
 			type = 'execute',
-			func = function() if not Recount.db.profile.GlobalDataCollect then
-			     Recount:SetGlobalDataCollect(true);
-			     Recount:Print(L["Data collection turned on"]);
-			else
-			     Recount:SetGlobalDataCollect(false);
-			     Recount:Print(L["Data collection turned off"]);
-			end end,
-		},		
+			func = function()
+				if not Recount.db.profile.GlobalDataCollect then
+					Recount:SetGlobalDataCollect(true)
+					Recount:Print(L["Data collection turned on"])
+				else
+					Recount:SetGlobalDataCollect(false)
+					Recount:Print(L["Data collection turned off"])
+				end
+			end,
+		},
 		hide = {
 			order = 13,
 			name = L["Hide"],
 			desc = L["Hides the main window"],
 			type = 'execute',
-			func = function() Recount.MainWindow:Hide() end,
+			func = function()
+				Recount.MainWindow:Hide()
+			end,
 			dialogHidden = true
 		},
 		toggle = {
@@ -600,49 +620,64 @@ Recount.consoleOptions = {
 			name = L["Toggle"],
 			desc = L["Toggles the main window"],
 			type = 'execute',
-			func = function() if Recount.MainWindow:IsShown() then Recount.MainWindow:Hide() else Recount.MainWindow:Show();Recount:RefreshMainWindow() end end
+			func = function()
+				if Recount.MainWindow:IsShown() then
+					Recount.MainWindow:Hide()
+				else
+					Recount.MainWindow:Show()
+					Recount:RefreshMainWindow()
+				end
+			end
 		},
 		config = {
 			order = 3,
 			name = L["Config"],
 			desc = L["Shows the config window"],
 			type = 'execute',
-			func = function() Recount:ShowConfig() end
+			func = function()
+				Recount:ShowConfig()
+			end
 		},
 		resetpos = {
 			order = 14,
 			name = L["ResetPos"],
 			desc = L["Resets the positions of the detail, graph, and main windows"],
 			type = 'execute',
-			func = function() Recount:ResetPositions() end
+			func = function()
+				Recount:ResetPositions()
+			end
 		},
 		lock = {
 			order = 15,
-			name  = L["Lock"],
+			name = L["Lock"],
 			desc = L["Toggles windows being locked"],
 			type = 'toggle',
-			get = function(info) return Recount.db.profile.Locked end,
-			set = function(info,v)
-				Recount.db.profile.Locked=v
+			get = function(info)
+				return Recount.db.profile.Locked
+			end,
+			set = function(info, v)
+				Recount.db.profile.Locked = v
 				Recount:LockWindows(v)
 			end,
 		},
-		maxfights =  {
-			  order = 31,
-			  name = L["Recorded Fights"],
-			  desc = L["Set the maximum number of recorded fight segments"],
-			  type = 'range',
-			  min = 1,
-			  max = 25,
-			  step = 1,
-			  get = function(info) return Recount.db.profile.MaxFights end,
-			  set = function(info, v)
-			          if v < Recount.db.profile.MaxFights then
-				     Recount.Fights:DeleteOverflowFights(v)
-				  end
-			          Recount.db.profile.MaxFights=v
-			  end, 
-		},	
+		maxfights = {
+			order = 31,
+			name = L["Recorded Fights"],
+			desc = L["Set the maximum number of recorded fight segments"],
+			type = 'range',
+			min = 1,
+			max = 25,
+			step = 1,
+			get = function(info)
+				return Recount.db.profile.MaxFights
+			end,
+			set = function(info, v)
+				if v < Recount.db.profile.MaxFights then
+					Recount.Fights:DeleteOverflowFights(v)
+				end
+				Recount.db.profile.MaxFights = v
+			end,
+		},
 		FrameStrata = {
 			type = "select",
 			order = 17,
@@ -658,7 +693,9 @@ Recount.consoleOptions = {
 				["7-FULLSCREEN_DIALOG"] = "FULLSCREEN_DIALOG",
 				["8-TOOLTIP"] = "TOOLTIP",
 			},
-			get = function(info) return Recount.db.profile.FrameStrata or "3-MEDIUM" end,
+			get = function(info)
+				return Recount.db.profile.FrameStrata or "3-MEDIUM"
+			end,
 			set = function(info, value)
 				Recount.db.profile.FrameStrata = value
 				Recount:SetStrataAndClamp()
@@ -669,7 +706,9 @@ Recount.consoleOptions = {
 			name = L["Clamp To Screen"],
 			desc = L["Controls whether the Recount windows can be dragged offscreen"],
 			order = 16,
-			get = function(info) return Recount.db.profile.ClampToScreen end,
+			get = function(info)
+				return Recount.db.profile.ClampToScreen
+			end,
 			set = function(info, value)
 				Recount.db.profile.ClampToScreen = value
 				Recount:SetStrataAndClamp()
@@ -679,164 +718,193 @@ Recount.consoleOptions = {
 	}
 }
 
-Recount.consoleOptions2 = deepcopy(Recount.consoleOptions)	
+Recount.consoleOptions2 = deepcopy(Recount.consoleOptions)
 
 Recount.consoleOptions2.args.report = {
-			order = 32,
-			name = L["Report"],
+	order = 32,
+	name = L["Report"],
+	type = 'group',
+	desc = L["Allows the data of a window to be reported"],
+	args = {
+		detail = {
+			type = "select",
+			name = L["Detail"],
+			order = 2,
+			desc = L["Report the Detail Window Data"],
+			values = {
+				["Say"] = "Say",
+				["Party"] = "Party",
+				["Raid"] = "Raid",
+				["Guild"] = "Guild",
+				["Officer"] = "Officer",
+				["Gui"] = "GUI",
+			},
+			get = function(info)
+				return "Select"
+			end,
+			set = function(info, value)
+				if string_lower(value) == "gui" then
+					Recount:ShowReport("Detail", Recount.ReportDetail)
+				else
+					Recount.db.profile.ReportLines = Recount.db.profile.ReportLines or 10
+					Recount:ReportDetail(Recount.db.profile.ReportLines, string_lower(value), "")
+				end
+			end,
+		},
+		main = {
+			type = "select",
+			name = L["Main"],
+			order = 1,
+			desc = L["Report the Main Window Data"],
+			values = {
+				["Say"] = "Say",
+				["Party"] = "Party",
+				["Raid"] = "Raid",
+				["Guild"] = "Guild",
+				["Officer"] = "Officer",
+				["Gui"] = "GUI",
+			},
+			get = function(info)
+				return "Select"
+			end,
+			set = function(info, value)
+				if string_lower(value) == "gui" then
+					Recount:ShowReport("Main", Recount.ReportData)
+				else
+					Recount.db.profile.ReportLines = Recount.db.profile.ReportLines or 10
+					Recount:ReportData(Recount.db.profile.ReportLines, string_lower(value), "")
+				end
+			end,
+		},
+		lines = {
+			order = 3,
+			name = L["Lines Reported"],
+			desc = L["Set the maximum number of lines to report"],
+			type = 'range',
+			min = 1,
+			max = 25,
+			step = 1,
+			get = function(info)
+				return Recount.db.profile.ReportLines or 10
+			end,
+			set = function(info, v)
+				Recount.db.profile.ReportLines = v
+				--Recount:Print(L["Lines reported set to: "]..v)
+			end,
+		},
+	}
+}
+
+Recount.consoleOptions2.args.realtime = {
+	name = L["Realtime"],
+	type = 'group',
+	desc = L["Specialized Realtime Graphs"],
+	args = {
+		netfps = {
+			name = L["Network and FPS"],
 			type = 'group',
-			desc = L["Allows the data of a window to be reported"],
+			inline = true,
 			args = {
-				detail = {
-					type = "select",
-					name = L["Detail"],
-					order = 2,
-					desc = L["Report the Detail Window Data"],
-					values = {
-						["Say"] = "Say",
-						["Party"] = "Party",
-						["Raid"] = "Raid",
-						["Guild"] = "Guild",
-						["Officer"] = "Officer",
-						["Gui"] = "GUI",
-					},
-					get = function(info) return "Select" end,
-					set = function(info, value)
-						if string_lower(value) == "gui" then
-							Recount:ShowReport("Detail",Recount.ReportDetail)
-						else
-							Recount.db.profile.ReportLines = Recount.db.profile.ReportLines or 10
-							Recount:ReportDetail(Recount.db.profile.ReportLines,string_lower(value),"")
-						end
-					end,
+				fps = {
+					name = L["FPS"],
+					desc = L["Starts a realtime window tracking your FPS"],
+					type = 'execute',
+					func = function()
+						Recount:CreateRealtimeWindow("FPS", "FPS", "")
+					end
 				},
-				main = {
-					type = "select",
-					name = L["Main"],
-					order = 1,
-					desc = L["Report the Main Window Data"],
-					values = {
-						["Say"] = "Say",
-						["Party"] = "Party",
-						["Raid"] = "Raid",
-						["Guild"] = "Guild",
-						["Officer"] = "Officer",
-						["Gui"] = "GUI",
-					},
-					get = function(info) return "Select" end,
-					set = function(info, value)
-						if string_lower(value) == "gui" then
-							Recount:ShowReport("Main",Recount.ReportData)
-						else
-							Recount.db.profile.ReportLines = Recount.db.profile.ReportLines or 10
-							Recount:ReportData(Recount.db.profile.ReportLines,string_lower(value),"")
-						end
-					end,
+				lag = {
+					name = L["Lag"],
+					desc = L["Starts a realtime window tracking your latency"],
+					type = 'execute',
+					func = function()
+						Recount:CreateRealtimeWindow("Latency", "LAG", "")
+					end
 				},
-				lines =  {
-					  order = 3,
-					  name = L["Lines Reported"],
-					  desc = L["Set the maximum number of lines to report"],
-					  type = 'range',
-					  min = 1,
-					  max = 25,
-					  step = 1,
-					  get = function(info) return Recount.db.profile.ReportLines or 10 end,
-					  set = function(info, v)
-							Recount.db.profile.ReportLines = v
-							Recount:Print(L["Lines reported set to: "]..v)
-					  end, 
-				},	
+				uptraffic = {
+					name = L["Upstream Traffic"],
+					desc = L["Starts a realtime window tracking your upstream traffic"],
+					type = 'execute',
+					func = function()
+						Recount:CreateRealtimeWindow("Upstream Traffic", "UP_TRAFFIC", "")
+					end
+				},
+				downtraffic = {
+					name = L["Downstream Traffic"],
+					desc = L["Starts a realtime window tracking your downstream traffic"],
+					type = 'execute',
+					func = function()
+						Recount:CreateRealtimeWindow("Downstream Traffic", "DOWN_TRAFFIC", "")
+					end
+				},
+				bandwidth = {
+					name = L["Available Bandwidth"],
+					desc = L["Starts a realtime window tracking amount of available AceComm bandwidth left"],
+					type = 'execute',
+					func = function()
+						Recount:CreateRealtimeWindow("Bandwidth Available", "AVAILABLE_BANDWIDTH", "")
+					end
+				},
+			},
+		},
+		raid = {
+			name = L["Raid"],
+			desc = L["Tracks your entire raid"],
+			type = 'group',
+			inline = true,
+			args = {
+				dps = {
+					name = L["DPS"],
+					desc = L["Tracks Raid Damage Per Second"],
+					type = 'execute',
+					func = function()
+						Recount:CreateRealtimeWindow("!RAID", "DAMAGE", "Raid DPS")
+					end
+				},
+				dtps = {
+					name = L["DTPS"],
+					desc = L["Tracks Raid Damage Taken Per Second"],
+					type = 'execute',
+					func = function()
+						Recount:CreateRealtimeWindow("!RAID", "DAMAGETAKEN", "Raid DTPS")
+					end
+				},
+				hps = {
+					name = L["HPS"],
+					desc = L["Tracks Raid Healing Per Second"],
+					type = 'execute',
+					func = function()
+						Recount:CreateRealtimeWindow("!RAID", "HEALING", "Raid HPS")
+					end
+				},
+				htps = {
+					name = L["HTPS"],
+					desc = L["Tracks Raid Healing Taken Per Second"],
+					type = 'execute',
+					func = function()
+						Recount:CreateRealtimeWindow("!RAID", "HEALINGTAKEN", "Raid HTPS")
+					end
+				},
 			}
 		}
-		
-Recount.consoleOptions2.args.realtime = {
-			name = L["Realtime"],
-			type = 'group', 
-			desc = L["Specialized Realtime Graphs"],
-			args = {
-				netfps = {
-					name = L["Network and FPS"],
-					type = 'group', inline = true,
-					args = {
-						fps = {
-							name = L["FPS"],
-							desc = L["Starts a realtime window tracking your FPS"],
-							type = 'execute',
-							func = function() Recount:CreateRealtimeWindow("FPS","FPS","") end
-						},
-						lag = {
-							name = L["Lag"],
-							desc = L["Starts a realtime window tracking your latency"],
-							type = 'execute',
-							func = function() Recount:CreateRealtimeWindow("Latency","LAG","") end
-						},
-						uptraffic = {
-							name = L["Upstream Traffic"],
-							desc = L["Starts a realtime window tracking your upstream traffic"],
-							type = 'execute',
-							func = function() Recount:CreateRealtimeWindow("Upstream Traffic","UP_TRAFFIC","") end
-						},
-						downtraffic = {
-							name = L["Downstream Traffic"],
-							desc = L["Starts a realtime window tracking your downstream traffic"],
-							type = 'execute',
-							func = function() Recount:CreateRealtimeWindow("Downstream Traffic","DOWN_TRAFFIC","") end
-						},
-						bandwidth = {
-							name = L["Available Bandwidth"],
-							desc = L["Starts a realtime window tracking amount of available AceComm bandwidth left"],
-							type = 'execute',
-							func = function() Recount:CreateRealtimeWindow("Bandwidth Available","AVAILABLE_BANDWIDTH","") end
-						},
-					},
-				},
-				raid = {
-					name = L["Raid"],
-					desc = L["Tracks your entire raid"],
-					type = 'group', inline = true,
-
-					args = {
-						dps = {
-							name = L["DPS"],
-							desc = L["Tracks Raid Damage Per Second"],
-							type = 'execute',
-							func = function() Recount:CreateRealtimeWindow("!RAID","DAMAGE","Raid DPS") end
-						},
-						dtps = {
-							name = L["DTPS"],
-							desc = L["Tracks Raid Damage Taken Per Second"],
-							type = 'execute',
-							func = function() Recount:CreateRealtimeWindow("!RAID","DAMAGETAKEN","Raid DTPS") end
-						},
-						hps = {
-							name = L["HPS"],
-							desc = L["Tracks Raid Healing Per Second"],
-							type = 'execute',
-							func = function() Recount:CreateRealtimeWindow("!RAID","HEALING","Raid HPS") end
-						},
-						htps = {
-							name = L["HTPS"],
-							desc = L["Tracks Raid Healing Taken Per Second"],
-							type = 'execute',
-							func = function() Recount:CreateRealtimeWindow("!RAID","HEALINGTAKEN","Raid HTPS") end
-						},
-					}
-				}
-			}
+	}
 }
 
 function Recount:ReportVersions() -- Elsia: Functionified so GUI can use it too
-	Recount:Print(L["Displaying Versions"])
-	if Recount.VerTable then -- Elsia: Fixed nil error on non sync situation.
-		for k,v in pairs(Recount.VerTable) do
-			Recount:Print(k.." "..v)
+	if GetNumGroupMembers() == 0 then
+		Recount:Print(L["No other Recount users found."])
+	else
+		if Recount.VerTable then -- Elsia: Fixed nil error on non sync situation.
+			Recount:Print(L["Displaying Versions"]..":")
+			for k, v in pairs(Recount.VerTable) do
+				Recount:Print(k.." "..v)
+			end
 		end
 	end
 end
 
 function Recount:ShowCombatantList()
-	for k,v in pairs(dbCombatants) do
+	for k, v in pairs(dbCombatants) do
 		Recount:Print(k.." "..(v.Name or "nil").." "..(v.type or "nil").." "..(v.level or "nil").." "..(v.enClass or "nil").." "..(v.GUID or "nil"))
 	end
 	Recount:ShowNrCombatants()
@@ -844,7 +912,9 @@ end
 
 function Recount:NrCombatants()
 	local counter = 0
-	for k,v in pairs(dbCombatants) do counter = counter + 1 end
+	for k, v in pairs(dbCombatants) do
+		counter = counter + 1
+	end
 	return counter
 end
 
@@ -866,25 +936,25 @@ function Recount:ResetDataUnsafe()
 		Recount.GraphWindow:Hide()
 		Recount.GraphWindow.LineGraph:LockXMin(false)
 		Recount.GraphWindow.LineGraph:LockXMax(false)
-		Recount.GraphWindow.TimeRangeSet=false
+		Recount.GraphWindow.TimeRangeSet = false
 	end
 
 	if Recount.DetailWindow then
 		Recount.DetailWindow:Hide()
 	end
 
-	for k,v in pairs(dbCombatants) do
+	for k, v in pairs(dbCombatants) do
 		Recount:DeleteGuardianOwnerByGUID(dbCombatants[k])
-		dbCombatants[k]=nil
+		dbCombatants[k] = nil
 	end
 
-	for k,v in pairs(Recount.db2.CombatTimes) do
-		Recount.db2.CombatTimes[k]=nil
+	for k, v in pairs(Recount.db2.CombatTimes) do
+		Recount.db2.CombatTimes[k] = nil
 	end
 
 	if Recount.MainWindow and Recount.MainWindow.DispTableSorted then
-		Recount.MainWindow.DispTableSorted=Recount:GetTable()
-		Recount.MainWindow.DispTableLookup=Recount:GetTable()
+		Recount.MainWindow.DispTableSorted = Recount:GetTable()
+		Recount.MainWindow.DispTableLookup = Recount:GetTable()
 	end
 
 	if Recount.MainWindow then
@@ -894,26 +964,26 @@ function Recount:ResetDataUnsafe()
 	if #Recount.db2.FoughtWho > 0 then
 		Recount:SendReset() -- Elsia: Sync the reset if we actually fought something
 	end
- 
-	Recount.db2.FoughtWho={}
+
+	Recount.db2.FoughtWho = {}
 
 	Recount:ResetTableCache()
-	
+
 	if Recount.db.profile.CurDataSet ~= "CurrentFightData" and Recount.db.profile.CurDataSet ~= "LastFightData" then
 		Recount.db.profile.CurDataSet = "OverallData"
 	end
-	
+
 	if RecountDeathTrack then
 		RecountDeathTrack:DeleteAllTracks()
 		RecountDeathTrack:SetFight(Recount.db.profile.CurDataSet)
 	end
-	
-	Recount.db2.FightNum=0
 
-	for k,v in pairs(dbCombatants) do
-		v.LastFightIn=0
+	Recount.db2.FightNum = 0
+
+	for k, v in pairs(dbCombatants) do
+		v.LastFightIn = 0
 	end
-	
+
 	--Perform a garbage collect if they are resetting the data
 	collectgarbage("collect")
 end
@@ -921,208 +991,203 @@ end
 function Recount:FindUnit(name)
 	local unit --, UnitObj
 	--Handle this as two passes
-	
-	unit=Recount:GetUnitIDFromName(name) -- We shouldn't need to find roster units.
+
+	unit = Recount:GetUnitIDFromName(name) -- We shouldn't need to find roster units.
 
 	if unit then
 		return unit
 	end
 
-	unit=Recount:FindTargetedUnit(name)
+	unit = Recount:FindTargetedUnit(name)
 
 	return unit
 end
 
-local Epsilon=0.000000000000000001
+--local Epsilon = 0.000000000000000001
 
 function Recount:ResetFightData(data)
-
-   if not data then
-      data = {}
-   else
-      for k, v in pairs(data) do
-	 if type(v)=="table" then
-	    Recount:ResetFightData(v)
-	 elseif type(v)=="number" then
-	    data[k] = 0
-	 elseif type(v)=="string" then
-	    data[k] = nil
-	 elseif type(v)=="boolean" then
-	    data[k] = nil
-	 end
-      end
-   end
-end   
-
---[[
-function Recount:ResetFightData2(data)
-	--Init Data tracked
-	data = data or {}
-	data.Damage=0
-	data.FDamage=0
-	data.DamageTaken=0
-	data.Healing=0
-	data.HealingTaken=0
-	data.Overhealing=0
-	data.DeathCount=0
-	data.DOT_Time=0
-	data.HOT_Time=0
-	data.Interrupts=0
-	data.Dispels=0
-	data.Dispelled=0
-	data.ActiveTime=0
-	data.TimeHeal=0
-	data.TimeDamage=0
-	data.CCBreak=0
-	data.ManaGain=0
-	data.EnergyGain=0
-	data.RageGain=0
-	data.RunicPowerGain=0
-	data.Ressed=0
-
-	for k, v in pairs(data) do
-		if type(v)=="table" then
-			for k2 in pairs(v) do
-				if type(v[k2])=="table" then
-					Recount:FreeTable(v[k2])
-				end
-				v[k2]=nil
+	if not data then
+		data = {}
+	else
+		for k, v in pairs(data) do
+			if type(v) == "table" then
+				Recount:ResetFightData(v)
+			elseif type(v) == "number" then
+				data[k] = 0
+			elseif type(v) == "string" then
+				data[k] = nil
+			elseif type(v) == "boolean" then
+				data[k] = nil
 			end
-		else
-			data[k]=0
 		end
-
 	end
 end
-]]
+
+--[[function Recount:ResetFightData2(data)
+	--Init Data tracked
+	data = data or {}
+	data.Damage = 0
+	data.FDamage = 0
+	data.DamageTaken = 0
+	data.Healing = 0
+	data.HealingTaken = 0
+	data.Overhealing = 0
+	data.DeathCount = 0
+	data.DOT_Time = 0
+	data.HOT_Time = 0
+	data.Interrupts = 0
+	data.Dispels = 0
+	data.Dispelled = 0
+	data.ActiveTime = 0
+	data.TimeHeal = 0
+	data.TimeDamage = 0
+	data.CCBreak = 0
+	data.ManaGain = 0
+	data.EnergyGain = 0
+	data.RageGain = 0
+	data.RunicPowerGain = 0
+	data.Ressed = 0
+
+	for k, v in pairs(data) do
+		if type(v) == "table" then
+			for k2 in pairs(v) do
+				if type(v[k2]) == "table" then
+					Recount:FreeTable(v[k2])
+				end
+				v[k2] = nil
+			end
+		else
+			data[k] = 0
+		end
+	end
+end]]
 
 function Recount:InitFightData(data)
 	--Init Data tracked
-	data.Damage=0
-	data.FDamage=0
-	data.DamageTaken=0
-	data.Healing=0
-	data.HealingTaken=0
-	data.Overhealing=0
-	data.DeathCount=0
-	data.DOT_Time=0
-	data.HOT_Time=0
-	data.Interrupts=0
-	data.Dispels=0
-	data.Dispelled=0
-	data.ActiveTime=0
-	data.TimeHeal=0
-	data.TimeDamage=0
-	data.CCBreak=0
-	data.ManaGain=0
-	data.EnergyGain=0
-	data.RageGain=0
-	data.RunicPowerGain=0
-	data.Ressed=0
+	data.Damage = 0
+	data.FDamage = 0
+	data.DamageTaken = 0
+	data.Healing = 0
+	data.HealingTaken = 0
+	data.Overhealing = 0
+	data.DeathCount = 0
+	data.DOT_Time = 0
+	data.HOT_Time = 0
+	data.Interrupts = 0
+	data.Dispels = 0
+	data.Dispelled = 0
+	data.ActiveTime = 0
+	data.TimeHeal = 0
+	data.TimeDamage = 0
+	data.CCBreak = 0
+	data.ManaGain = 0
+	data.EnergyGain = 0
+	data.RageGain = 0
+	data.RunicPowerGain = 0
+	data.Ressed = 0
 
 	--Ability Data
-	data.Attacks=Recount:GetTable()
-	data.FAttacks=Recount:GetTable()
-	data.Heals=Recount:GetTable()
-	data.OverHeals=Recount:GetTable()
-	data.DOTs=Recount:GetTable()
-	data.HOTs=Recount:GetTable()
-	data.InterruptData=Recount:GetTable()
-	data.CCBroken=Recount:GetTable()
+	data.Attacks = Recount:GetTable()
+	data.FAttacks = Recount:GetTable()
+	data.Heals = Recount:GetTable()
+	data.OverHeals = Recount:GetTable()
+	data.DOTs = Recount:GetTable()
+	data.HOTs = Recount:GetTable()
+	data.InterruptData = Recount:GetTable()
+	data.CCBroken = Recount:GetTable()
 
 	--Interaction Data
-	data.DamagedWho=Recount:GetTable() --Who did I damage?
-	data.FDamagedWho=Recount:GetTable() --Who did I damage?
-	data.WhoDamaged=Recount:GetTable() --Who damaged me?
-	data.HealedWho=Recount:GetTable() --Who did I heal?
-	data.WhoHealed=Recount:GetTable() --Who healed me?
-	data.DispelledWho=Recount:GetTable() --Who did I dispel?
-	data.WhoDispelled=Recount:GetTable() --Who dispelled me?
-	data.TimeSpent=Recount:GetTable()	--Where did I spend my time
-	data.TimeDamaging=Recount:GetTable()	--Where did I spend my time attacking
-	data.TimeHealing=Recount:GetTable()	--Where did I spend my time healing
-	data.ManaGained=Recount:GetTable()	--Where did I gain mana
-	data.EnergyGained=Recount:GetTable() --Where did I gain energy
-	data.RageGained=Recount:GetTable() --Where did I gain rage
-	data.RunicPowerGained=Recount:GetTable() --Where did I gain runic power
-	data.ManaGainedFrom=Recount:GetTable()	--Where did I gain mana
-	data.EnergyGainedFrom=Recount:GetTable() --Where did I gain energy
-	data.RageGainedFrom=Recount:GetTable() --Where did I gain rage
-	data.RunicPowerGainedFrom=Recount:GetTable() --Where did I gain runic power
-	data.PartialResist=Recount:GetTable()	--What spells partially resisted
-	data.PartialBlock=Recount:GetTable() -- What attacks partially blocked
-	data.PartialAbsorb=Recount:GetTable() -- What damage partially absorbed
-	data.RessedWho=Recount:GetTable()
+	data.DamagedWho = Recount:GetTable() --Who did I damage?
+	data.FDamagedWho = Recount:GetTable() --Who did I damage?
+	data.WhoDamaged = Recount:GetTable() --Who damaged me?
+	data.HealedWho = Recount:GetTable() --Who did I heal?
+	data.WhoHealed = Recount:GetTable() --Who healed me?
+	data.DispelledWho = Recount:GetTable() --Who did I dispel?
+	data.WhoDispelled = Recount:GetTable() --Who dispelled me?
+	data.TimeSpent = Recount:GetTable()	--Where did I spend my time
+	data.TimeDamaging = Recount:GetTable()	--Where did I spend my time attacking
+	data.TimeHealing = Recount:GetTable()	--Where did I spend my time healing
+	data.ManaGained = Recount:GetTable()	--Where did I gain mana
+	data.EnergyGained = Recount:GetTable() --Where did I gain energy
+	data.RageGained = Recount:GetTable() --Where did I gain rage
+	data.RunicPowerGained = Recount:GetTable() --Where did I gain runic power
+	data.ManaGainedFrom = Recount:GetTable()	--Where did I gain mana
+	data.EnergyGainedFrom = Recount:GetTable() --Where did I gain energy
+	data.RageGainedFrom = Recount:GetTable() --Where did I gain rage
+	data.RunicPowerGainedFrom = Recount:GetTable() --Where did I gain runic power
+	data.PartialResist = Recount:GetTable()	--What spells partially resisted
+	data.PartialBlock = Recount:GetTable() -- What attacks partially blocked
+	data.PartialAbsorb = Recount:GetTable() -- What damage partially absorbed
+	data.RessedWho = Recount:GetTable()
 
 	--Elemental Tracking
-	data.ElementDone=Recount:GetTable()
-	data.ElementDoneResist=Recount:GetTable()
-	data.ElementDoneBlock=Recount:GetTable()
-	data.ElementDoneAbsorb=Recount:GetTable()
-	data.ElementTaken=Recount:GetTable()
-	data.ElementTakenResist=Recount:GetTable()
-	data.ElementTakenBlock=Recount:GetTable()
-	data.ElementTakenAbsorb=Recount:GetTable()
+	data.ElementDone = Recount:GetTable()
+	data.ElementDoneResist = Recount:GetTable()
+	data.ElementDoneBlock = Recount:GetTable()
+	data.ElementDoneAbsorb = Recount:GetTable()
+	data.ElementTaken = Recount:GetTable()
+	data.ElementTakenResist = Recount:GetTable()
+	data.ElementTakenBlock = Recount:GetTable()
+	data.ElementTakenAbsorb = Recount:GetTable()
 
-	data.ElementHitsDone=Recount:GetTable()
-	data.ElementHitsTaken=Recount:GetTable()
+	data.ElementHitsDone = Recount:GetTable()
+	data.ElementHitsTaken = Recount:GetTable()
 end
 
 function Recount:CreateOwnerFlags(nameFlags)
-	local ownerFlags=bit_band(nameFlags,COMBATLOG_OBJECT_AFFILIATION_MASK+COMBATLOG_OBJECT_REACTION_MASK+COMBATLOG_OBJECT_CONTROL_MASK)
-	if bit_band(nameFlags,COMBATLOG_OBJECT_CONTROL_PLAYER)~=0 then
+	local ownerFlags = bit_band(nameFlags, COMBATLOG_OBJECT_AFFILIATION_MASK + COMBATLOG_OBJECT_REACTION_MASK + COMBATLOG_OBJECT_CONTROL_MASK)
+	if bit_band(nameFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) ~= 0 then
 		ownerFlags = ownerFlags + COMBATLOG_OBJECT_TYPE_PLAYER
 	else -- NPC
 		ownerFlags = ownerFlags + COMBATLOG_OBJECT_TYPE_NPC
-	end	
+	end
 	
 	return ownerFlags
 end
 
-local FlagsToUnitID =
-{
- [COMBATLOG_OBJECT_TARGET]				= "target",
- [COMBATLOG_OBJECT_FOCUS]				= "focus",
- [COMBATLOG_OBJECT_MAINTANK]			= "maintank",
- [COMBATLOG_OBJECT_MAINASSIST]			= "mainassist",
- [COMBATLOG_OBJECT_RAIDTARGET1]			= "raid1target",
- [COMBATLOG_OBJECT_RAIDTARGET2]			= "raid2target",
- [COMBATLOG_OBJECT_RAIDTARGET3]			= "raid3target",
- [COMBATLOG_OBJECT_RAIDTARGET4]			= "raid4target",
- [COMBATLOG_OBJECT_RAIDTARGET5]			= "raid5target",
- [COMBATLOG_OBJECT_RAIDTARGET6]			= "raid6target",
- [COMBATLOG_OBJECT_RAIDTARGET7]			= "raid7target",
- [COMBATLOG_OBJECT_RAIDTARGET8]			= "raid8target",
+local FlagsToUnitID = {
+	[COMBATLOG_OBJECT_TARGET]				= "target",
+	[COMBATLOG_OBJECT_FOCUS]				= "focus",
+	[COMBATLOG_OBJECT_MAINTANK]				= "maintank",
+	[COMBATLOG_OBJECT_MAINASSIST]			= "mainassist",
+	[COMBATLOG_OBJECT_RAIDTARGET1]			= "raid1target",
+	[COMBATLOG_OBJECT_RAIDTARGET2]			= "raid2target",
+	[COMBATLOG_OBJECT_RAIDTARGET3]			= "raid3target",
+	[COMBATLOG_OBJECT_RAIDTARGET4]			= "raid4target",
+	[COMBATLOG_OBJECT_RAIDTARGET5]			= "raid5target",
+	[COMBATLOG_OBJECT_RAIDTARGET6]			= "raid6target",
+	[COMBATLOG_OBJECT_RAIDTARGET7]			= "raid7target",
+	[COMBATLOG_OBJECT_RAIDTARGET8]			= "raid8target",
 }
 
 function Recount:FindPetUnitFromFlags(unitFlags, unitGUID)
-	assert(bit_band(unitFlags,COMBATLOG_OBJECT_TYPE_PET))
-	if bit_band(unitFlags,COMBATLOG_OBJECT_TYPE_PET)==0 then -- Elsia: Has to be a pet. Guardians don't yet have unitids
+	assert(bit_band(unitFlags, COMBATLOG_OBJECT_TYPE_PET))
+	if bit_band(unitFlags, COMBATLOG_OBJECT_TYPE_PET) == 0 then -- Elsia: Has to be a pet. Guardians don't yet have unitids
 		return
 	end
-	
+
 	-- Check for my pet
-	if bit_band(unitFlags,COMBATLOG_OBJECT_TYPE_PET)~=0 and bit_band(COMBATLOG_OBJECT_AFFILIATION_MINE)~=0 then
+	if bit_band(unitFlags, COMBATLOG_OBJECT_TYPE_PET) ~= 0 and bit_band(COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 then
 		return "pet" -- Elsia: My pet is easy
 	end
 
 	local vGUID
-	
+
 	-- Check for raid and party pets.
-	if bit_band(unitFlags,COMBATLOG_OBJECT_TYPE_PET)~=0 and bit_band(unitFlags,COMBATLOG_OBJECT_AFFILIATION_PARTY+COMBATLOG_OBJECT_AFFILIATION_RAID+COMBATLOG_OBJECT_AFFILIATION_MINE)~=0 then
-		if bit_band(unitFlags,COMBATLOG_OBJECT_AFFILIATION_RAID)~=0 then
-			local Num=GetNumRaidMembers() 
-			if Num>0 then
-				for i=1,Num do
+	if bit_band(unitFlags, COMBATLOG_OBJECT_TYPE_PET) ~= 0 and bit_band(unitFlags, COMBATLOG_OBJECT_AFFILIATION_PARTY + COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 then
+		if bit_band(unitFlags, COMBATLOG_OBJECT_AFFILIATION_RAID) ~= 0 then
+			local Num = GetNumRaidMembers() 
+			if Num > 0 and IsInRaid() then
+				for i = 1, Num do
 					if vGUID == UnitGUID("raidpet"..i) then
 						return "raidpet"..i
 					end
 				end
 			end
-		elseif bit_band(unitFlags,COMBATLOG_OBJECT_AFFILIATION_PARTY)~=0 then
-			local Num=GetNumPartyMembers()
-			if Num>0 then
-				for i=1,Num do
+		elseif bit_band(unitFlags, COMBATLOG_OBJECT_AFFILIATION_PARTY) ~= 0 then
+			local Num = GetNumPartyMembers()
+			if Num > 0 then
+				for i = 1, Num do
 					if vGUID == UnitGUID("partypet"..i) then
 						return "partypet"..i
 					end
@@ -1130,22 +1195,22 @@ function Recount:FindPetUnitFromFlags(unitFlags, unitGUID)
 			end
 		end
 	end
-	
+
 	assert(false) -- This should never happen
-	
+
 	return nil
 end
 
-function Recount:FindUnitFromFlags(unitname,unitFlags)
--- Elisa: This check excludes pets.
+function Recount:FindUnitFromFlags(unitname, unitFlags)
+	-- Elisa: This check excludes pets.
 
-	if bit_band(unitFlags,COMBATLOG_OBJECT_TYPE_PLAYER)~=0 and bit_band(unitFlags,COMBATLOG_OBJECT_AFFILIATION_PARTY+COMBATLOG_OBJECT_AFFILIATION_RAID+COMBATLOG_OBJECT_AFFILIATION_MINE)~=0 then
+	if bit_band(unitFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 and bit_band(unitFlags, COMBATLOG_OBJECT_AFFILIATION_PARTY + COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 then
 		return unitname -- Elsia: Covers all non-pet players in raid
 	end
 
 	-- This returns all target-inferable units from flags.
-	for k,v in pairs(FlagsToUnitID) do
-		if bit_band(k,unitFlags)~=0 then
+	for k, v in pairs(FlagsToUnitID) do
+		if bit_band(k, unitFlags) ~= 0 then
 			local vname, vrealm = UnitName(v)
 			if vname and vname == unitname then
 				return v
@@ -1164,23 +1229,23 @@ Recount.ElementalMobID = {
 local gopts = {}
 
 function Recount:AddGreaterElemental(opts)
-	
+
 	local nameGUID, petName, nameFlags, ownerGUID, owner, ownerFlags = unpack(opts)
 
 	--Recount:Print(nameGUID)
-	
-	local newguid1 = tonumber(nameGUID:sub(-1-5,-1),16)+1
-	local mobid = tonumber(nameGUID:sub(3+6,3+9),16)
-	local newguid2 = tonumber(nameGUID:sub(3,3+5),16)
+
+	local newguid1 = tonumber(nameGUID:sub(-1 - 5, -1), 16)+1
+	local mobid = tonumber(nameGUID:sub(3 + 6, 3 + 9), 16)
+	local newguid2 = tonumber(nameGUID:sub(3, 3 + 5), 16)
 	local nameGUID2 = string_format("0x%06X",newguid2)..Recount.ElementalMobID[mobid]..string_format("%06X",newguid1)
 	--Recount:Print(mobid.." "..nameGUID.." "..nameGUID2)
-	
+
 	RecountTempTooltip:SetOwner(UIParent, "ANCHOR_NONE")
 	RecountTempTooltip:ClearLines()
-	RecountTempTooltip:SetHyperlink("unit:" .. nameGUID2)	
+	RecountTempTooltip:SetHyperlink("unit:" .. nameGUID2)
 
 	if RecountTempTooltip:NumLines() > 0 then
-		petName = getglobal("RecountTempTooltipTextLeft1"):GetText()
+		petName = _G["RecountTempTooltipTextLeft1"]:GetText()
 		nameGUID = nameGUID2
 		--Recount:Print("Adding Guardian: "..petName.." "..nameGUID)
 		Recount:AddPetCombatant(nameGUID, petName, nameFlags, ownerGUID, owner, ownerFlags)
@@ -1190,36 +1255,36 @@ function Recount:AddGreaterElemental(opts)
 end
 
 function Recount:FindGuardianFromTooltip(nameGUID)
-	
+
 	RecountTempTooltip:SetOwner(UIParent, "ANCHOR_NONE")
 	RecountTempTooltip:ClearLines()
-	RecountTempTooltip:SetHyperlink("unit:" .. nameGUID)	
+	RecountTempTooltip:SetHyperlink("unit:" .. nameGUID)
 
 	if RecountTempTooltip:NumLines() > 0 then
-		local petName = getglobal("RecountTempTooltipTextLeft1"):GetText()
+		local petName = _G["RecountTempTooltipTextLeft1"]:GetText()
 		return petName
 	else
 		return nil
 	end
 end
- 
+
 function Recount:ScanGUIDTooltip(nameGUID)
-	local newguid1 = tonumber(nameGUID:sub(-1-5,-1),16)
-	local mobid = tonumber(nameGUID:sub(3+6,3+9),16)
-	local newguid2 = tonumber(nameGUID:sub(3,3+5),16)
+	local newguid1 = tonumber(nameGUID:sub(-1 - 5, -1), 16)
+	local mobid = tonumber(nameGUID:sub(3 + 6, 3 + 9), 16)
+	local newguid2 = tonumber(nameGUID:sub(3, 3 + 5), 16)
 	local nameGUID2 = string_format("0x%06X",newguid2)..string_format("%04X",mobid)..string_format("%06X",newguid1)
 	Recount:Print(mobid.." "..nameGUID.." "..nameGUID2)
 
 	RecountTempTooltip:SetOwner(UIParent, "ANCHOR_NONE")
 	RecountTempTooltip:ClearLines()
-	RecountTempTooltip:SetHyperlink("unit:" .. nameGUID2)	
-	
+	RecountTempTooltip:SetHyperlink("unit:" .. nameGUID2)
+
 	local tooltipName = "RecountTempTooltip"
 
-	local textLeft, textRight, ttextLeft, ttextRight;
+	local textLeft, textRight, ttextLeft, ttextRight
 
 	for idx = 1, RecountTempTooltip:NumLines() do
-		ttextLeft = getglobal(tooltipName.."TextLeft"..idx)
+		ttextLeft = _G[tooltipName.."TextLeft"..idx]
 		if ttextLeft then
 			textLeft = ttextLeft:GetText()
 			if textLeft then
@@ -1228,8 +1293,8 @@ function Recount:ScanGUIDTooltip(nameGUID)
 		else
 			textLeft = nil
 		end
-			
-		ttextRight = getglobal(tooltipName.."TextRight"..idx)
+
+		ttextRight = _G[tooltipName.."TextRight"..idx]
 		if ttextRight then
 			textRight = ttextRight:GetText()
 			if textRight then
@@ -1245,7 +1310,7 @@ function Recount:GetGuardianOwnerByGUID(nameGUID)
 	return Recount.GuardianOwnerGUIDs and Recount.GuardianOwnerGUIDs[nameGUID]
 end
 
-function Recount:GetInheritGuardian(owner)
+function Recount:GetInheritGuardian(owner, name)
 	local latestGuardian = owner.GuardianReverseGUIDs[name].LatestGuardian
 	local petName = owner.Pet
 	local petGUID = owner.GuardianReverseGUIDs and owner.GuardianReverseGUIDs[petName] and owner.GuardianReverseGUIDs[petName].GUIDs[latestGuardian]
@@ -1259,24 +1324,24 @@ function Recount:TrackGuardianOwnerByGUID(owner, name, nameGUID)
 
 	local oldGUID = owner.GuardianReverseGUIDs and owner.GuardianReverseGUIDs[name] and type(owner.GuardianReverseGUIDs[name])~="string"
 	local latestGuardian = 0
-	
+
 	if not oldGUID then
-	    owner.GuardianReverseGUIDs[name] = {}
+		owner.GuardianReverseGUIDs[name] = {}
 		owner.GuardianReverseGUIDs[name].LatestGuardian = 0
-		owner.GuardianReverseGUIDs[name].GUIDs =  {}
+		owner.GuardianReverseGUIDs[name].GUIDs = {}
 		owner.GuardianReverseGUIDs[name].GUIDs[latestGuardian] = nameGUID
-		Recount.GuardianOwnerGUIDs[nameGUID]=owner.Name
+		Recount.GuardianOwnerGUIDs[nameGUID] = owner.Name
 	else
 		if not owner.GuardianReverseGUIDs[name].LatestGuardian then
-		   owner.GuardianReverseGUIDs[name].LatestGuardian = 0
-		   owner.GuardianReverseGUIDs[name].GUIDs =  {}
+			owner.GuardianReverseGUIDs[name].LatestGuardian = 0
+			owner.GuardianReverseGUIDs[name].GUIDs = {}
 		end
 
 		latestGuardian = owner.GuardianReverseGUIDs[name].LatestGuardian+1
 
 		owner.GuardianReverseGUIDs[name].GUIDs[latestGuardian] = nameGUID
 		if latestGuardian > 12 then -- Elsia: Max guardians set to 20 for now: edit, reduced to 12 to improve performance
-		   latestGuardian = 0
+			latestGuardian = 0
 		end
 		owner.GuardianReverseGUIDs[name].LatestGuardian = latestGuardian
 		Recount.GuardianOwnerGUIDs[nameGUID]=owner.Name
@@ -1285,11 +1350,10 @@ end
 
 function Recount:DeleteGuardianOwnerByGUID(owner)
 	if owner.GuardianReverseGUIDs then
-
-		for k,v in pairs(owner.GuardianReverseGUIDs) do
+		for k, v in pairs(owner.GuardianReverseGUIDs) do
 			if Recount.GuardianOwnerGUIDs and owner.GuardianReverseGUIDs[v] and owner.GuardianReverseGUIDs[v].GUIDs then
-			   	for i,v2 in ipairs(owner.GuardianReverseGUIDs[v].GUIDs) do
-				    Recount.GuardianOwnerGUIDs[v2] = nil
+				for i, v2 in ipairs(owner.GuardianReverseGUIDs[v].GUIDs) do
+					Recount.GuardianOwnerGUIDs[v2] = nil
 				end
 			end
 		end
@@ -1297,33 +1361,31 @@ function Recount:DeleteGuardianOwnerByGUID(owner)
 end
 
 function Recount:IsFriend(flags)
-	return bit_band(flags,COMBATLOG_OBJECT_REACTION_FRIENDLY) ~= 0
+	return bit_band(flags, COMBATLOG_OBJECT_REACTION_FRIENDLY) ~= 0
 end
 
 function Recount:IsPlayer(flags)
-	return bit_band(flags, COMBATLOG_OBJECT_TYPE_PLAYER)==COMBATLOG_OBJECT_TYPE_PLAYER
+	return bit_band(flags, COMBATLOG_OBJECT_TYPE_PLAYER) == COMBATLOG_OBJECT_TYPE_PLAYER
 end
-	
+
 function Recount:IsPet(flags)
-	return bit_band(flags,COMBATLOG_OBJECT_TYPE_PET+COMBATLOG_OBJECT_TYPE_GUARDIAN)~=0
-end	
-	
-function Recount:InGroup(flags)	
-	return bit_band(flags, COMBATLOG_OBJECT_AFFILIATION_MINE+COMBATLOG_OBJECT_AFFILIATION_PARTY+COMBATLOG_OBJECT_AFFILIATION_RAID)~=0
+	return bit_band(flags, COMBATLOG_OBJECT_TYPE_PET + COMBATLOG_OBJECT_TYPE_GUARDIAN) ~= 0
 end
-	
-function Recount:IsFriendlyFire(srcFlags,dstFlags)
 
-   return (bit_band(srcFlags,COMBATLOG_OBJECT_REACTION_FRIENDLY)~=0) and (bit_band(dstFlags,COMBATLOG_OBJECT_REACTION_FRIENDLY)~=0)
+function Recount:InGroup(flags)
+	return bit_band(flags, COMBATLOG_OBJECT_AFFILIATION_MINE + COMBATLOG_OBJECT_AFFILIATION_PARTY + COMBATLOG_OBJECT_AFFILIATION_RAID) ~= 0
+end
 
---	return (Recount:IsFriend(srcFlags)==Recount:IsFriend(dstFlags)) and ((Recount:IsPlayer(srcFlags) or Recount:IsPet(srcFlags)) and (Recount:IsPlayer(dstFlags) or Recount:IsPet(dstFlags))) -- We only care for friendly fire between players now Edit: and pets
+function Recount:IsFriendlyFire(srcFlags, dstFlags)
+	return (bit_band(srcFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) ~= 0) and (bit_band(dstFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) ~= 0)
+	--return (Recount:IsFriend(srcFlags)==Recount:IsFriend(dstFlags)) and ((Recount:IsPlayer(srcFlags) or Recount:IsPet(srcFlags)) and (Recount:IsPlayer(dstFlags) or Recount:IsPet(dstFlags))) -- We only care for friendly fire between players now Edit: and pets
 end
 
 local lastSummonPetName
 local lastSummonPetGUID
 local lastSummonOwnerName
 local lastSummonOwnerGUID
-	
+
 function Recount:AddPetCombatant(nameGUID, petName, nameFlags, ownerGUID, owner, ownerFlags)
 	if lastSummonOwnerGUID and lastSummonOwnerGUID == nameGUID then
 		Recount:DPrint("Inheriting Pet: ".. lastSummonPetName.." from ".. petName)
@@ -1335,30 +1397,28 @@ function Recount:AddPetCombatant(nameGUID, petName, nameFlags, ownerGUID, owner,
 		lastSummonOwnerName = owner
 		lastSummonOwnerGUID = ownerGUID
 	end
-	
-	local name=petName.." <"..owner..">"
-	local combatant=dbCombatants[name] or {}
 
-	if bit_band(ownerFlags, COMBATLOG_OBJECT_AFFILIATION_MINE+COMBATLOG_OBJECT_AFFILIATION_PARTY+COMBATLOG_OBJECT_AFFILIATION_RAID+COMBATLOG_OBJECT_REACTION_FRIENDLY)==0 then
+	local name = petName.." <"..owner..">"
+	local combatant = dbCombatants[name] or {}
+
+	if bit_band(ownerFlags, COMBATLOG_OBJECT_AFFILIATION_MINE + COMBATLOG_OBJECT_AFFILIATION_PARTY + COMBATLOG_OBJECT_AFFILIATION_RAID+COMBATLOG_OBJECT_REACTION_FRIENDLY) == 0 then
 		--return -- Elsia: We only keep affiliated or friendly pets. These flags can be horribly wrong unfortunately
 	end
-	
+
 	if petName:match("<(.-)>") or owner:match("<(.-)>") then
 		--Recount:DPrint(petName.." : "..owner.." !Double owner detected! Please report the trace below")
 		--Recount:DPrint(debugstack(2, 3, 2))
-			
-		
 	end
-	
+
 	local inheritowner = Recount:GetGuardianOwnerByGUID(ownerGUID)
 	if inheritowner then -- This should only happen for pets of pets such as greater elementals
 		owner = inheritowner 
 	end
-	
+
 	--local elementschool = petName:match("(.*) Elemental Totem")
 	--Recount:Print(petName.." "..(elementschool or "nil").." "..nameGUID:sub(3,-1))
---	if bit_band(nameFlags, COMBATLOG_OBJECT_TYPE_GUARDIAN) then
---[[		local mobid = tonumber(nameGUID:sub(3+6,3+9),16) -- Removed this for inheritance testing
+	--if bit_band(nameFlags, COMBATLOG_OBJECT_TYPE_GUARDIAN) then
+		--[[local mobid = tonumber(nameGUID:sub(3 + 6, 3 + 9), 16) -- Removed this for inheritance testing
 		if Recount.ElementalMobID[mobid] then -- This really summoned a greater fire elemental totem, which is what we really care about.
 
 			--Recount:Print("Elem!")
@@ -1366,61 +1426,61 @@ function Recount:AddPetCombatant(nameGUID, petName, nameFlags, ownerGUID, owner,
 			Recount:ScheduleTimer("AddGreaterElemental", 0.2, gopts)
 		--else
 			--Recount:Print(mobid)
-		end--]]
+		end]]
 		if dbCombatants[owner] then -- We have a valid stored owner.
 			Recount:TrackGuardianOwnerByGUID(dbCombatants[owner], petName, nameGUID)
 		else
-			Recount:SetOwner(combatant,name,owner,ownerGUID,ownerFlags)
+			Recount:SetOwner(combatant, name, owner, ownerGUID, ownerFlags)
 			if dbCombatants[owner] then -- We have a valid stored owner.
 				Recount:TrackGuardianOwnerByGUID(dbCombatants[owner], petName, nameGUID)
---[[			else
+			--[[else
 				Recount.tempGuards = Recount.tempGuards or {}
 				Recount.tempGuards[ownerGUID] = {}
 				Recount.tempGuards[ownerGUID].name = owner
 				Recount:TrackGuardianOwnerByGUID(Recount.tempGuards[ownerGUID], petName, nameGUID)
 				Recount:DPrint("special guardian tracking: "..owner.." "..petName)
-				end --]]
+				end]]
 			end
 		end
 --	end
 
---[[	if Recount.tempGuards[petGUID] and dbCombatants[owner] then -- This propagates temporary guardians forward. Note that this ignores flags
-		petName,nameGUID = Recount:GetInheritGuardian(Recount.tempGuards[petGUID])
-		name=petName.." <"..owner..">"
+	--[[if Recount.tempGuards[petGUID] and dbCombatants[owner] then -- This propagates temporary guardians forward. Note that this ignores flags
+		petName, nameGUID = Recount:GetInheritGuardian(Recount.tempGuards[petGUID], petName)
+		name = petName.." <"..owner..">"
 		Recount:DPrint("special guardian tracking: "..name.." "..nameGUID)
 		Recount.tempGuards = nil -- Get rid of it to avoid accummulation
-	end --]]
-		
-	combatant.GUID=nameGUID
-	combatant.LastFlags=nameFlags
-	
+	end]]
+
+	combatant.GUID = nameGUID
+	combatant.LastFlags = nameFlags
+
 	if combatant.Name then -- Already have such a pet!
 		--Recount:DPrint("Pet1: "..name.." "..owner.." "..petName)
 		return
 	end
-	
-	combatant.Name=petName
-	Recount:SetOwner(combatant,name,owner,ownerGUID,ownerFlags)
-	combatant.type="Pet"
-	combatant.enClass="PET"
 
-	
-	-- Elsia: We inherit flags from owner, as currently 2.4 ptr the pet flags are not useful (typically 0xa28 for outsider,neutral, npc)
+	combatant.Name = petName
+	Recount:SetOwner(combatant, name, owner, ownerGUID, ownerFlags)
+	combatant.type = "Pet"
+	combatant.enClass = "PET"
+
+
+	-- Elsia: We inherit flags from owner, as currently 2.4 ptr the pet flags are not useful (typically 0xa28 for outsider, neutral, npc)
 	combatant.unit = Recount:FindPetUnitFromFlags(nameFlags, nameGUID)
 	if combatant.unit then
 		combatant.level = UnitLevel(combatant.unit)
 	else
-		combatant.level=dbCombatants[owner].level -- Elsia: For guardians and other unidentifiable unitid pets, assume the owner level (heuristic)
+		combatant.level = dbCombatants[owner].level -- Elsia: For guardians and other unidentifiable unitid pets, assume the owner level (heuristic)
 	end
 
 	--Recount:DPrint("Pet2: "..name.." "..owner.." "..petName)
-	
-	combatant.LastFightIn=Recount.db2.FightNum
-	combatant.UnitLockout=Recount.CurTime
-	
+
+	combatant.LastFightIn = Recount.db2.FightNum
+	combatant.UnitLockout = Recount.CurTime
+
 end
 
-function Recount:AddCombatant(name,owner,nameGUID,nameFlags,ownerGUID)
+function Recount:AddCombatant(name, owner, nameGUID, nameFlags, ownerGUID)
 	local combatant = {}
 	
 	if not nameFlags then
@@ -1429,16 +1489,16 @@ function Recount:AddCombatant(name,owner,nameGUID,nameFlags,ownerGUID)
 		return -- Elsia: Improper!
 	end
 
-	combatant.GUID=nameGUID
-	
+	combatant.GUID = nameGUID
+
 	-- Handle Attributes that can be extracted from flags.
 	local inGroup = Recount:InGroup(nameFlags) --bit_band(nameFlags, COMBATLOG_OBJECT_AFFILIATION_MINE+COMBATLOG_OBJECT_AFFILIATION_PARTY+COMBATLOG_OBJECT_AFFILIATION_RAID)~=0
-	local isPlayer=Recount:IsPlayer(nameFlags) --bit_band(nameFlags, COMBATLOG_OBJECT_TYPE_PLAYER)==COMBATLOG_OBJECT_TYPE_PLAYER
-	local isFriend=Recount:IsFriend(nameFlags) --bit_band(nameFlags,COMBATLOG_OBJECT_REACTION_FRIENDLY) ~= 0
-	
+	local isPlayer = Recount:IsPlayer(nameFlags) --bit_band(nameFlags, COMBATLOG_OBJECT_TYPE_PLAYER)==COMBATLOG_OBJECT_TYPE_PLAYER
+	local isFriend = Recount:IsFriend(nameFlags) --bit_band(nameFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) ~= 0
+
 	-- Handle identified pets
 	if owner then
-		combatant.Name=string_match(name,"(.-) <")
+		combatant.Name = string_match(name,"(.-) <")
 		if not combatant.Name then -- Elsia: not sure when this can happen
 			Recount:DPrint("EEK:"..name.." "..owner)
 			combatant.Name = name
@@ -1449,45 +1509,48 @@ function Recount:AddCombatant(name,owner,nameGUID,nameFlags,ownerGUID)
 			--Recount:DPrint(combatant.Name.." : "..owner.." !Double owner detected! Please report the trace below")
 			--Recount:DPrint(debugstack(2, 3, 2))
 		end
-	
-		Recount:SetOwner(combatant,name,owner,ownerGUID, Recount:CreateOwnerFlags(nameFlags))
-		combatant.type="Pet"
-		combatant.enClass="PET"
-		combatant.level=1
---		combatant.unit = Recount:FindPetUnitFromFlags(nameFlags, nameGUID)
---		if combatant.unit then
---			combatant.level = UnitLevel(combatant.unit)
---		else
---			combatant.level=dbCombatants[owner].level -- Elsia: For guardians and other unidentifiable unitid pets, assume the owner level (heuristic)
---		end
+
+		Recount:SetOwner(combatant, name, owner, ownerGUID, Recount:CreateOwnerFlags(nameFlags))
+		combatant.type = "Pet"
+		combatant.enClass = "PET"
+		combatant.level = 1
+		--[[combatant.unit = Recount:FindPetUnitFromFlags(nameFlags, nameGUID)
+		if combatant.unit then
+			combatant.level = UnitLevel(combatant.unit)
+		else
+			combatant.level = dbCombatants[owner].level -- Elsia: For guardians and other unidentifiable unitid pets, assume the owner level (heuristic)
+		end]]
 	else
-	-- Handle non-pet units
-		combatant.Name=name
-		combatant.Owner=false -- Not a pet
-		
+		-- Handle non-pet units
+		combatant.Name = name
+		combatant.Owner = false -- Not a pet
+
 		-- Handle Friendly combatants
-		if isFriend and (inGroup or isPlayer)  then
+		if isFriend and (inGroup or isPlayer) then
 			-- Can find Unit from this
-			--unit = Recount:FindUnitFromFlags(name,nameFlags)
-			
---			if unit and combatant.isPlayer then -- Player Units
+			--unit = Recount:FindUnitFromFlags(name, nameFlags)
+
+			--if unit and combatant.isPlayer then -- Player Units
 			if isPlayer then -- Player Units
 				if Recount.PlayerName == name then
 					combatant.type = "Self"
-					_, combatant.enClass=UnitClass("player")
+					local _
+					_, combatant.enClass = UnitClass("player")
 					combatant.level = UnitLevel("player")
 				-- Handle Friendly grouped combatants
 				elseif inGroup then
-					local unit = Recount:FindUnitFromFlags(name,nameFlags)
+					local unit = Recount:FindUnitFromFlags(name, nameFlags)
 					combatant.type = "Grouped"
-					_, combatant.enClass=UnitClass(unit)
+					local _
+					_, combatant.enClass = UnitClass(unit)
 					combatant.level = UnitLevel(unit)
 				-- Handle Friendly ungrouped combatants
 				else
 					combatant.type = "Ungrouped"
 					local unit = Recount:FindTargetedUnit(name)
 					if unit then
-						_, combatant.enClass=UnitClass(unit)
+						local _
+						_, combatant.enClass = UnitClass(unit)
 						combatant.level = UnitLevel(unit)
 					else
 						combatant.enClass = "UNGROUPED" -- Check for target uid here
@@ -1498,154 +1561,155 @@ function Recount:AddCombatant(name,owner,nameGUID,nameFlags,ownerGUID)
 				--Recount:Print("Got non-player grouped entity: "..name) -- Elsia: This proves to be pets!
 				--Recount:Print(debugstack(2, 3, 2))
 			end
-				--combatant.unit=unit
-				--combatant.level=UnitLevel(unit)
+				--combatant.unit = unit
+				--combatant.level = UnitLevel(unit)
 		-- Handle hostile combatants
 		elseif isPlayer then
 			combatant.type = "Hostile"
 			local unit = Recount:FindTargetedUnit(name)
 			if unit then
-				_, combatant.enClass=UnitClass(unit)
+				local _
+				_, combatant.enClass = UnitClass(unit)
 				combatant.level = UnitLevel(unit)
 			else
 				combatant.enClass = "HOSTILE" -- Check for target uid here
 				combatant.level = 1
 			end
-		elseif bit_band(nameFlags,COMBATLOG_OBJECT_NONE) ~= COMBATLOG_OBJECT_NONE then -- Mob units that were flag targets
-			combatant.enClass="MOB"
+		elseif bit_band(nameFlags, COMBATLOG_OBJECT_NONE) ~= COMBATLOG_OBJECT_NONE then -- Mob units that were flag targets
+			combatant.enClass = "MOB"
 			local unit = Recount:FindTargetedUnit(name)
-			combatant.level=unit and UnitLevel(unit) or 1
+			combatant.level = unit and UnitLevel(unit) or 1
 			if unit and UnitIsTrivial(unit) then
-				combatant.type="Trivial"
-			elseif combatant.level==-1 or Recount.IsBoss(nameGUID) then 
-		    	        combatant.level=-1
-				combatant.type="Boss"
+				combatant.type = "Trivial"
+			elseif combatant.level == -1 or Recount.IsBoss(nameGUID) then
+				combatant.level = -1
+				combatant.type = "Boss"
 			else
-				combatant.type="Nontrivial"
+				combatant.type = "Nontrivial"
 			end
-			combatant.enClass="MOB"
-		     else
+			combatant.enClass = "MOB"
+			 else
 			Recount:DPrint("Unknown spotted")
-			combatant.type="Unknown"
-			combatant.enClass="UNKNOWN"
+			combatant.type = "Unknown"
+			combatant.enClass = "UNKNOWN"
 		end
 	end
 
-	combatant.LastFightIn=Recount.db2.FightNum
-	combatant.UnitLockout=Recount.CurTime
-	dbCombatants[name]=combatant
+	combatant.LastFightIn = Recount.db2.FightNum
+	combatant.UnitLockout = Recount.CurTime
+	dbCombatants[name] = combatant
 	Recount:InitCombatant(name)
 end
 
 function Recount:InitCombatant(name)
 	local combatant = dbCombatants[name]
-	
+
 	combatant.Fights = {}
 end
 
-function Recount:PartyPetOwnerFromGUID(who,petName,petGUID, petFlags)
-	local ownerName, ownerGUID = Recount:FindOwnerPetFromGUID(petName,petGUID)
-	--Recount:SetOwner(who,petName,ownerName, ownerGUID, Recount:CreateOwnerFlags(petFlags))
+function Recount:PartyPetOwnerFromGUID(who, petName, petGUID, petFlags)
+	local ownerName, ownerGUID = Recount:FindOwnerPetFromGUID(petName, petGUID)
+	--Recount:SetOwner(who, petName, ownerName, ownerGUID, Recount:CreateOwnerFlags(petFlags))
 end
 
-function Recount:SetOwner(who,petName,owner,ownerGUID,ownerFlags)
+function Recount:SetOwner(who, petName, owner, ownerGUID, ownerFlags)
 
-	who.Owner=owner
+	who.Owner = owner
 
 	if who.Owner then
 		if not dbCombatants[who.Owner] then
-			Recount:AddCombatant(who.Owner, nil,ownerGUID,ownerFlags)
+			Recount:AddCombatant(who.Owner, nil, ownerGUID, ownerFlags)
 		end
-		if not dbCombatants[who.Owner].Pet then 
+		if not dbCombatants[who.Owner].Pet then
 			dbCombatants[who.Owner].Pet = {}
 		end
 		
-		for i,k in ipairs(dbCombatants[who.Owner].Pet) do -- Prevent multi-pet registration
+		for i, k in ipairs(dbCombatants[who.Owner].Pet) do -- Prevent multi-pet registration
 			if k == petName then return end
 		end
-		tinsert(dbCombatants[who.Owner].Pet,petName)
+		tinsert(dbCombatants[who.Owner].Pet, petName)
 	end
 end
 
-Recount.LastGroupCheck=0
+Recount.LastGroupCheck = 0
 function Recount:GroupCheck()
 	local gettime = GetTime()
 
-	if Recount.LastGroupCheck>gettime and gettime - Recount.LastGroupCheck <= 0.25 then
+	if Recount.LastGroupCheck > gettime and gettime - Recount.LastGroupCheck <= 0.25 then
 		return
 	end
-	Recount.LastGroupCheck=gettime+0.25
+	Recount.LastGroupCheck = gettime + 0.25
 
-	for k,v in pairs(dbCombatants) do
-	   if k ~= Recount.PlayerName then
-	      local Unit = Recount:GetUnitIDFromName(k)
+	for k, v in pairs(dbCombatants) do
+		if k ~= Recount.PlayerName then
+			local Unit = Recount:GetUnitIDFromName(k)
 
-	      --Recount:Print(k.." "..(v.type or "nil").." "..(v.enClass or "nil"))
-	      --Must be in our group
-	      if Unit then
-		 v.unit=Unit
-		 v.type = "Grouped"
-	      elseif v.type == "Grouped" then
-		 v.type = "Ungrouped"
-		 Recount:DeleteVersion(k)
-	      end
-	   end
-	end
-end
-
-local FilterWeights={}
-local FilterMiddle=0
-
-function Recount:CreateFilterWeights()
-	local sum=0
-	local val,widthUp,widthDown
-	local DownAt=FilterSize-RampDown
-	widthUp=1/RampUp
-	widthDown=1/RampDown
-
-	for i=1,FilterSize do
-		if i<=RampUp then
-			val=i*widthUp
-			FilterWeights[#FilterWeights+1]=val
-			sum=sum+val
-		elseif i<=DownAt then
-			FilterWeights[#FilterWeights+1]=1
-			sum=sum+1
-		else
-			val=(FilterSize-i+1)*widthDown
-			FilterWeights[#FilterWeights+1]=val
-			sum=sum+val
+			--Recount:Print(k.." "..(v.type or "nil").." "..(v.enClass or "nil"))
+			--Must be in our group
+			if Unit then
+				v.unit = Unit
+				v.type = "Grouped"
+			elseif v.type == "Grouped" then
+				v.type = "Ungrouped"
+				Recount:DeleteVersion(k)
+			end
 		end
 	end
-	for i=1,FilterSize do
-		FilterWeights[i]=FilterWeights[i]/sum
-		FilterMiddle=FilterMiddle+i*FilterWeights[i]
-	end
-
-	FilterMiddle=math_floor(FilterMiddle)-1
 end
 
-local LinComp=0.3
+local FilterWeights = {}
+local FilterMiddle = 0
+
+function Recount:CreateFilterWeights()
+	local sum = 0
+	local val, widthUp, widthDown
+	local DownAt = FilterSize - RampDown
+	widthUp = 1 / RampUp
+	widthDown = 1 / RampDown
+
+	for i = 1, FilterSize do
+		if i <= RampUp then
+			val = i * widthUp
+			FilterWeights[#FilterWeights + 1] = val
+			sum = sum + val
+		elseif i <= DownAt then
+			FilterWeights[#FilterWeights + 1] = 1
+			sum = sum + 1
+		else
+			val = (FilterSize - i + 1) * widthDown
+			FilterWeights[#FilterWeights + 1] = val
+			sum = sum + val
+		end
+	end
+	for i = 1, FilterSize do
+		FilterWeights[i] = FilterWeights[i] / sum
+		FilterMiddle = FilterMiddle + i * FilterWeights[i]
+	end
+
+	FilterMiddle = math_floor(FilterMiddle) - 1
+end
+
+local LinComp = 0.3
 function Recount:CheckIfAlmostLinear(TimeData, NewTime, NewVal)
-	if #TimeData[1]<=1 or (NewTime-TimeData[1][#TimeData[1]])>10 then
+	if #TimeData[1] <= 1 or (NewTime - TimeData[1][#TimeData[1]]) > 10 then
 		return false
 	end
 
-	local MidTime=TimeData[1][#TimeData[1]]
-	local MidValue=TimeData[2][#TimeData[2]]
+	local MidTime = TimeData[1][#TimeData[1]]
+	local MidValue = TimeData[2][#TimeData[2]]
 
-	local Width=NewTime-TimeData[1][#TimeData[1]-1]
-	local Lerp=(MidTime-TimeData[1][#TimeData[1]-1])/Width
-	local LinValue=Lerp*NewVal+(1-Lerp)*TimeData[2][#TimeData[2]-1]
+	local Width = NewTime - TimeData[1][#TimeData[1] - 1]
+	local Lerp = (MidTime - TimeData[1][#TimeData[1] - 1]) / Width
+	local LinValue = Lerp * NewVal + (1 - Lerp) * TimeData[2][#TimeData[2] - 1]
 
-	if Lerp>0.5 then
-		Lerp=1-Lerp
+	if Lerp > 0.5 then
+		Lerp = 1 - Lerp
 	end
 
-	local Weight=(MidValue-LinValue)/(Lerp*Width)
+	local Weight = (MidValue - LinValue) / (Lerp * Width)
 
-	if Weight<0 then
-		Weight=-Weight
+	if Weight < 0 then
+		Weight = -Weight
 	end
 
 	if Weight<LinComp then
@@ -1655,14 +1719,14 @@ function Recount:CheckIfAlmostLinear(TimeData, NewTime, NewVal)
 end
 
 function Recount:IsTimeDataActive()
-   local filters =  Recount.db.profile.Filters
-   for k,v in pairs(filters.TimeData) do
-      if v and filters.Data[k] then
-	 Recount.TickTimeData = true
-	 return
-      end
-   end
-   Recount.TickTimeData = nil
+	local filters = Recount.db.profile.Filters
+	for k, v in pairs(filters.TimeData) do
+		if v and filters.Data[k] then
+			Recount.TickTimeData = true
+			return
+		end
+	end
+	Recount.TickTimeData = nil
 end
 
 function Recount:TimeTick()
@@ -1670,132 +1734,130 @@ function Recount:TimeTick()
 		return
 	end
 	
-	local Time=time()
+	local Time = time()
 
 	--First check if combat status changed
 	if Recount.InCombat then
-	   Recount:CheckCombat(Time)
+		Recount:CheckCombat(Time)
 	end
-	Recount.CurTime=Time
-	Recount.UnitLockout=Time-5
+	Recount.CurTime = Time
+	Recount.UnitLockout = Time - 5
 
 	if Recount.TickTimeData then
-	   local TimeCheck=Time-FilterSize-1
-	   local gotdeleted
+		local TimeCheck = Time - FilterSize - 1
+		local gotdeleted
 
-	   --Need to increment where data gets put and erase the old ones
-	   Recount.TimeStep=Recount.TimeStep+1
-	   if Recount.TimeStep>FilterSize then
-	      Recount.TimeStep=1
-	   end
-	   
-	   local filters =  Recount.db.profile.Filters
-	   
-	   for name,v in pairs(Recount.db2.combatants) do
-	      local ctype = v.type
-	      if filters.Data[ctype] and filters.TimeData[ctype] and v.TimeLast and v.TimeLast["OVERALL"] and v.TimeLast["OVERALL"]>=TimeCheck then -- Elsia: Added global collection switch
-		 --First threat data
-	      
-		 for k, v2 in pairs(v.TimeWindows) do
-		    local Temp
-		    local NewEntry=0
-		    
-		    if v.TimeLast and v.TimeLast[k] and v.TimeLast[k]>=TimeCheck then
-		       --Something is strange here but this works
-		       for k,v3 in ipairs(v2) do
-			  Temp = (FilterSize-k)+Recount.TimeStep
-			  if Temp>FilterSize then
-			     NewEntry=NewEntry+v3*FilterWeights[Temp-FilterSize]
-			  else
-			     NewEntry=NewEntry+v3*FilterWeights[Temp]
-			  end
-		       end
-		       --Need to set where we will be putting new data to 0
-		       v2[Recount.TimeStep]=0
-		    end
-		    
-		    v.TimeData = v.TimeData or {}
-		    v.TimeData[k] = v.TimeData[k] or {{},{}}
-		    local TimeData=v.TimeData[k]
-		    if NewEntry~=0 then
-		       --do we need a leading zero?
-		       if not v.TimeNeedZero or not v.TimeNeedZero[k] then
-			  TimeData[1][#TimeData[1]+1]=Time-1-FilterMiddle
-			  TimeData[2][#TimeData[2]+1]=0
-			  
-			  v.TimeNeedZero = v.TimeNeedZero or {}
-			  v.TimeNeedZero[k]=true
-		       end
-		       
-		       if not Recount:CheckIfAlmostLinear(TimeData, Time-FilterMiddle, NewEntry) then
-			  TimeData[1][#TimeData[1]+1]=Time-FilterMiddle
-			  TimeData[2][#TimeData[2]+1]=NewEntry
-		       else
-			  --If almost linear write over the old value
-			  TimeData[1][#TimeData[1] ]=Time-FilterMiddle
-			  TimeData[2][#TimeData[2] ]=NewEntry
-		       end
-		    elseif v.TimeNeedZero and v.TimeNeedZero[k] then --Check if we need a trailing zero
-		       TimeData[1][#TimeData[1]+1]=Time-FilterMiddle
-		       TimeData[2][#TimeData[2]+1]=0
-		       v.TimeNeedZero = v.TimeNeedZero or {}
-		       v.TimeNeedZero[k]=false
-		    end
-		 end
-	      end
-	      
-	      
-	      local idler = v.type == "Unknown" or v.enClass == "UNKNOWN" or (not filters.Data[v.type] and not filters.Show[v.type])
-	      
-	      v.LastActive = v.LastActive or Time
-	      if idler and Time-v.LastActive > 30 then
-		 Recount:DeleteCombatant(name)
-		 gotdeleted = true
-		 --		elseif idler then
-		 --			Recount:Print(name.."t: "..(Time-v.LastActive))
-	      end
-	      
-	      --		if name == Recount.Player and not v.inGroup then
-	      --			Recount:GroupCheck()
-	      --			--if not v.inGroup then
-	      --				--Recount:DPrint("Yikes, can't get player into group status!")
-	      --			--end
-	      --		     end
-	   end
-	   if gotdeleted then
-	      Recount:SetMainWindowMode(Recount.db.profile.MainWindowMode)
-	      Recount:FullRefreshMainWindow()
-	   end
+		--Need to increment where data gets put and erase the old ones
+		Recount.TimeStep = Recount.TimeStep + 1
+		if Recount.TimeStep > FilterSize then
+			Recount.TimeStep = 1
+		end
 
-	   if Recount.db.profile.AutoDelete and math_fmod(Time,10)==0 then
-	      Recount:DeleteOldTimeData(Time)
-	   end
+		local filters = Recount.db.profile.Filters
+
+		for name, v in pairs(Recount.db2.combatants) do
+			local ctype = v.type
+			if filters.Data[ctype] and filters.TimeData[ctype] and v.TimeLast and v.TimeLast["OVERALL"] and v.TimeLast["OVERALL"] >= TimeCheck then -- Elsia: Added global collection switch
+				--First threat data
+
+				for k, v2 in pairs(v.TimeWindows) do
+					local Temp
+					local NewEntry = 0
+
+					if v.TimeLast and v.TimeLast[k] and v.TimeLast[k] >= TimeCheck then
+						--Something is strange here but this works
+						for k, v3 in ipairs(v2) do
+							Temp = (FilterSize - k) + Recount.TimeStep
+							if Temp > FilterSize then
+								NewEntry = NewEntry + v3 * FilterWeights[Temp-FilterSize]
+							else
+								NewEntry = NewEntry + v3 * FilterWeights[Temp]
+							end
+						end
+						--Need to set where we will be putting new data to 0
+						v2[Recount.TimeStep] = 0
+					end
+
+					v.TimeData = v.TimeData or {}
+					v.TimeData[k] = v.TimeData[k] or {{},{}}
+					local TimeData = v.TimeData[k]
+					if NewEntry ~= 0 then
+						--do we need a leading zero?
+						if not v.TimeNeedZero or not v.TimeNeedZero[k] then
+							TimeData[1][#TimeData[1] + 1] = Time - 1 - FilterMiddle
+							TimeData[2][#TimeData[2] + 1] = 0
+
+							v.TimeNeedZero = v.TimeNeedZero or {}
+							v.TimeNeedZero[k] = true
+						end
+
+						if not Recount:CheckIfAlmostLinear(TimeData, Time - FilterMiddle, NewEntry) then
+							TimeData[1][#TimeData[1] + 1] = Time - FilterMiddle
+							TimeData[2][#TimeData[2] + 1] = NewEntry
+						else
+							--If almost linear write over the old value
+							TimeData[1][#TimeData[1]] = Time - FilterMiddle
+							TimeData[2][#TimeData[2]] = NewEntry
+						end
+					elseif v.TimeNeedZero and v.TimeNeedZero[k] then --Check if we need a trailing zero
+						TimeData[1][#TimeData[1] + 1] = Time - FilterMiddle
+						TimeData[2][#TimeData[2] + 1 ] =0
+						v.TimeNeedZero = v.TimeNeedZero or {}
+						v.TimeNeedZero[k] = false
+					end
+				end
+			end
+
+			local idler = v.type == "Unknown" or v.enClass == "UNKNOWN" or (not filters.Data[v.type] and not filters.Show[v.type])
+
+			v.LastActive = v.LastActive or Time
+			if idler and Time - v.LastActive > 30 then
+				Recount:DeleteCombatant(name)
+				gotdeleted = true
+			--[[elseif idler then
+				Recount:Print(name.."t: "..(Time-v.LastActive))]]
+			end
+
+			--[[if name == Recount.Player and not v.inGroup then
+				Recount:GroupCheck()
+				--if not v.inGroup then
+				--Recount:DPrint("Yikes, can't get player into group status!")
+				--end
+			end]]
+		end
+		if gotdeleted then
+			Recount:SetMainWindowMode(Recount.db.profile.MainWindowMode)
+			Recount:FullRefreshMainWindow()
+		end
+
+		if Recount.db.profile.AutoDelete and math_fmod(Time, 10) == 0 then
+			Recount:DeleteOldTimeData(Time)
+		end
 	end
 end
 
 function Recount:PutInCombat()
-	Recount.InCombat=true
-	Recount.InCombatT=Recount.CurTime
-	Recount.InCombatT2=GetTime()
-	Recount.InCombatF=date("%H:%M:%S")
-	Recount.FightingWho=""
-	Recount.FightingLevel=0
+	Recount.InCombat = true
+	Recount.InCombatT = Recount.CurTime
+	Recount.InCombatT2 = GetTime()
+	Recount.InCombatF = date("%H:%M:%S")
+	Recount.FightingWho = ""
+	Recount.FightingLevel = 0
 
 	if Recount.db.profile.MainWindow.AutoHide then
 		Recount.MainWindow:Hide()
 	end
 
-	if Recount.db.profile.CurDataSet=="LastFightData" then
-		Recount.db.profile.CurDataSet="CurrentFightData"
-		
+	if Recount.db.profile.CurDataSet == "LastFightData" then
+		Recount.db.profile.CurDataSet = "CurrentFightData"
 	end
 
 	--If current mode is not overall data we need to reset disp table
-	if Recount.db.profile.CurDataSet=="CurrentFightData" then -- Elsia: Fix for double entry in CurAndLast mode
-		Recount.MainWindow.DispTableSorted=Recount:GetTable()
-		Recount.MainWindow.DispTableLookup=Recount:GetTable()
+	if Recount.db.profile.CurDataSet == "CurrentFightData" then -- Elsia: Fix for double entry in CurAndLast mode
+		Recount.MainWindow.DispTableSorted = Recount:GetTable()
+		Recount.MainWindow.DispTableLookup = Recount:GetTable()
 	end
-	
+
 	if RecountDeathTrack then
 		RecountDeathTrack:SetFight(Recount.db.profile.CurDataSet)
 	end
@@ -1803,14 +1865,13 @@ end
 
 
 function Recount:CheckCombat(Time)
-   
-   if Recount:CheckPartyCombatWithPets() then
-      if Recount.db.profile.EnableSync then
-	 Recount:CheckVisible()
-      end
-   else
-      Recount:LeaveCombat(Time)
-   end
+	if Recount:CheckPartyCombatWithPets() then
+		if Recount.db.profile.EnableSync then
+			Recount:CheckVisible()
+		end
+	else
+		Recount:LeaveCombat(Time)
+	end
 end
 
 --Moved into a seperate function
@@ -1822,47 +1883,46 @@ function Recount:LeaveCombat(Time)
 	end
 
 	--Did we actually fight someone?
-	Recount.InCombat=false
-	if (Recount.FightingWho=="") then
+	Recount.InCombat = false
+	if (Recount.FightingWho == "") then
 		return
 	end
 
 	-- Elsia: Only sync for actual fights
-	if Recount.db.profile.GlobalDataCollect and Recount.CurrentDataCollect and Recount.db.profile.EnableSync  then -- Elsia: Only sync if collecting
+	if Recount.db.profile.GlobalDataCollect and Recount.CurrentDataCollect and Recount.db.profile.EnableSync then -- Elsia: Only sync if collecting
 		Recount:BroadcastLazySync()
 	end
 
-	if abs(Time-Recount.InCombatT)>3 then
-		Recount.db2.CombatTimes[#Recount.db2.CombatTimes+1]={Recount.InCombatT,Time,Recount.InCombatF,date("%H:%M:%S"),Recount.FightingWho}
+	if abs(Time - Recount.InCombatT) > 3 then
+		Recount.db2.CombatTimes[#Recount.db2.CombatTimes + 1] = {Recount.InCombatT, Time, Recount.InCombatF, date("%H:%M:%S"),Recount.FightingWho}
 
 		--Save current data as the last fight
 		Recount.Fights:MoveFights()
 
-		if Recount.db.profile.CurDataSet=="CurrentFightData" then
-			Recount.db.profile.CurDataSet="LastFightData"
+		if Recount.db.profile.CurDataSet == "CurrentFightData" then
+			Recount.db.profile.CurDataSet = "LastFightData"
 		end
 
 		--If current mode is not overall data we need to reset disp table
-		if Recount.db.profile.CurDataSet~="OverallData" then
-			Recount.MainWindow.DispTableSorted=Recount:GetTable()
-			Recount.MainWindow.DispTableLookup=Recount:GetTable()
+		if Recount.db.profile.CurDataSet ~= "OverallData" then
+			Recount.MainWindow.DispTableSorted = Recount:GetTable()
+			Recount.MainWindow.DispTableLookup = Recount:GetTable()
 		end
 
-		Recount.db2.FightNum=Recount.db2.FightNum+1
+		Recount.db2.FightNum = Recount.db2.FightNum + 1
 	else
 		Recount.Fights:CopyCurrentFights()
 
 	end
-	
 end
 
 function Recount:DeleteOldTimeData(Time)
-	local DeleteTime=Time-60*Recount.db.profile.AutoDeleteTime
+	local DeleteTime = Time - 60 * Recount.db.profile.AutoDeleteTime
 
-	for name,v in pairs(dbCombatants) do
+	for name, v in pairs(dbCombatants) do
 		if v.TimeData then
-			for _,Check in pairs(v.TimeData) do
-				while Check[1][1] and Check[1][1]<DeleteTime do
+			for _, Check in pairs(v.TimeData) do
+				while Check[1][1] and Check[1][1] < DeleteTime do
 					tremove(Check[1],1)
 					tremove(Check[2],1)
 				end
@@ -1870,23 +1930,23 @@ function Recount:DeleteOldTimeData(Time)
 		end
 	end
 
-	local Fights=Recount.db2.CombatTimes
+	local Fights = Recount.db2.CombatTimes
 
-	while Fights[1] and Fights[1][2]<DeleteTime do
-		tremove(Fights,1)
+	while Fights[1] and Fights[1][2] < DeleteTime do
+		tremove(Fights, 1)
 	end
 end
 
 function Recount:FixLastTime()
-	local Time=GetTime()
-	for name,v in pairs(dbCombatants) do
-		v.LastAbility=Time
+	local Time = GetTime()
+	for name, v in pairs(dbCombatants) do
+		v.LastAbility = Time
 	end
 end
 
 function Recount:DelayedResizeWindows()
 	Recount:ResizeMainWindow()
-	--DelayedResizeWindows=nil
+	--DelayedResizeWindows = nil
 end
 
 function Recount:HandleProfileChanges()
@@ -1895,39 +1955,44 @@ function Recount:HandleProfileChanges()
 	end
 
 	Recount:SetBarTextures(Recount.db.profile.BarTexture)
-	Recount:RestoreMainWindowPosition(Recount.db.profile.MainWindow.Position.x,Recount.db.profile.MainWindow.Position.y,Recount.db.profile.MainWindow.Position.w,Recount.db.profile.MainWindow.Position.h)
+	Recount:RestoreMainWindowPosition(Recount.db.profile.MainWindow.Position.x, Recount.db.profile.MainWindow.Position.y, Recount.db.profile.MainWindow.Position.w, Recount.db.profile.MainWindow.Position.h)
 	Recount:ResizeMainWindow()
 	Recount:FullRefreshMainWindow()
 	Recount:SetupMainWindowButtons()
 
 	if Recount.db.profile.GraphWindow then
 		Recount.GraphWindow:ClearAllPoints()
-		Recount.GraphWindow:SetPoint("TOPLEFT",UIParent,"TOPLEFT",Recount.db.profile.GraphWindowX,Recount.db.profile.GraphWindowY)
+		Recount.GraphWindow:SetPoint("TOPLEFT",UIParent,"TOPLEFT",Recount.db.profile.GraphWindowX, Recount.db.profile.GraphWindowY)
 	end
 
 	if Recount.db.profile.DetailWindow then
 		Recount.DetailWindow:ClearAllPoints()
-		Recount.DetailWindow:SetPoint("TOPLEFT",UIParent,"TOPLEFT",Recount.db.profile.DetailWindowX,Recount.db.profile.DetailWindowY)
+		Recount.DetailWindow:SetPoint("TOPLEFT",UIParent,"TOPLEFT",Recount.db.profile.DetailWindowX, Recount.db.profile.DetailWindowY)
 	end
 
 	Recount.profilechange = true
 	Recount:CloseAllRealtimeWindows()
 	
 	if Recount.db.profile.RealtimeWindows then
-		local Windows=Recount.db.profile.RealtimeWindows
-		for k,v in pairs(Windows) do
+		local Windows = Recount.db.profile.RealtimeWindows
+		for k, v in pairs(Windows) do
 			if v[8] and v[8] == true then -- Elsia: Make sure to respect closed windows as closed on startup
-				Recount:CreateRealtimeWindowSized(v[1],v[2],v[3],v[4],v[5],v[6],v[7])
+				Recount:CreateRealtimeWindowSized(v[1], v[2], v[3], v[4], v[5], v[6], v[7])
 			end
 		end
 	end
+
+	if not Recount.db.profile.CurDataSet then
+		Recount.db.profile.CurDataSet = "OverallData"
+	end
+
 	Recount.Colors:UpdateAllColors()
 	Recount.profilechange = nil
 
 	Recount:ShowConfig()
-	
+
 	Recount:SetStrataAndClamp()
-	
+
 	Recount:LockWindows(Recount.db.profile.Locked)
 end
 
@@ -1945,12 +2010,12 @@ end
 function Recount:OnInitialize()
 	local acedb = LibStub:GetLibrary("AceDB-3.0")
 	Recount.db = acedb:New("RecountDB", Default_Profile)
---	Recount.db2 = acedb:New("RecountPerCharDB", DefaultConfig)
+	--Recount.db2 = acedb:New("RecountPerCharDB", DefaultConfig)
 	RecountPerCharDB = RecountPerCharDB or {}
 	Recount.db2 = RecountPerCharDB
 	Recount.db2.char = nil -- Elsia: Dump old db data hard.
 	Recount.db2.global = nil
-	
+
 	Recount:InitCombatData()
 	Recount.LocalizeCombatants()
 
@@ -1961,39 +2026,39 @@ function Recount:OnInitialize()
 
 	Recount.consoleOptions2.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(Recount.db)
 	LibStub("AceConfig-3.0"):RegisterOptionsTable("Recount", Recount.consoleOptions2, "recount")
-	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Recount Report",Recount.consoleOptions2.args.report)
-	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Recount Realtime",Recount.consoleOptions2.args.realtime)
- 	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Recount Blizz", Recount.consoleOptions)
+	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Recount Report", Recount.consoleOptions2.args.report)
+	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Recount Realtime", Recount.consoleOptions2.args.realtime)
+	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Recount Blizz", Recount.consoleOptions)
 
 	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("Recount Profile", Recount.consoleOptions2.args.profile)
-	
+
 	AceConfigDialog:AddToBlizOptions("Recount Blizz", "Recount")
 	AceConfigDialog:AddToBlizOptions("Recount Profile", "Profile", "Recount")
 	AceConfigDialog:AddToBlizOptions("Recount Report", "Report", "Recount")
 	AceConfigDialog:AddToBlizOptions("Recount Realtime", "Realtime", "Recount")
-	
-	if Recount.db2["version"]~=DataVersion then
+
+	if Recount.db2["version"] ~= DataVersion then
 		Recount:ResetData()
 
-		Recount.db2.version=DataVersion
+		Recount.db2.version = DataVersion
 	end
 
 	RecountTempTooltip = CreateFrame("GameTooltip", "RecountTempTooltip", nil, "GameTooltipTemplate")
 	RecountTempTooltip:SetOwner(UIParent, "ANCHOR_NONE")
 
-	Recount.TimeStep=1
-	Recount.InCombat=false
-	Recount.db.profile.CurDataSet=Recount.db.profile.CurDataSet or "OverallData"
+	Recount.TimeStep = 1
+	Recount.InCombat = false
+	Recount.db.profile.CurDataSet = Recount.db.profile.CurDataSet or "OverallData"
 
-	if Recount.db.profile.CurDataSet=="CurrentFightData" then
-		Recount.db.profile.CurDataSet="LastFightData"
+	if Recount.db.profile.CurDataSet == "CurrentFightData" then
+		Recount.db.profile.CurDataSet = "LastFightData"
 	end
-	
-	Recount.FightingLevel=0
-	Recount.CurTime=time()
+
+	Recount.FightingLevel = 0
+	Recount.CurTime = time()
 
 	Recount.CurrentDataCollect = true
-	
+
 	Recount:CreateMainWindow()
 
 	Recount:CreateDetailWindow()
@@ -2012,42 +2077,42 @@ function Recount:OnInitialize()
 
 	if Recount.db.profile.GraphWindowX then
 		Recount.GraphWindow:ClearAllPoints()
-		Recount.GraphWindow:SetPoint("TOPLEFT",UIParent,"TOPLEFT",Recount.db.profile.GraphWindowX,Recount.db.profile.GraphWindowY)
+		Recount.GraphWindow:SetPoint("TOPLEFT",UIParent,"TOPLEFT",Recount.db.profile.GraphWindowX, Recount.db.profile.GraphWindowY)
 	end
 
 	if Recount.db.profile.DetailWindowX then
 		Recount.DetailWindow:ClearAllPoints()
-		Recount.DetailWindow:SetPoint("TOPLEFT",UIParent,"TOPLEFT",Recount.db.profile.DetailWindowX,Recount.db.profile.DetailWindowY)
+		Recount.DetailWindow:SetPoint("TOPLEFT",UIParent,"TOPLEFT",Recount.db.profile.DetailWindowX, Recount.db.profile.DetailWindowY)
 	end
 
 	if Recount.db.profile.RealtimeWindows then
-		local Windows=Recount.db.profile.RealtimeWindows
-		for k,v in pairs(Windows) do
+		local Windows = Recount.db.profile.RealtimeWindows
+		for k, v in pairs(Windows) do
 			if v[8] and v[8] == true then -- Elsia: Make sure to respect closed windows as closed on startup
-				Recount:CreateRealtimeWindowSized(v[1],v[2],v[3],v[4],v[5],v[6],v[7])
+				Recount:CreateRealtimeWindowSized(v[1], v[2], v[3], v[4], v[5], v[6], v[7])
 			end
 		end
 	end
-	
-	Recount.PlayerName=UnitName("player")
-	Recount.PlayerGUID=nil
-	Recount.PlayerLevel=UnitLevel("player")
-	
+
+	Recount.PlayerName = UnitName("player")
+	Recount.PlayerGUID = nil
+	Recount.PlayerLevel = UnitLevel("player")
+
 	Recount:PreloadConfig() -- To avoid script running too long problems when using config in combat. Unfortunately increases memory footprint, blame blizz if you must.
 
---	Recount.GuardiansGUIDs={} -- No need to db, guardians are not persistent GUIDs
---	Recount.LatestGuardian=0
+	--Recount.GuardiansGUIDs={} -- No need to db, guardians are not persistent GUIDs
+	--Recount.LatestGuardian = 0
 
-	Recount.EventNum={}
-	Recount.EventNum["DAMAGE"]={}
-	Recount.EventNum["HEALING"]={}
+	Recount.EventNum = {}
+	Recount.EventNum["DAMAGE"] = {}
+	Recount.EventNum["HEALING"] = {}
 
 	if Recount.db.profile.EnableSync then
 		Recount:ConfigComm()
 	end
-	
+
 	Recount:FixLastTime()
-	--Recount:ScaleWindows(Recount.db.profile.Scaling,true)
+	--Recount:ScaleWindows(Recount.db.profile.Scaling, true)
 	Recount:ScaleWindows(Recount.db.profile.Scaling) -- Elsia: Bug: Even for first time we need in place code for scaling.
 
 	Recount:SetStrataAndClamp()
@@ -2055,58 +2120,58 @@ function Recount:OnInitialize()
 	Recount:LockWindows(Recount.db.profile.Locked)
 end
 
-function Recount:OnEnable(first)
+function Recount:OnEnable()
 
-        Recount:IsTimeDataActive() -- Make sure we don't tick time data if we don't have to.
+	Recount:IsTimeDataActive() -- Make sure we don't tick time data if we don't have to.
 	Recount.TimeTick() -- Elsia: Prevent that time data is not initialized when an event comes in before the first tick.
-	
-	Recount:ScheduleTimer("GroupCheck",2) -- Elsia: Lowered this and synced duration with party based collection check
 
-	Recount:ScheduleRepeatingTimer("TimeTick",1)
+	Recount:ScheduleTimer("GroupCheck", 2) -- Elsia: Lowered this and synced duration with party based collection check
+
+	Recount:ScheduleRepeatingTimer("TimeTick", 1)
 
 	--Recount:RegisterEvent("Threat_Activate") -- Elsia: Threat-1.0 deactivated until Threat-2.0 is ready.
 	--Recount:RegisterEvent("Threat_Deactivate")
 
---	Recount:RegisterEvent("UNIT_PET")
---	Recount:RegisterEvent("PLAYER_PET_CHANGED")
+	--Recount:RegisterEvent("UNIT_PET")
+	--Recount:RegisterEvent("PLAYER_PET_CHANGED")
 
-	Recount:RegisterEvent("ZONE_CHANGED_NEW_AREA","DetectInstanceChange") -- Elsia: This is needed for zone change deletion and collection
-	Recount:RegisterEvent("PLAYER_ENTERING_WORLD","DetectInstanceChange") -- Attempt to fix Onyxia instance entrance which isn't a new zone.
-	
+	Recount:RegisterEvent("ZONE_CHANGED_NEW_AREA", "DetectInstanceChange") -- Elsia: This is needed for zone change deletion and collection
+	Recount:RegisterEvent("PLAYER_ENTERING_WORLD", "DetectInstanceChange") -- Attempt to fix Onyxia instance entrance which isn't a new zone.
+
 	Recount:DetectInstanceChange() -- Elsia: We need to do this regardless for Zone filtering.
 
 	--if Recount.db.profile.DeleteJoinRaid or Recount.db.profile.DeleteJoinGroup then
-		Recount:ScheduleTimer("InitPartyBasedDeletion", 2) -- Elsia: Wait 5 seconds before enabling auto-delete to prevent startup popups.
+	Recount:ScheduleTimer("InitPartyBasedDeletion", 2) -- Elsia: Wait 5 seconds before enabling auto-delete to prevent startup popups.
 	--end -- Elsia: This is obsolete due to deletion code also handling visibility and solo collection checks.
-	
+
 	--Parser Events
-	Recount:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED","CombatLogEvent")
+	Recount:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "CombatLogEvent")
 	Recount:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT", "BossFound")
-	
+
 	if RecountDeathTrack then
 		RecountDeathTrack:SetFight(Recount.db.profile.CurDataSet)
 	end
-	
-	Recount.HasEnabled=true
+
+	Recount.HasEnabled = true
 end
 
 function Recount:OnDisable()
 	if not Recount.HasEnabled then
 		return
 	end
-	Recount.HasEnabled=false
+	Recount.HasEnabled = false
 	Recount:UnregisterAllEvents()
 end
 
 function Recount:Threat_Activate()
-	Recount.ThreatActive=true
+	Recount.ThreatActive = true
 end
 
 function Recount:Threat_Deactivate()
-	Recount.ThreatActive=false
+	Recount.ThreatActive = false
 end
 
-local Tables={}
+local Tables = {}
 function Recount:FreeTable(t)
 
 	if type(t)~="table" then
@@ -2114,58 +2179,58 @@ function Recount:FreeTable(t)
 	end
 
 	for k in pairs(t) do
-		t[k]=nil
+		t[k] = nil
 	end
 
-	for _,v in pairs(Tables) do
-		if v==t then
+	for _, v in pairs(Tables) do
+		if v == t then
 			return
 		end
 	end
 
-	tinsert(Tables,t)
+	tinsert(Tables, t)
 end
 
 function Recount:FreeTableRecurse(t)
 	--Check the table first before recursing
-	for _,v in pairs(Tables) do
-		if v==t then
+	for _, v in pairs(Tables) do
+		if v == t then
 			return
 		end
 	end
 
 	for k in pairs(t) do
-		if type(t[k])=="table" then
+		if type(t[k]) == "table" then
 			Recount:FreeTableRecurse(t[k])
 		end
-		t[k]=nil
+		t[k] = nil
 	end
 
-	tinsert(Tables,t)
+	tinsert(Tables, t)
 end
 
-function Recount:FreeTableRecurseLimit(t,depth)
+function Recount:FreeTableRecurseLimit(t, depth)
 	--Check the table first before recursing
-	if depth<0 then
+	if depth < 0 then
 		return
 	end
 
 	for k in pairs(t) do
-		if type(t[k])=="table" then
-			Recount:FreeTableRecurseLimit(t[k],depth-1)
+		if type(t[k]) == "table" then
+			Recount:FreeTableRecurseLimit(t[k], depth - 1)
 		end
-		t[k]=nil
+		t[k] = nil
 	end
 
-	tinsert(Tables,t)
+	tinsert(Tables, t)
 end
 
 function Recount:GetTable()
 	local t
-	if #Tables>0 then
-		t=Tables[1]
-		tremove(Tables,1)
-		if #t>0 then
+	if #Tables > 0 then
+		t = Tables[1]
+		tremove(Tables, 1)
+		if #t > 0 then
 			Recount:Print("WARNING! For some reason there is "..#t.." entries left. There is probably a table in use that shouldn't have been freed")
 		end
 		return t
@@ -2175,16 +2240,16 @@ function Recount:GetTable()
 end
 
 function Recount:HowManyTables(str)
-	if str==nil then
-		str=""
+	if str == nil then
+		str = ""
 	else
-		str=str.." "
+		str = str.." "
 	end
 	Recount:Print(str.."Free Tables: "..#Tables)
 end
 
 function Recount:ResetTableCache()
-	Tables=Recount:GetTable()
+	Tables = Recount:GetTable()
 end
 
 function Recount:ResetPositions()
@@ -2192,24 +2257,24 @@ function Recount:ResetPositions()
 end
 
 local TestPie
-local Amount=0
+local Amount = 0
 function Recount:TestPie()
 	TestPie:ResetPie()
-	TestPie:AddPie(Amount,{0.0,1.0,0.0})
-	TestPie:CompletePie({0.2,0.2,1.0})
+	TestPie:AddPie(Amount,{0.0, 1.0, 0.0})
+	TestPie:CompletePie({0.2, 0.2, 1.0})
 
-	Amount=Amount+1
-	if Amount>=100 then
-		Amount=1
+	Amount = Amount + 1
+	if Amount >= 100 then
+		Amount = 1
 	end
 end
 
 local function TestPieChart()
 	local Graph = LibStub:GetLibrary("LibGraph-2.0")
-	local g=Graph:CreateGraphPieChart("TestPieChart",UIParent,"LEFT","LEFT",0,0,150,150)
-	TestPie=g
-	g:AddPie(35,{1.0,0.0,0.0})
-	g:AddPie(21,{0.0,1.0,0.0})
-	g:CompletePie({0.2,0.2,1.0})
-	Recount:ScheduleRepeatingTimer("PieTest",Recount.TestPie,0)
+	local g = Graph:CreateGraphPieChart("TestPieChart", UIParent, "LEFT", "LEFT", 0, 0, 150, 150)
+	TestPie = g
+	g:AddPie(35, {1.0, 0.0, 0.0})
+	g:AddPie(21, {0.0, 1.0, 0.0})
+	g:CompletePie({0.2, 0.2, 1.0})
+	Recount:ScheduleRepeatingTimer("PieTest", Recount.TestPie, 0)
 end

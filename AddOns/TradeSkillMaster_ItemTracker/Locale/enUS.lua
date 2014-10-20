@@ -35,6 +35,7 @@ L["Mail"] = true
 L["Market Value Price Source"] = true
 L["No Tooltip Info"] = true
 L["Options"] = true
+L["Reset current player's inventory data."] = true
 L["Select guilds to ingore in ItemTracker. Inventory will still be tracked but not displayed or taken into consideration by Itemtracker."] = true
 L["Simple"] = true
 L["Specifies the market value price source used for \"Total Market Value\" in the Inventory Viewer."] = true

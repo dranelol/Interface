@@ -1,12 +1,11 @@
 local mod	= DBM:NewMod(682, "DBM-MogushanVaults", nil, 317)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10980 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 3 $"):sub(12, -3))
 mod:SetCreatureID(60143)
 mod:SetEncounterID(1434)
 mod:SetZone()
 mod:SetUsedIcons(5, 6, 7, 8)
-mod:SetMinSyncRevision(7751)
 
 mod:RegisterCombat("combat")
 
@@ -34,7 +33,7 @@ local warnFrenzy					= mod:NewSpellAnnounce(117752, 4)
 
 local specWarnTotem					= mod:NewSpecialWarningSpell(116174, false)
 local specWarnBanishment			= mod:NewSpecialWarningYou(116272)
-local specWarnBanishmentOther		= mod:NewSpecialWarningTarget(116272, mod:IsTank())
+local specWarnBanishmentOther		= mod:NewSpecialWarningTaunt(116272)
 local specWarnVoodooDolls			= mod:NewSpecialWarningSpell(122151, false)
 local specWarnVoodooDollsYou		= mod:NewSpecialWarningYou(122151, false)
 

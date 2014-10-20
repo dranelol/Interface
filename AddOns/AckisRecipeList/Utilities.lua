@@ -31,46 +31,6 @@ function private.ColorRGBtoHEX(r, g, b)
 	return ("%02x%02x%02x"):format(r * 255, g * 255, b * 255)
 end
 
-local NO_LOCATION_LISTS
-
-function private:AddListEntry(lookup_list, identifier, name, location, coord_x, coord_y, faction)
-	if lookup_list[identifier] then
-		addon:Debug("Duplicate lookup: %s - %s.", identifier, name)
-		return
-	end
-
-	local entry = {
-		name = name,
-		location = location,
-		faction = faction,
-	}
-
-	if coord_x and coord_y then
-		entry.coord_x = coord_x
-		entry.coord_y = coord_y
-	end
-
-	--[===[@alpha@
-	if not NO_LOCATION_LISTS then
-		NO_LOCATION_LISTS = {
-			[self.custom_list] = true,
-			[self.discovery_list] = true,
-			[self.reputation_list] = true,
-		}
-	end
-
-	if not location and not NO_LOCATION_LISTS[lookup_list] then
-		addon:Debug("Lookup ID: %s (%s) has an unknown location.", identifier, entry.name or _G.UNKNOWN)
-	end
-
-	if faction and lookup_list == self.mob_list then
-		addon:Debug("Mob %d (%s) has been assigned to faction %s.", identifier, name, entry.faction)
-	end
-	--@end-alpha@]===]
-	lookup_list[identifier] = entry
-	return entry
-end
-
 function private.ItemLinkToID(item_link)
 	if not item_link then
 		return
@@ -107,6 +67,9 @@ do
 		empties = function()
 			addon:ShowEmptySources()
 		end,
+		lists = function(input)
+			addon:DumpProfessionLists(input)
+		end,
 		phrases = function()
 			addon:DumpPhrases()
 		end,
@@ -130,6 +93,9 @@ do
 				return
 			end
 			addon:DumpProfession(input)
+		end,
+		reputations = function()
+			addon:DumpReps()
 		end,
 		zones = function(input)
 			if not input then
@@ -276,16 +242,130 @@ do
 				output:AddLine(("%s = _G.EJ_GetEncounterInfo(%d),"):format(TableKeyFormat(boss_name), index))
 			end
 		end
+
+		if output:Lines() == 0 then
+			output:AddLine("Nothing to display.")
+		end
+
+		output:Display()
+	end
+
+	local profession_entries = {}
+	local sorted_profession_entries = {}
+	local entity_counts = {}
+
+	local function SortByIdentifier(a, b)
+		return a.identifier < b.identifier
+	end
+
+	local function GroupListByProfession(category_name, acquire_type)
+		for unit_id, unit in acquire_type:EntityPairs() do
+			if unit.item_list then
+				for recipe_id in pairs(unit.item_list) do
+					local profession = private.recipe_list[recipe_id].profession
+					local profession_table = profession_entries[profession]
+
+					if not profession_table then
+						profession_table = {}
+						profession_entries[profession] = profession_table
+					end
+					local sorted_profession_table = sorted_profession_entries[profession]
+
+					if not sorted_profession_table then
+						sorted_profession_table = {}
+						sorted_profession_entries[profession] = sorted_profession_table
+					end
+					local category_table = profession_table[category_name]
+
+					if not category_table then
+						category_table = {}
+						profession_table[category_name] = category_table
+					end
+					local sorted_category_table = sorted_profession_table[category_name]
+
+					if not sorted_category_table then
+						sorted_category_table = {}
+						sorted_profession_table[category_name] = sorted_category_table
+					end
+
+					if not category_table[unit] then
+						entity_counts[unit] = (entity_counts[unit] or 0) + 1
+						sorted_category_table[#sorted_category_table + 1] = unit
+						table.sort(sorted_category_table, SortByIdentifier)
+					end
+					category_table[unit] = unit
+				end
+			end
+		end
+	end
+
+	local ACQUIRE_TYPE_LIST = {
+		"Custom",
+		"Discovery",
+		"MobDrop",
+		"Quest",
+		"Trainer",
+		"Vendor",
+		"WorldEvents",
+	}
+
+	function addon:DumpProfessionLists(target_profession_name)
+		if target_profession_name then
+			target_profession_name = target_profession_name:lower()
+		end
+
+		for identifier, name in pairs(private.LOCALIZED_PROFESSION_NAMES) do
+			addon:InitializeProfession(name)
+		end
+
+		table.wipe(entity_counts)
+		table.wipe(profession_entries)
+		table.wipe(sorted_profession_entries)
+
+		for index = 1, #ACQUIRE_TYPE_LIST do
+			local category_name = ACQUIRE_TYPE_LIST[index]
+			GroupListByProfession(category_name, private.AcquireTypes[category_name])
+		end
+		output:Clear()
+
+		for profession_name, profession_table in pairs(sorted_profession_entries) do
+			if not target_profession_name or profession_name:lower() == target_profession_name then
+				output:AddLine(("-----------------------------------------------------------------------\n-- %s.\n-----------------------------------------------------------------------"):format(profession_name))
+
+				for category_name, category_table in pairs(profession_table) do
+					output:AddLine(("-----------------------------------------------------------------------\n-- %s.\n-----------------------------------------------------------------------"):format(category_name))
+
+					for index = 1, #category_table do
+						local unit = category_table[index]
+
+						if entity_counts[unit] == 1 then
+							output:AddLine(("%s: %s"):format(unit.identifier or _G.UNKNOWN, unit.name or _G.UNKNOWN))
+						else
+							addon:Printf("Skipping %s %s: %s - %d professions.",
+								category_name,
+								unit.identifier or _G.UNKNOWN,
+								unit.name or _G.UNKNOWN,
+								entity_counts[unit])
+						end
+					end
+				end
+			end
+		end
+
+		if output:Lines() == 0 then
+			output:AddLine("Nothing to display.")
+		end
 		output:Display()
 	end
 
 	-------------------------------------------------------------------------------
 	-- Miscellaneous utilities
 	-------------------------------------------------------------------------------
-	local function find_empties(unit_list, description)
+	local function find_empties(acquire_type_id)
+		local acquire_type = private.ACQUIRE_TYPES_BY_ID[acquire_type_id]
 		local count
 
-		for unit_id, unit in pairs(unit_list) do
+		for unit_id, unit in acquire_type:EntityPairs() do
 			count = 0
 
 			if unit.item_list then
@@ -295,7 +375,7 @@ do
 			end
 
 			if count == 0 then
-				output:AddLine(("* %s %s (%s) has no recipes."):format(description, unit.name or _G.UNKNOWN, unit_id))
+				output:AddLine(("* %s %s (%s) has no recipes."):format(acquire_type:Name(), unit.name or _G.UNKNOWN, unit_id))
 			end
 		end
 	end
@@ -304,13 +384,14 @@ do
 		private.LoadAllRecipes()
 		output:Clear()
 
-		find_empties(private.trainer_list, "Trainer")
-		find_empties(private.vendor_list, "Vendor")
-		find_empties(private.mob_list, "Mob")
-		find_empties(private.quest_list, "Quest")
-		find_empties(private.custom_list, "Custom Entry")
-		find_empties(private.discovery_list, "Discovery")
-		find_empties(private.seasonal_list, "World Event")
+		find_empties(private.ACQUIRE_TYPE_IDS.TRAINER)
+		find_empties(private.ACQUIRE_TYPE_IDS.VENDOR)
+		find_empties(private.ACQUIRE_TYPE_IDS.MOB_DROP)
+		find_empties(private.ACQUIRE_TYPE_IDS.QUEST)
+		find_empties(private.ACQUIRE_TYPE_IDS.CUSTOM)
+		find_empties(private.ACQUIRE_TYPE_IDS.DISCOVERY)
+		find_empties(private.ACQUIRE_TYPE_IDS.WORLD_EVENTS)
+		find_empties(private.ACQUIRE_TYPE_IDS.REPUTATION)
 
 		if output:Lines() == 0 then
 			output:AddLine("Nothing to display.")

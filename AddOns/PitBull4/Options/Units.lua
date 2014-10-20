@@ -331,7 +331,12 @@ function PitBull4.Options.get_unit_options()
 			refresh_vehicle(info[1])
 		end
 	end
-	
+	local function set_with_swap_template(info, value)
+		if set(info, value) then
+			PitBull4:SwapGroupTemplate(CURRENT_GROUP)
+		end
+	end
+
 	group_args.name = {
 		name = L["Name"],
 		desc = function(info)
@@ -367,7 +372,7 @@ function PitBull4.Options.get_unit_options()
 			return t
 		end,
 		get = get,
-		set = set_with_refresh_group_shown,
+		set = set_with_swap_template,
 		disabled = disabled,
 		width = 'double',
 	}
@@ -613,6 +618,11 @@ function PitBull4.Options.get_unit_options()
 		NAME = L["By name"],
 		CLASS = L["By class"],
 		GROUP = L["By group"],
+		ASSIGNEDROLE = L["By role"],
+	}
+	
+	local enemy_values = {
+		INDEX = L["By index"],
 	}
 	
 	group_layout_args.sort_method = {
@@ -622,17 +632,19 @@ function PitBull4.Options.get_unit_options()
 		order = next_order(),
 		values = function(info)
 			local unit_group = get_group_db().unit_group
-			if unit_group:sub(1, 5) == "party" then
+			if unit_group:sub(1, 4) == "raid" then
+				return raid_values
+			elseif unit_group:sub(1, 5) == "party" then
 				return party_values
 			else
-				return raid_values
+				return enemy_values
 			end
 		end,
 		get = function(info)
 			local db = get_group_db()
-			if db.unit_group:sub(1, 5) ~= "party" then
+			if db.unit_group:sub(1, 4) == "raid" then
 				local group_by = db.group_by
-				if group_by == "CLASS" or group_by == "GROUP" then
+				if group_by == "CLASS" or group_by == "GROUP" or group_by == "ASSIGNEDROLE" then
 					return group_by
 				end
 			end
@@ -647,6 +659,9 @@ function PitBull4.Options.get_unit_options()
 			elseif value == "CLASS" then
 				db.sort_method = "NAME"
 				db.group_by = "CLASS"
+			elseif value == "ASSIGNEDROLE" then
+				db.sort_method = "NAME"
+				db.group_by = "ASSIGNEDROLE"
 			else
 				db.sort_method = "INDEX"
 				db.group_by = "GROUP"
@@ -767,14 +782,11 @@ function PitBull4.Options.get_unit_options()
 		get = function(info)
 			return not get(info)
 		end,
-		set = function(info,value)
-			if set(info, not value) then
-				PitBull4:SwapGroupTemplate(CURRENT_GROUP)
-			end
-		end,
+		set = set_with_swap_template,
 		disabled = disabled,
 		hidden = function(info)
-			return not get_group_db().unit_group:match("pet")
+			local unit_group = get_group_db().unit_group
+			return not unit_group:match("pet") or unit_group:match("^arena")
 		end,
 	}
 	
@@ -787,26 +799,26 @@ function PitBull4.Options.get_unit_options()
 		return ("|cff%02x%02x%02x%s|r"):format(r * 255, g * 255, b * 255, text)
 	end
 	
-	local sort_values = {}
-	local function refresh_sort_values()
-		wipe(sort_values)
+	local class_sort_values = {}
+	local function refresh_class_sort_values()
+		wipe(class_sort_values)
 		for i, class in ipairs(PitBull4.ClassOrder) do
-			sort_values[i] = ("%d. %s"):format(i, colorify(LOCALIZED_CLASS_NAMES_MALE[class], class))
+			class_sort_values[i] = ("%d. %s"):format(i, colorify(LOCALIZED_CLASS_NAMES_MALE[class], class))
 			
 			group_layout_args.class_order.args[class].order = i
 		end
 	end
 	
-	local last_db = nil
+	local class_last_db = nil
 	group_layout_args.class_order = {
 		name = L["Class order"],
 		type = 'group',
 		inline = true,
 		hidden = function(info)
 			local db = get_group_db()
-			if db ~= last_db then
-				refresh_sort_values()
-				last_db = db
+			if db ~= class_last_db then
+				refresh_class_sort_values()
+				class_last_db = db
 			end
 			if db.unit_group:sub(1, 5) ~= "party" then
 				local group_by = db.group_by
@@ -823,7 +835,7 @@ function PitBull4.Options.get_unit_options()
 			order = i,
 			type = 'select',
 			style = 'dropdown',
-			values = sort_values,
+			values = class_sort_values,
 			get = function(info)
 				for i, v in ipairs(PitBull4.ClassOrder) do
 					if v == class then
@@ -846,13 +858,79 @@ function PitBull4.Options.get_unit_options()
 				
 				table.remove(PitBull4.ClassOrder, current)
 				table.insert(PitBull4.ClassOrder, value, class)
-				refresh_sort_values()
+				refresh_class_sort_values()
 				refresh_group('groups')
 				update('groups')
 			end
 		}
 	end
-
+	
+	local role_sort_values = {}
+	local function refresh_role_sort_values()
+		wipe(role_sort_values)
+		for i, role in ipairs(PitBull4.RoleOrder) do
+			role_sort_values[i] = ("%d. %s"):format(i, _G[role])
+			
+			group_layout_args.role_order.args[role].order = i
+		end
+	end
+	
+	local role_last_db = nil
+	group_layout_args.role_order = {
+		name = L["Role order"],
+		type = 'group',
+		inline = true,
+		hidden = function(info)
+			local db = get_group_db()
+			if db ~= role_last_db then
+				refresh_role_sort_values()
+				role_last_db = db
+			end
+			if db.unit_group:sub(1, 5) ~= "party" then
+				local group_by = db.group_by
+				return group_by ~= "ASSIGNEDROLE"
+			end
+			return true
+		end,
+		args = {}
+	}
+	
+	for i, role in ipairs({ "TANK", "HEALER", "DAMAGER", "NONE" }) do
+		group_layout_args.role_order.args[role] = {
+			name = _G[role],
+			order = i,
+			type = 'select',
+			style = 'dropdown',
+			values = role_sort_values,
+			get = function(info)
+				for i, v in ipairs(PitBull4.RoleOrder) do
+					if v == role then
+						return i
+					end
+				end
+			end,
+			set = function(info, value)
+				local current
+				for i, v in ipairs(PitBull4.RoleOrder) do
+					if v == role then
+						current = i
+						break
+					end
+				end
+				if not current then
+					table.insert(PitBull4.RoleOrder, role)
+					return
+				end
+				
+				table.remove(PitBull4.RoleOrder, current)
+				table.insert(PitBull4.RoleOrder, value, role)
+				refresh_role_sort_values()
+				refresh_group('groups')
+				update('groups')
+			end
+		}
+	end
+	
 	group_filtering_args.shown_when = {
 		name = L["Show when in"],
 		desc = L["Which situations to show the unit group in."],
@@ -860,6 +938,7 @@ function PitBull4.Options.get_unit_options()
 		type = 'multiselect',
 		values = function(info)
 			local unit_group = get_group_db().unit_group
+			local group_based = get_group_db().group_based
 			
 			local party_based = unit_group:sub(1, 5) == "party"
 			
@@ -867,6 +946,12 @@ function PitBull4.Options.get_unit_options()
 			
 			if party_based then
 				if get_group_db().include_player then
+					t.solo = L["Solo"]
+				end
+				t.party = L["Party"]
+			end
+			if not group_based then
+				if unit_group:sub(1, 5) ~= "arena" then
 					t.solo = L["Solo"]
 				end
 				t.party = L["Party"]
@@ -891,12 +976,19 @@ function PitBull4.Options.get_unit_options()
 			
 			db.show_when[key] = value
 			
-			refresh_group('groups')
 			for header in PitBull4:IterateHeadersForName(CURRENT_GROUP) do
+				header:RefreshGroup(true)
 				header:UpdateShownState()
 			end
 		end,
 		disabled = disabled,
+	}
+	
+	local group_filter_roles = {
+		TANK = TANK,
+		HEALER = HEALER,
+		DAMAGER = DAMAGER,
+		NONE = NONE,
 	}
 	
 	group_filtering_args.filter_type = {
@@ -908,6 +1000,7 @@ function PitBull4.Options.get_unit_options()
 			ALL = L["Show all"],
 			NUMBER = L["By raid group"],
 			CLASS = L["By class"],
+			ROLE = L["By role"],
 			MAINTANK = L["Main tanks"],
 			MAINASSIST = L["Main assists"],
 		},
@@ -938,6 +1031,10 @@ function PitBull4.Options.get_unit_options()
 				return start
 			end
 			
+			if group_filter_roles[start] then
+				return 'ROLE'
+			end
+			
 			-- WTF here, should never happen
 			db.group_filter = nil
 			return 'ALL'
@@ -959,6 +1056,8 @@ function PitBull4.Options.get_unit_options()
 					t[#t+1] = class
 				end
 				db.group_filter = table.concat(t, ",")
+			elseif value == 'ROLE' then
+				db.group_filter = "TANK,HEALER,DAMAGER,NONE"
 			else--if value == 'MAINTANK' or value == 'MAINASSIST' then
 				db.group_filter = value
 			end
@@ -970,9 +1069,9 @@ function PitBull4.Options.get_unit_options()
 			local db = get_group_db()
 			
 			local unit_group = db.unit_group
-			local party_based = unit_group:sub(1, 5) == "party"
+			local raid_based = unit_group:sub(1, 4) == "raid"
 			
-		 	return party_based -- only show in raid
+		 	return not raid_based -- only show in raid
 		end
 	}
 	
@@ -1010,6 +1109,38 @@ function PitBull4.Options.get_unit_options()
 		refresh_group('groups')
 	end
 	
+	group_filtering_args.group_filter_role = {
+		name = L["Filter roles"],
+		desc = L["Which roles should show in this unit group"],
+		order = next_order(),
+		type = 'multiselect',
+		values = group_filter_roles,
+		get = get_filter,
+		set = set_filter,
+		disabled = disabled,
+		hidden = function(info)
+			local db = get_group_db()
+
+			local unit_group = db.unit_group
+			local party_based = unit_group:sub(1, 5) == "party"
+
+			if party_based then
+				-- only show in raid
+				return true
+			end
+			
+			local group_filter = db.group_filter
+			
+			if not group_filter or group_filter == "" then
+				return true
+			end
+			
+			local start = ((","):split(group_filter))
+			
+			return not group_filter_roles[start]
+		end
+	}
+
 	group_filtering_args.group_filter_number = {
 		name = L["Filter groups"],
 		desc = L["Which raid groups should show in this unit group"],

@@ -382,23 +382,23 @@ end
 
 
 function psicccombqcha2()
-psicccombatsavedreport = PSFmainfrainsavedinfo_Combatsvd1:GetValue()
+psicccombatsavedreport = math.floor(PSFmainfrainsavedinfo_Combatsvd1:GetValue())
 local text=psicctxtbysaved.." "..psicccombatsavedreport
 psiccbytimtxtd2:SetText(text)
 end
 function psicccombqcha21()
-psicccombatsavedreport = PSFmainoptionsps_Combatsvd1:GetValue()
+psicccombatsavedreport = math.floor(PSFmainoptionsps_Combatsvd1:GetValue())
 local text=psicctxtbysaved.." "..psicccombatsavedreport
 psiccbytimtxtd211:SetText(text)
 end
 function psicccombqcha22()
-psicccombatsavedreport = PSFraidopt_Combatsvd1:GetValue()
+psicccombatsavedreport = math.floor(PSFraidopt_Combatsvd1:GetValue())
 local text=psicctxtbysaved.." "..psicccombatsavedreport
 psiccbytimtxtd212:SetText(text)
 end
 
 function psicccombqcha3()
-psicccombatexport = PSFmainfrainsavedinfo_Combatsvd2:GetValue()
+psicccombatexport = math.floor(PSFmainfrainsavedinfo_Combatsvd2:GetValue())
 local text=pssavediexportopt4..": "..psicccombatexport
 if psicccombatexport==0 then
   text=pssavediexportopt4..": "..pssavediexportopt6
@@ -407,7 +407,7 @@ psiccbytimtxtd4:SetText(text)
 end
 
 function psslidincomb12(slid)
-psisicombattypeduring2:SetText(format(psincombaddtxtlocal2,PSFmainfrainsavedinfo_slid1:GetValue(),PSFmainfrainsavedinfo_slid2:GetValue()))
+psisicombattypeduring2:SetText(format(psincombaddtxtlocal2,math.floor(PSFmainfrainsavedinfo_slid1:GetValue()),math.floor(PSFmainfrainsavedinfo_slid2:GetValue())))
 local a1=PSFmainfrainsavedinfo_slid1:GetMinMaxValues()
 local _,a4=PSFmainfrainsavedinfo_slid2:GetMinMaxValues()
 if pspartoftextofkicks==nil then
@@ -415,9 +415,9 @@ if pspartoftextofkicks==nil then
 end
 table.wipe(pspartoftextofkicks)
 pssavedinfotextframe1:HighlightText(0,0)
-if a1~=PSFmainfrainsavedinfo_slid1:GetValue() or a4~=PSFmainfrainsavedinfo_slid2:GetValue() then
-	if PSFmainfrainsavedinfo_slid1:GetValue()<=PSFmainfrainsavedinfo_slid2:GetValue() and GetTime()>psstopcheckslid12+0.3 then
-		psiccdmgshow2(pssichose1,pssichose2,pssichose4,PSFmainfrainsavedinfo_slid1:GetValue(),PSFmainfrainsavedinfo_slid2:GetValue())
+if a1~=math.floor(PSFmainfrainsavedinfo_slid1:GetValue()) or a4~=math.floor(PSFmainfrainsavedinfo_slid2:GetValue()) then
+	if math.floor(PSFmainfrainsavedinfo_slid1:GetValue())<=math.floor(PSFmainfrainsavedinfo_slid2:GetValue()) and GetTime()>psstopcheckslid12+0.3 then
+		psiccdmgshow2(pssichose1,pssichose2,pssichose4,math.floor(PSFmainfrainsavedinfo_slid1:GetValue()),math.floor(PSFmainfrainsavedinfo_slid2:GetValue()))
 	end
 end
 

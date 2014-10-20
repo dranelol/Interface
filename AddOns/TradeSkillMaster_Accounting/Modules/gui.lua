@@ -225,7 +225,7 @@ function GUI:DrawRevenueTab(container)
 			private:CreateScrollingTable(self, "income", TSM.Data.GetIncomeSTData, ITEM_MONEY_ST_COLS)
 		elseif value == 3 then
 			GUI:CreateFiltersWidgetsItem(self, "resale", {"Auction", "COD", "Trade", "Vendor"})
-			local stCols = TSM.db.factionrealm.priceFormat == "avg" and ITEM_RESALE_ST_COLS_AVG or ITEM_RESALE_ST_COLS_TOTAL
+			local stCols = TSM.db.realm.priceFormat == "avg" and ITEM_RESALE_ST_COLS_AVG or ITEM_RESALE_ST_COLS_TOTAL
 			private:CreateScrollingTable(self, "resale", TSM.Data.GetResaleSTData, stCols, tabNum, value)
 		end
 		tabGroup.children[1]:DoLayout()
@@ -243,7 +243,7 @@ function GUI:DrawExpenseTab(container)
 	local tabNum = 2
 	local tabGroup = AceGUI:Create("TSMTabGroup")
 	tabGroup:SetLayout("Fill")
-	tabGroup:SetTabs({ { text = L["Purchases"], value = 1 }, { text = L["Other"], value = 2 } })
+	tabGroup:SetTabs({ { text = L["Purchases"], value = 1 }, { text = OTHER, value = 2 } })
 	tabGroup:SetCallback("OnGroupSelected", function(self, _, value)
 		tabGroup:ReleaseChildren()
 		private:HideScrollingTables()
@@ -289,7 +289,7 @@ end
 
 function GUI:DrawItemSummary(container)
 	GUI:CreateFiltersWidgetsItem(container, "itemSummary", {"Auction", "COD", "Trade", "Vendor"})
-	local stCols = TSM.db.factionrealm.priceFormat == "avg" and ITEM_SUMMARY_ST_COLS_AVG or ITEM_SUMMARY_ST_COLS_TOTAL
+	local stCols = TSM.db.realm.priceFormat == "avg" and ITEM_SUMMARY_ST_COLS_AVG or ITEM_SUMMARY_ST_COLS_TOTAL
 	private:CreateScrollingTable(container, "itemSummary", TSM.Data.GetItemSummarySTData, stCols, 4)
 end
 
@@ -825,7 +825,7 @@ function private:GetGoldGraphSumData()
 	local currentMinute = floor(time() / 60)
 	local players = {}
 	local starts = {}
-	for _, playerData in pairs(TSM.db.factionrealm.goldLog) do
+	for _, playerData in pairs(TSM.db.realm.goldLog) do
 		if #playerData > 2 then
 			local data = CopyTable(playerData)
 			for i=1, #data do
@@ -885,17 +885,17 @@ function private:GetGoldGraphSumData()
 	return private:GetGoldGraphPoints(temp)
 end
 function GUI:DrawGoldGraph(container)
-	TSM.db.factionrealm.goldGraphCharacter = TSM.db.factionrealm.goldGraphCharacter or UnitName("player")
-	local player = TSM.db.factionrealm.goldGraphCharacter
+	TSM.db.realm.goldGraphCharacter = TSM.db.realm.goldGraphCharacter or UnitName("player")
+	local player = TSM.db.realm.goldGraphCharacter
 	local data, minX, maxX, minY, maxY
 	if player == "<ALL>" then
 		data, minX, maxX, minY, maxY = private:GetGoldGraphSumData()
 	else
-		data, minX, maxX, minY, maxY = private:GetGoldGraphPoints(TSM.db.factionrealm.goldLog[player])
+		data, minX, maxX, minY, maxY = private:GetGoldGraphPoints(TSM.db.realm.goldLog[player])
 	end
 	
 	local dropdownList = {["<ALL>"]="Sum of All Characters"}
-	for player in pairs(TSM.db.factionrealm.goldLog) do
+	for player in pairs(TSM.db.realm.goldLog) do
 		dropdownList[player] = player
 	end
 	
@@ -916,7 +916,7 @@ function GUI:DrawGoldGraph(container)
 					{
 						type = "Dropdown",
 						label = "Character to Graph",
-						settingInfo = {TSM.db.factionrealm, "goldGraphCharacter"},
+						settingInfo = {TSM.db.realm, "goldGraphCharacter"},
 						relativeWidth = 0.5,
 						list = dropdownList,
 						callback = function() container:ReloadTab() end,
@@ -930,10 +930,10 @@ function GUI:DrawGoldGraph(container)
 	end
 
 	local startDate, endDate
-	if TSM.db.factionrealm.timeFormat == "eudate" then
+	if TSM.db.realm.timeFormat == "eudate" then
 		startDate = date("%d/%m/%y %H:%M", minX * 60)
 		endDate = date("%d/%m/%y %H:%M", maxX * 60)
-	elseif TSM.db.factionrealm.timeFormat == "aidate" then
+	elseif TSM.db.realm.timeFormat == "aidate" then
 		startDate = date("%y/%m/%d %H:%M", minX * 60)
 		endDate = date("%y/%m/%d %H:%M", maxX * 60)
 	else
@@ -957,7 +957,7 @@ function GUI:DrawGoldGraph(container)
 				{
 					type = "Dropdown",
 					label = L["Character to Graph"],
-					settingInfo = {TSM.db.factionrealm, "goldGraphCharacter"},
+					settingInfo = {TSM.db.realm, "goldGraphCharacter"},
 					relativeWidth = 0.5,
 					list = dropdownList,
 					callback = function() container:ReloadTab() end,
@@ -1017,7 +1017,7 @@ function GUI:DrawOptions(container)
 						{
 							type = "Dropdown",
 							label = L["Time Format"],
-							settingInfo = {TSM.db.factionrealm, "timeFormat"},
+							settingInfo = {TSM.db.realm, "timeFormat"},
 							relativeWidth = 0.5,
 							list = { ["ago"] = L["_ Hr _ Min ago"], ["usdate"] = L["MM/DD/YY HH:MM"], ["aidate"] = L["YY/MM/DD HH:MM"], ["eudate"] = L["DD/MM/YY HH:MM"] },
 							tooltip = L["Select what format Accounting should use to display times in applicable screens."],
@@ -1025,7 +1025,7 @@ function GUI:DrawOptions(container)
 						{
 							type = "Dropdown",
 							label = L["Market Value Source"],
-							settingInfo = {TSM.db.factionrealm, "mvSource"},
+							settingInfo = {TSM.db.realm, "mvSource"},
 							relativeWidth = 0.49,
 							list = mvSources,
 							tooltip = L["Select where you want Accounting to get market value info from to show in applicable screens."],
@@ -1033,7 +1033,7 @@ function GUI:DrawOptions(container)
 						{
 							type = "Dropdown",
 							label = "Items/Resale Price Format",
-							settingInfo = {TSM.db.factionrealm, "priceFormat"},
+							settingInfo = {TSM.db.realm, "priceFormat"},
 							relativeWidth = 0.49,
 							list = { ["avg"] = L["Per Item"], ["total"] = L["Total Value"] },
 							tooltip = L["Select how you would like prices to be shown in the \"Items\" and \"Resale\" tabs; either average price per item or total value."],
@@ -1045,33 +1045,33 @@ function GUI:DrawOptions(container)
 						{
 							type = "CheckBox",
 							label = L["Track sales/purchases via trade"],
-							settingInfo = { TSM.db.factionrealm, "trackTrades" },
+							settingInfo = { TSM.db.realm, "trackTrades" },
 							callback = function() container:ReloadTab() end,
 							tooltip = L["If checked, whenever you buy or sell any quantity of a single item via trade, Accounting will display a popup asking if you want it to record that transaction."],
 						},
 						{
 							type = "CheckBox",
 							label = L["Don't prompt to record trades"],
-							settingInfo = { TSM.db.factionrealm, "autoTrackTrades" },
-							disabled = not TSM.db.factionrealm.trackTrades,
+							settingInfo = { TSM.db.realm, "autoTrackTrades" },
+							disabled = not TSM.db.realm.trackTrades,
 							tooltip = L["If checked, you won't get a popup confirmation about whether or not to track trades."],
 						},
 						{
 							type = "CheckBox",
 							label = L["Display Grey Items in Sales"],
-							settingInfo = { TSM.db.factionrealm, "displayGreys" },
+							settingInfo = { TSM.db.realm, "displayGreys" },
 							tooltip = L["If checked, poor quality items will be shown in sales data. They will still be included in gold earned totals on the summary tab regardless of this setting"],
 						},
 						{
 							type = "CheckBox",
 							label = L["Display Money Transfers in Income/Expense/Summary"],
-							settingInfo = { TSM.db.factionrealm, "displayTransfers" },
+							settingInfo = { TSM.db.realm, "displayTransfers" },
 							tooltip = L["If checked, Money Transfers will be included in income / expense and summary. Accounting will still track these if disabled but will not show them."],
 						},
 						{
 							type = "CheckBox",
 							label = L["Use smart average for purchase price"],
-							settingInfo = { TSM.db.factionrealm, "smartBuyPrice" },
+							settingInfo = { TSM.db.realm, "smartBuyPrice" },
 							tooltip = L["If checked, the average purchase price that shows in the tooltip will be the average price for the most recent X you have purchased, where X is the number you have in your bags / bank / gbank using data from the ItemTracker module. Otherwise, a simple average of all purchases will be used."],
 						},
 					},
@@ -1124,34 +1124,34 @@ function GUI:LoadTooltipOptions(container)
 				{
 					type = "CheckBox",
 					label = L["Show sale info in item tooltips"],
-					settingInfo = { TSM.db.factionrealm.tooltip, "sale" },
+					settingInfo = { TSM.db.realm.tooltip, "sale" },
 					tooltip = L["If checked, the number you have sold and the average sale price will show up in an item's tooltip."],
 				},
 				{
 					type = "CheckBox",
 					label = L["Show Expired Auctions as Failed Auctions since Last Sale in item tooltips"],
-					settingInfo = { TSM.db.factionrealm, "expiredAuctions" },
+					settingInfo = { TSM.db.realm, "expiredAuctions" },
 					relativeWidth = 1,
 					tooltip = L["If checked, the number of expired auctions since the last sale will show as up as failed auctions in an item's tooltip. if no sales then the total number of expired auctions will be shown."],
 				},
 				{
 					type = "CheckBox",
 					label = L["Show Cancelled Auctions as Failed Auctions since Last Sale in item tooltips"],
-					settingInfo = { TSM.db.factionrealm, "cancelledAuctions" },
+					settingInfo = { TSM.db.realm, "cancelledAuctions" },
 					relativeWidth = 1,
 					tooltip = L["If checked, the number of cancelled auctions since the last sale will show as up as failed auctions in an item's tooltip. if no sales then the total number of cancelled auctions will be shown."],
 				},
 				{
 					type = "CheckBox",
 					label = L["Show Sale Rate in item tooltips"],
-					settingInfo = { TSM.db.factionrealm, "saleRate" },
+					settingInfo = { TSM.db.realm, "saleRate" },
 					relativeWidth = 1,
 					tooltip = L["If checked, the sale rate will be shown in item tooltips. sale rate is calculated as total sold / (total sold + total expired + total cancelled)."],
 				},
 				{
 					type = "CheckBox",
 					label = L["Show purchase info in item tooltips"],
-					settingInfo = { TSM.db.factionrealm.tooltip, "purchase" },
+					settingInfo = { TSM.db.realm.tooltip, "purchase" },
 					tooltip = L["If checked, the number you have purchased and the average purchase price will show up in an item's tooltip."],
 				},
 			},

@@ -3,10 +3,10 @@
 Core.lua
 Core functions for Ackis Recipe List
 ************************************************************************
-File date: 2013-11-03T23:07:50Z
-File hash: fcbd811
-Project hash: e8a8419
-Project version: 2.5.13
+File date: 2014-07-13T09:10:19Z
+File hash: 8f4afc1
+Project hash: 5b35dab
+Project version: 3.0.5
 ************************************************************************
 Please see http://www.wowace.com/addons/arl/ for more information.
 ************************************************************************
@@ -43,6 +43,8 @@ local FOLDER_NAME, private = ...
 
 local LibStub = _G.LibStub
 local addon = LibStub("AceAddon-3.0"):NewAddon(private.addon_name, "AceConsole-3.0", "AceEvent-3.0", "AceTimer-3.0")
+addon.constants = private.constants
+addon.constants.addon_name = private.addon_name
 _G.AckisRecipeList = addon
 
 --[===[@alpha@
@@ -51,16 +53,49 @@ _G.ARL = addon
 
 local L = LibStub("AceLocale-3.0"):GetLocale(private.addon_name)
 local Toast = LibStub("LibToast-1.0")
+local Dialog = LibStub("LibDialog-1.0")
 
 local debugger -- Only defined if needed.
 
 private.build_num = select(2, _G.GetBuildInfo())
 private.TextDump = LibStub("LibTextDump-1.0"):New(private.addon_name)
 
+Dialog:Register("ARL_ModuleErrorDialog", {
+	buttons = {
+		{
+			text = _G.OKAY
+		},
+	},
+	show_while_dead = true,
+	hide_on_escape = true,
+	icon = [[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]],
+	text_justify_h = "LEFT",
+	width = 400,
+	on_show = function(self, profession_name)
+		self.text:SetFormattedText("%s - %s\n\n%s", private.addon_name, addon.version, L.MODULE_ERROR_FORMAT:format(profession_name))
+	end
+})
+
+Dialog:Register("ARL_NoModulesErrorDialog", {
+	buttons = {
+		{
+			text = _G.OKAY
+		},
+	},
+	show_while_dead = true,
+	hide_on_escape = true,
+	icon = [[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]],
+	text_justify_h = "LEFT",
+	width = 400,
+	on_show = function(self)
+	-- TODO: Localize this.
+		self.text:SetFormattedText("No profession module AddOns were found.\n\nAs of version 3.0, all professions were split into individual module AddOns. These can be obtained either from Curse, from the Curse Client, or from WoWInterface.\n\nThe main %s page on either site contains URLs for all of the module AddOns; download only those you need.", private.addon_name, private.addon_name)
+	end
+})
+
 ------------------------------------------------------------------------------
 -- Constants.
 ------------------------------------------------------------------------------
-local PROFESSION_INIT_FUNCS
 
 ------------------------------------------------------------------------------
 -- Database tables
@@ -92,6 +127,7 @@ function addon:Debug(...)
 	Toast:Spawn("ARL_DebugToast", text)
 	--@end-debug@]===]
 end
+private.Debug = addon.Debug
 
 Toast:Register("ARL_DebugToast", function(toast, ...)
 	toast:SetTitle(("%s - Debug"):format(private.addon_name))
@@ -215,7 +251,6 @@ function addon:OnInitialize()
 					skill = true,
 					known = false,
 					unknown = true,
-					retired = false,
 				},
 				-------------------------------------------------------------------------------
 				-- Obtain Filters
@@ -234,6 +269,7 @@ function addon:OnInitialize()
 					quest = true,
 					raid = true,
 					reputation = true,
+					retired = false,
 					seasonal = true,
 					trainer = true,
 					vendor = true,
@@ -351,7 +387,7 @@ function addon:OnInitialize()
 		}
 	}
 
-	for filter_name in pairs(private.ITEM_FILTER_TYPES) do
+	for filter_name in pairs(self.constants.ITEM_FILTER_TYPES) do
 		defaults.profile.filters.item[filter_name:lower()] = true
 	end
 	self.db = LibStub("AceDB-3.0"):New("ARLDB2", defaults)
@@ -360,6 +396,8 @@ function addon:OnInitialize()
 		self:Print("Error: Database not loaded correctly.  Please exit out of WoW and delete the ARL database file (AckisRecipeList.lua) found in: \\World of Warcraft\\WTF\\Account\\<Account Name>>\\SavedVariables\\")
 		return
 	end
+	private.db = self.db
+
 	local version = _G.GetAddOnMetadata("AckisRecipeList", "Version")
 	local debug_version = false
 	local alpha_version = false
@@ -383,23 +421,6 @@ function addon:OnInitialize()
 	self:RegisterChatCommand("ackisrecipelist", "ChatCommand")
 
 	-------------------------------------------------------------------------------
-	-- Populate the profession initialization functions.
-	-------------------------------------------------------------------------------
-	PROFESSION_INIT_FUNCS = {
-		[private.LOCALIZED_PROFESSION_NAMES.ALCHEMY] = addon.InitAlchemy,
-		[private.LOCALIZED_PROFESSION_NAMES.BLACKSMITHING] = addon.InitBlacksmithing,
-		[private.LOCALIZED_PROFESSION_NAMES.COOKING] = addon.InitCooking,
-		[private.LOCALIZED_PROFESSION_NAMES.ENCHANTING] = addon.InitEnchanting,
-		[private.LOCALIZED_PROFESSION_NAMES.ENGINEERING] = addon.InitEngineering,
-		[private.LOCALIZED_PROFESSION_NAMES.FIRSTAID] = addon.InitFirstAid,
-		[private.LOCALIZED_PROFESSION_NAMES.LEATHERWORKING] = addon.InitLeatherworking,
-		[private.LOCALIZED_PROFESSION_NAMES.SMELTING] = addon.InitSmelting,
-		[private.LOCALIZED_PROFESSION_NAMES.TAILORING] = addon.InitTailoring,
-		[private.LOCALIZED_PROFESSION_NAMES.JEWELCRAFTING] = addon.InitJewelcrafting,
-		[private.LOCALIZED_PROFESSION_NAMES.INSCRIPTION] = addon.InitInscription,
-		[private.LOCALIZED_PROFESSION_NAMES.RUNEFORGING] = addon.InitRuneforging,
-	}
-	-------------------------------------------------------------------------------
 	-- Hook GameTooltip so we can show information on mobs that drop/sell/train
 	-------------------------------------------------------------------------------
 	_G.GameTooltip:HookScript("OnTooltipSetUnit", function(self)
@@ -412,7 +433,7 @@ function addon:OnInitialize()
 			return
 		end
 		local id_num = private.MobGUIDToIDNum(_G.UnitGUID(tooltip_unit))
-		local unit = private.mob_list[id_num] or private.vendor_list[id_num] or private.trainer_list[id_num]
+		local unit = private.AcquireTypes.MobDrop:GetEntity(id_num) or private.AcquireTypes.Vendor:GetEntity(id_num) or private.AcquireTypes.Trainer:GetEntity(id_num)
 
 		if not unit or not unit.item_list then
 			return
@@ -445,6 +466,8 @@ end
 
 --- Function run when the addon is enabled.  Registers events and pre-loads certain variables.
 function addon:OnEnable()
+	self.AcquireTypes = private.AcquireTypes
+
 	self:RegisterEvent("TRADE_SKILL_SHOW") -- Make addon respond to the tradeskill windows being shown
 	self:RegisterEvent("TRADE_SKILL_CLOSE") -- Addon responds to tradeskill windows being closed.
 	self:RegisterEvent("TRADE_SKILL_UPDATE")
@@ -654,7 +677,17 @@ function addon:TRADE_SKILL_SHOW()
 		end
 		scan_button:SetWidth(scan_button:GetTextWidth() + 10)
 	end
-	scan_button:Show()
+	local profession_name = _G.GetTradeSkillLine()
+
+	if profession_name == private.MINING_PROFESSION_NAME then
+		profession_name = private.LOCALIZED_PROFESSION_NAMES.SMELTING
+	end
+
+	if private.PROFESSION_MODULE_NAMES[profession_name] then
+		scan_button:Show()
+	else
+		scan_button:Hide()
+	end
 end
 
 function addon:TRADE_SKILL_CLOSE()
@@ -699,20 +732,21 @@ end
 do
 	local function InitializeLookups()
 		addon:InitCustom()
-		addon:InitDiscovery()
 		addon:InitMob()
 		addon:InitQuest()
 		addon:InitReputation()
 		addon:InitTrainer()
-		addon:InitSeasons()
+		addon:InitWorldEvents()
 		addon:InitVendor()
 
 		InitializeLookups = nil
 	end
 
+	local loaded_modules = {}
+
 	-- Returns true if a profession was initialized.
-	function addon:InitializeProfession(profession)
-		if not profession then
+	function addon:InitializeProfession(profession_name)
+		if not profession_name or not private.PROFESSION_MODULE_NAMES[profession_name] then
 			addon:Debug("nil profession passed to InitializeProfession()")
 			return false
 		end
@@ -720,12 +754,21 @@ do
 		if InitializeLookups then
 			InitializeLookups()
 		end
-		local func = PROFESSION_INIT_FUNCS[profession]
 
-		if func then
-			func(addon)
-			PROFESSION_INIT_FUNCS[profession] = nil
+		if profession_name == private.MINING_PROFESSION_NAME then
+			profession_name = private.LOCALIZED_PROFESSION_NAMES.SMELTING
+		end
+		local module_name = FOLDER_NAME .. "_" .. private.PROFESSION_MODULE_NAMES[profession_name] or ""
+
+		if loaded_modules[module_name] then
 			return true
+		end
+		local _, _, _, is_enabled = _G.GetAddOnInfo(module_name)
+
+		if is_enabled then
+			local is_loaded = _G.LoadAddOn(module_name) and true or false
+			loaded_modules[module_name] = is_loaded
+			return is_loaded
 		end
 		return false
 	end
@@ -806,9 +849,6 @@ local SUBCOMMAND_FUNCS = {
 		addon:ScanProfession("all")
 	end,
 	--@end-debug@]===]
-	tradelinks = function()
-		addon:GenerateLinks()
-	end,
 }
 
 function addon:ChatCommand(input)
@@ -877,10 +917,34 @@ do
 		end
 		private.current_profession_specialty = nil
 
-		if profession_name == private.LOCALIZED_PROFESSION_NAMES.RUNEFORGING then
-			prof_level = _G.UnitLevel("player")
-		elseif profession_name == private.MINING_PROFESSION_NAME then
+		if profession_name == private.MINING_PROFESSION_NAME then
 			profession_name = private.LOCALIZED_PROFESSION_NAMES.SMELTING
+		end
+		local profession_module_name = private.PROFESSION_MODULE_NAMES[profession_name]
+
+		if not profession_module_name then
+			return
+		end
+		self:InitializeProfession(profession_name)
+
+		if not self:GetModule(profession_module_name, true) then
+			local found_module
+
+			for profession_name, module_name in pairs(private.PROFESSION_MODULE_NAMES) do
+				local _, _, _, _, _, reason = _G.GetAddOnInfo(FOLDER_NAME .. "_" .. module_name or "")
+				if not reason or reason == "DISABLED" then
+					-- The assumption here is that if a module is disabled, the user is aware that modules exist.
+					found_module = true
+					break
+				end
+			end
+
+			if found_module then
+				Dialog:Spawn("ARL_ModuleErrorDialog", profession_module_name)
+			else
+				Dialog:Spawn("ARL_NoModulesErrorDialog")
+			end
+			return
 		end
 
 		local player = private.Player
@@ -931,7 +995,6 @@ do
 				end
 			end
 		end
-		addon:InitializeProfession(profession_name)
 
 		-------------------------------------------------------------------------------
 		-- Scan all recipes and mark the ones we know
@@ -1088,7 +1151,7 @@ do
 				VENDOR = L["Vendor"],
 				INSTANCE = _G.INSTANCE,
 				RAID = _G.RAID,
-				SEASONAL = _G.EVENTS_LABEL,
+				WORLD_EVENTS = _G.EVENTS_LABEL,
 				QUEST = L["Quest"],
 				PVP = _G.PVP,
 				WORLD_DROP = L["World Drop"],
@@ -1277,8 +1340,8 @@ do
 			local acquire_data = recipe["acquire_data"]
 			table.wipe(acquire_list)
 
-			for acquire_type in pairs(acquire_data) do
-				acquire_list[private.ACQUIRE_NAMES[acquire_type]] = true
+			for acquire_type_id in pairs(acquire_data) do
+				acquire_list[private.ACQUIRE_TYPES_BY_ID[acquire_type_id]:Name()] = true
 			end
 
 			-- Add all the acquire methods in

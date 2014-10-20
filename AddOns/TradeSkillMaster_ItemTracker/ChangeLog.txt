@@ -1,3 +1,16 @@
+v2.1.1
+*Fix issue with AH tracking
+
+v2.1
+*Updated for patch 6.0.2
+
+v2.0.8
+*Fixed minor bug with connected realms.
+
+v2.0.7
+*Added connected realm support for character inventories.
+*Fixed bug with deleting the current character causing errors (will now reset the current character's inventory data instead of attempt to delete it).
+
 v2.0.6
 *Rewrote some of the mail tracking code to make it much less laggy.
 

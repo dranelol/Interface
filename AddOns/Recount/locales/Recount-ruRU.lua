@@ -1,11 +1,10 @@
--- Recount Locale 
--- Please use the Localization App on WoWAce to Update this 
+-- Recount Locale
+-- Please use the Localization App on WoWAce to Update this
 -- http://www.wowace.com/projects/recount/localization/
- 
-local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "ruRU") 
-if not L then return end 
- 
---ruRU by Аrgonavt (update and fix by StingerSoft)
+
+local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "ruRU")
+if not L then return end
+
 L["Ability"] = "Способность"
 L["Ability Name"] = "Название способности"
 L["Absorbed"] = "Поглощено"
@@ -197,6 +196,7 @@ L["Mana Gained"] = "Полученная мана"
 L["Mana Sources"] = "Источники маны"
 L["Max"] = "Макс"
 L["Melee"] = "Атака ближнего боя"
+-- L["Merge Absorbs w/ Heals"] = "Merge Absorbs w/ Heals"
 L["Merge Pets w/ Owners"] = "Объединять питомца с хозяином"
 L["Messages"] = "Сообщение"
 L["Min"] = "Мин"
@@ -218,6 +218,7 @@ L["No"] = "Нет"
 L["No Absorb"] = "Нет поглощений"
 L["No Block"] = "Нет блоков"
 L["Non-Trivial"] = "Необычные"
+-- L["No other Recount users found."] = "No other Recount users found."
 L["No Pet"] = "Без питомца"
 L["No Resist"] = "Нет сопротивлений"
 L["Normalize"] = "Нормализовать"
@@ -301,7 +302,7 @@ L["Runic Power Gained"] = "Полученная сила рун"
 L["RunicPower Sources"] = "Источники силы рун"
 L["'s Absorbs"] = "Поглощено урона"
 L["Say"] = "Сказать"
--- L["Scenario Instances"] = "Scenario Instances"
+L["Scenario Instances"] = "Сценарии"
 L["'s Dispels"] = " - Рассеивания"
 L["'s DOT Uptime"] = " - Время действия УЗВ"
 L["'s DPS"] = " - УВС"
@@ -311,6 +312,7 @@ L["'s Effective Healing"] = " - Эффективное исцеление"
 L["Self"] = "Лично"
 L["'s Energy Gained"] = " - Полученная энергия"
 L["'s Energy Gained From"] = " - Источники энергии"
+-- L["Server Name"] = "Server Name"
 L["Set Combat Log Range"] = "Уст. радиуса журнала боя"
 L["Set the maximum number of lines to report"] = "Установка максимального количества строк для вывода"
 L["Set the maximum number of recorded fight segments"] = "Установить максимальное количество записываемых боев"
@@ -419,7 +421,6 @@ L["Window Color Selection"] = "Выбор цвета окна"
 L["Window Options"] = "Опции окна"
 L["Window Scaling"] = "Масштабирование окна"
 L["X Gridlines Represent"] = "X линии сетки"
-L["Yds"] = "Метры"
 L["Yes"] = "Да"
- 
+
 

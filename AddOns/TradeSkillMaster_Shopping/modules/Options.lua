@@ -19,7 +19,7 @@ function Options:Load(parent, operation, group)
 	Options.treeGroup:SetCallback("OnGroupSelected", function(...) Options:SelectTree(...) end)
 	Options.treeGroup:SetStatusTable(TSM.db.global.optionsTreeStatus)
 	parent:AddChild(Options.treeGroup)
-	
+
 	Options:UpdateTree()
 	if operation then
 		if operation == "" then
@@ -36,19 +36,19 @@ end
 
 function Options:UpdateTree()
 	local operationTreeChildren = {}
-	
+
 	for name in pairs(TSM.operations) do
-		tinsert(operationTreeChildren, {value=name, text=name})
+		tinsert(operationTreeChildren, { value = name, text = name })
 	end
-	
+
 	sort(operationTreeChildren, function(a, b) return a.value < b.value end)
 
-	Options.treeGroup:SetTree({{value=1, text=L["Options"]}, {value=2, text=L["Operations"], children=operationTreeChildren}})
+	Options.treeGroup:SetTree({ { value = 1, text = L["Options"] }, { value = 2, text = L["Operations"], children = operationTreeChildren } })
 end
 
 function Options:SelectTree(treeGroup, _, selection)
 	treeGroup:ReleaseChildren()
-	
+
 	local major, minor = ("\001"):split(selection)
 	major = tonumber(major)
 	if major == 1 then
@@ -74,7 +74,7 @@ function Options:DrawGeneralSettings(container)
 						{
 							type = "EditBox",
 							label = L["Default Post Undercut Amount"],
-							settingInfo = {TSM.db.global, "postUndercut"},
+							settingInfo = { TSM.db.global, "postUndercut" },
 							relativeWidth = 0.5,
 							acceptCustom = true,
 							callback = function(_, _, value) TSMAPI.AuctionControl.undercut = value end,
@@ -83,7 +83,7 @@ function Options:DrawGeneralSettings(container)
 						{
 							type = "EditBox",
 							label = L["Market Value Price Source"],
-							settingInfo = {TSM.db.global, "marketValueSource"},
+							settingInfo = { TSM.db.global, "marketValueSource" },
 							relativeWidth = 0.5,
 							acceptCustom = true,
 							tooltip = L["This is how Shopping calculates the '% Market Value' column in the search results."],
@@ -91,13 +91,47 @@ function Options:DrawGeneralSettings(container)
 						{
 							type = "Slider",
 							label = L["Max Disenchant Search Percent"],
-							settingInfo = {TSM.db.global, "maxDeSearchPercent"},
+							settingInfo = { TSM.db.global, "maxDeSearchPercent" },
 							min = .1,
 							max = 1,
 							step = .01,
 							isPercent = true,
-							relativeWidth = 0.5,
+							relativeWidth = 1,
 							tooltip = L["This is the maximum percentage of disenchant value that the Other > Disenchant search will display results for."],
+						},
+						{
+							type = "Slider",
+							label = L["Min Disenchant Level"],
+							settingInfo = { TSM.db.global, "minDeSearchLvl" },
+							min = 1,
+							max = 600,
+							step = 1,
+							isPercent = false,
+							relativeWidth = 0.5,
+							callback = function(self, _, value)
+								if value > TSM.db.global.maxDeSearchLvl then
+									TSM:Print(TSMAPI.Design:GetInlineColor("link2") .. L["Warning: The min disenchant level must be lower than the max disenchant level."] .. "|r")
+								end
+								TSM.db.global.minDeSearchLvl = min(value, TSM.db.global.maxDeSearchLvl)
+							end,
+							tooltip = L["This is the minimum item level that the Other > Disenchant search will display results for."],
+						},
+						{
+							type = "Slider",
+							label = L["Max Disenchant Level"],
+							settingInfo = { TSM.db.global, "maxDeSearchLvl" },
+							min = 1,
+							max = 600,
+							step = 1,
+							isPercent = false,
+							callback = function(self, _, value)
+								if value < TSM.db.global.minDeSearchLvl then
+									TSM:Print(TSMAPI.Design:GetInlineColor("link2") .. L["Warning: The max disenchant level must be higher than the min disenchant level."] .. "|r")
+								end
+								TSM.db.global.maxDeSearchLvl = max(value, TSM.db.global.minDeSearchLvl)
+							end,
+							relativeWidth = 0.5,
+							tooltip = L["This is the maximum item level that the Other > Disenchant search will display results for."],
 						},
 					},
 				},
@@ -112,7 +146,7 @@ function Options:DrawGeneralSettings(container)
 						{
 							type = "Slider",
 							label = L["Bid Percent"],
-							settingInfo = {TSM.db.global, "postBidPercent"},
+							settingInfo = { TSM.db.global, "postBidPercent" },
 							min = .1,
 							max = 1,
 							step = .01,
@@ -123,7 +157,7 @@ function Options:DrawGeneralSettings(container)
 						{
 							type = "EditBox",
 							label = L["Normal Post Price"],
-							settingInfo = {TSM.db.global, "normalPostPrice"},
+							settingInfo = { TSM.db.global, "normalPostPrice" },
 							relativeWidth = 0.49,
 							acceptCustom = true,
 							tooltip = L["This is the default price Shopping will suggest to post items at when there's no others posted."],
@@ -134,15 +168,15 @@ function Options:DrawGeneralSettings(container)
 						{
 							type = "Dropdown",
 							label = L["Quick Posting Duration"],
-							list = {AUCTION_DURATION_ONE, AUCTION_DURATION_TWO, AUCTION_DURATION_THREE},
-							settingInfo = {TSM.db.global, "quickPostingDuration"},
+							list = { AUCTION_DURATION_ONE, AUCTION_DURATION_TWO, AUCTION_DURATION_THREE },
+							settingInfo = { TSM.db.global, "quickPostingDuration" },
 							relativeWidth = 0.5,
 							tooltip = L["The duration at which items will be posted via the 'Quick Posting' frame."],
 						},
 						{
 							type = "EditBox",
 							label = L["Quick Posting Price"],
-							settingInfo = {TSM.db.global, "quickPostingPrice"},
+							settingInfo = { TSM.db.global, "quickPostingPrice" },
 							relativeWidth = 0.49,
 							acceptCustom = true,
 							tooltip = L["This price is used to determine what items will be posted at through the 'Quick Posting' frame."],
@@ -157,21 +191,21 @@ function Options:DrawGeneralSettings(container)
 						{
 							type = "CheckBox",
 							label = L["Below Vendor Sell Price"],
-							settingInfo = {TSM.db.global, "sniperVendorPrice"},
+							settingInfo = { TSM.db.global, "sniperVendorPrice" },
 							relativeWidth = 0.5,
 							tooltip = L["Items which are below their vendor sell price will be displayed in Sniper searches."],
 						},
 						{
 							type = "CheckBox",
 							label = L["Below Max Price"],
-							settingInfo = {TSM.db.global, "sniperMaxPrice"},
+							settingInfo = { TSM.db.global, "sniperMaxPrice" },
 							relativeWidth = 0.49,
 							tooltip = L["Items which are below their maximum price (per their group / Shopping operation) will be displayed in Sniper searches."],
 						},
 						{
 							type = "EditBox",
 							label = L["Below Custom Price ('0c' to disable)"],
-							settingInfo = {TSM.db.global, "sniperCustomPrice"},
+							settingInfo = { TSM.db.global, "sniperCustomPrice" },
 							relativeWidth = 0.5,
 							acceptCustom = true,
 							tooltip = L["Items which are below this custom price will be displayed in Sniper searches."],
@@ -181,14 +215,15 @@ function Options:DrawGeneralSettings(container)
 			},
 		},
 	}
-	
+
 	TSMAPI:BuildPage(container, page)
 end
 
 function Options:DrawNewOperation(container)
 	local currentGroup = Options.currentGroup
 	local page = {
-		{	-- scroll frame to contain everything
+		{
+			-- scroll frame to contain everything
 			type = "ScrollFrame",
 			layout = "List",
 			children = {
@@ -206,18 +241,18 @@ function Options:DrawNewOperation(container)
 							type = "EditBox",
 							label = L["Operation Name"],
 							relativeWidth = 0.8,
-							callback = function(self,_,name)
-									name = (name or ""):trim()
-									if name == "" then return end
-									if TSM.operations[name] then
-										self:SetText("")
-										return TSM:Printf(L["Error creating operation. Operation with name '%s' already exists."], name)
-									end
-									TSM.operations[name] = CopyTable(TSM.operationDefaults)
-									Options:UpdateTree()
-									Options.treeGroup:SelectByPath(2, name)
-									TSMAPI:NewOperationCallback("Shopping", currentGroup, name)
-								end,
+							callback = function(self, _, name)
+								name = (name or ""):trim()
+								if name == "" then return end
+								if TSM.operations[name] then
+									self:SetText("")
+									return TSM:Printf(L["Error creating operation. Operation with name '%s' already exists."], name)
+								end
+								TSM.operations[name] = CopyTable(TSM.operationDefaults)
+								Options:UpdateTree()
+								Options.treeGroup:SelectByPath(2, name)
+								TSMAPI:NewOperationCallback("Shopping", currentGroup, name)
+							end,
 							tooltip = L["Give the new operation a name. A descriptive name will help you find this operation later."],
 						},
 					},
@@ -233,18 +268,18 @@ function Options:DrawOperationSettings(container, operationName)
 	tg:SetLayout("Fill")
 	tg:SetFullHeight(true)
 	tg:SetFullWidth(true)
-	tg:SetTabs({{value=1, text=L["General"]}, {value=2, text=L["Relationships"]}, {value=3, text=L["Management"]}})
-	tg:SetCallback("OnGroupSelected", function(self,_,value)
-			tg:ReleaseChildren()
-			TSMAPI:UpdateOperation("Shopping", operationName)
-			if value == 1 then
-				Options:DrawOperationGeneral(self, operationName)
-			elseif value == 2 then
-				Options:DrawOperationRelationships(self, operationName)
-			elseif value == 3 then
-				TSMAPI:DrawOperationManagement(TSM, self, operationName)
-			end
-		end)
+	tg:SetTabs({ { value = 1, text = L["General"] }, { value = 2, text = L["Relationships"] }, { value = 3, text = L["Management"] } })
+	tg:SetCallback("OnGroupSelected", function(self, _, value)
+		tg:ReleaseChildren()
+		TSMAPI:UpdateOperation("Shopping", operationName)
+		if value == 1 then
+			Options:DrawOperationGeneral(self, operationName)
+		elseif value == 2 then
+			Options:DrawOperationRelationships(self, operationName)
+		elseif value == 3 then
+			TSMAPI:DrawOperationManagement(TSM, self, operationName)
+		end
+	end)
 	container:AddChild(tg)
 	tg:SelectTab(1)
 end
@@ -264,7 +299,7 @@ function Options:DrawOperationGeneral(container, operationName)
 						{
 							type = "EditBox",
 							label = L["Maximum Auction Price (per item)"],
-							settingInfo = {operation, "maxPrice"},
+							settingInfo = { operation, "maxPrice" },
 							relativeWidth = 0.49,
 							acceptCustom = true,
 							disabled = operation.relationships.maxprice,
@@ -273,14 +308,14 @@ function Options:DrawOperationGeneral(container, operationName)
 						{
 							type = "CheckBox",
 							label = L["Show Auctions Above Max Price"],
-							settingInfo = {operation, "showAboveMaxPrice"},
+							settingInfo = { operation, "showAboveMaxPrice" },
 							disabled = operation.relationships.showAboveMaxPrice,
 							tooltip = L["If checked, auctions above the max price will be shown."],
 						},
 						{
 							type = "CheckBox",
 							label = L["Even (5/10/15/20) Stacks Only"],
-							settingInfo = {operation, "evenStacks"},
+							settingInfo = { operation, "evenStacks" },
 							disabled = operation.relationships.evenStacks,
 							tooltip = L["If checked, only auctions posted in even quantities will be considered for purchasing."],
 						},
@@ -289,7 +324,7 @@ function Options:DrawOperationGeneral(container, operationName)
 			},
 		},
 	}
-	
+
 	TSMAPI:BuildPage(container, page)
 end
 
@@ -297,9 +332,9 @@ function Options:DrawOperationRelationships(container, operationName)
 	local settingInfo = {
 		{
 			label = L["General Settings"],
-			{key="maxPrice", label=L["Maximum Auction Price (per item)"]},
-			{key="showAboveMaxPrice", label=L["Show Auctions Above Max Price"]},
-			{key="evenStacks", label=L["Even (5/10/15/20) Stacks Only"]},
+			{ key = "maxPrice", label = L["Maximum Auction Price (per item)"] },
+			{ key = "showAboveMaxPrice", label = L["Show Auctions Above Max Price"] },
+			{ key = "evenStacks", label = L["Even (5/10/15/20) Stacks Only"] },
 		},
 	}
 	TSMAPI:ShowOperationRelationshipTab(TSM, container, TSM.operations[operationName], settingInfo)

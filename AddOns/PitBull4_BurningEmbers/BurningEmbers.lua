@@ -1,5 +1,3 @@
-if select(6, GetAddOnInfo("PitBull4_" .. (debugstack():match("[o%.][d%.][u%.]les\\(.-)\\") or ""))) ~= "MISSING" then return end
-
 local PitBull4 = _G.PitBull4
 if not PitBull4 then
 	error("PitBull4_BurningEmbers requires PitBull4")
@@ -8,8 +6,6 @@ end
 if select(2, UnitClass("player")) ~= "WARLOCK" then
 	return
 end
-
-local mop_520 = select(4,GetBuildInfo()) >= 50200
 
 -- CONSTANTS ----------------------------------------------------------------
 
@@ -35,6 +31,7 @@ PitBull4_BurningEmbers:SetDefaults({
 	location = "out_top",
 	position = 1,
 	vertical = false,
+	click_through = false,
 	size = 1.5,
 	background_color = { 0, 0, 0, 0.5 }
 })
@@ -53,8 +50,8 @@ local function update_player(self)
 	end
 end
 
-function PitBull4_BurningEmbers:UNIT_POWER_FREQUENT(event, unit, kind)
-	if unit ~= "player" or kind ~= "BURNING_EMBERS" then
+function PitBull4_BurningEmbers:UNIT_POWER_FREQUENT(event, unit, power_type)
+	if unit ~= "player" or power_type ~= "BURNING_EMBERS" then
 		return
 	end
 	
@@ -122,6 +119,7 @@ function PitBull4_BurningEmbers:UpdateFrame(frame)
 			container[i] = ember
 			ember:UpdateTexture()
 			ember:ClearAllPoints()
+			ember:EnableMouse(not db.click_through)
 			if not vertical then
 				ember:SetPoint("CENTER", container, "LEFT", BORDER_SIZE + (i - 1) * (SPACING + STANDARD_SIZE) + HALF_STANDARD_SIZE, 0)
 			else
@@ -144,7 +142,7 @@ function PitBull4_BurningEmbers:UpdateFrame(frame)
 		update_container_size(container, vertical, max_embers)
 	end
 
-	local green_fire = mop_520 and IsSpellKnown(WARLOCK_GREEN_FIRE)
+	local green_fire = IsSpellKnown(WARLOCK_GREEN_FIRE)
 	for i = 1, 4  do
 		local ember = container[i]
 		if i > max_embers then
@@ -179,6 +177,23 @@ PitBull4_BurningEmbers:SetLayoutOptionsFunction(function(self)
 			end
 		end,
 		order = 100,
+	},
+	'click_through', {
+		type = 'toggle',
+		name = L["Click-through"],
+		desc = L['Disable capturing clicks on indicators allowing the clicks to fall through to the window underneath the indicator.'],
+		get = function(info)
+			return PitBull4.Options.GetLayoutDB(self).click_through
+		end,
+		set = function(info, value)
+			PitBull4.Options.GetLayoutDB(self).click_through = value
+			
+			for frame in PitBull4:IterateFramesForUnitID("player") do
+				self:Clear(frame)
+				self:Update(frame)
+			end
+		end,
+		order = 101,
 	},
 	'background_color', {
 		type = 'color',

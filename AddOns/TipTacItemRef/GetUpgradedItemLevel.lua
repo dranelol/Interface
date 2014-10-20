@@ -1,11 +1,15 @@
--- GetUpgradedItemLevelFromItemLink() -- REV-04 -- Modified: 13.09.21
--- Until Blizzard adds an easier solution, this function is supposed to be portable between addons, and is placed in the global namespace.
--- REV-04: Patch 5.4: Added IDs 491 to 498 to the table.
--- REV-03: Patch 5.3: Added the 465/466/467 IDs (0/4/8 lvls) to the table.
--- REV-02: Patch 5.2: Added the 470 ID (8 lvls) to the table.
+--[[
+	GetUpgradedItemLevelFromItemLink(itemLink)
+	Until Blizzard adds an easier solution, this function can be used to get the true upgraded itemLevel.
+	The Lua file is easily portable between addons. The function is placed in the global namespace.
+	* REV-05 (14.05.24) Patch 5.4.8:	Added IDs 504 to 507.
+	* REV-04 (13.09.21) Patch 5.4:		Added IDs 491 to 498 to the table.
+	* REV-03 (13.05.22) Patch 5.3:		Added the 465/466/467 IDs (0/4/8 lvls) to the table.
+	* REV-02 (13.xx.xx) Patch 5.2:		Added the 470 ID (8 lvls) to the table.
+--]]
 
 -- Make sure we do not override a newer revision.
-local REVISION = 4;
+local REVISION = 5;
 if (type(GET_UPGRADED_ITEM_LEVEL_REV) == "number") and (GET_UPGRADED_ITEM_LEVEL_REV >= REVISION) then
 	return;
 end
@@ -60,6 +64,11 @@ local UPGRADED_LEVEL_ADJUST = {
 	[496] = 8,
 	[497] = 12,
 	[498] = 16,
+	-- Patch 5.4.8 --
+	[504] = 12,	-- US/EU upgrade 3/4
+	[505] = 16,	-- US/EU upgrade 4/4
+	[506] = 20,	-- Asia upgrade 5/6
+	[507] = 24,	-- Asis upgrade 6/6
 };
 
 -- Analyses the itemLink and checks for upgrades that affects itemLevel -- Only itemLevel 450 and above will have this

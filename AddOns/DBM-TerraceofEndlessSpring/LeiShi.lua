@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(729, "DBM-TerraceofEndlessSpring", nil, 320)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10980 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetCreatureID(62983)--62995 Animated Protector
 mod:SetEncounterID(1506)
 
@@ -28,7 +28,7 @@ local specWarnAnimatedProtector			= mod:NewSpecialWarningSwitch("ej6224", not mo
 local specWarnHide						= mod:NewSpecialWarningSpell(123244, nil, nil, nil, 2)
 local specWarnGetAway					= mod:NewSpecialWarningSpell(123461, nil, nil, nil, 2)
 local specWarnSpray						= mod:NewSpecialWarningStack(123121, mod:IsTank(), 6)
-local specWarnSprayOther				= mod:NewSpecialWarningTarget(123121, mod:IsTank())
+local specWarnSprayOther				= mod:NewSpecialWarningTaunt(123121)
 
 local timerSpecialCD					= mod:NewTimer(50, "timerSpecialCD", 123250)--Variable, 49.5-55 seconds
 local timerSpray						= mod:NewTargetTimer(10, 123121, nil, mod:IsTank() or mod:IsHealer())
@@ -79,7 +79,7 @@ function mod:OnCombatStart(delay)
 	lostHealth = 0
 	prevlostHealth = 0
 	timerSpecialCD:Start(30.5-delay, 1)--Variable, 30.5-37 (or aborted if 80% protect happens first)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		berserkTimer:Start(420-delay)
 	else
 		berserkTimer:Start(-delay)
@@ -111,7 +111,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnGetAway:Show(specialsCast)
 		specWarnGetAway:Show()
 		timerSpecialCD:Start(nil, specialsCast+1)
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerGetAway:Start(45)
 		else
 			timerGetAway:Start()

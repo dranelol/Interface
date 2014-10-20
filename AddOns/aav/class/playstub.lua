@@ -50,7 +50,6 @@ function AAV_PlayStub:new()
 end
 
 function AAV_PlayStub:onUpdate(elapsed)
-	
 	-- combat text update
 	for k,v in pairs(self.pool.cbt) do
 		if (not v:isDead()) then
@@ -915,6 +914,33 @@ function AAV_PlayStub:setStatus(status)
 	end
 end
 
+function AAV_PlayStub:getMaxActiveFrameLvl(id)
+	local arrayOfFrameLvls = {}
+	for k,v in pairs(self.ccs) do
+		if (not v:isDead()) then
+			if(v.id == id) then
+				table.insert(arrayOfFrameLvls,v.frame:GetFrameLevel())
+			end
+		end
+	end
+	
+	table.sort(arrayOfFrameLvls)
+	return arrayOfFrameLvls[#arrayOfFrameLvls]
+end
+function AAV_PlayStub:getMinActiveFrameLvl(id)
+	local arrayOfFrameLvls = {}
+	for k,v in pairs(self.ccs) do
+		if (not v:isDead()) then
+			if(v.id == id) then
+				table.insert(arrayOfFrameLvls,v.frame:GetFrameLevel())
+			end
+		end
+	end
+	
+	table.sort(arrayOfFrameLvls)
+	return arrayOfFrameLvls[1]
+end
+
 ----
 -- checks if the omitted spellid is a CC and adds it to the player's frame.
 -- @param id playerid
@@ -925,6 +951,20 @@ function AAV_PlayStub:addCC(id, spellid, time, lvl)
 	local cc, icon
 	_, _, icon = GetSpellInfo(spellid)
 	
+	local actualFrameLvl = 20	-- just to be safe ( the min framelvl to pop above the playerIcon is 5 but we can have more than 1 CC frame at the same time on the same player )
+	local fatto = false
+	--don't show a CC with lower priority over another CC with higer priority
+	for k,v in pairs(self.ccs) do
+		if (not v:isDead()) then
+			if( (v.id == id) and ( v.lvl > lvl ) ) then				
+				local minActiveFrameLvl = self:getMinActiveFrameLvl(id)
+				actualFrameLvl = minActiveFrameLvl - 1 
+				fatto = true
+				break
+			end
+		end
+	end
+
 	-- check for unused cc
 	for k,v in pairs(self.ccs) do
 		if (v:isDead()) then
@@ -932,12 +972,27 @@ function AAV_PlayStub:addCC(id, spellid, time, lvl)
 			break
 		end
 	end
+	
+	--same priority CCs must have theirs actualframelvl raised to show on top
+	--higer priority CCs must have theirs actualframelvl raised to show on top
+	if( not fatto) then
+		for k,v in pairs(self.ccs) do
+			if (not v:isDead()) then
+				if( (v.id == id) and ( ( v.lvl == lvl ) or ( v.lvl < lvl ) ) ) then
+					local maxActiveFrameLvl = self:getMaxActiveFrameLvl(id)
+					actualFrameLvl = maxActiveFrameLvl + 1 
+					break
+				end
+			end
+		end
+	end
+	
 	if (not cc) then
 		cc = AAV_Crowd:new(self.entities[id].icon, #self.ccs)
 		table.insert(self.ccs, cc)
 	end
 	
-	cc:setValue(spellid, id, icon, self.entities[id].icon, time, lvl)
+	cc:setValue(spellid, id, icon, self.entities[id].icon, time, lvl, actualFrameLvl )
 end
 
 

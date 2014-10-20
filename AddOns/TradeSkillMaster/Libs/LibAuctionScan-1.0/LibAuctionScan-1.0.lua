@@ -146,7 +146,7 @@ do
 	local private = {}
 	local status = {page=0, retries=0, timeDelay=0, AH=false, filterlist = {}}
 
-	local function eventHandler(frame, event)
+	local function EventHandler(frame, event)
 		if event == "AUCTION_HOUSE_SHOW" then
 			-- auction house was opened
 			status.AH = true
@@ -167,7 +167,7 @@ do
 			private:ScanAuctions()
 		end
 	end
-	lib.scanFrame:SetScript("OnEvent", eventHandler)
+	lib.scanFrame:SetScript("OnEvent", EventHandler)
 	lib.scanFrame:RegisterEvent("AUCTION_HOUSE_CLOSED")
 	lib.scanFrame:RegisterEvent("AUCTION_HOUSE_SHOW")
 
@@ -681,7 +681,7 @@ do
 	
 	local private, status = {}, {}
 	
-	local function eventHandler(frame, event)
+	local function EventHandler(frame, event)
 		if event == "AUCTION_HOUSE_SHOW" then
 			-- auction house was opened
 			status.AH = true
@@ -702,7 +702,7 @@ do
 			end
 		end
 	end
-	lib.findFrame:SetScript("OnEvent", eventHandler)
+	lib.findFrame:SetScript("OnEvent", EventHandler)
 	lib.findFrame:RegisterEvent("AUCTION_HOUSE_CLOSED")
 	lib.findFrame:RegisterEvent("AUCTION_HOUSE_SHOW")
 

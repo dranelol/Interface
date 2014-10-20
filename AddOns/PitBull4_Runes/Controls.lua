@@ -1,8 +1,6 @@
-if select(6, GetAddOnInfo("PitBull4_" .. (debugstack():match("[o%.][d%.][u%.]les\\(.-)\\") or ""))) ~= "MISSING" then return end
+if select(2, UnitClass("player")) ~= "DEATHKNIGHT" then  return end
 
-if select(2, UnitClass("player")) ~= "DEATHKNIGHT" then
-	return
-end
+local wod_600 = select(4, GetBuildInfo()) >= 60000
 
 -- CONSTANTS ----------------------------------------------------------------
 
@@ -144,7 +142,13 @@ PitBull4.Controls.MakeNewControlType("Rune", "Button", function(control)
 	
 	local cooldown = PitBull4.Controls.MakeCooldown(control)
 	control.cooldown = cooldown
+	if wod_600 then
+		cooldown:SetDrawEdge(false)
+		cooldown:SetDrawSwipe(true)
+		cooldown:SetHideCountdownNumbers(true)
+	end
 	cooldown:SetAllPoints(control)
+	cooldown:Show()
 end, function(control, id)
 	-- onRetrieve
 	

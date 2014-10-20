@@ -1,3 +1,11 @@
+v2.1
+*Updated for patch 6.0.2
+
+v2.0.10
+*Increased restock slider cap to 5000.
+*Increased quantity slider caps to 5000.
+*Implemented the suggestion for specifying stack size multiple for warehouse operations move to bags - enabling this will only move in multiples of the stack size set.
+
 v2.0.9
 *Fixed issue with warehousing groups and ignore random enchants
 

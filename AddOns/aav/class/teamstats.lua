@@ -26,6 +26,17 @@ function AAV_TeamStats:hideAll()
 	end
 end
 
+function AAV_TeamStats:trunkHCritSpellName(spellName)
+	local spellNameLen = string.len(spellName)
+	local MAXLINECHARS = 13
+	local tmp
+	
+	if ( spellNameLen > MAXLINECHARS ) then
+		spellName = string.sub(spellName,1,MAXLINECHARS)
+	end
+	return spellName
+end
+
 function AAV_TeamStats:setValue(parent, teamdata, matchdata, team, bracket)
 	
 	self.parent = parent
@@ -40,18 +51,20 @@ function AAV_TeamStats:setValue(parent, teamdata, matchdata, team, bracket)
 	local i = 1
 	local j = 1
 	
-	if (teamdata.diff and teamdata.diff >= 0) then diff = "+" .. teamdata.diff else diff = teamdata.diff end
-	if (not teamdata.rating) then rating = "-" else rating = teamdata.rating .. " (" .. diff .. ")" end
-	if (not teamdata.mmr) then mmr = "-" else mmr = teamdata.mmr end
 	
 	for c,w in pairs(matchdata) do
 		if (w.player == 1 and w.team == team) then
+			if (w.ratingChange and w.ratingChange >= 0) then diff = "+" .. w.ratingChange else diff = w.ratingChange end
+			if (not w.rating) then rating = "? (" .. diff .. ")" else rating = w.rating .. " (" .. diff .. ")" end
+			if (not w.mmr) then mmr = "-" else mmr = w.mmr end
+			local higestDamage = w.hcrit .."\n" .. self:trunkHCritSpellName(w.hCritName)
+			
 			self.entries[i]["entry"]:Show()
 			self.entries[i]["icon"].texture:SetTexture("Interface\\Addons\\aav\\res\\" .. w.class .. ".tga")
 			self.entries[i]["name"]:SetText(w.name)
 			self.entries[i]["name"]:SetTextColor(AAV_Util:getTargetColor(w, true))
 			self.entries[i]["damage"]:SetText(w.ddone)
-			self.entries[i]["high"]:SetText(w.hcrit)
+			self.entries[i]["high"]:SetText(higestDamage)
 			self.entries[i]["heal"]:SetText(w.hdone)
 			self.entries[i]["rating"]:SetText(rating)
 			self.entries[i]["mmr"]:SetText(mmr)

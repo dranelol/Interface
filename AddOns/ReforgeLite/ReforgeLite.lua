@@ -1,4 +1,4 @@
--- ReforgeLite v1.37 by d07.RiV (Iroared)
+-- ReforgeLite v1.38 by d07.RiV (Iroared)
 -- All rights reserved
 
 local function DeepCopy (t, cache)
@@ -1690,6 +1690,8 @@ function ReforgeLite:ADDON_LOADED (addon)
     self:RegisterEvent ("PLAYER_EQUIPMENT_CHANGED")
     self:RegisterEvent ("FORGE_MASTER_OPENED")
     self:RegisterEvent ("FORGE_MASTER_CLOSED")
+
+    self:OnEvent("FORGE_MASTER_OPENED")
     
     --ReforgeLiteTimer:SetScript ("OnUpdate", ReforgeLiteTimer.OnUpdate)
 

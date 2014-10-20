@@ -1,7 +1,7 @@
 ﻿AAV_Crowd = {}
 AAV_Crowd.__index = AAV_Crowd
 
-function AAV_Crowd:new(parent, id, visible)
+function AAV_Crowd:new(parent, id)
 	
 	local self = {}
 	setmetatable(self, AAV_Crowd)
@@ -15,12 +15,14 @@ function AAV_Crowd:new(parent, id, visible)
 	self.timer = 0
 	self.alive = 0
 	self.spellid = 0
-	
+	self.lvl = 0
+	self.frameLvl = 0
 	
 	return self
 end
 
-function AAV_Crowd:setValue(spellid, id, icon, parent, time, lvl)
+function AAV_Crowd:setValue(spellid, id, icon, parent, time, lvl, frameLvl)
+
 	self.spellid = spellid
 	self.id = id
 	self.icon = icon
@@ -29,19 +31,17 @@ function AAV_Crowd:setValue(spellid, id, icon, parent, time, lvl)
 	self.ttl = time
 	self.alive = 0
 	self.timer = 0
+	self.lvl = lvl
+	self.frameLvl = frameLvl
 	
 	self.frame:SetParent(self.parent)
 	self.frame:SetPoint("TOPLEFT", self.parent, 0, 0)
-	self.frame:SetAlpha(0)
-	
-	self.frame.texture:SetTexture(self.icon)
-	
-	--self.frame:SetFrameLevel(lvl)
+	self.frame:SetAlpha(0)	
+	self.frame.texture:SetTexture(self.icon)	
+	self.frame:SetFrameLevel(frameLvl)
 	self.frame.texture:Show()
-	
 	self.frame:Show()
-	self.text:SetText(time)
-	
+	self.text:SetText(time)	
 end
 
 function AAV_Crowd:isDead()
@@ -52,6 +52,7 @@ function AAV_Crowd:setDead()
 	self.ttl = 0
 	self.frame:SetAlpha(0)
 	self.frame:Hide()
+	self.frame:SetParent(nil)
 end
 
 function AAV_Crowd:update(elapsed, rate, visible)
@@ -87,7 +88,7 @@ function AAV_Crowd:update(elapsed, rate, visible)
 		self.timer = 0
 		
 		-- setting dead
-		if (self.alive > self.ttl or not visible) then
+		if (self.alive > self.ttl) then
 			self:setDead()
 		end
 	end

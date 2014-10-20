@@ -83,21 +83,25 @@ function data:unIndexMoveGroupTree(grpInfo, src)
 							end
 						end
 					else -- move from bank/gbank to bags
+						local stacksize = 1
+						if opSettings.stackSizeEnabled and opSettings.stackSize then -- only move in multiples of the stack size set
+							stacksize = opSettings.stackSize
+							end
 						if opSettings.moveQtyEnabled and opSettings.keepBankQtyEnabled then -- move specified quantity but keep x in bank
 							local q = (totalq - opSettings.keepBankQuantity)
 							if q > 0 then
-								newgrp[itemString] = min(tonumber(q), tonumber(opSettings.moveQuantity))
+								newgrp[itemString] = floor(min(tonumber(q), tonumber(opSettings.moveQuantity)) / tonumber(stacksize)) * tonumber(stacksize)
 							end
 						elseif opSettings.moveQtyEnabled then -- move specified quantity
-							newgrp[itemString] = tonumber(opSettings.moveQuantity)
+							newgrp[itemString] = floor(tonumber(opSettings.moveQuantity) / tonumber(stacksize)) * tonumber(stacksize)
 						elseif opSettings.keepBankQtyEnabled then -- move all but keep x in bank
 							local q = totalq - opSettings.keepBankQuantity
 							if q > 0 then
-								newgrp[itemString] = tonumber(q)
+								newgrp[itemString] = floor(tonumber(q) / tonumber(stacksize)) * tonumber(stacksize)
 							end
 						else -- move everything
 							if totalq > 0 then
-								newgrp[itemString] = tonumber(totalq)
+								newgrp[itemString] = floor(tonumber(totalq) / tonumber(stacksize)) * tonumber(stacksize)
 							end
 						end
 					end

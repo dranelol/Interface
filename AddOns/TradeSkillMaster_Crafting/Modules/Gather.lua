@@ -122,20 +122,30 @@ local function ShoppingCallback(remainingQty, boughtItem, stackSize)
 	end
 end
 
-function Gather:ShoppingSearch(itemString, need)
+function Gather:ShoppingSearch(itemString, need, ignoreMaxQty)
 	TSM.Inventory.gatherQuantity = nil
 	local matPrice = TSMAPI:FormatTextMoney(TSM.Cost:GetMatCost(itemString))
 	if not TSM.db.factionrealm.gathering.destroyDisable then
 		if TSMAPI.InkConversions[itemString] then
 			TSM.Inventory.gatherItem = itemString
 			if TSM.db.factionrealm.gathering.evenStacks then
-				TSMAPI:ModuleAPI("Shopping", "runDestroySearch", TSMAPI:GetSafeItemInfo(itemString) .. "/even/x" .. need, ShoppingCallback)
+				if ignoreMaxQty then
+					TSMAPI:ModuleAPI("Shopping", "runDestroySearch", TSMAPI:GetSafeItemInfo(itemString) .. "/even", ShoppingCallback)
+				else
+					TSMAPI:ModuleAPI("Shopping", "runDestroySearch", TSMAPI:GetSafeItemInfo(itemString) .. "/even/x" .. need, ShoppingCallback)
+				end
+			elseif ignoreMaxQty then
+				TSMAPI:ModuleAPI("Shopping", "runDestroySearch", TSMAPI:GetSafeItemInfo(itemString), ShoppingCallback)
 			else
 				TSMAPI:ModuleAPI("Shopping", "runDestroySearch", TSMAPI:GetSafeItemInfo(itemString) .. "/x" .. need, ShoppingCallback)
 			end
 		elseif TSMAPI:GetDisenchantData(itemString) then
 			TSM.Inventory.gatherItem = itemString
-			TSMAPI:ModuleAPI("Shopping", "runDestroySearch", TSMAPI:GetSafeItemInfo(itemString) .. "/exact/x" .. need, ShoppingCallback)
+			if ignoreMaxQty then
+				TSMAPI:ModuleAPI("Shopping", "runDestroySearch", TSMAPI:GetSafeItemInfo(itemString) .. "/exact", ShoppingCallback)
+			else
+				TSMAPI:ModuleAPI("Shopping", "runDestroySearch", TSMAPI:GetSafeItemInfo(itemString) .. "/exact/x" .. need, ShoppingCallback)
+			end
 		elseif TSMAPI.Conversions[itemString] then
 			TSM.Inventory.gatherItem = itemString
 			local convertSource
@@ -145,7 +155,13 @@ function Gather:ShoppingSearch(itemString, need)
 			end
 			if convertSource == "mill" or convertSource == "prospect" then
 				if TSM.db.factionrealm.gathering.evenStacks then
-					TSMAPI:ModuleAPI("Shopping", "runDestroySearch", TSMAPI:GetSafeItemInfo(itemString) .. "/even/x" .. need, ShoppingCallback)
+					if ignoreMaxQty then
+						TSMAPI:ModuleAPI("Shopping", "runDestroySearch", TSMAPI:GetSafeItemInfo(itemString) .. "/even", ShoppingCallback)
+					else
+						TSMAPI:ModuleAPI("Shopping", "runDestroySearch", TSMAPI:GetSafeItemInfo(itemString) .. "/even/x" .. need, ShoppingCallback)
+					end
+				elseif ignoreMaxQty then
+					TSMAPI:ModuleAPI("Shopping", "runDestroySearch", TSMAPI:GetSafeItemInfo(itemString), ShoppingCallback)
 				else
 					TSMAPI:ModuleAPI("Shopping", "runDestroySearch", TSMAPI:GetSafeItemInfo(itemString) .. "/x" .. need, ShoppingCallback)
 				end
@@ -154,10 +170,19 @@ function Gather:ShoppingSearch(itemString, need)
 			end
 		else
 			TSM.Inventory.gatherItem = nil
-			TSMAPI:ModuleAPI("Shopping", "runSearch", TSMAPI:GetSafeItemInfo(itemString) .. "/exact/x" .. need, ShoppingCallback)
+			if ignoreMaxQty then
+				TSMAPI:ModuleAPI("Shopping", "runSearch", TSMAPI:GetSafeItemInfo(itemString) .. "/exact", ShoppingCallback)
+			else
+				TSMAPI:ModuleAPI("Shopping", "runSearch", TSMAPI:GetSafeItemInfo(itemString) .. "/exact/x" .. need, ShoppingCallback)
+			end
 		end
+
 	else
 		TSM.Inventory.gatherItem = nil
-		TSMAPI:ModuleAPI("Shopping", "runSearch", TSMAPI:GetSafeItemInfo(itemString) .. "/exact/x" .. need, ShoppingCallback)
+		if ignoreMaxQty then
+			TSMAPI:ModuleAPI("Shopping", "runSearch", TSMAPI:GetSafeItemInfo(itemString) .. "/exact", ShoppingCallback)
+		else
+			TSMAPI:ModuleAPI("Shopping", "runSearch", TSMAPI:GetSafeItemInfo(itemString) .. "/exact/x" .. need, ShoppingCallback)
+		end
 	end
 end

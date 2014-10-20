@@ -2,10 +2,10 @@
 -- Player.lua
 -- Player functions and data for AckisRecipeList.
 -------------------------------------------------------------------------------
--- File date: 2012-09-28T15:31:40Z
--- File hash: 3cfcb4d
--- Project hash: e8a8419
--- Project version: 2.5.13
+-- File date: 2014-02-14T05:23:40Z
+-- File hash: 04922c6
+-- Project hash: 5b35dab
+-- Project version: 3.0.5
 -------------------------------------------------------------------------------
 -- Please see http://www.wowace.com/addons/arl/ for more information.
 -------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ function Player:HasProperRepLevel(rep_data)
 			elseif rep_id == FAC.MAGHAR or rep_id == FAC.KURENAI then
 				rep_id = is_alliance and FAC.KURENAI or FAC.MAGHAR
 			end
-			local rep_name = private.reputation_list[rep_id].name
+			local rep_name = private.AcquireTypes.Reputation:GetEntity(rep_id).name
 
 			if not reputation_levels[rep_name] or reputation_levels[rep_name] < rep_level then
 				has_faction = false

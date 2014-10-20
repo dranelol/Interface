@@ -4,7 +4,7 @@ TipTac is a tooltip enchancement addon, it allows you to configure various aspec
 
 To open the option dialog, just use "/tip" without any parameters. Use "/tip anchor" to show the anchor frame and position it as you want.
 
-You can always get the latest release of this addon on WoWInterface or Curse.
+You can always get the latest release of this addon on Curse or WoWInterface.
 Please post your comments, questions and suggestions for this addon there.
 
 Current Features
@@ -55,6 +55,8 @@ Notice: It's possible that you do not have an addon installed which adds the /du
 
 Lacking Features, Ideas & Problems
 ----------------------------------
+- Add glyph and npc support for the TipTacItemRef addon.
+- Look into scaling the tooltip height by adding texture lines like "|T:1:30|t". Only issue is that it needs to remain the last line, if another addon adds more lines, it will cause issues.
 - Colorblind mode does not work properly with owned combat pets with a custom name.
 - ItemRefTooltip: Does not support "archaeology". The "currency" type should be supported now, but need verification.
 - ItemRefTooltip does not position well if scaled below 1.

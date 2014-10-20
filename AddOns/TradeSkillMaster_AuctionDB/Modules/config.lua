@@ -130,11 +130,11 @@ function Config:LoadSearch(container)
 	tinsert(classes, "")
 	
 	local lastScanInfo
-	if TSM.db.factionrealm.lastCompleteScan > 0 then
-		if TSM.db.factionrealm.lastCompleteScan == TSM.db.factionrealm.appDataUpdate then
-			lastScanInfo = format(L["Last updated from the TSM Application %s ago."], SecondsToTime(time() - TSM.db.factionrealm.appDataUpdate))
+	if TSM.db.realm.lastCompleteScan > 0 then
+		if TSM.db.realm.lastCompleteScan == TSM.db.realm.appDataUpdate then
+			lastScanInfo = format(L["Last updated from the TSM Application %s ago."], SecondsToTime(time() - TSM.db.realm.appDataUpdate))
 		else
-			lastScanInfo = format(L["Last updated from in-game scan %s ago."], SecondsToTime(time() - TSM.db.factionrealm.lastCompleteScan))
+			lastScanInfo = format(L["Last updated from in-game scan %s ago."], SecondsToTime(time() - TSM.db.realm.lastCompleteScan))
 		end
 	else
 		lastScanInfo = L["No scans found."]
@@ -303,7 +303,7 @@ function Config:LoadSearch(container)
 		local handlers = {
 			OnClick = function(_, data, _, button)
 				if data and IsShiftKeyDown() and button == "RightButton" then
-					TSM.data[data.itemID] = nil
+					TSM.scanData[data.itemID] = nil
 					TSM:Printf(L["Removed %s from AuctionDB."], select(2, GetItemInfo(data.itemID)) or data.itemID)
 				end
 			end,
@@ -470,6 +470,7 @@ function Config:LoadTooltipOptions(container)
 				{
 					type = "CheckBox",
 					label = L["Display market value in tooltip."],
+					relativeWidth = 1,
 					disabled = not TSM.db.profile.tooltip,
 					settingInfo = { TSM.db.profile, "marketValueTooltip" },
 					tooltip = L["If checked, the market value of the item will be displayed"],
@@ -477,9 +478,26 @@ function Config:LoadTooltipOptions(container)
 				{
 					type = "CheckBox",
 					label = L["Display lowest buyout value seen in the last scan in tooltip."],
+					relativeWidth = 1,
 					disabled = not TSM.db.profile.tooltip,
 					settingInfo = { TSM.db.profile, "minBuyoutTooltip" },
 					tooltip = L["If checked, the lowest buyout value seen in the last scan of the item will be displayed."],
+				},
+				{
+					type = "CheckBox",
+					label = L["Display global market value avg (via TSM Application) in the tooltip."],
+					relativeWidth = 1,
+					disabled = not TSM.db.profile.tooltip,
+					settingInfo = { TSM.db.profile, "globalMarketValueAvgTooltip" },
+					tooltip = L["If checked, the global market value average of the item will be displayed. This is provided exclusively via the TradeSkillMaster Application."],
+				},
+				{
+					type = "CheckBox",
+					label = L["Display global min buyout avg (via TSM Application) in the tooltip."],
+					relativeWidth = 1,
+					disabled = not TSM.db.profile.tooltip,
+					settingInfo = { TSM.db.profile, "globalMinBuyoutAvgTooltip" },
+					tooltip = L["If checked, the global minimum buyout average of the item will be displayed. This is provided exclusively via the TradeSkillMaster Application."],
 				},
 			},
 		},

@@ -212,7 +212,7 @@ function Options:DrawOperationGeneral(container, operationName)
 							settingInfo = {operationSettings, "minProfit"},
 							relativeWidth = 0.49,
 							acceptCustom = true,
-							tooltip = L["Crafting will not queue any items affected by this operation with a profit below this value. As an example, a min profit of 'max(10g, 10% crafting)' would ensure atleast a 10g and 10% profit."],
+							tooltip = L["Crafting will not queue any items affected by this operation with a profit below this value. As an example, a min profit of 'max(10g, 10% crafting)' would ensure a profit of at least 10g or 10% of the craft cost, whichever is highest."],
 						},
 					},
 				},
@@ -276,13 +276,11 @@ end
 function Options:LoadGeneralSettings(container)
 	-- inventory tracking characters / guilds
 	local altCharacters, altGuilds = {}, {}
-	if select(4, GetAddOnInfo("TradeSkillMaster_ItemTracker")) == 1 then
-		for _, name in ipairs(TSMAPI:ModuleAPI("ItemTracker", "playerlist") or {}) do
-			altCharacters[name] = name
-		end
-		for _, name in ipairs(TSMAPI:ModuleAPI("ItemTracker", "guildlist") or {}) do
-			altGuilds[name] = name
-		end
+	for _, name in ipairs(TSMAPI:ModuleAPI("ItemTracker", "playerlist") or {}) do
+		altCharacters[name] = name
+	end
+	for _, name in ipairs(TSMAPI:ModuleAPI("ItemTracker", "guildlist") or {}) do
+		altGuilds[name] = name
 	end
 
 	local oldScale = TSM.CraftingGUI.frame and TSM.CraftingGUI.frame.options.scale*UIParent:GetScale() or nil
@@ -365,7 +363,6 @@ function Options:LoadGeneralSettings(container)
 							list = altCharacters,
 							relativeWidth = 0.49,
 							multiselect = true,
-							disabled = select(4, GetAddOnInfo("TradeSkillMaster_ItemTracker")) ~= 1,
 							callback = function(self, _, key, value)
 								TSM.db.global.ignoreCharacters[key] = value
 							end,
@@ -377,7 +374,6 @@ function Options:LoadGeneralSettings(container)
 							list = altGuilds,
 							relativeWidth = 0.49,
 							multiselect = true,
-							disabled = select(4, GetAddOnInfo("TradeSkillMaster_ItemTracker")) ~= 1,
 							callback = function(_, _, key, value)
 								TSM.db.global.ignoreGuilds[key] = value
 							end,
@@ -447,6 +443,13 @@ function Options:LoadTooltipOptions(container)
 					settingInfo = { TSM.db.global, "materialTooltip" },
 					callback = function(_, _, value) container:ReloadTab() end,
 					tooltip = L["If checked, the material cost of items will be shown in the tooltip for the item."],
+				},
+				{
+					type = "CheckBox",
+					label = L["List Mats in Tooltip"],
+					settingInfo = { TSM.db.global, "matsInTooltip" },
+					callback = function(_, _, value) container:ReloadTab() end,
+					tooltip = L["If checked, the mats needed to craft an item and their prices will be shown in item tooltips."],
 				},
 			},
 		},
@@ -668,7 +671,7 @@ function Options:LoadCraftsPage(container)
 				headAlign = "CENTER",
 			},
 			{
-				name = L["Other"],
+				name = OTHER,
 				width = 0.05,
 				align = "CENTER",
 				headAlign = "CENTER",

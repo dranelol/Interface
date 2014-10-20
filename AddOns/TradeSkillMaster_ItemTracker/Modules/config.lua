@@ -55,6 +55,9 @@ local function GetSTData()
 			for itemString, quantity in pairs(TSM:GetPlayerBank(name) or {}) do
 				AddItem(itemString, "bank", quantity)
 			end
+			for itemString, quantity in pairs(TSM:GetPlayerReagentBank(name) or {}) do
+				AddItem(itemString, "bank", quantity)
+			end
 			for itemString, quantity in pairs(TSM:GetPlayerMail(name) or {}) do
 				AddItem(itemString, "mail", quantity)
 			end
@@ -284,6 +287,13 @@ function Config:LoadOptions(container)
 							list = players,
 							relativeWidth = 0.49,
 							callback = function(self, _, value)
+								if value == UnitName("player") then
+									-- don't delete the current player, just reset to defaults
+									TSM.characters[value] = TSM.characterDefaults
+									TSM:Print(L["Reset current player's inventory data."])
+									self:SetValue()
+									return
+								end
 								local charGuild = TSM.characters[value].guild
 								if charGuild then
 									local hasMembersLeft = false

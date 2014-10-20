@@ -16,6 +16,10 @@ local fakeUdForProfiles = {}
 
 local _
 
+local function printf(fmt, ...)
+    return print(fmt:format(...))
+end
+
 local FontOutlines = {
     [""] = L["None"],
     ["OUTLINE"] = L["Normal"],

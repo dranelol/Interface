@@ -1,7 +1,7 @@
 ## Interface: 50400
-## Version: 5.4.1.1628
+## Version: 5.4.7.1653
 ## X-ReleaseDate: "$Date: 2013-11-30 17:28:32 +0000 (Sat, 30 Nov 2013) $"
-## X-Curse-Packaged-Version: 5.4.1.1628
+## X-Curse-Packaged-Version: 5.4.7.1653
 ## X-Curse-Project-Name: Grid
 ## X-Curse-Project-ID: grid
 ## X-Curse-Repository-ID: wow/grid/mainline

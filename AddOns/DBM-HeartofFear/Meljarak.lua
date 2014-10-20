@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(741, "DBM-HeartofFear", nil, 330)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10980 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetCreatureID(62397)
 mod:SetEncounterID(1498)
 mod:SetZone()
@@ -225,7 +225,7 @@ function mod:UNIT_DIED(args)
 		table.wipe(zarthikGUIDS)
 	elseif cid == 62402 then--The Kor'thik
 		timerKorthikStrikeCD:Cancel()--No need for GUID cancelation, this ability seems to be off a timed trigger and they all do it together, unlike other mob sets.
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerKorthikStrikeCD:Start(79)
 		end
 	end

@@ -11,7 +11,7 @@ pslocale()
 end
 
 
-	psversion=5.424
+	psversion=5.431
 
 
 	psverstiptext="alpha"
@@ -390,9 +390,11 @@ if psdethrepwaittab1 and curtime>psdethrepwaittab1 then
   if curtime>psdethrepwaittab1+5 then
     psdethrepwaittab1=nil
     psdethrepwaittab2=nil
+	print ("нет2")
   else
     psdethrepwaittab1=nil
     if psdeathreportantispam==nil or psdeathreportantispam==0 or (psdeathreportantispam~=0 and curtime>psdeathreportantispam) then
+	--print ("нет3")
       --проверка нет ли слишком много смертей (мгновенный вайп)
       local psnumdead=0
       local psnumdeadmax=psdeathrepsavemain[12]
@@ -418,6 +420,7 @@ if psdethrepwaittab1 and curtime>psdethrepwaittab1 then
         end
       end
       if psnumdead>=psnumdeadmax or #psdethrepwaittab2>=5 then
+	  --print ("нет1")
         --слишком много смертей, репортим ТОЛЬКО СЕБЕ / и 1 репортим в чат
         local tab1={}
         table.insert(tab1,psdethrepwaittab2[1])
@@ -428,6 +431,7 @@ if psdethrepwaittab1 and curtime>psdethrepwaittab1 then
         psdethrepwaittab2=nil
         pstoomuchrepstopforfight=1
       else
+	  --print ("репорт")
         --репортим
         local cha=psdeathrepsavemain[10]
         if UnitInRaid("player")==nil and UnitInParty("player") then
@@ -444,6 +448,7 @@ if psdethrepwaittab1 and curtime>psdethrepwaittab1 then
         psdeathreportantispam=0
       end
     end
+	--print ("нет4")
     psdethrepwaittab2=nil
   end
 end
@@ -2645,6 +2650,14 @@ end
 
 if event == "CHAT_MSG_ADDON" then
 
+
+--изменяем ник свой в чате
+if arg4 and string.find(arg4,"%-") then
+	if string.sub(arg4,1,string.find(arg4,"%-")-1) == UnitName("player") then
+		arg4=UnitName("player")
+	end
+end
+
 if arg1=="BigWigs" then
 if string.find(arg2,"VR:") or string.find(arg2,"VRA:") or string.find(arg2,"VRB:") then
 local a=tonumber(string.sub(arg2,4))
@@ -2949,6 +2962,8 @@ end
 
 --дес репорт, проверка на возможность отпр. репорт
 if arg1=="PSaddon" and arg2 and string.sub(arg2,1,3)=="666" and arg4~=UnitName("player") then
+
+
 --print ("получаю сообщ от "..arg4..": "..arg2)
 local chat=string.sub(arg2,string.find(arg2,"++")+2)
 local name=string.sub(arg2,4,string.find(arg2,"++")-1)
@@ -2965,10 +2980,12 @@ if (UnitInRaid("player") and (chat==psdeathrepsavemain[10] or ((chat=="raid" or 
   if tab[1]==name then
     --запрет на репорт 3 минуты
     psdeathreportantispam=GetTime()+180
+	--print ("запрет",tab[1],name)
   end
   if string.find(arg2,"%^") then
     --запрет так как один уже быстро репортит все..
     psdeathreportantispam=GetTime()+180
+	--print ("запрет2")
   end
 end
 end
@@ -5722,7 +5739,7 @@ end
 
 
 function psslidertimerefmark()
-secrefmark = PSFmain4_Timerref:GetValue()
+secrefmark = math.floor(PSFmain4_Timerref:GetValue())
 local text=""
 if GetLocale() == "ruRU" then
 text=psmarkinfo1.." "..secrefmark.." "..pssec
@@ -6702,7 +6719,7 @@ getglobal(pssliderstablraidopt[i]:GetName().."Text"):SetText(psraidoptionsnumers
 pssliderstablraidopt[i]:SetMinMaxValues(temp3[i], temp4[i])
 pssliderstablraidopt[i]:SetValueStep(1)
 pssliderstablraidopt[i]:SetValue(psraidoptionsnumers[i+2])
-pssliderstablraidopt[i]:SetScript("OnValueChanged", function (self) psraidoptionsnumers[i+2]=self:GetValue() getglobal(self:GetName().."Text"):SetText(psraidoptionsnumers[i+2]) end )
+pssliderstablraidopt[i]:SetScript("OnValueChanged", function (self) psraidoptionsnumers[i+2]=math.floor(self:GetValue()) getglobal(self:GetName().."Text"):SetText(psraidoptionsnumers[i+2]) end )
 
 local s = PSFraidopt:CreateFontString()
 s:SetWidth(180)
@@ -8273,17 +8290,19 @@ function psaddonloadedcheckspam()
 if psdonareq1==nil then
   psdonareq1=0
 end
-if psdonareq1<25 then
+if psdonareq1<100 then
   psdonareq1=psdonareq1+1
 end
 --должно быть 25 как выше!
-if psdonareq1==26 and UnitInRaid("player")==nil and UnitInParty("player")==nil then
+if psdonareq1==100 and UnitInRaid("player")==nil and UnitInParty("player")==nil then
   psdonareq1=psdonareq1+1
   --сообщение
   local text=""
-  local text="|cff00ff00PhoenixStyle|r > I am proud to announce |cff00ff00my new addon - CombatReplay!|r Just check the video what it do, more info: http://www.phoenixstyle.com"
+  --text="|cff00ff00PhoenixStyle|r > I am proud to announce |cff00ff00my new addon - CombatReplay!|r Just check the video what it do, more info: http://www.phoenixstyle.com"
+  text="|cff00ff00PhoenixStyle|r > требуется Ваша помощь, чтобы аддон продолжил свое существование в |cff00ff00Warlords of Draenor!|r Детальнее: http://www.phoenixstyle.com/help"
   if GetLocale()=="ruRU" then
-    text="|cff00ff00PhoenixStyle|r > Я рад объявить о выходе |cff00ff00моего нового аддона - CombatReplay!|r Просто посмотрите видео о нем, может это какраз то, чего вам не хватает? Детальнее: http://www.phoenixstyle.com"
+    --text="|cff00ff00PhoenixStyle|r > Я рад объявить о выходе |cff00ff00моего нового аддона - CombatReplay!|r Просто посмотрите видео о нем, может это какраз то, чего вам не хватает? Детальнее: http://www.phoenixstyle.com"
+	text="|cff00ff00PhoenixStyle|r > need your help, so addon will be available in |cff00ff00Warlords of Draenor|r too. More info: http://www.phoenixstyle.com/help"
   end
   if GetLocale()=="itIT" then
     --text="|cff00ff00Messaggio importante|r. Il progetto |cff00ff00PhoenixStyle|r forse sarà |cffff0000chiuso|r, per sappere cosa si può fare - http://www.phoenixstyle.com/help Potete aiutare senza spendere i soldi, prenota albergo con booking sul nostro sito! Grazie;)"
@@ -8293,9 +8312,9 @@ if psdonareq1==26 and UnitInRaid("player")==nil and UnitInParty("player")==nil t
   end
   
   --PlaySoundFile("Interface\\AddOns\\PhoenixStyle\\Sounds\\"..psdrsounds[3], "Master")
-  if IsAddOnLoaded("CombatReplay")==false then
+  --if IsAddOnLoaded("CombatReplay")==false then
     out(text)
-  end
+  --end
 
 else
   psnotproched=1
@@ -8315,14 +8334,14 @@ if psdonareq2==nil then
   psdonareq2=0
   psdonareq3=0
 end
-if nr==1 and psdonareq2<15 then
+if nr==1 and psdonareq2<31 then
   psdonareq2=psdonareq2+1
 end
-if nr==2 and psdonareq3<5 then
+if nr==2 and psdonareq3<11 then
   psdonareq3=psdonareq3+1
 end
 
-  if (nr==1 and psdonareq2==115) or (nr==2 and psdonareq3==15) then
+  if (nr==1 and psdonareq2==30) or (nr==2 and psdonareq3==10) then
 
   PSF_closeallpr()
   PSFemptyframe:Show()
@@ -8339,11 +8358,11 @@ end
   if adfsdfsdfjy4==nil then
   
 
-
-  local txt1="Dear friends, |cff00ff00PhoenixStyle|r is with us for a lot of contents, |cff00ff003 years!|r PhoenixStyle will always give you a helpful hand due to its |cff00ff00unique functions and mods.|r\n\n\nNow you can |cff00ff00track the donation|r activity in real time (updates every 12h).\n\n\nYou can support us withou money, for example - |cff00ff00book hotel for your vacantion|r on our website!\n\n\n|cff00ff00Click  Ctrl+C  to copy|r and read more:"
+-- Warlords of Draenor // NEXT EXPANSION!!!
+  local txt1="Dear friends, need your help to prepare |cff00ff00PhoenixStyle|r for |cff00ff00Warlords of Draenor!|r PhoenixStyle will always give you a helpful hand due to its |cff00ff00unique functions and mods.|r\n\n\nNow you can |cff00ff00track the donation|r activity in real time (updates every 24h).\n\n\n|cff00ff00Click  Ctrl+C  to copy|r and read more:"
   local txt2="and |cff00ff00continue|r with addon..."
   if GetLocale()=="ruRU" then
-    txt1="Друзья мои. |cff00ff00PhoenixStyle|r с нами уже на протяжении многих контентов, |cff00ff00а точнее 3 года!|r Феникс стайл всегда готов прийти вам на помощь, благодаря своим |cff00ff00уникальным функциям и модам.|r\n\n\nТеперь на сайте отображается |cff00ff00статус пожертвований|r (обновление раз в 12ч).\n\n\nТакже вы можете поддержать нас без денег, например - |cff00ff00закажите отель для вашего отпуска|r через наш сайт!\n\n\n|cff00ff00Нажмите  Ctrl+C  чтобы скопировать|r"
+    txt1="Друзья мои. Нужна помощь чтобы обновить |cff00ff00PhoenixStyle|r для |cff00ff00Warlords of Draenor!|r Феникс стайл всегда готов прийти вам на помощь, благодаря своим |cff00ff00уникальным функциям и модам.|r\n\n\nТеперь на сайте отображается |cff00ff00статус пожертвований|r (обновление раз в 24ч).\n\n\nТеперь существуют кошельки вебмани: Z261771448534, E256951039159, R166695291184.\n\n\n|cff00ff00Нажмите  Ctrl+C  чтобы скопировать|r"
     txt2="и |cff00ff00продолжить|r пользоваться аддоном"
     PSFemptyframe_Button1:SetText("Пропустить")
     PSFemptyframe_Button2:SetText("Пропустить")

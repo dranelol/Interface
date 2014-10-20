@@ -1,3 +1,24 @@
+v2.2.3
+*Updated for patch 6.0.2
+
+v2.2.2
+*Cleaned up some code.
+*Shortened the inbox header text.
+
+v2.2.1
+*No change, just fixed missing item in v2.2 changelog.
+
+v2.2
+*Fixed bug with cancels button not collecting canceled auction mail in some situations.
+*Added auto-complete functionality to target box in Quick Send tab and Mailing operations.
+*Cleaned up a bit of code.
+*Fixed bug with restock option of operations always being applied, regardless of the value of the setting.
+*Moved excess gold options from per-factionrealm to per-character.
+*Time left on mails will now be in yellow for non-returnable mails instead of green.
+
+v2.1.5
+*Added an option to keep free space in bags when looting mail (only applicable to bags that can hold any item like backpack etc). NB mailing autoloots all the attachments of a mail so if looting the whole mail doesn't leave enough free slots then the whole mail will be skipped.
+
 v2.1.4
 *No update. Trying to fix issue with curse.
 

@@ -1,9 +1,9 @@
+-- $Id: TextParsing.lua 4236 2013-08-15 17:15:54Z dynaletik $
 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
+local ALIL = AtlasLoot_IngameLocales;
 local BabbleBoss = AtlasLoot_GetLocaleLibBabble("LibBabble-Boss-3.0")
-local BabbleFaction = AtlasLoot_GetLocaleLibBabble("LibBabble-Faction-3.0")
 local BabbleInventory = AtlasLoot_GetLocaleLibBabble("LibBabble-Inventory-3.0")
 local BabbleItemSet = AtlasLoot_GetLocaleLibBabble("LibBabble-ItemSet-3.0")
-local BabbleZone = AtlasLoot_GetLocaleLibBabble("LibBabble-Zone-3.0")
 
 AtlasLoot_TextParsing = {
 
@@ -18,6 +18,7 @@ AtlasLoot_TextParsing = {
 	{ "#c8#", LOCALIZED_CLASS_NAMES_MALE["WARLOCK"] },
 	{ "#c9#", LOCALIZED_CLASS_NAMES_MALE["WARRIOR"] },
 	{ "#c10#", LOCALIZED_CLASS_NAMES_MALE["DEATHKNIGHT"] },
+	{ "#c11#", LOCALIZED_CLASS_NAMES_MALE["MONK"] },
 
 	-- Professions
 	{ "#p1#", GetSpellInfo(2259) },		-- Alchemy
@@ -46,13 +47,15 @@ AtlasLoot_TextParsing = {
 	{ "#p24#", GetSpellInfo(63275) },	-- Fishing
 	{ "#p25#", GetSpellInfo(78670) },	-- Archaeology
 	{ "#p26#", GetSpellInfo(45357) },	-- Inscription
+	{ "#p27#", GetSpellInfo(2366) },	-- Herbalism
+	{ "#p28#", GetSpellInfo(921) },		-- Pick Pocket
 	
 	-- Reputation
-	{ "#r1#", BabbleFaction["Neutral"] },
-	{ "#r2#", BabbleFaction["Friendly"] },
-	{ "#r3#", BabbleFaction["Honored"] },
-	{ "#r4#", BabbleFaction["Revered"] },
-	{ "#r5#", BabbleFaction["Exalted"] },
+	{ "#r1#", AL["Neutral"] },
+	{ "#r2#", AL["Friendly"] },
+	{ "#r3#", AL["Honored"] },
+	{ "#r4#", AL["Revered"] },
+	{ "#r5#", AL["Exalted"] },
 
 	-- Armour Class
 	{ "#a1#", BabbleInventory["Cloth"] },
@@ -76,9 +79,8 @@ AtlasLoot_TextParsing = {
 	{ "#s13#", BabbleInventory["Ring"] },
 	{ "#s14#", BabbleInventory["Trinket"] },
 	{ "#s15#", BabbleInventory["Held in Off-Hand"] },
-	{ "#s16#", BabbleInventory["Relic"] },
 
-	-- Weapon Weilding
+	-- Weapon Wielding
 	{ "#h1#", BabbleInventory["One-Hand"] },
 	{ "#h2#", BabbleInventory["Two-Hand"] },
 	{ "#h3#", BabbleInventory["Main Hand"] },
@@ -95,7 +97,6 @@ AtlasLoot_TextParsing = {
 	{ "#w8#", BabbleInventory["Shield"] },
 	{ "#w9#", BabbleInventory["Staff"] },
 	{ "#w10#", BabbleInventory["Sword"] },
-	{ "#w11#", BabbleInventory["Thrown"] },
 	{ "#w12#", BabbleInventory["Wand"] },
 	{ "#w13#", BabbleInventory["Fist Weapon"] },
 
@@ -117,7 +118,7 @@ AtlasLoot_TextParsing = {
 	{ "#e15#", AL["Token"] },
 	{ "#e16#", AL["Darkmoon Faire Card"] },
 	{ "#e17#", BabbleInventory["Enchant"] },
-	{ "#e18#", AL["Skinning Knife"] },
+	{ "#e18#", BabbleInventory["Consumable"] },
 	{ "#e20#", BabbleInventory["Fishing Pole"] },
 	{ "#e21#", BabbleInventory["Fish"] },
 	{ "#e22#", AL["Combat Pet"] },
@@ -126,6 +127,11 @@ AtlasLoot_TextParsing = {
 	{ "#e25#", AL["Transformation Item"] },
 	{ "#e26#", BabbleInventory["Ground Mount"] },
 	{ "#e27#", BabbleInventory["Flying Mount"] },
+	--{ "#e28#", BabbleInventory["Aquatic Mount"] }, -- Saved for later
+	--{ "#e29#", BabbleInventory["Aquatic Mount"] }, -- Saved for later
+	{ "#e30#", BabbleInventory["Meat"] },
+	{ "#e31#", AL["Vegetables"] },
+	{ "#e32#", BabbleInventory["Meta"] },
 
 	-- Labels for Loot Descriptions
 	{ "#m1#", AL["Classes:"] },
@@ -133,33 +139,28 @@ AtlasLoot_TextParsing = {
 	{ "#m3#", AL["Quest Item"] },
 	{ "#m4#", AL["Quest Reward"] },
 	{ "#m5#", AL["Shared"] },
-	{ "#m6#", BabbleFaction["Horde"] },
-	{ "#m7#", BabbleFaction["Alliance"] },
-	{ "#m8#", AL["Unique"] },
-	{ "#m9#", AL["Right Half"] },
-	{ "#m10#", AL["Left Half"] },
-	{ "#m11#", AL["28 Slot Soul Shard"] },--Is this still an item?
-	{ "#m12#", AL["10 Slot"] },
-	{ "#m13#", AL["16 Slot"] },
-	{ "#m14#", AL["18 Slot"] },
-	{ "#m15#", AL["20 Slot"] },
+	{ "#m6#", FACTION_HORDE },
+	{ "#m7#", FACTION_ALLIANCE },
 	{ "#m17#", AL["Currency"] },
 	{ "#m20#", AL["Misc"] },
-	{ "#m21#", AL["Tier 4"] },
-	{ "#m22#", AL["Tier 5"] },
-	{ "#m23#", AL["Tier 6"] },
+	{ "#m21#", string.format(AL["Tier %d"], 4) },
+	{ "#m22#", string.format(AL["Tier %d"], 5) },
+	{ "#m23#", string.format(AL["Tier %d"], 6) },
 	{ "#m24#", AL["Card Game Item"] },
-	{ "#m26#", AL["Conjured Item"] },
 	{ "#m27#", AL["Used to summon boss"] },
-	{ "#m28#", AL["Feast of Winter Veil"] },
 	{ "#m29#", AL["Tradable for sunmote + item above"] },
-	{ "#m30#", AL["Tier 1"] },
-	{ "#m31#", AL["Tier 2"] },
+	{ "#m30#", string.format(AL["Tier %d"], 1) },
+	{ "#m31#", string.format(AL["Tier %d"], 2) },
 	{ "#m32#", AL["Achievement Reward"] },
 	{ "#m34#", AL["Old Quest Reward"] },
-	{ "#m35#", AL["Tier 3"] },
-	{ "#m36#", AL["NOT AVAILABLE ANYMORE"]},
-	{ "#m37#", AL["Tier 11"] },
+	{ "#m35#", string.format(AL["Tier %d"], 3) },
+	{ "#m36#", AL["No Longer Available"]},
+	{ "#m37#", string.format(AL["Tier %d"], 11) },
+	{ "#m38#", string.format(AL["Tier %d"], 12) },
+	{ "#m39#", string.format(AL["Tier %d"], 13) },
+	{ "#m40#", string.format(AL["Tier %d"], 14) },
+	{ "#m41#", string.format(AL["Tier %d"], 15) },
+	{ "#m42#", string.format(AL["Tier %d"], 16) },
 
 	-- Misc
 	{ "#j1#", AL["Normal Mode"] },
@@ -168,45 +169,22 @@ AtlasLoot_TextParsing = {
 	{ "#j4#", AL["Heroic"] },
 	{ "#j6#", AL["Dungeon Set 1"] },
 	{ "#j7#", AL["Dungeon Set 2"] },
-	{ "#j8#", AL["Token Hand-Ins"] },
-	{ "#j9#", AL["Level 60"] },
-	{ "#j10#", AL["Level 70"] },
+	{ "#j8#", AL["Dungeon Set 1/2"] },
+	{ "#j9#", AL["Replica"] },
 	{ "#j11#", AL["Fire Resistance Gear"] },
 	{ "#j12#", AL["Arcane Resistance Gear"] },
 	{ "#j13#", AL["Nature Resistance Gear"] },
-	{ "#j16#", AL["Phase 1"] },
-	{ "#j17#", AL["Phase 2"] },
-	{ "#j18#", AL["Phase 3"] },
 	{ "#j19#", AL["Fire"] },
 	{ "#j20#", AL["Water"] },
 	{ "#j21#", AL["Wind"] },
 	{ "#j22#", AL["Earth"] },
-	{ "#j23#", AL["Master Angler"] },
-	{ "#j24#", AL["First Prize"] },
-	{ "#j25#", AL["Rare Fish Rewards"] },
-	{ "#j26#", AL["Rare Fish"] },
 	{ "#j27#", AL["Additional Heroic Loot"] },
 	{ "#j28#", AL["Entrance"] },
 	{ "#j30#", BabbleInventory["Mounts"] },
-	{ "#j37#", AL["10 Man"] },
-	{ "#j38#", AL["25 Man"] },
-	{ "#j46#", AL["Hard Mode"] },
 	{ "#j53#", AL["Hard Mode"] },
-	{ "#j54#", AL["Level 80"] },
 
 	-- Upper Deck Card Game
 	{ "#ud1#", AL["Loot Card Items"] },
-
-	-- ZG Tokens
-	{ "#zgt1#", AL["Primal Hakkari Kossack"] },
-	{ "#zgt2#", AL["Primal Hakkari Shawl"] },
-	{ "#zgt3#", AL["Primal Hakkari Bindings"] },
-	{ "#zgt4#", AL["Primal Hakkari Sash"] },
-	{ "#zgt5#", AL["Primal Hakkari Stanchion"] },
-	{ "#zgt6#", AL["Primal Hakkari Aegis"] },
-	{ "#zgt7#", AL["Primal Hakkari Girdle"] },
-	{ "#zgt8#", AL["Primal Hakkari Armsplint"] },
-	{ "#zgt9#", AL["Primal Hakkari Tabard"] },
 
 	-- AQ20 Tokens
 	{ "#aq20t1#", AL["Qiraji Ornate Hilt"] },
@@ -226,14 +204,6 @@ AtlasLoot_TextParsing = {
 	{ "#aq40t7#", AL["Skin of the Great Sandworm"] },
 	{ "#aq40t8#", AL["Carapace of the Old God"] },
 
-	-- Battleground Factions
-	{ "#b1#", BabbleFaction["Stormpike Guard"] },
-	{ "#b2#", BabbleFaction["Frostwolf Clan"] },
-	{ "#b3#", BabbleFaction["Silverwing Sentinels"] },
-	{ "#b4#", BabbleFaction["Warsong Outriders"] },
-	{ "#b5#", BabbleFaction["The League of Arathor"] },
-	{ "#b6#", BabbleFaction["The Defilers"] },
-
 	-- BRD Arena Mini Bosses
 	{ "#brd1#", BabbleBoss["Anub'shiah"] },
 	{ "#brd2#", BabbleBoss["Eviscerator"] },
@@ -242,109 +212,17 @@ AtlasLoot_TextParsing = {
 	{ "#brd5#", BabbleBoss["Hedrum the Creeper"] },
 	{ "#brd6#", BabbleBoss["Ok'thor the Breaker"] },
 
-	-- Chests, Boxes, etc.
-	{ "#x1#", AL["Timed Reward Chest 4"] },
-
 	-- NPC Names
-	{ "#n11#", AL["Trash Mobs"] },
 	{ "#n17#", AL["Theldren"] },
 	{ "#n18#", AL["Sothos and Jarien"] },
-	{ "#n54#", AL["Nexus Stalker"] },
-	{ "#n55#", AL["Auchenai Monk"] },
-	{ "#n56#", AL["Cabal Fanatic"] },
-	{ "#n57#", AL["Unchained Doombringer"] },
-	{ "#n82#", AL["Raging Skeleton"] },
-	{ "#n83#", AL["Ethereal Priest"] },
-	{ "#n84#", AL["Sethekk Ravenguard"] },
-	{ "#n85#", AL["Time-Lost Shadowmage"] },
-	{ "#n86#", AL["Coilfang Sorceress"] },
-	{ "#n87#", AL["Coilfang Oracle"] },
-	{ "#n88#", AL["Shattered Hand Centurion"] },
-	{ "#n89#", AL["Eredar Deathbringer"] },
-	{ "#n90#", AL["Arcatraz Sentinel"] },
-	{ "#n91#", AL["Gargantuan Abyssal"] },
-	{ "#n92#", AL["Sunseeker Botanist"] },
-	{ "#n93#", AL["Sunseeker Astromage"] },
-	{ "#n94#", AL["Durnholde Rifleman"] },
-	{ "#n95#", AL["Rift Keeper/Rift Lord"] },
-	{ "#n96#", AL["Crimson Templar"] },
-	{ "#n97#", AL["Azure Templar"] },
-	{ "#n98#", AL["Hoary Templar"] },
-	{ "#n99#", AL["Earthen Templar"] },
-	{ "#n100#", AL["The Duke of Cynders"] },
-	{ "#n101#", AL["The Duke of Fathoms"] },
-	{ "#n102#", AL["The Duke of Zephyrs"] },
-	{ "#n103#", AL["The Duke of Shards"] },
-	{ "#n104#", BabbleBoss["Prince Skaldrenox"] },
-	{ "#n105#", BabbleBoss["Lord Skwol"] },
-	{ "#n106#", BabbleBoss["High Marshal Whirlaxis"] },
-	{ "#n107#", BabbleBoss["Baron Kazum"] },
-	{ "#n108#", BabbleBoss["Baron Charr"] },
-	{ "#n109#", BabbleBoss["Princess Tempestria"] },
-	{ "#n110#", BabbleBoss["Avalanchion"] },
-	{ "#n111#", BabbleBoss["The Windreaver"] },
-	{ "#n112#", AL["Aether-tech Assistant"] },
-	{ "#n113#", AL["Aether-tech Adept"] },
-	{ "#n114#", AL["Aether-tech Master"] },
-	{ "#n118#", AL["Trelopades"] },
-	{ "#n119#", AL["King Dorfbruiser"] },
-	{ "#n120#", AL["Gorgolon the All-seeing"] },
-	{ "#n121#", AL["Matron Li-sahar"] },
-	{ "#n122#", AL["Solus the Eternal"] },
-	{ "#n129#", AL["Smokywood Pastures Vendor"] },
-	{ "#n131#", AL["Barleybrew Brewery"] },
-	{ "#n132#", AL["Thunderbrew Brewery"] },
-	{ "#n133#", AL["Gordok Brewery"] },
-	{ "#n134#", AL["Drohn's Distillery"] },
-	{ "#n135#", AL["T'chali's Voodoo Brewery"] },
-	{ "#n136#", BabbleBoss["Headless Horseman"] },
-	{ "#n137#", BabbleBoss["Illidan Stormrage"] },
-	{ "#n138#", BabbleBoss["Vexallus"] },
-	{ "#n139#", BabbleBoss["Aeonus"] },
-	{ "#n150#", BabbleBoss["Coren Direbrew"] },
-
-	-- Zone Names
-	{ "#z1#", BabbleZone["The Deadmines"] },
-	{ "#z2#", BabbleZone["Wailing Caverns"] },
-	{ "#z3#", BabbleZone["Scarlet Monastery"] },
-	{ "#z4#", BabbleZone["Blackrock Depths"] },
-	{ "#z5#", BabbleZone["Scholomance"] },
-	{ "#z6#", BabbleZone["Stratholme"] },
-	{ "#z7#", AL["Various Locations"] },
-	{ "#z8#", BabbleZone["Zul'Gurub"] },
-	{ "#z9#", BabbleZone["Upper Blackrock Spire"] },
-	{ "#z10#", BabbleZone["Lower Blackrock Spire"] },
-	{ "#z12#", BabbleZone["Karazhan"] },
-	{ "#z13#", BabbleZone["Dire Maul (East)"] },
-	{ "#z14#", BabbleZone["Molten Core"] },
-	{ "#z15#", BabbleZone["Onyxia's Lair"] },
-	{ "#z17#", AL["World Drop"] },
-	{ "#z18#", BabbleZone["Black Temple"] },
-	{ "#z20#", BabbleZone["Un'Goro Crater"] },
-	{ "#z21#", BabbleZone["Winterspring"] },
-	{ "#z22#", BabbleZone["Azshara"] },
-	{ "#z23#", BabbleZone["Silithus"] },
-	{ "#z24#", BabbleZone["Azeroth"] },
-	{ "#z25#", BabbleZone["Outland"] },
-	{ "#z29#", BabbleZone["Zul'Aman"] },
-	{ "#z30#", BabbleZone["Magisters' Terrace"] },
-	{ "#z31#", BabbleZone["Shattrath City"] },
-	{ "#z32#", BabbleZone["Isle of Quel'Danas"] },
-	{ "#z33#", BabbleZone["The Black Morass"] },
-	{ "#z34#", BabbleZone["Hyjal Summit"] },
-	{ "#z38#", BabbleZone["The Obsidian Sanctum"] },
-	{ "#z40#", BabbleZone["Northrend"] },
 
 	-- Factions
-	{ "#f1#", BabbleFaction["Lower City"] },
-	{ "#f2#", BabbleFaction["The Sha'tar"] },
-	{ "#f4#", BabbleFaction["Honor Hold"] },
-	{ "#f5#", BabbleFaction["Keepers of Time"] },
-	{ "#f6#", BabbleFaction["Cenarion Expedition"] },
-
-	-- Blacksmithing Crafted Mail Sets
-	{ "#craftbm1#", BabbleItemSet["Bloodsoul Embrace"] },
-	{ "#craftbm2#", BabbleItemSet["Fel Iron Chain"] },
+	{ "#f1#", ALIL["Lower City"] },
+	{ "#f2#", ALIL["The Sha'tar"] },
+	{ "#f3#", ALIL["Thrallmar"] },
+	{ "#f4#", ALIL["Honor Hold"] },
+	{ "#f5#", ALIL["Keepers of Time"] },
+	{ "#f6#", ALIL["Cenarion Expedition"] },
 
 	-- Blacksmithing Crafted Plate Sets
 	{ "#craftbp1#", BabbleItemSet["Imperial Plate"] },
@@ -430,28 +308,6 @@ AtlasLoot_TextParsing = {
 	{ "#pre60s22#", BabbleItemSet["Primal Blessing"] },
 	{ "#pre60s23#", BabbleItemSet["Dal'Rend's Arms"] },
 	{ "#pre60s24#", BabbleItemSet["Spider's Kiss"] },
-
-	-- The Burning Crusade Sets
-	{ "#bcs1#", BabbleItemSet["The Twin Stars"] },
-	{ "#bcs2#", BabbleItemSet["The Twin Blades of Azzinoth"] },
-	{ "#bcs3#", BabbleItemSet["Latro's Flurry"] },
-	{ "#bcs4#", BabbleItemSet["The Fists of Fury"] },
-
-	-- Wrath Of The Lich King Sets
-	{ "#wotlk1#", BabbleItemSet["Raine's Revenge"] },
-	{ "#wotlk2#", BabbleItemSet["Purified Shard of the Gods"] },
-	{ "#wotlk3#", BabbleItemSet["Shiny Shard of the Gods"] },
-
-	-- ZG Sets
-	{ "#zgs1#", BabbleItemSet["Haruspex's Garb"] },
-	{ "#zgs2#", BabbleItemSet["Predator's Armor"] },
-	{ "#zgs3#", BabbleItemSet["Illusionist's Attire"] },
-	{ "#zgs4#", BabbleItemSet["Freethinker's Armor"] },
-	{ "#zgs5#", BabbleItemSet["Confessor's Raiment"] },
-	{ "#zgs6#", BabbleItemSet["Madcap's Outfit"] },
-	{ "#zgs7#", BabbleItemSet["Augur's Regalia"] },
-	{ "#zgs8#", BabbleItemSet["Demoniac's Threads"] },
-	{ "#zgs9#", BabbleItemSet["Vindicator's Battlegear"] },
 
 	-- AQ20 Sets
 	{ "#aq20s1#", BabbleItemSet["Symbols of Unending Life"] },
@@ -726,6 +582,123 @@ AtlasLoot_TextParsing = {
 	{ "#t11s10_1#", BabbleItemSet["Magma Plated Battlegear"] },
 	{ "#t11s10_2#", BabbleItemSet["Magma Plated Battlearmor"] },
 
+	-- Tier 12 Sets
+	{ "#t12s1_1#", BabbleItemSet["Obsidian Arborweave Vestments"] },
+	{ "#t12s1_2#", BabbleItemSet["Obsidian Arborweave Battlegarb"] },
+	{ "#t12s1_3#", BabbleItemSet["Obsidian Arborweave Regalia"] },
+	{ "#t12s2#", BabbleItemSet["Flamewaker's Battlegear"] },
+	{ "#t12s3#", BabbleItemSet["Firehawk Robes of Conflagration"] },
+	{ "#t12s4_1#", BabbleItemSet["Regalia of Immolation"] },
+	{ "#t12s4_2#", BabbleItemSet["Battlearmor of Immolation"] },
+	{ "#t12s4_3#", BabbleItemSet["Battleplate of Immolation"] },
+	{ "#t12s5_1#", BabbleItemSet["Regalia of the Cleansing Flame"] },
+	{ "#t12s5_2#", BabbleItemSet["Vestments of the Cleansing Flame"] },
+	{ "#t12s6#", BabbleItemSet["Vestments of the Dark Phoenix"] },
+	{ "#t12s7_1#", BabbleItemSet["Volcanic Vestments"] },
+	{ "#t12s7_2#", BabbleItemSet["Volcanic Battlegear"] },
+	{ "#t12s7_3#", BabbleItemSet["Volcanic Regalia"] },
+	{ "#t12s8#", BabbleItemSet["Balespider's Burning Vestments"] },
+	{ "#t12s9_1#", BabbleItemSet["Molten Giant Warplate"] },
+	{ "#t12s9_2#", BabbleItemSet["Molten Giant Battleplate"] },
+	{ "#t12s10_1#", BabbleItemSet["Elementium Deathplate Battlegear"] },
+	{ "#t12s10_2#", BabbleItemSet["Elementium Deathplate Battlearmor"] },
+
+	-- Tier 13 Sets
+	{ "#t13s1_1#", BabbleItemSet["Deep Earth Vestments"] },
+	{ "#t13s1_2#", BabbleItemSet["Deep Earth Battlegarb"] },
+	{ "#t13s1_3#", BabbleItemSet["Deep Earth Regalia"] },
+	{ "#t13s2#", BabbleItemSet["Wyrmstalker Battlegear"] },
+	{ "#t13s3#", BabbleItemSet["Time Lord's Regalia"] },
+	{ "#t13s4_1#", BabbleItemSet["Regalia of Radiant Glory"] },
+	{ "#t13s4_2#", BabbleItemSet["Armor of Radiant Glory"] },
+	{ "#t13s4_3#", BabbleItemSet["Battleplate of Radiant Glory"] },
+	{ "#t13s5_1#", BabbleItemSet["Regalia of Dying Light"] },
+	{ "#t13s5_2#", BabbleItemSet["Vestments of Dying Light"] },
+	{ "#t13s6#", BabbleItemSet["Blackfang Battleweave"] },
+	{ "#t13s7_1#", BabbleItemSet["Spiritwalker's Vestments"] },
+	{ "#t13s7_2#", BabbleItemSet["Spiritwalker's Battlegear"] },
+	{ "#t13s7_3#", BabbleItemSet["Spiritwalker's Regalia"] },
+	{ "#t13s8#", BabbleItemSet["Vestments of the Faceless Shroud"] },
+	{ "#t13s9_1#", BabbleItemSet["Colossal Dragonplate Battlegear"] },
+	{ "#t13s9_2#", BabbleItemSet["Colossal Dragonplate Armor"] },
+	{ "#t13s10_1#", BabbleItemSet["Necrotic Boneplate Battlegear"] },
+	{ "#t13s10_2#", BabbleItemSet["Necrotic Boneplate Armor"] },
+
+	-- Tier 14 Sets
+	{ "#t14s1_1#", BabbleItemSet["Vestments of the Eternal Blossom"] },
+	{ "#t14s1_2#", BabbleItemSet["Battlegear of the Eternal Blossom"] },
+	{ "#t14s1_3#", BabbleItemSet["Regalia of the Eternal Blossom"] },
+	{ "#t14s1_4#", BabbleItemSet["Armor of the Eternal Blossom"] },
+	{ "#t14s2#", BabbleItemSet["Yaungol Slayer Battlegear"] },
+	{ "#t14s3#", BabbleItemSet["Regalia of the Burning Scroll"] },
+	{ "#t14s4_1#", BabbleItemSet["White Tiger Vestments"] },
+	{ "#t14s4_2#", BabbleItemSet["White Tiger Plate"] },
+	{ "#t14s4_3#", BabbleItemSet["White Tiger Battlegear"] },
+	{ "#t14s5_1#", BabbleItemSet["Regalia of the Guardian Serpent"] },
+	{ "#t14s5_2#", BabbleItemSet["Vestments of the Guardian Serpent"] },
+	{ "#t14s6#", BabbleItemSet["Battlegear of the Thousandfold Blades"] },
+	{ "#t14s7_1#", BabbleItemSet["Vestments of the Firebird"] },
+	{ "#t14s7_2#", BabbleItemSet["Battlegear of the Firebird"] },
+	{ "#t14s7_3#", BabbleItemSet["Regalia of the Firebird"] },
+	{ "#t14s8#", BabbleItemSet["Sha-Skin Regalia"] },
+	{ "#t14s9_1#", BabbleItemSet["Battleplate of Resounding Rings"] },
+	{ "#t14s9_2#", BabbleItemSet["Plate of Resounding Rings"] },
+	{ "#t14s10_1#", BabbleItemSet["Battlegear of the Lost Catacomb"] },
+	{ "#t14s10_2#", BabbleItemSet["Plate of the Lost Catacomb"] },
+	{ "#t14s11_1#", BabbleItemSet["Armor of the Red Crane"] },
+	{ "#t14s11_2#", BabbleItemSet["Battlegear of the Red Crane"] },
+	{ "#t14s11_3#", BabbleItemSet["Vestments of the Red Crane"] },
+
+	-- Tier 15 Sets
+	{ "#t15s1_1#", BabbleItemSet["Vestments of the Haunted Forest"] },
+	{ "#t15s1_2#", BabbleItemSet["Battlegear of the Haunted Forest"] },
+	{ "#t15s1_3#", BabbleItemSet["Regalia of the Haunted Forest"] },
+	{ "#t15s1_4#", BabbleItemSet["Armor of the Haunted Forest"] },
+	{ "#t15s2#", BabbleItemSet["Battlegear of the Saurok Stalker"] },
+	{ "#t15s3#", BabbleItemSet["Regalia of the Chromatic Hydra"] },
+	{ "#t15s4_1#", BabbleItemSet["Vestments of the Lightning Emperor"] },
+	{ "#t15s4_2#", BabbleItemSet["Plate of the Lightning Emperor"] },
+	{ "#t15s4_3#", BabbleItemSet["Battlegear of the Lightning Emperor"] },
+	{ "#t15s5_1#", BabbleItemSet["Regalia of the Exorcist"] },
+	{ "#t15s5_2#", BabbleItemSet["Vestments of the Exorcist"] },
+	{ "#t15s6#", BabbleItemSet["Nine-Tail Battlegear"] },
+	{ "#t15s7_1#", BabbleItemSet["Vestments of the Witch Doctor"] },
+	{ "#t15s7_2#", BabbleItemSet["Battlegear of the Witch Doctor"] },
+	{ "#t15s7_3#", BabbleItemSet["Regalia of the Witch Doctor"] },
+	{ "#t15s8#", BabbleItemSet["Regalia of the Thousandfold Hells"] },
+	{ "#t15s9_1#", BabbleItemSet["Battleplate of the Last Mogu"] },
+	{ "#t15s9_2#", BabbleItemSet["Plate of the Last Mogu"] },
+	{ "#t15s10_1#", BabbleItemSet["Battleplate of the All-Consuming Maw"] },
+	{ "#t15s10_2#", BabbleItemSet["Plate of the All-Consuming Maw"] },
+	{ "#t15s11_1#", BabbleItemSet["Fire-Charm Armor"] },
+	{ "#t15s11_2#", BabbleItemSet["Fire-Charm Battlegear"] },
+	{ "#t15s11_3#", BabbleItemSet["Fire-Charm Vestments"] },
+
+	-- Tier 16 Sets
+	{ "#t16s1_1#", BabbleItemSet["Vestments of the Shattered Vale"] },
+	{ "#t16s1_2#", BabbleItemSet["Battlegear of the Shattered Vale"] },
+	{ "#t16s1_3#", BabbleItemSet["Regalia of the Shattered Vale"] },
+	{ "#t16s1_4#", BabbleItemSet["Armor of the Shattered Vale"] },
+	{ "#t16s2#", BabbleItemSet["Battlegear of the Unblinking Vigil"] },
+	{ "#t16s3#", BabbleItemSet["Chronomancer Regalia"] },
+	{ "#t16s4_1#", BabbleItemSet["Vestments of Winged Triumph"] },
+	{ "#t16s4_2#", BabbleItemSet["Plate of Winged Triumph"] },
+	{ "#t16s4_3#", BabbleItemSet["Battlegear of Winged Triumph"] },
+	{ "#t16s5_1#", BabbleItemSet["Regalia of Ternion Glory"] },
+	{ "#t16s5_2#", BabbleItemSet["Vestments of Ternion Glory"] },
+	{ "#t16s6#", BabbleItemSet["Barbed Assassin Battlegear"] },
+	{ "#t16s7_1#", BabbleItemSet["Celestial Harmony Vestment"] },
+	{ "#t16s7_2#", BabbleItemSet["Celestial Harmony Battlegear"] },
+	{ "#t16s7_3#", BabbleItemSet["Celestial Harmony Regalia"] },
+	{ "#t16s8#", BabbleItemSet["Regalia of the Horned Nightmare"] },
+	{ "#t16s9_1#", BabbleItemSet["Battleplate of the Prehistoric Marauder"] },
+	{ "#t16s9_2#", BabbleItemSet["Plate of the Prehistoric Marauder"] },
+	{ "#t16s10_1#", BabbleItemSet["Battleplate of Cyclopean Dread"] },
+	{ "#t16s10_2#", BabbleItemSet["Plate of Cyclopean Dread"] },
+	{ "#t16s11_1#", BabbleItemSet["Armor of Seven Sacred Seals"] },
+	{ "#t16s11_2#", BabbleItemSet["Battlegear of Seven Sacred Seals"] },
+	{ "#t16s11_3#", BabbleItemSet["Vestments of Seven Sacred Seals"] },
+
 	-- Arathi Basin Sets - Alliance
 	{ "#absa1#", BabbleItemSet["The Highlander's Intent"] },
 	{ "#absa2#", BabbleItemSet["The Highlander's Purpose"] },
@@ -752,7 +725,7 @@ AtlasLoot_TextParsing = {
 	{ "#pvpra6#", BabbleItemSet["Lieutenant Commander's Guard"] },
 	{ "#pvpra7#", BabbleItemSet["Lieutenant Commander's Dreadgear"] },
 	{ "#pvpra8#", BabbleItemSet["Lieutenant Commander's Battlearmor"] },
-	{ "#pvpra9#", BabbleItemSet["Lieutenant Commander's Earthshaker"] }, -- This set should be "Lieutenant Commander's Earthshaker", not "Lieutenant Commander's Stormcaller"
+	{ "#pvpra9#", BabbleItemSet["Lieutenant Commander's Earthshaker"] },
 
 	-- PvP Level 60 Rare Sets - Horde
 	{ "#pvprh1#", BabbleItemSet["Champion's Refuge"] },
@@ -824,6 +797,8 @@ AtlasLoot_TextParsing = {
 	{ "#arenas8_2#", BabbleItemSet["Gladiator's Felshroud"] },
 	{ "#arenas9#", BabbleItemSet["Gladiator's Battlegear"] },
 	{ "#arenas10#", BabbleItemSet["Gladiator's Desecration"] },
+	{ "#arenas11_1#", BabbleItemSet["Gladiator's Ironskin"] },
+	{ "#arenas11_2#", BabbleItemSet["Gladiator's Copperskin"] },
 
 	-- Crafting
 	{ "#sr#", AL["Skill Required:"] },
@@ -846,18 +821,18 @@ AtlasLoot_TextParsing = {
 	{ "=ds=", "|cffFFd200" },	-- Yellow
 
 	-- Months
-	{ "#month1#", AL["January"] },
-	{ "#month2#", AL["February"] },
-	{ "#month3#", AL["March"] },
-	{ "#month4#", AL["April"] },
-	{ "#month5#", AL["May"] },
-	{ "#month6#", AL["June"] },
-	{ "#month7#", AL["July"] },
-	{ "#month8#", AL["August"] },
-	{ "#month9#", AL["September"] },
-	{ "#month10#", AL["October"] },
-	{ "#month11#", AL["November"] },
-	{ "#month12#", AL["December"] },
+	{ "#month1#", ALIL["January"] },
+	{ "#month2#", ALIL["February"] },
+	{ "#month3#", ALIL["March"] },
+	{ "#month4#", ALIL["April"] },
+	{ "#month5#", ALIL["May"] },
+	{ "#month6#", ALIL["June"] },
+	{ "#month7#", ALIL["July"] },
+	{ "#month8#", ALIL["August"] },
+	{ "#month9#", ALIL["September"] },
+	{ "#month10#", ALIL["October"] },
+	{ "#month11#", ALIL["November"] },
+	{ "#month12#", ALIL["December"] },
 
 	-- Currency Icons
 	{ "#gold#", "|TInterface\\AddOns\\AtlasLoot\\Images\\gold:0|t" },
@@ -865,76 +840,49 @@ AtlasLoot_TextParsing = {
 	{ "#copper#", "|TInterface\\AddOns\\AtlasLoot\\Images\\bronze:0|t" },
 
 	-- Currency Icons - PvP
-	{ "#arena#", "|TInterface\\PVPFrame\\PVP-ArenaPoints-Icon:0|t" },
 	{ "#markthrallmar#", "|TInterface\\Icons\\INV_Misc_Token_Thrallmar:0|t" },
 	{ "#markhhold#", "|TInterface\\Icons\\INV_Misc_Token_HonorHold:0|t" },
 	{ "#halaabattle#", "|TInterface\\Icons\\INV_Misc_Rune_08:0|t" },
 	{ "#halaaresearch#", "|TInterface\\Icons\\INV_Misc_Rune_09:0|t" },
-	{ "#spiritshard#", "|TInterface\\Icons\\INV_Jewelry_FrostwolfTrinket_04:0|t" },
-	{ "#wintergrasp#", "|TInterface\\Icons\\INV_Misc_Platnumdisks:0|t" },
-	{ "#tolbarad#", "|TInterface\\Icons\\achievement_zone_tolbarad:0|t" },
 
 	-- Currency Icons - PvE
-	{ "#t10mark#", "|TInterface\\Icons\\ability_paladin_shieldofthetemplar:0|t"},
 	{ "#trophyofthecrusade#", "|TInterface\\Icons\\INV_Misc_Trophy_Argent:0|t" },
-	{ "#justice#", "|TInterface\\Icons\\pvecurrency-justice:0|t"},
-	{ "#valor#", "|TInterface\\Icons\\pvecurrency-valor:0|t"},
 
 	-- Currency Icons - Events
-	{ "#darkmoon#", "|TInterface\\Icons\\INV_Misc_Ticket_Darkmoon_01:0|t" },
-	{ "#noblegarden#", "|TInterface\\Icons\\Achievement_Noblegarden_Chocolate_Egg:0|t" },
-	{ "#brewfest#", "|TInterface\\Icons\\INV_Misc_Coin_01:0|t" },
-	{ "#valentineday#", "|TInterface\\Icons\\inv_valentinescard01:0|t"},
 	{ "#valentineday2#", "|TInterface\\Icons\\inv_jewelry_necklace_43:0|t"},
 
 	-- Currency Icons - Factions
-	{ "#ccombat#", "|TInterface\\Icons\\INV_Jewelry_Talisman_06:0|t" },
-	{ "#champseal#", "|TInterface\\Icons\\Ability_Paladin_ArtofWar:0|t" },
-	{ "#champwrit#", "|TInterface\\Icons\\INV_Scroll_11:0|t" },
-	{ "#ctactical#", "|TInterface\\Icons\\INV_Jewelry_Amulet_02:0|t" },
-	{ "#clogistics#", "|TInterface\\Icons\\INV_Jewelry_Necklace_16:0|t" },
-	{ "#cremulos#", "|TInterface\\Icons\\INV_Jewelry_Necklace_14:0|t" },
-	{ "#ccenarius#", "|TInterface\\Icons\\INV_Jewelry_Necklace_12:0|t" },
-	{ "#zandalar#", "|TInterface\\Icons\\INV_Misc_Coin_08:0|t" },
 	{ "#glowcap#", "|TInterface\\Icons\\INV_Mushroom_02:0|t" },
+	{ "#kyparite#", "|TInterface\\Icons\\inv_ore_manticyte:0|t" },							-- Kyparite (Klaxxi)
 	{ "#ogrilashard#", "|TInterface\\Icons\\INV_Misc_Apexis_Shard:0|t" },
 	{ "#ogrilacrystal#", "|TInterface\\Icons\\INV_Misc_Apexis_Crystal:0|t" },
 	{ "#winterfinclam#", "|TInterface\\Icons\\INV_Misc_Shell_03:0|t" },
-	{ "#fireflower#", "|TInterface\\Icons\\INV_SummerFest_FireFlower:0|t" },
 
 	-- Currency Icons - Crafting Recipes
-	{ "#cookingaward#", "|TInterface\\Icons\\inv_misc_ribbon_01:0|t"},
-	{ "#chefaward#", "|TInterface\\Icons\\achievement_profession_chefhat:0|t"},
-	{ "#elementiumbar#", "|TInterface\\Icons\\inv_misc_pyriumbar:0|t"},
-	{ "#hardenedelementiumbar#", "|TInterface\\Icons\\inv_misc_ebonsteelbar:0|t"},
-	{ "#pyriumbar#", "|TInterface\\Icons\\inv_misc_pyriumbar_02:0|t"},
-	{ "#heavenlyshard#", "|TInterface\\Icons\\inv_misc_largeshard_superior:0|t"},
-	{ "#hypnoticdust#", "|TInterface\\Icons\\inv_enchant_dust:0|t"},
-	{ "#maelstromcrystal#", "|TInterface\\Icons\\inv_misc_crystalepic:0|t"},
-	{ "#embersilkboltl#", "|TInterface\\Icons\\inv_misc_emberweavecloth_01:0|t"},
-	{ "#dreamcloth#", "|TInterface\\Icons\\inv_chest_cloth_57:0|t"},
-	{ "#heavysavageleather#", "|TInterface\\Icons\\item_savageleatherhide:0|t"},
+	{ "#elementiumbar#", "|TInterface\\Icons\\inv_misc_pyriumbar:0|t"},						-- Elementium Bar (SmithingCataVendor)
+	{ "#hardenedelementiumbar#", "|TInterface\\Icons\\inv_misc_ebonsteelbar:0|t"},			-- Hardened Elementium Bar (SmithingCataVendor)
+	{ "#pyriumbar#", "|TInterface\\Icons\\inv_misc_pyriumbar_02:0|t"},						-- Pyrium Bar (SmithingCataVendor)
+	{ "#heavenlyshard#", "|TInterface\\Icons\\inv_misc_largeshard_superior:0|t"},			-- Heavenly Shard (EnchantingCataVendor)
+	{ "#hypnoticdust#", "|TInterface\\Icons\\inv_enchant_dust:0|t"},						-- Hypnotic Dust (EnchantingCataVendor)
+	{ "#maelstromcrystal#", "|TInterface\\Icons\\inv_misc_crystalepic:0|t"},				-- Maelstrom Crystal (EnchantingCataVendor)
+	{ "#embersilkbolt#", "|TInterface\\Icons\\inv_misc_emberweavecloth_01:0|t"},			-- Bolt of Embersilk Cloth (TailoringCataVendor)
+	{ "#dreamcloth#", "|TInterface\\Icons\\inv_chest_cloth_57:0|t"},						-- Dream Cloth (TailoringCataVendor)
+	{ "#heavysavageleather#", "|TInterface\\Icons\\item_savageleatherhide:0|t"},			-- Heavy Savage Leather (LeatherworkingCataVendor)
 }
 
 --------------------------------------------------------------------------------
 -- Text replacement function
 --------------------------------------------------------------------------------
 function AtlasLoot:FixText(text)
-	if not text or text == "" then return "" end
-	for k,_ in pairs(AtlasLoot_TextParsing) do
-		text = gsub(text, AtlasLoot_TextParsing[k][1], AtlasLoot_TextParsing[k][2]);
+	if not text or string.trim(text) == "" then return "" end
+	for k in ipairs(AtlasLoot_TextParsing) do
+		text = gsub(text, AtlasLoot_TextParsing[k][1], tostring(AtlasLoot_TextParsing[k][2]));
 	end
 
-    englishFaction, _ = UnitFactionGroup("player")
+    englishFaction = UnitFactionGroup("player")
     if englishFaction == "Horde" then
-		text = gsub(text, "#honor#", "|TInterface\\Icons\\pvpcurrency-honor-horde:0|t");
-		text = gsub(text, "#conquest#", "|TInterface\\Icons\\pvpcurrency-conquest-horde:0|t");
-		text = gsub(text, "#factionoutlandPvP#", "|TInterface\\AddOns\\AtlasLoot\\Images\\Horde:0|t");
 		text = gsub(text, "#markthrallmarhhold#", "|TInterface\\Icons\\INV_Misc_Token_Thrallmar:0|t");
     else
-		text = gsub(text, "#honor#", "|TInterface\\Icons\\pvpcurrency-honor-alliance:0|t");
-		text = gsub(text, "#conquest#", "|TInterface\\Icons\\pvpcurrency-conquest-alliance:0|t");
-		text = gsub(text, "#factionoutlandPvP#", "|TInterface\\AddOns\\AtlasLoot\\Images\\Alliance:0|t");
 		text = gsub(text, "#markthrallmarhhold#", "|TInterface\\Icons\\INV_Misc_Token_HonorHold:0|t");
     end
 
@@ -942,10 +890,10 @@ function AtlasLoot:FixText(text)
 end
 
 function AtlasLoot:FixTextBack(text)
-	if not text or text == "" then return "" end
+	if not text or string.trim(text) == "" then return "" end
 	
 	text = gsub(text, "Miscellaneous", "#m20#");
-	for k,_ in pairs(AtlasLoot_TextParsing) do
+	for k in ipairs(AtlasLoot_TextParsing) do
 		text = gsub(text, AtlasLoot_TextParsing[k][2], AtlasLoot_TextParsing[k][1]);
 	end
 

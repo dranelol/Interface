@@ -64,15 +64,33 @@ function Destroying:StartDestroyingSearch(target, filter, isCrafting)
 	Destroying.maxQuantity = filter.maxQuantity
 	filter.maxPrice = nil
 	if private.sources[target] == "mill" then
-		private:StartMillingSearch(target, filter)
+		private:TryStarting(private.StartMillingSearch, target, filter)
 	elseif private.sources[target] == "prospect" then
-		private:StartProspectingSearch(target, filter)
+		private:TryStarting(private.StartProspectingSearch, target, filter)
 	elseif private.sources[target] == "disenchant" then
-		private:StartDisenchantingSearch(target, filter)
+		private:TryStarting(private.StartDisenchantingSearch, target, filter)
+	end
+	TSMAPI:FireEvent("SHOPPING:SEARCH:STARTDESTROYSCAN", {target=target, filter=filter})
+end
+
+function private:TryStarting(func, target, filter, attempt)
+	attempt = attempt or 0
+	if attempt <= 10 and not func(target, filter, attempt == 10) then
+		TSMAPI:CreateTimeDelay("destroySearchTryStart", 0.1, function() private:TryStarting(func, target, filter, attempt+1) end)
 	end
 end
 
-function private:StartMillingSearch(target, filter)
+function private:AddItemQuery(itemList, filter, itemString)
+	local name = TSMAPI:GetSafeItemInfo(itemString)
+	if name then
+		local query = CopyTable(filter)
+		query.name = name
+		tinsert(itemList, query)
+		return true
+	end
+end
+
+function private.StartMillingSearch(target, filter, lastAttempt)
 	local matItemString = target
 	local inkItemString, pigmentItemString
 	if TSMAPI.InkConversions[target] then
@@ -96,19 +114,13 @@ function private:StartMillingSearch(target, filter)
 	local itemList = {}
 	
 	-- add ink and pigment
-	local query = CopyTable(filter)
-	query.name = TSMAPI:GetSafeItemInfo(inkItemString)
-	tinsert(itemList, query)
-	local query = CopyTable(filter)
-	query.name = TSMAPI:GetSafeItemInfo(pigmentItemString)
-	tinsert(itemList, query)
+	if not private:AddItemQuery(itemList, filter, inkItemString) and not lastAttempt then return end
+	if not private:AddItemQuery(itemList, filter, pigmentItemString) and not lastAttempt then return end
 	
 	-- add primary herbs
 	for itemString, data in pairs(TSMAPI:GetItemConversions(pigmentItemString)) do
-		local query = CopyTable(filter)
-		query.name = TSMAPI:GetSafeItemInfo(itemString)
+		if not private:AddItemQuery(itemList, filter, itemString) and not lastAttempt then return end
 		private.evenFilter[itemString] = filter.evenOnly
-		tinsert(itemList, query)
 		private.conversions[itemString] = data.rate / TSMAPI.InkConversions[inkItemString].pigmentPerInk
 	end
 	
@@ -118,19 +130,13 @@ function private:StartMillingSearch(target, filter)
 		if not TSMAPI.Conversions[otherInk] and otherInkData.source == "vendortrade" and TSMAPI.InkConversions[otherInk] then
 			local vendorTradeRate = otherInkData.rate
 			for itemString, millData in pairs(TSMAPI:GetItemConversions(TSMAPI.InkConversions[otherInk].pigment)) do
-				local query = CopyTable(filter)
-				query.name = TSMAPI:GetSafeItemInfo(itemString)
-				tinsert(itemList, query)
+				if not private:AddItemQuery(itemList, filter, itemString) and not lastAttempt then return end
 				private.evenFilter[itemString] = filter.evenOnly
 				private.conversions[itemString] = vendorTradeRate * millData.rate / TSMAPI.InkConversions[inkItemString].pigmentPerInk
 			end
-			local query = CopyTable(filter)
-			query.name = TSMAPI:GetSafeItemInfo(otherInk)
-			tinsert(itemList, query)
+			if not private:AddItemQuery(itemList, filter, otherInk) and not lastAttempt then return end
+			if not private:AddItemQuery(itemList, filter, TSMAPI.InkConversions[otherInk].pigment) and not lastAttempt then return end
 			private.conversions[otherInk] = vendorTradeRate
-			local query = CopyTable(filter)
-			query.name = TSMAPI:GetSafeItemInfo(TSMAPI.InkConversions[otherInk].pigment)
-			tinsert(itemList, query)
 			private.conversions[TSMAPI.InkConversions[otherInk].pigment] = vendorTradeRate / TSMAPI.InkConversions[otherInk].pigmentPerInk
 		end
 	end
@@ -148,18 +154,15 @@ function private:StartMillingSearch(target, filter)
 	end
 	TSM.Search:SetSearchBarDisabled(true)
 	TSM.Util:StartFilterScan(itemList, private.ScanCallback)
+	return true
 end
 
-function private:StartProspectingSearch(target, filter)
+function private.StartProspectingSearch(target, filter, lastAttempt)
 	local itemList = {}
 	private.evenFilter = {}
-	local query = CopyTable(filter)
-	query.name = TSMAPI:GetSafeItemInfo(target)
-	tinsert(itemList, query)
+	if not private:AddItemQuery(itemList, filter, target) and not lastAttempt then return end
 	for itemString in pairs(TSMAPI:GetItemConversions(target)) do
-		local query = CopyTable(filter)
-		query.name = TSMAPI:GetSafeItemInfo(itemString)
-		tinsert(itemList, query)
+		if not private:AddItemQuery(itemList, filter, itemString) and not lastAttempt then return end
 		private.evenFilter[itemString] = filter.evenOnly
 	end
 
@@ -176,14 +179,19 @@ function private:StartProspectingSearch(target, filter)
 	end
 	TSM.Search:SetSearchBarDisabled(true)
 	TSM.Util:StartFilterScan(itemList, private.ScanCallback)
+	return true
 end
 
-function private:StartDisenchantingSearch(target)
+function private.StartDisenchantingSearch(target, filter, lastAttempt)
 	local disenchantData = TSMAPI:GetDisenchantData(target)
 	if not disenchantData then return end
 	
 	local queries = {}
-	tinsert(queries, TSMAPI:GetAuctionQueryInfo(target))
+	local query = TSMAPI:GetAuctionQueryInfo(target)
+	if not query and not lastAttempt then return end
+	if query then
+		tinsert(queries, query)
+	end
 	for itemType, rarityData in pairs(disenchantData.itemTypes) do
 		local class = 0
 		if itemType == "Weapon" then
@@ -201,6 +209,7 @@ function private:StartDisenchantingSearch(target)
 	
 	for itemString, data in pairs(TSMAPI.Conversions[target] or {}) do
 		local query = TSMAPI:GetAuctionQueryInfo(itemString)
+		if not query and not lastAttempt then return end
 		if query then
 			tinsert(queries, query)
 		end
@@ -219,6 +228,7 @@ function private:StartDisenchantingSearch(target)
 	end
 	TSM.Search:SetSearchBarDisabled(true)
 	TSM.Util:StartFilterScan(queries, private.ScanCallback)
+	return true
 end
 
 
@@ -241,7 +251,7 @@ function private.ScanCallback(event, ...)
 			shouldEvenFilter = private.evenFilter[itemString]
 			local conversions = TSMAPI:GetItemConversions(private.target)
 			rate = conversions and conversions[itemString] and conversions[itemString].rate
-			rate = rate and (rate * 6 / 5)
+			rate = rate and (rate / 5)
 		end
 		if itemString == private.target then
 			auctionItem.destroyingNum = 1

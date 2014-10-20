@@ -1,3 +1,8 @@
+** v1.38
+
+- Updated PvP item level cap to 550
+- Added support for 4/4 upgrades (thanks Dridzt)
+
 ** v1.37
 
 - Fixed a typo

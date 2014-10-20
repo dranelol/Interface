@@ -1,24 +1,22 @@
-## Interface: 50001
-## Title: _|cffCCCC88Cursor|r
+## Interface: 50400
+## Title: _Cursor
 ## Notes: Adds custom effects to your cursor.
 ## Notes-koKR: 사용자가 정의한 효과를 커서에 추가합니다.
 ## Notes-zhCN: 增加鼠标指针的自定义效果
-## Author: Saiket
-## X-Credits-koKR: Localization: freshworks
-## X-Credits-zhCN: Localization: cyanzz
-## Version: 5.0.0.1
-## X-Date: 2012-07-21
+## Author: Torhal, Saiket
+## Version: 5.4.8.4
+## X-Revision: c722b27
+## X-Date: 2014-07-11T00:37:45Z
 ## X-Category: Interface Enhancements
 ## X-License: GPLv3
-## X-Email: saiket.wow@gmail.com
-## X-Website: http://sites.google.com/site/wowsaiket/Add-Ons/Cursor
-## X-Feedback: http://code.google.com/p/wow-saiket/issues/list?can=1&q=AddOn:Cursor
+## X-Email: jcallahan@curse.com
 ## X-WoWI-ID: 10531
-## X-Curse-Project-ID: cursor
-## X-Localizations: enUS, koKR, zhCN
-## X-CompatibleLocales: deDE, enCN, enTW, enUS, esES, esMX, frFR, koKR, ptBR, ptPT, ruRU, zhCN, zhTW
 ## SavedVariables: _CursorOptions
 ## SavedVariablesPerCharacter: _CursorOptionsCharacter
+## X-Curse-Packaged-Version: 5.4.8.4
+## X-Curse-Project-Name: _Cursor
+## X-Curse-Project-ID: cursor
+## X-Curse-Repository-ID: wow/cursor/mainline
 
 # See http://wow.curseforge.com/addons/cursor/localization/
 Locales\Locale-enUS.lua

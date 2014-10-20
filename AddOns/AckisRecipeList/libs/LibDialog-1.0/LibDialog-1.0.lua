@@ -13,9 +13,9 @@ local _G = getfenv(0)
 -- Functions
 local error = _G.error
 local pairs = _G.pairs
+local tonumber = _G.tonumber
 
 -- Libraries
-local math = _G.math
 local table = _G.table
 
 -----------------------------------------------------------------------
@@ -26,7 +26,7 @@ local MAJOR = "LibDialog-1.0"
 
 _G.assert(LibStub, MAJOR .. " requires LibStub")
 
-local MINOR = 4 -- Should be manually increased
+local MINOR = 5 -- Should be manually increased
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not lib then
@@ -92,6 +92,18 @@ local DEFAULT_DIALOG_BACKDROP = {
         top = 12,
         bottom = 11,
     },
+}
+
+local TEXT_HORIZONTAL_JUSTIFICATIONS = {
+    CENTER = "CENTER",
+    LEFT = "LEFT",
+    RIGHT = "RIGHT",
+}
+
+local TEXT_VERTICAL_JUSTIFICATIONS = {
+    BOTTOM = "BOTTOM",
+    MIDDLE = "MIDDLE",
+    TOP = "TOP",
 }
 
 -----------------------------------------------------------------------
@@ -555,7 +567,10 @@ local function _BuildDialog(delegate, data)
     dialog:Reset()
     dialog.delegate = delegate
     dialog.data = data
+
     dialog.text:SetText(delegate.text or "")
+    dialog.text:SetJustifyH(delegate.text_justify_h and TEXT_HORIZONTAL_JUSTIFICATIONS[delegate.text_justify_h:upper()] or "CENTER")
+    dialog.text:SetJustifyV(delegate.text_justify_v and TEXT_VERTICAL_JUSTIFICATIONS[delegate.text_justify_v:upper()] or "MIDDLE")
 
     if delegate.no_close_button then
         dialog.close_button:Hide()
@@ -566,10 +581,11 @@ local function _BuildDialog(delegate, data)
     if _G.type(delegate.icon) == "string" then
         if not dialog.icon then
             dialog.icon = dialog:CreateTexture(("%sIcon"):format(dialog:GetName()), "ARTWORK")
-            dialog.icon:SetWidth(DEFAULT_ICON_SIZE)
-            dialog.icon:SetHeight(DEFAULT_ICON_SIZE)
-            dialog.icon:SetPoint("RIGHT", dialog.text, "LEFT", -5, 0)
+            dialog.icon:SetPoint("LEFT", dialog, "LEFT", 16, 0)
         end
+
+        local icon_size = tonumber(delegate.icon_size) and delegate.icon_size or DEFAULT_ICON_SIZE
+        dialog.icon:SetSize(icon_size, icon_size)
         dialog.icon:SetTexture(delegate.icon)
         dialog.icon:Show()
     elseif dialog.icon then
@@ -631,19 +647,9 @@ local function _BuildDialog(delegate, data)
             local editbox = dialog.editboxes[index]
 
             if index == 1 then
-                if editbox.label:IsShown() then
-                    editbox:SetPoint("TOPLEFT", dialog.text, "BOTTOM", 0, -8)
-                else
-                    editbox:SetPoint("TOP", dialog.text, "BOTTOM", 0, -8)
-                end
+                editbox:SetPoint("TOP", dialog.text, "BOTTOM", 0, -8)
             else
-                local spacing = 8 + (editbox:GetHeight() * (index - 1))
-
-                if editbox.label:IsShown() then
-                    editbox:SetPoint("TOPLEFT", dialog.text, "BOTTOM", 0, -spacing)
-                else
-                    editbox:SetPoint("TOP", dialog.text, "BOTTOM", 0, -spacing)
-                end
+                editbox:SetPoint("TOP", dialog.editboxes[index - 1], "BOTTOM", 0, 0)
             end
         end
     end
@@ -949,9 +955,9 @@ function dialog_prototype:Resize()
     end
 
     if self.icon and self.icon:IsShown() then
-        local icon_width = DEFAULT_ICON_SIZE * 1.75
+        local icon_width = self.icon:GetWidth() + 32
         width = width + icon_width
-        self.text:SetWidth(width - (icon_width * 2))
+        self.text:SetWidth(width - icon_width - (self.close_button:GetWidth() + 16))
     else
         self.text:SetWidth(width - 60)
     end

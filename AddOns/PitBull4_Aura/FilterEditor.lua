@@ -1,7 +1,5 @@
 -- FilterEditor.lua: Code to implement the Filter Editor.
 
-if select(6, GetAddOnInfo("PitBull4_" .. (debugstack():match("[o%.][d%.][u%.]les\\(.-)\\") or ""))) ~= "MISSING" then return end
-
 local _G = getfenv(0)
 local PitBull4 = _G.PitBull4
 local L = PitBull4.L
@@ -171,7 +169,7 @@ PitBull4_Aura.OnProfileChanged_funcs[#PitBull4_Aura.OnProfileChanged_funcs+1] =
 function(self)
 	-- Recalculate the filter options on a profile change
 	if CURRENT_FILTER then
-		if not PitBull4_Aura:GetFilterDB(filter) then
+		if not PitBull4_Aura:GetFilterDB(CURRENT_FILTER) then
 			-- No filter of the same name in new profile so fall back to the default.
 			CURRENT_FILTER = '!B'
 		end

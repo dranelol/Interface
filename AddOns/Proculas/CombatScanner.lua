@@ -7,6 +7,8 @@
 --  - Idunnô, Clorell, Mcstabin on US Hellscream
 --
 
+local playerName = UnitName("player")
+
 -------------------------------------------------------
 -- The Proc scanner, scans the combat log for proc spells
 -- This sweet little Proc Tracker here is Copyright (c) Xocide
@@ -18,11 +20,18 @@ local untrackedTypes = {
 function Proculas:COMBAT_LOG_EVENT_UNFILTERED(event,...)
 	--local msg,type,msg2,name,msg3,msg4,name2 = select(1, ...)
 	--local spellId, spellName, spellSchool = select(9, ...)
-  --    timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, spellId, spellName, spellSchool = select(1, ...)
+	--timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, spellId, spellName, spellSchool = select(1, ...)
+
 	local timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool = select(1, ...) --, missType, amountMissed
 	if not hideCaster then
 		hideCaster = nil
 	end
+
+	--[[
+	if sourceName == playerName then
+		self:Print(spellName .. ": " .. spellId)
+	end
+	--]]
 
 	-- Check if the type is SPELL_AURA_APPLIED
 	local isaura = false

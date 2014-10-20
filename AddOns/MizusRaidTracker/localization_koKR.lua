@@ -167,6 +167,7 @@ MRT_L.Options["MP_Debug"] = "디버그 메세지 활성화"
 MRT_L.Options["MP_Description"] = "공격대 참여와 전리품 추적"
 MRT_L.Options["MP_Enabled"] = "MRT 활성화" -- Needs review
 MRT_L.Options["MP_MinimapIcon"] = "미니맵 아이콘 표시"
+-- MRT_L.Options["MP_ResetGuiPos"] = "Reset GUI position"
 MRT_L.Options["MP_SlashCmd"] = "슬러쉬 명령어"
 MRT_L.Options["TP_AskForDKPValue"] = "아이템 비용"
 MRT_L.Options["TP_CreateNewRaidOnNewZone"] = "새 지역시 새 공격대 생성"

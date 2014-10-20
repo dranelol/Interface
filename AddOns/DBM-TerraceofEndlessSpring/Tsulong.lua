@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(742, "DBM-TerraceofEndlessSpring", nil, 320)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10980 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetCreatureID(62442)--62919 Unstable Sha, 62969 Embodied Terror
 mod:SetEncounterID(1505)
 mod:SetReCombatTime(60)--fix lfr combat re-starts after killed.
@@ -71,12 +71,7 @@ function mod:ShadowsTarget(targetname, uId)
 		yellNightmares:Yell()
 	end
 	if uId then
-		local x, y = GetPlayerMapPosition(uId)
-		if x == 0 and y == 0 then
-			SetMapToCurrentZone()
-			x, y = GetPlayerMapPosition(uId)
-		end
-		local inRange = DBM.RangeCheck:GetDistance("player", x, y)
+		local inRange = DBM.RangeCheck:GetDistance("player", uId)
 		if inRange and inRange < 10 then
 			specWarnNightmaresNear:Show(targetname)
 		elseif self:IsDifficulty("normal25", "heroic25", "lfr25") then -- On 25 man, he casts nightmare to 3 men, but target warning works with only 1 man. (like Putricide in ICC Marble Goo). So 25 man shows generic special warning for safety.
@@ -95,7 +90,7 @@ function mod:OnCombatStart(delay)
 	if not self:IsDifficulty("lfr25") then
 		berserkTimer:Start(-delay)
 	end
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		timerDarkOfNightCD:Start(10-delay)
 		darkOfNightCount = 0
 		lightOfDayCount = 0
@@ -200,7 +195,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, _, _, spellId)
 		timerNightmaresCD:Start()
 		countdownNightmares:Start(15.5)
 		timerDayCD:Start()
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerDarkOfNightCD:Start(10)
 			darkOfNightCount = 0
 		end

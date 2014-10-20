@@ -1,3 +1,24 @@
+v2.4.1
+*Updated for patch 6.0.2
+
+v2.4
+*Fixed some bugs with searching by itemString.
+*Added support for getting search strings from the TSM app data file.
+*The scanning code should no longer cause interface lag while processing the results of large filters.
+
+v2.3.6
+*The subclass dropdown in the custom filter sidebar tab will now properly clear when the class dropdown is changed.
+*Removed code for the old TSM app which was increasing logout times.
+
+v2.3.5
+*Fixed issue with calculating price per target item for gems in destroying search.
+*Added events and moduleAPIs for the new TSM Assistant feature.
+
+v2.3.4
+*Fixed issue with calculating percentage of min buyout versus deValue.
+*Added min / max item level for other > disenchant search.
+*Fixed issue with destroying search scanning the entire AH.
+
 v2.3.3
 *Fixed variable being declarded as global unnecessarily.
 *Fixed bug with Sniper not working for Shopping operations.

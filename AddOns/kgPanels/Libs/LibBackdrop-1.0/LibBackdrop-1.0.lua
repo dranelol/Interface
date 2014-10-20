@@ -4,7 +4,7 @@
 	and decorate a given frame with a backdrop.
 	Credits to Lilsparky for doing the math for cutting up the quadrants
 --]]
-local MAJOR, MINOR = "LibBackdrop-1.0", 2
+local MAJOR, MINOR = "LibBackdrop-1.0", 3
 local Backdrop, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not Backdrop then return end -- No upgrade needed
@@ -34,49 +34,34 @@ local edgePoints = {
 
 function Backdrop:EnhanceBackdrop(frame)
 	if frame._backdrop then return end
+
 	-- Create our enhancement frame we will use to create the backdrop
 	frame._backdrop = MakeFrame("Frame",nil,frame)
-	for k,v in pairs(edgePoints) do
+	frame._backdrop.bgTexture = frame:CreateTexture(nil,"BACKGROUND")
+	frame._backdrop.edgeTextures = {}
+	for point in pairs(edgePoints) do
 		local texture = frame:CreateTexture(nil,"BORDER")
-		frame._backdrop["Edge"..k] = texture
+		frame._backdrop.edgeTextures[point] = texture
 	end
-	frame._backdrop["bgTexture"] = frame:CreateTexture(nil,"BACKGROUND")
-	if frame._SetBackdrop == nil then
-		frame._SetBackdrop = frame.SetBackdrop
-	end
-	frame.SetBackdrop = Backdrop.SetBackdrop -- Set the backdrop of the frame according to the specification provided.
 
-	if frame._GetBackdrop == nil then
-		frame._GetBackdrop = frame.GetBackdrop
-	end
-	frame.GetBackdrop = Backdrop.GetBackdrop -- Get the backdrop of the frame for use in SetBackdrop
+	-- Save original methods
+	frame._SetBackdrop = frame.SetBackdrop
+	frame._GetBackdrop = frame.GetBackdrop
+	frame._SetBackdropColor = frame.SetBackdropColor
+	frame._GetBackdropColor = frame.GetBackdropColor
+	frame._SetBackdropBorderColor = frame.SetBackdropBorderColor
+	frame._GetBackdropBorderColor = frame.GetBackdropBorderColor
 
-	if frame._SetBackdropBorderColor == nil then
-		frame._SetBackdropBorderColor = frame.SetBackdropBorderColor
-	end
-    frame.SetBackdropBorderColor = Backdrop.SetBackdropBorderColor --(r, g, b[, a]) - Set the frame's backdrop's border's color.
+	-- Replace original API methods
+	Backdrop:EnableEnhancements(frame)
 
-	if frame._GetBackdropBorderColor == nil then
-		frame._GetBackdropBorderColor = frame.GetBackdropBorderColor
-	end
-    frame.GetBackdropBorderColor = Backdrop.GetBackdropBorderColor -- Get the frame's backdrop's border's color.
-
-	if frame._SetBackdropColor == nil then
-		frame._SetBackdropColor = frame.SetBackdropColor
-	end
-    frame.SetBackdropColor = Backdrop.SetBackdropColor --(r, g, b[, a]) - Set the frame's backdrop color.
-
-	if frame._GetBackdropColor == nil then
-		frame._GetBackdropColor = frame.GetBackdropColor
-	end
-	frame.GetBackdropColor = Backdrop.GetBackdropColor -- Get the backdrop color
-	-- Custom apis that arent present on existing frames
-	frame.SetBackdropGradient = Backdrop.SetBackdropGradient -- New API
-	frame.SetBackdropGradientAlpha = Backdrop.SetBackdropGradientAlpha -- New API
-	frame.SetBackdropBorderGradient = Backdrop.SetBackdropBorderGradient -- New API
-	frame.SetBackdropBorderGradientAlpha = Backdrop.SetBackdropBorderGradientAlpha -- New API
-	frame.GetBackdropBorderSection = Backdrop.GetBackdropBorderSection -- New API
-	frame.GetBackdropBackground = Backdrop.GetBackdropBackground -- New API
+	-- Add custom API methods that aren't present on existing frames
+	frame.SetBackdropGradient = Backdrop.SetBackdropGradient
+	frame.SetBackdropGradientAlpha = Backdrop.SetBackdropGradientAlpha
+	frame.SetBackdropBorderGradient = Backdrop.SetBackdropBorderGradient
+	frame.SetBackdropBorderGradientAlpha = Backdrop.SetBackdropBorderGradientAlpha
+	frame.GetBackdropBackground = Backdrop.GetBackdropBackground
+	frame.GetBackdropBorderSection = Backdrop.GetBackdropBorderSection
 	frame.BorderTextureFunction = Backdrop.BorderTextureFunction
 end
 
@@ -84,35 +69,63 @@ function Backdrop:IsEnhanced(frame)
 	return frame._backdrop ~= nil
 end
 
-function Backdrop:DisableEhancements(frame)
-	if frame._backdrop then
-		frame._backdrop:Hide()
-		for k,v in pairs(edgePoints) do
-			frame._backdrop["Edge"..k]:Hide()
-		end
-		frame.SetBackdrop = frame._SetBackdrop
-		frame.GetBackdrop = frame._GetBackdrop
-		frame.SetBackdropBorderColor = frame._SetBackdropBorderColor
-		frame.GetBackdropBorderColor = frame._GetBackdropBorderColor
-		frame.SetBackdropColor = frame._SetBackdropColor
-		frame.GetBackdropColor = frame._GetBackdropColor
-		frame:SetBackdrop(frame._backdrop_options)
+function Backdrop:DisableEnhancements(frame)
+	if not frame._backdrop then return end
+	local alreadyDisabled = not frame._backdrop:IsShown()
+
+	frame._backdrop:Hide()
+	frame._backdrop.bgTexture:Hide()
+	for point, texture in pairs(frame._backdrop.edgeTextures) do
+		texture:Hide()
 	end
+
+	if alreadyDisabled then return end
+
+	-- Restore the original API methods:
+	frame.SetBackdrop = frame._SetBackdrop
+	frame.GetBackdrop = frame._GetBackdrop
+	frame.SetBackdropColor = frame._SetBackdropColor
+	frame.GetBackdropColor = frame._GetBackdropColor
+	frame.SetBackdropBorderColor = frame._SetBackdropBorderColor
+	frame.GetBackdropBorderColor = frame._GetBackdropBorderColor
+
+	frame:SetBackdrop(frame._backdrop_options)
 end
+Backdrop.DisableEhancements = Backdrop.DisableEnhancements -- backwards compat in case any addons were using the typo'd name
 
 function Backdrop:EnableEnhancements(frame)
-	if frame._backdrop then
-		frame:SetBackdrop(nil)
-		frame._backdrop:Show()
-		for k,v in pairs(edgePoints) do
-			frame._backdrop["Edge"..k]:Show()
-		end
-		frame.SetBackdrop = Backdrop.SetBackdrop
-		frame.GetBackdrop = Backdrop.GetBackdrop
-		frame.SetBackdropBorderColor = Backdrop.SetBackdropBorderColor
-		frame.GetBackdropBorderColor = Backdrop.GetBackdropBorderColor
-		frame.SetBackdropColor = Backdrop.SetBackdropColor
-		frame.GetBackdropColor = Backdrop.GetBackdropColor
+	if not frame._backdrop then return end
+	local alreadyEnabled = frame._backdrop:IsShown()
+
+	frame._backdrop:Show()
+	frame._backdrop.bgTexture:Show()
+	for point, texture in pairs(frame._backdrop.edgeTextures) do
+		texture:Show()
+	end
+
+	if alreadyEnabled then return end
+	-- Need this check because kgPanels uses this function
+	-- as a shortcut to re-showing all the edge textures,
+	-- and other addons may be doing the same thing.
+
+	local orig_backdrop = frame:GetBackdrop()
+	local orig_backdrop_r, orig_backdrop_g, orig_backdrop_b, orig_backdrop_a = frame:GetBackdropColor()
+	local orig_border_r, orig_border_g, orig_border_b, orig_border_a = frame:GetBackdropBorderColor()
+	frame:SetBackdrop(nil)
+
+	-- Override the original API methods:
+	frame.SetBackdrop = Backdrop.SetBackdrop -- Set the backdrop of the frame according to the specification provided.
+	frame.GetBackdrop = Backdrop.GetBackdrop -- Get the backdrop of the frame for use in SetBackdrop
+	frame.SetBackdropColor = Backdrop.SetBackdropColor --(r, g, b[, a]) - Set the frame's backdrop color.
+	frame.GetBackdropColor = Backdrop.GetBackdropColor -- Get the backdrop color
+	frame.SetBackdropBorderColor = Backdrop.SetBackdropBorderColor --(r, g, b[, a]) - Set the frame's backdrop's border's color.
+	frame.GetBackdropBorderColor = Backdrop.GetBackdropBorderColor -- Get the frame's backdrop's border's color.
+
+	-- Reapply any previous backdrop using the new API
+	if orig_backdrop then
+		frame:SetBackdrop(orig_backdrop)
+		frame:SetBackdropColor(orig_backdrop_r, orig_backdrop_g, orig_backdrop_b, orig_backdrop_a)
+		frame:SetBackdropBorderColor(orig_border_r, orig_border_g, orig_border_b, orig_border_a)
 	end
 end
 
@@ -122,8 +135,7 @@ end
 function Backdrop:BorderTextureFunction(func,...)
 	-- check to see the function exists for a texture object
 	if not self._backdrop.bgTexture[func] then return end
-	for k,v in pairs(edgePoints) do
-		local texture = self._backdrop["Edge"..k]
+	for point, texture in pairs(self._backdrop.edgeTextures) do
 		texture[func](texture,...)
 	end
 end
@@ -132,17 +144,17 @@ end
 -- This method allows you to get a reference to the backdrop itself
 -- @return a reference to the backdrop background texture
 function Backdrop:GetBackdropBackground()
-	return self._backdrop["bgTexture"]
+	return self._backdrop.bgTexture
 end
+
 --- API
 -- this method allows you to get a reference to given border section
 -- @param section [Valid values are: TOPLEFTCORNER,TOP,TOPRIGHTCORNER,LEFT,RIGHT,BOTLEFTCORNER,BOT,BOTRIGHTCORNER]
 -- @return the section texture or nil
 function Backdrop:GetBackdropBorderSection(section)
 	section = strupper(section)
-	return self._backdrop["Edge"..section]
+	return self._backdrop.edgeTextures[section]
 end
-
 
 --[[
 	FUTURE, once blizz removes SetBackdrop, we should hook CreateFrame and automatically embed ourselves
@@ -209,7 +221,7 @@ local hSides = {
 	BOT = 3,
 }
 
-local NaN = {
+local NaN = { -- TODO: unused, remove?
 	["nan"] = true,
 	["-1.#IND"] = true,
 	["-1.#INF"] = true,
@@ -234,7 +246,7 @@ local function Resize(frame)
 	end
 	if (w-1 < w) and (h-1 < h) and h > 0 and w > 0 then
 		for k,v in pairs(vSides) do
-			local t = frame["Edge"..k]
+			local t = frame.edgeTextures[k]
 			local y = 0
 			if frame.bgEdgeSize > 0 then
 				y = h/frame.bgEdgeSize
@@ -242,7 +254,7 @@ local function Resize(frame)
 			t:SetTexCoord(v*.125, v*.125+.125, 0, y)
 		end
 		for k,v in pairs(hSides) do
-			local t = frame["Edge"..k]
+			local t = frame.edgeTextures[k]
 			local y = 0
 			if frame.bgEdgeSize > 0 then
 				y = w/frame.bgEdgeSize
@@ -267,16 +279,16 @@ local function AttachCorners(frame,options)
 		nudge = options.edgeSize/16
 	end
 	for k,v in pairs(corners) do
-		local texture = frame["Edge"..k]
+		local texture = frame.edgeTextures[k]
 		texture:ClearAllPoints()
 		texture:SetWidth(options.edgeSize)
 		texture:SetHeight(options.edgeSize)
 		texture:SetTexCoord(v*.125,v*.125+.125, 0,1)
 	end
-	frame["EdgeTOPLEFTCORNER"]:SetPoint(edgePoints["TOPLEFTCORNER"],frame,0,nudge)
-	frame["EdgeBOTLEFTCORNER"]:SetPoint(edgePoints["BOTLEFTCORNER"],frame,0,-nudge)
-	frame["EdgeTOPRIGHTCORNER"]:SetPoint(edgePoints["TOPRIGHTCORNER"],frame,0,nudge)
-	frame["EdgeBOTRIGHTCORNER"]:SetPoint(edgePoints["BOTRIGHTCORNER"],frame,0,-nudge)
+	frame.edgeTextures["TOPLEFTCORNER"]:SetPoint(edgePoints["TOPLEFTCORNER"],frame,0,nudge)
+	frame.edgeTextures["BOTLEFTCORNER"]:SetPoint(edgePoints["BOTLEFTCORNER"],frame,0,-nudge)
+	frame.edgeTextures["TOPRIGHTCORNER"]:SetPoint(edgePoints["TOPRIGHTCORNER"],frame,0,nudge)
+	frame.edgeTextures["BOTRIGHTCORNER"]:SetPoint(edgePoints["BOTRIGHTCORNER"],frame,0,-nudge)
 
 end
 local nk = {
@@ -288,7 +300,7 @@ local nk = {
 -- Attach new style corners
 local function AttachNewCorners(frame)
 	for k,v in pairs(corners) do
-		local texture = frame["Edge"..k]
+		local texture = frame.edgeTextures[k]
 		texture:SetPoint(edgePoints[k], frame)
 		texture:SetWidth(frame.bgEdgeSize)
 		texture:SetHeight(frame.bgEdgeSize)
@@ -300,27 +312,27 @@ local function AttachNewSides(frame,w,h)
 	local offset = 1
 	offset = frame.bgEdgeSize /32
 	-- Left and Right
-	frame["EdgeLEFT"]:SetPoint("TOPLEFT",frame["EdgeTOPLEFTCORNER"],"BOTTOMLEFT",offset,0)
-	frame["EdgeLEFT"]:SetPoint("BOTTOMLEFT",frame["EdgeBOTLEFTCORNER"],"TOPLEFT",offset,0)
-	frame["EdgeLEFT"]:SetWidth(frame.bgEdgeSize/2)
-	frame["EdgeLEFT"]:SetVertTile(true)
-	frame["EdgeLEFT"]:SetHorizTile(false)
-	frame["EdgeRIGHT"]:SetPoint("TOPRIGHT",frame["EdgeTOPRIGHTCORNER"],"BOTTOMRIGHT")
-	frame["EdgeRIGHT"]:SetPoint("BOTTOMRIGHT",frame["EdgeBOTRIGHTCORNER"],"TOPRIGHT")
-	frame["EdgeRIGHT"]:SetWidth(frame.bgEdgeSize/2)
-	frame["EdgeRIGHT"]:SetVertTile(true)
-	frame["EdgeRIGHT"]:SetHorizTile(false)
+	frame.edgeTextures["LEFT"]:SetPoint("TOPLEFT",frame.edgeTextures["TOPLEFTCORNER"],"BOTTOMLEFT",offset,0)
+	frame.edgeTextures["LEFT"]:SetPoint("BOTTOMLEFT",frame.edgeTextures["BOTLEFTCORNER"],"TOPLEFT",offset,0)
+	frame.edgeTextures["LEFT"]:SetWidth(frame.bgEdgeSize/2)
+	frame.edgeTextures["LEFT"]:SetVertTile(true)
+	frame.edgeTextures["LEFT"]:SetHorizTile(false)
+	frame.edgeTextures["RIGHT"]:SetPoint("TOPRIGHT",frame.edgeTextures["TOPRIGHTCORNER"],"BOTTOMRIGHT")
+	frame.edgeTextures["RIGHT"]:SetPoint("BOTTOMRIGHT",frame.edgeTextures["BOTRIGHTCORNER"],"TOPRIGHT")
+	frame.edgeTextures["RIGHT"]:SetWidth(frame.bgEdgeSize/2)
+	frame.edgeTextures["RIGHT"]:SetVertTile(true)
+	frame.edgeTextures["RIGHT"]:SetHorizTile(false)
 	-- Top and Bottom
-	frame["EdgeTOP"]:SetPoint("TOPLEFT",frame["EdgeTOPLEFTCORNER"],"TOPRIGHT",0,-offset)
-	frame["EdgeTOP"]:SetPoint("TOPRIGHT",frame["EdgeTOPRIGHTCORNER"],"TOPLEFT",0,-offset)
-	frame["EdgeTOP"]:SetHeight(frame.bgEdgeSize/2)
-	frame["EdgeTOP"]:SetVertTile(false)
-	frame["EdgeTOP"]:SetHorizTile(true)
-	frame["EdgeBOT"]:SetPoint("BOTTOMLEFT",frame["EdgeBOTLEFTCORNER"],"BOTTOMRIGHT")
-	frame["EdgeBOT"]:SetPoint("BOTTOMRIGHT",frame["EdgeBOTRIGHTCORNER"],"BOTTOMLEFT")
-	frame["EdgeBOT"]:SetHeight(frame.bgEdgeSize/2)
-	frame["EdgeBOT"]:SetVertTile(false)
-	frame["EdgeBOT"]:SetHorizTile(true)
+	frame.edgeTextures["TOP"]:SetPoint("TOPLEFT",frame.edgeTextures["TOPLEFTCORNER"],"TOPRIGHT",0,-offset)
+	frame.edgeTextures["TOP"]:SetPoint("TOPRIGHT",frame.edgeTextures["TOPRIGHTCORNER"],"TOPLEFT",0,-offset)
+	frame.edgeTextures["TOP"]:SetHeight(frame.bgEdgeSize/2)
+	frame.edgeTextures["TOP"]:SetVertTile(false)
+	frame.edgeTextures["TOP"]:SetHorizTile(true)
+	frame.edgeTextures["BOT"]:SetPoint("BOTTOMLEFT",frame.edgeTextures["BOTLEFTCORNER"],"BOTTOMRIGHT")
+	frame.edgeTextures["BOT"]:SetPoint("BOTTOMRIGHT",frame.edgeTextures["BOTRIGHTCORNER"],"BOTTOMLEFT")
+	frame.edgeTextures["BOT"]:SetHeight(frame.bgEdgeSize/2)
+	frame.edgeTextures["BOT"]:SetVertTile(false)
+	frame.edgeTextures["BOT"]:SetHorizTile(true)
 end
 -- Attach the side textures
 local function AttachSides(frame,w,h,options)
@@ -345,7 +357,7 @@ local function AttachSides(frame,w,h,options)
 	-- SOOOO Issue here is when resetting an existing border the top area gets jacked up
 	-- Left and Right
 	for k,v in pairs(vSides) do
-		local texture = frame["Edge"..k]
+		local texture = frame.edgeTextures[k]
 		texture:ClearAllPoints()
 		if k == "RIGHT" then
 			texture:SetPoint(edgePoints[k], frame, nudge,0)
@@ -365,7 +377,7 @@ local function AttachSides(frame,w,h,options)
 	end
 	-- Top and Bottom
 	for k,v in pairs(hSides) do
-		local texture = frame["Edge"..k]
+		local texture = frame.edgeTextures[k]
 		texture:ClearAllPoints()
 		-- Adjusments for placement
 		if k == "TOP" then
@@ -396,19 +408,17 @@ end
 function Backdrop:SetBackdrop(options)
 	if not options then
 		-- Clear any options that were previously set
-		self._backdrop["bgTexture"]:SetTexture(nil)
+		self._backdrop.bgTexture:SetTexture(nil)
 		for k,v in pairs(edgePoints) do
-			self._backdrop["Edge"..k]:SetTexture(nil)
+			self._backdrop.edgeTextures[k]:SetTexture(nil)
 		end
 		table.wipe(self._backdrop_options)
 		return
 	end
 	-- Set textures
 	local vTile = false
-	local hTile = false
-	if options.tile then
-		hTile = true
-	end
+	local hTile = not not options.tile
+
 	local reset = false
 	if self._backdrop_options then
 		table.wipe(self._backdrop_options)
@@ -416,7 +426,25 @@ function Backdrop:SetBackdrop(options)
 	else
 		self._backdrop_options = {}
 	end
--- Copy backdrop options
+
+	-- Insert defaults for missing values
+	if options.tile and not options.tileSize then
+		-- @PHANX: need to check how the default UI handles this case
+		options.tile = false
+	end
+	if options.edgeFile == "" then
+		options.edgeFile = nil
+	end
+	if not options.edgeFile or not options.edgeSize then
+		options.edgeSize = 0
+	end
+	options.insets = options.insets or {}
+	options.insets.left = options.insets.left or 0
+	options.insets.right = options.insets.right or 0
+	options.insets.top = options.insets.top or 0
+	options.insets.bottom = options.insets.bottom or 0
+
+	-- Copy backdrop options
 	self._backdrop_options.bgFile = options.bgFile
 	self._backdrop_options.edgeFile = options.edgeFile
 	self._backdrop_options.tile = options.tile
@@ -427,20 +455,13 @@ function Backdrop:SetBackdrop(options)
 	self._backdrop_options.insets.right = options.insets.right
 	self._backdrop_options.insets.top = options.insets.top
 	self._backdrop_options.insets.bottom = options.insets.bottom
-	if not self._backdrop_options.edgeFile then
-		self._backdrop_options.edgeFile = nil
-		self._backdrop_options.edgeSize = 0
-		self._backdrop_options.insets.left = 0
-		self._backdrop_options.insets.right = 0
-		self._backdrop_options.insets.top = 0
-		self._backdrop_options.insets.bottom = 0
-	end
+
 	if type(options.edgeFile) == "table" then
 		Backdrop.SetNewBackdrop(self,options)
 	else
-		self._backdrop["bgTexture"]:SetTexture(options.bgFile,hTile,vTile)
+		self._backdrop.bgTexture:SetTexture(options.bgFile,hTile,vTile)
 		for k,v in pairs(edgePoints) do
-			self._backdrop["Edge"..k]:SetTexture(options.edgeFile,tilingOptions[k])
+			self._backdrop.edgeTextures[k]:SetTexture(options.edgeFile,tilingOptions[k])
 		end
 		-- Copy options
 		self._backdrop.tileSize = options.tileSize
@@ -482,7 +503,7 @@ end
 
 -- repalce std api call
 function Backdrop:GetBackdropBorderColor()
-	return self._backdrop["EdgeTOP"]:GetVertexColor()
+	return self._backdrop.edgeTextures["TOP"]:GetVertexColor()
 end
 
 --- API
@@ -490,28 +511,28 @@ end
 -- @params r,g,b[,a]
 function Backdrop:SetBackdropBorderColor(...)
 	for k,v in pairs(edgePoints) do
-		self._backdrop["Edge"..k]:SetVertexColor(...)
+		self._backdrop.edgeTextures[k]:SetVertexColor(...)
 	end
 end
 --- API
 -- set the backdrop color
 -- @params r,g,b[,a]
 function Backdrop:SetBackdropColor(...)
-	self._backdrop["bgTexture"]:SetVertexColor(...)
+	self._backdrop.bgTexture:SetVertexColor(...)
 end
 
 --- API
 -- set the backdrop gradient color
 -- @params "orientation", minR, minG, minB, maxR, maxG, maxB
 function Backdrop:SetBackdropGradient(...)
-	self._backdrop["bgTexture"]:SetGradient(...)
+	self._backdrop.bgTexture:SetGradient(...)
 end
 
 --- API
 -- set the backdrop gradient with alpha
 -- @params "orientation", minR, minG, minB, minA, maxR, maxG, maxB, maxA
 function Backdrop:SetBackdropGradientAlpha(...)
-	self._backdrop["bgTexture"]:SetGradientAlpha(...)
+	self._backdrop.bgTexture:SetGradientAlpha(...)
 end
 
 --- API
@@ -520,23 +541,23 @@ end
 function Backdrop:SetBackdropBorderGradient(orientation,minR,minG,minB,maxR,maxG,maxB)
 	orientation = strupper(orientation)
 	if orientation == "HORIZONTAL" then
-		self._backdrop["EdgeTOPLEFTCORNER"]:SetGradient(orientation,minR,minG,minB,minR,minG,minB)
-		self._backdrop["EdgeBOTLEFTCORNER"]:SetGradient(orientation,minR,minG,minB,minR,minG,minB)
-		self._backdrop["EdgeLEFT"]:SetGradient(orientation,minR,minG,minB,minR,minG,minB)
-		self._backdrop["EdgeBOT"]:SetGradient(orientation,minR,minG,minB,maxR,maxG,maxB)
-		self._backdrop["EdgeTOP"]:SetGradient(orientation,minR,minG,minB,maxR,maxG,maxB)
-		self._backdrop["EdgeTOPRIGHTCORNER"]:SetGradient(orientation,maxR,maxG,maxB,maxR,maxG,maxB)
-		self._backdrop["EdgeBOTRIGHTCORNER"]:SetGradient(orientation,maxR,maxG,maxB,maxR,maxG,maxB)
-		self._backdrop["EdgeRIGHT"]:SetGradient(orientation,maxR,maxG,maxB,maxR,maxG,maxB)
+		self._backdrop.edgeTextures["TOPLEFTCORNER"]:SetGradient(orientation,minR,minG,minB,minR,minG,minB)
+		self._backdrop.edgeTextures["BOTLEFTCORNER"]:SetGradient(orientation,minR,minG,minB,minR,minG,minB)
+		self._backdrop.edgeTextures["LEFT"]:SetGradient(orientation,minR,minG,minB,minR,minG,minB)
+		self._backdrop.edgeTextures["BOT"]:SetGradient(orientation,minR,minG,minB,maxR,maxG,maxB)
+		self._backdrop.edgeTextures["TOP"]:SetGradient(orientation,minR,minG,minB,maxR,maxG,maxB)
+		self._backdrop.edgeTextures["TOPRIGHTCORNER"]:SetGradient(orientation,maxR,maxG,maxB,maxR,maxG,maxB)
+		self._backdrop.edgeTextures["BOTRIGHTCORNER"]:SetGradient(orientation,maxR,maxG,maxB,maxR,maxG,maxB)
+		self._backdrop.edgeTextures["RIGHT"]:SetGradient(orientation,maxR,maxG,maxB,maxR,maxG,maxB)
 	else
-		self._backdrop["EdgeTOPLEFTCORNER"]:SetGradient(orientation,maxR,maxG,maxB,maxR,maxG,maxB)
-		self._backdrop["EdgeBOTLEFTCORNER"]:SetGradient(orientation,minR,minG,minB,minR,minG,minB)
-		self._backdrop["EdgeLEFT"]:SetGradient(orientation,minR,minG,minB,maxR,maxG,maxB)
-		self._backdrop["EdgeBOT"]:SetGradient(orientation,minR,minG,minB,minR,minG,minB)
-		self._backdrop["EdgeTOP"]:SetGradient(orientation,maxR,maxG,maxB,maxR,maxG,maxB)
-		self._backdrop["EdgeTOPRIGHTCORNER"]:SetGradient(orientation,maxR,maxG,maxB,maxR,maxG,maxB)
-		self._backdrop["EdgeBOTRIGHTCORNER"]:SetGradient(orientation,minR,minG,minB,minR,minG,minB)
-		self._backdrop["EdgeRIGHT"]:SetGradient(orientation,minR,minG,minB,maxR,maxG,maxB)
+		self._backdrop.edgeTextures["TOPLEFTCORNER"]:SetGradient(orientation,maxR,maxG,maxB,maxR,maxG,maxB)
+		self._backdrop.edgeTextures["BOTLEFTCORNER"]:SetGradient(orientation,minR,minG,minB,minR,minG,minB)
+		self._backdrop.edgeTextures["LEFT"]:SetGradient(orientation,minR,minG,minB,maxR,maxG,maxB)
+		self._backdrop.edgeTextures["BOT"]:SetGradient(orientation,minR,minG,minB,minR,minG,minB)
+		self._backdrop.edgeTextures["TOP"]:SetGradient(orientation,maxR,maxG,maxB,maxR,maxG,maxB)
+		self._backdrop.edgeTextures["TOPRIGHTCORNER"]:SetGradient(orientation,maxR,maxG,maxB,maxR,maxG,maxB)
+		self._backdrop.edgeTextures["BOTRIGHTCORNER"]:SetGradient(orientation,minR,minG,minB,minR,minG,minB)
+		self._backdrop.edgeTextures["RIGHT"]:SetGradient(orientation,minR,minG,minB,maxR,maxG,maxB)
 	end
 end
 
@@ -546,23 +567,23 @@ end
 function Backdrop:SetBackdropBorderGradientAlpha(orientation,minR,minG,minB,minA,maxR,maxG,maxB,maxA)
 	orientation = strupper(orientation)
 	if orientation == "HORIZONTAL" then
-		self._backdrop["EdgeTOPLEFTCORNER"]:SetGradientAlpha(orientation,minR,minG,minB,minA,minR,minG,minB,minA)
-		self._backdrop["EdgeBOTLEFTCORNER"]:SetGradientAlpha(orientation,minR,minG,minB,minA,minR,minG,minB,minA)
-		self._backdrop["EdgeLEFT"]:SetGradientAlpha(orientation,minR,minG,minB,minA,minR,minG,minB,minA)
-		self._backdrop["EdgeBOT"]:SetGradientAlpha(orientation,minR,minG,minB,minA,maxR,maxG,maxB,maxA)
-		self._backdrop["EdgeTOP"]:SetGradientAlpha(orientation,minR,minG,minB,minA,maxR,maxG,maxB,maxA)
-		self._backdrop["EdgeTOPRIGHTCORNER"]:SetGradientAlpha(orientation,maxR,maxG,maxB,maxA,maxR,maxG,maxB,maxA)
-		self._backdrop["EdgeBOTRIGHTCORNER"]:SetGradientAlpha(orientation,maxR,maxG,maxB,maxA,maxR,maxG,maxB,maxA)
-		self._backdrop["EdgeRIGHT"]:SetGradientAlpha(orientation,maxR,maxG,maxB,maxA,maxR,maxG,maxB,maxA)
+		self._backdrop.edgeTextures["TOPLEFTCORNER"]:SetGradientAlpha(orientation,minR,minG,minB,minA,minR,minG,minB,minA)
+		self._backdrop.edgeTextures["BOTLEFTCORNER"]:SetGradientAlpha(orientation,minR,minG,minB,minA,minR,minG,minB,minA)
+		self._backdrop.edgeTextures["LEFT"]:SetGradientAlpha(orientation,minR,minG,minB,minA,minR,minG,minB,minA)
+		self._backdrop.edgeTextures["BOT"]:SetGradientAlpha(orientation,minR,minG,minB,minA,maxR,maxG,maxB,maxA)
+		self._backdrop.edgeTextures["TOP"]:SetGradientAlpha(orientation,minR,minG,minB,minA,maxR,maxG,maxB,maxA)
+		self._backdrop.edgeTextures["TOPRIGHTCORNER"]:SetGradientAlpha(orientation,maxR,maxG,maxB,maxA,maxR,maxG,maxB,maxA)
+		self._backdrop.edgeTextures["BOTRIGHTCORNER"]:SetGradientAlpha(orientation,maxR,maxG,maxB,maxA,maxR,maxG,maxB,maxA)
+		self._backdrop.edgeTextures["RIGHT"]:SetGradientAlpha(orientation,maxR,maxG,maxB,maxA,maxR,maxG,maxB,maxA)
 	else
-		self._backdrop["EdgeTOPLEFTCORNER"]:SetGradientAlpha(orientation,maxR,maxG,maxB,maxA,maxR,maxG,maxB,maxA)
-		self._backdrop["EdgeBOTLEFTCORNER"]:SetGradientAlpha(orientation,minR,minG,minB,minA,minR,minG,minB,minA)
-		self._backdrop["EdgeLEFT"]:SetGradientAlpha(orientation,minR,minG,minB,minA,maxR,maxG,maxB,maxA)
-		self._backdrop["EdgeBOT"]:SetGradientAlpha(orientation,minR,minG,minB,minA,minR,minG,minB,minA)
-		self._backdrop["EdgeTOP"]:SetGradientAlpha(orientation,maxR,maxG,maxB,maxA,maxR,maxG,maxB,maxA)
-		self._backdrop["EdgeTOPRIGHTCORNER"]:SetGradientAlpha(orientation,maxR,maxG,maxB,maxA,maxR,maxG,maxB,maxA)
-		self._backdrop["EdgeBOTRIGHTCORNER"]:SetGradientAlpha(orientation,minR,minG,minB,minA,minR,minG,minB,minA)
-		self._backdrop["EdgeRIGHT"]:SetGradientAlpha(orientation,minR,minG,minB,minA,maxR,maxG,maxB,maxA)
+		self._backdrop.edgeTextures["TOPLEFTCORNER"]:SetGradientAlpha(orientation,maxR,maxG,maxB,maxA,maxR,maxG,maxB,maxA)
+		self._backdrop.edgeTextures["BOTLEFTCORNER"]:SetGradientAlpha(orientation,minR,minG,minB,minA,minR,minG,minB,minA)
+		self._backdrop.edgeTextures["LEFT"]:SetGradientAlpha(orientation,minR,minG,minB,minA,maxR,maxG,maxB,maxA)
+		self._backdrop.edgeTextures["BOT"]:SetGradientAlpha(orientation,minR,minG,minB,minA,minR,minG,minB,minA)
+		self._backdrop.edgeTextures["TOP"]:SetGradientAlpha(orientation,maxR,maxG,maxB,maxA,maxR,maxG,maxB,maxA)
+		self._backdrop.edgeTextures["TOPRIGHTCORNER"]:SetGradientAlpha(orientation,maxR,maxG,maxB,maxA,maxR,maxG,maxB,maxA)
+		self._backdrop.edgeTextures["BOTRIGHTCORNER"]:SetGradientAlpha(orientation,minR,minG,minB,minA,minR,minG,minB,minA)
+		self._backdrop.edgeTextures["RIGHT"]:SetGradientAlpha(orientation,minR,minG,minB,minA,maxR,maxG,maxB,maxA)
 	end
 end
 
@@ -570,9 +591,9 @@ end
 -- New Backdrop function, for use with the new table layout defined above.
 -- called when you pass a new table layout to SetBackdrop
 function Backdrop:SetNewBackdrop(options)
-	self._backdrop["bgTexture"]:SetTexture(options.bgFile,hTile,vTile)
+	self._backdrop.bgTexture:SetTexture(options.bgFile,hTile,vTile)
 	for k,v in pairs(edgePoints) do
-		self._backdrop["Edge"..k]:SetTexture(options.edgeFile[k],tilingOptions[k])
+		self._backdrop.edgeTextures[k]:SetTexture(options.edgeFile[k],tilingOptions[k])
 	end
 	-- Copy options
 	self._backdrop.tileSize = options.tileSize

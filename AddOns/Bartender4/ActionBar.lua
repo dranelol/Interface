@@ -1,5 +1,5 @@
 --[[
-	Copyright (c) 2009-2012, Hendrik "Nevcairiel" Leppkes < h.leppkes at gmail dot com >
+	Copyright (c) 2009-2014, Hendrik "Nevcairiel" Leppkes < h.leppkes at gmail dot com >
 	All rights reserved.
 ]]
 local _, Bartender4 = ...
@@ -21,7 +21,8 @@ local initialPosition
 do
 	-- Sets the Bar to its initial Position in the Center of the Screen
 	function initialPosition(bar)
-		bar:ClearSetPoint("CENTER", 0, -250 + (bar.id-1) * 38)
+		local offset = type(bar.id) == "number" and bar.id or 1
+		bar:ClearSetPoint("CENTER", 0, -250 + (offset-1) * 38)
 		bar:SavePosition()
 	end
 end
@@ -32,6 +33,7 @@ function ActionBar:ApplyConfig(config)
 
 	if not self.config.position.x then initialPosition(self) end
 
+	self:SetupSmartTarget()
 	self:UpdateButtons()
 	self:UpdateButtonConfig()
 end
@@ -61,7 +63,7 @@ function ActionBar:UpdateButtonConfig()
 		self:ForAll("UpdateConfig", self.buttonConfig)
 	end
 
-	self:ForAll("SetAttribute", "autoassist", self.config.autoassist)
+	self:ForAll("SetAttribute", "smarttarget", self.config.autoassist or self.config.mouseover)
 	-- self casting
 	self:ForAll("SetAttribute", "checkselfcast", Bartender4.db.profile.selfcastmodifier and true or nil)
 	self:ForAll("SetAttribute", "checkfocuscast", Bartender4.db.profile.focuscastmodifier and true or nil)
@@ -72,28 +74,59 @@ function ActionBar:UpdateButtonConfig()
 	self:ForAll("UpdateState")
 end
 
-local UpdateAutoAssist = [[
+local UpdateSmartTarget = [[
 	local state, type, action = ...
-	self:SetAttribute("assisttype", nil)
+	self:SetAttribute("targettype", nil)
 	self:SetAttribute("unit", nil)
-	if self:GetAttribute("autoassist") then
+	if self:GetAttribute("smarttarget") then
 		if type == "action" then
 			type, action = GetActionInfo(action)
 		end
 		if type == "spell" and action > 0 then
+			if BT_Spell_Overrides[action] then action = BT_Spell_Overrides[action] end
 			local id, subtype = FindSpellBookSlotBySpellID(action), "spell"
 			if id and id > 0 then
 				if IsHelpfulSpell(id, subtype) then
-					self:SetAttribute("assisttype", 1)
-					self:SetAttribute("unit", self:GetAttribute("assist_help"))
+					self:SetAttribute("targettype", 1)
+					self:SetAttribute("unit", self:GetAttribute("target_help"))
 				elseif IsHarmfulSpell(id, subtype) then
-					self:SetAttribute("assisttype", 2)
-					self:SetAttribute("unit", self:GetAttribute("assist_harm"))
+					self:SetAttribute("targettype", 2)
+					self:SetAttribute("unit", self:GetAttribute("target_harm"))
 				end
 			end
 		end
 	end
 ]]
+
+function ActionBar:SetupSmartTarget()
+	self:Execute([[
+		BT_Spell_Overrides = newtable()
+		BT_Spell_Overrides[93402] = 8921 -- sunfire -> moonfire
+	]])
+
+	self:SetAttribute("ChildUpdateSmartTarget", UpdateSmartTarget)
+end
+
+function ActionBar:SetupSmartButton(button)
+	button:SetAttribute("OnStateChanged", [[
+		local header = self:GetParent()
+		header:RunFor(self, header:GetAttribute("ChildUpdateSmartTarget"), ...)
+	]])
+
+	button:SetAttribute("_childupdate-target-help", [[
+		self:SetAttribute("target_help", message)
+		if self:GetAttribute("targettype") == 1 then
+			self:SetAttribute("unit", message)
+		end
+	]])
+
+	button:SetAttribute("_childupdate-target-harm", [[
+		self:SetAttribute("target_harm", message)
+		if self:GetAttribute("targettype") == 2 then
+			self:SetAttribute("unit", message)
+		end
+	]])
+end
 
 local customExitButton = {
 	func = function(button)
@@ -129,21 +162,7 @@ function ActionBar:UpdateButtons(numbuttons)
 			buttons[i]:AddToButtonFacade(self.LBFGroup)
 		end
 
-		buttons[i]:SetAttribute("OnStateChanged", UpdateAutoAssist)
-
-		buttons[i]:SetAttribute("_childupdate-assist-help", [[
-			self:SetAttribute("assist_help", message)
-			if self:GetAttribute("assisttype") == 1 then
-				self:SetAttribute("unit", message)
-			end
-		]])
-
-		buttons[i]:SetAttribute("_childupdate-assist-harm", [[
-			self:SetAttribute("assist_harm", message)
-			if self:GetAttribute("assisttype") == 2 then
-				self:SetAttribute("unit", message)
-			end
-		]])
+		self:SetupSmartButton(buttons[i])
 
 		if i == 12 then
 			buttons[i]:SetState(11, "custom", customExitButton)

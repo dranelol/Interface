@@ -61,7 +61,7 @@ local rowTextFunctions = {
 	end,
 
 	GetSellerText = function(seller)
-		if seller == UnitName("player") then
+		if TSMAPI:IsPlayer(seller) then
 			return "|cffffff00"..seller.."|r"
 		else
 			return seller or ""
@@ -589,7 +589,7 @@ function TSMAPI:CreateAuctionResultsTable(parent, handlers, quickBuyout, isDestr
 		
 		row.cols = {}
 		for j=1, #colInfo do
-			local col = CreateFrame("Button", rtName.."Row"..i.."Col"..j, row)
+			local col = CreateFrame("Button", nil, row)
 			local text = col:CreateFontString()
 			if TSM.db.profile.showBids and colInfo[j].isPrice then
 				text:SetFont(TSMAPI.Design:GetContentFont(), min(13, rt.ROW_HEIGHT/2 - 2))

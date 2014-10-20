@@ -18,6 +18,7 @@ local L = private.L
 local panel = _G.CreateFrame("Frame")
 private.Config = panel
 
+local Toast = _G.LibStub("LibToast-1.0")
 
 -------------------------------------------------------------------------------
 -- Config UI.
@@ -64,7 +65,7 @@ function print_time_checkbox.setFunc(is_enabled)
 end
 
 local alert_icon_dropdown = _G.CreateFrame("Frame", "_NPCScanConfigIconDropdown", panel, "UIDropDownMenuTemplate")
-alert_icon_dropdown:SetPoint("TOPLEFT", panel.print_time_checkbox , "BOTTOMLEFT", -10, -20)
+alert_icon_dropdown:SetPoint("TOPLEFT", panel.print_time_checkbox, "BOTTOMLEFT", -10, -20)
 alert_icon_dropdown:SetPoint("RIGHT", -12, 0)
 alert_icon_dropdown:EnableMouse(true)
 alert_icon_dropdown.tooltipText = L.CONFIG_ALERT_SOUND_DESC
@@ -79,28 +80,24 @@ do
 
 
 	function alert_icon_dropdown:initialize(level)
-		if not level then
+		if not level or level ~= 1 then
 			return
 		end
 
 		local current_icon = private.OptionsCharacter.TargetIcon
 		local info = _G.UIDropDownMenu_CreateInfo()
 
-		if level == 1 then
-			info.func = Icon_Entry_OnSelect
-			local index = 1
-			while index < 9 do
-				local iconinfo = UnitPopupButtons["RAID_TARGET_"..index]
-				info.text = iconinfo.text
-				info.arg1 = index
-				info.checked = current_icon == index
-				info.icon = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_"..index
-				info.colorCode = string.format("|cFF%02x%02x%02x", iconinfo.color.r*255, iconinfo.color.g*255, iconinfo.color.b*255);
+		info.func = Icon_Entry_OnSelect
 
-				_G.UIDropDownMenu_AddButton(info, level)
-				index = index + 1
-			end
-			
+		for index = 1, private.NUM_RAID_ICONS do
+			local icon_info = _G.UnitPopupButtons["RAID_TARGET_" .. index]
+			info.text = icon_info.text
+			info.arg1 = index
+			info.checked = current_icon == index
+			info.icon = [[Interface\TargetingFrame\UI-RaidTargetingIcon_]] .. index
+			info.colorCode = ("|cFF%02x%02x%02x"):format(icon_info.color.r * 255, icon_info.color.g * 255, icon_info.color.b * 255)
+
+			_G.UIDropDownMenu_AddButton(info, level)
 		end
 	end
 end -- do-block
@@ -124,8 +121,19 @@ test_button.tooltipText = L.CONFIG_TEST_DESC
 test_button:SetScript("OnEnter", panel.ControlOnEnter)
 test_button:SetScript("OnLeave", _G.GameTooltip_Hide)
 test_button:SetScript("OnClick", function(self)
+
 	private.Print(L.FOUND_FORMAT:format(L.CONFIG_TEST_NAME), _G.GREEN_FONT_COLOR)
+	private.Print(L.CONFIG_TEST_HELP_FORMAT:format("CTRL"))
+
+	local alert_text = L.FOUND_FORMAT:format(L.CONFIG_TEST_NAME)
+
+	if private.OptionsCharacter.ShowAlertAsToast then
+		Toast:Spawn("_NPCScanAlertToast", alert_text)
+	else
+		private.Print(alert_text, _G.GREEN_FONT_COLOR)
+	end
 	private.Print(L.CONFIG_TEST_HELP_FORMAT:format(_G.GetModifiedClick("_NPCSCAN_BUTTONDRAG")))
+
 
 	private.Button:SetNPC("player", L.CONFIG_TEST_NAME, L.CONFIG_TEST)
 end)
@@ -133,8 +141,31 @@ end)
 panel.test_button = test_button
 
 
+local show_as_toast_checkbox = _G.CreateFrame("CheckButton", "_NPCScanConfigShowAsToastCheckbox", alert_options_panel, "InterfaceOptionsCheckButtonTemplate")
+show_as_toast_checkbox:SetPoint("TOPLEFT", test_button, "BOTTOMLEFT", -2, -16)
+_G[show_as_toast_checkbox:GetName() .. "Text"]:SetText(L.CONFIG_ALERT_SHOW_AS_TOAST)
+show_as_toast_checkbox.tooltipText = L.CONFIG_ALERT_SHOW_AS_TOAST_DESC
+
+panel.show_as_toast_checkbox = show_as_toast_checkbox
+
+function show_as_toast_checkbox.setFunc(is_enabled)
+	private.SetShowAsToast(is_enabled == "1")
+end
+
+
+local persistent_toast_checkbox = _G.CreateFrame("CheckButton", "_NPCScanConfigPersistentToastCheckbox", alert_options_panel, "InterfaceOptionsCheckButtonTemplate")
+persistent_toast_checkbox:SetPoint("TOPLEFT", show_as_toast_checkbox, "TOPRIGHT", ( _G[show_as_toast_checkbox:GetName() .. "Text"]:GetStringWidth())+15, 0)
+_G[persistent_toast_checkbox:GetName() .. "Text"]:SetText(L.CONFIG_ALERT_PERSISTENT_TOAST)
+persistent_toast_checkbox.tooltipText = L.CONFIG_ALERT_PERSISTENT_TOAST_DESC
+
+panel.persistent_toast_checkbox = persistent_toast_checkbox
+
+function persistent_toast_checkbox.setFunc(is_enabled)
+	private.SetPersistentToast(is_enabled == "1")
+end
+
 local alert_unmute_checkbox = _G.CreateFrame("CheckButton", "_NPCScanConfigUnmuteCheckbox", alert_options_panel, "InterfaceOptionsCheckButtonTemplate")
-alert_unmute_checkbox:SetPoint("TOPLEFT", test_button, "BOTTOMLEFT", -2, -16)
+alert_unmute_checkbox:SetPoint("TOPLEFT", show_as_toast_checkbox, "BOTTOMLEFT", 0, -8)
 _G[alert_unmute_checkbox:GetName() .. "Text"]:SetText(L.CONFIG_ALERT_UNMUTE)
 alert_unmute_checkbox.tooltipText = L.CONFIG_ALERT_UNMUTE_DESC
 
@@ -143,7 +174,6 @@ panel.alert_unmute_checkbox = alert_unmute_checkbox
 function alert_unmute_checkbox.setFunc(is_enabled)
 	private.SetAlertSoundUnmute(is_enabled == "1")
 end
-
 
 local screen_edge_flash_checkbox = _G.CreateFrame("CheckButton", "_NPCScanConfigScreenFlashCheckbox", alert_options_panel, "InterfaceOptionsCheckButtonTemplate")
 screen_edge_flash_checkbox:SetPoint("TOPLEFT", alert_unmute_checkbox, "BOTTOMLEFT", 0, -8)
@@ -156,8 +186,51 @@ function screen_edge_flash_checkbox.setFunc(is_enabled)
 	private.SetAlertScreenEdgeFlash(is_enabled == "1")
 end
 
+local viginette_scan_checkbox = _G.CreateFrame("CheckButton", "_NPCScanVignetteScanCheckbox", panel, "InterfaceOptionsCheckButtonTemplate")
+viginette_scan_checkbox:SetPoint("TOPLEFT", screen_edge_flash_checkbox, "BOTTOMLEFT", 0, -8)
+viginette_scan_checkbox.tooltipText = L.VIGNETTE_SCAN_DESC
+
+panel.viginette_scan_checkbox = viginette_scan_checkbox
+
+local viginette_scan_label = _G[viginette_scan_checkbox:GetName() .. "Text"]
+viginette_scan_label:SetText(L.VIGNETTE_SCAN)
+viginette_scan_checkbox:SetHitRectInsets(4, 4 - viginette_scan_label:GetStringWidth(), 4, 4)
+
+function viginette_scan_checkbox.setFunc(is_enabled)
+	private.SetVignetteScan(is_enabled == "1")
+end
+
+local mouseover_scan_checkbox = _G.CreateFrame("CheckButton", "_NPCScanMouseoverScanCheckbox", panel, "InterfaceOptionsCheckButtonTemplate")
+mouseover_scan_checkbox:SetPoint("TOPLEFT", viginette_scan_checkbox, "BOTTOMLEFT", 0, -8)
+mouseover_scan_checkbox.tooltipText = L.MOUSEOVER_SCAN_DESC
+
+panel.mouseover_scan_checkbox = mouseover_scan_checkbox
+
+local mouseover_scan_label = _G[mouseover_scan_checkbox:GetName() .. "Text"]
+mouseover_scan_label:SetText(L.MOUSEOVER_SCAN)
+mouseover_scan_checkbox:SetHitRectInsets(4, 4 - mouseover_scan_label:GetStringWidth(), 4, 4)
+
+function mouseover_scan_checkbox.setFunc(is_enabled)
+	private.SetMouseoverScan(is_enabled == "1")
+end
+
+
+local block_flight_scan_checkbox = _G.CreateFrame("CheckButton", "_NPCScanBlockFlightScanCheckbox", panel, "InterfaceOptionsCheckButtonTemplate")
+block_flight_scan_checkbox:SetPoint("TOPLEFT", mouseover_scan_checkbox, "BOTTOMLEFT", 0, -8)
+block_flight_scan_checkbox.tooltipText = L.BLOCKFLIGHTSCAN_DESC
+
+panel.block_flight_scan_checkbox = block_flight_scan_checkbox
+
+local block_flight_scan_label = _G[block_flight_scan_checkbox:GetName() .. "Text"]
+block_flight_scan_label:SetText(L.BLOCKFLIGHTSCAN)
+block_flight_scan_checkbox:SetHitRectInsets(4, 4 - block_flight_scan_label:GetStringWidth(), 4, 4)
+
+function block_flight_scan_checkbox.setFunc(is_enabled)
+	private.SetBlockFlightScan(is_enabled == "1")
+end
+
 local alert_sound_dropdown = _G.CreateFrame("Frame", "_NPCScanConfigSoundDropdown", alert_options_panel, "UIDropDownMenuTemplate")
-alert_sound_dropdown:SetPoint("TOPLEFT", screen_edge_flash_checkbox, "BOTTOMLEFT", -12, -18)
+alert_sound_dropdown:SetPoint("TOPLEFT", block_flight_scan_checkbox, "BOTTOMLEFT", -12, -18)
 alert_sound_dropdown:SetPoint("RIGHT", -12, 0)
 alert_sound_dropdown:EnableMouse(true)
 alert_sound_dropdown.tooltipText = L.CONFIG_ALERT_SOUND_DESC
@@ -246,7 +319,7 @@ do
 			info.arg1 = _G.MUTE
 			info.checked = current_sound == _G.MUTE
 			_G.UIDropDownMenu_AddButton(info, level)
-			
+
 
 
 
@@ -319,6 +392,7 @@ _G.InterfaceOptions_AddCategory(panel)
 
 -- Add stub panel to load tools UI
 local _, _, _, tools_enabled = _G.GetAddOnInfo("_NPCScan.Tools")
+
 if tools_enabled then
 	local tools_panel = _G.CreateFrame("Frame")
 	tools_panel.name = L.TOOLS_TITLE

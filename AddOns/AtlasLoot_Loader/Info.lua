@@ -1,4 +1,5 @@
-﻿--[[
+﻿-- $Id: Info.lua 4276 2013-09-21 21:08:59Z hegarol $
+--[[
 Atlasloot Enhanced
 Author Hegarol
 Loot browser associating loot with instance bosses
@@ -13,18 +14,18 @@ AtlasLoot.AddonInfo = {
 	support = {
 		email = "manager@atlasloot.net",
 		forum = "http://www.atlasloot.net/",
-		curse = "http://wow.curse.com/downloads/wow-addons/details/atlasloot-enhanced.aspx",
+		curse = "http://www.curse.com/addons/wow/atlasloot-enhanced",
 		wowinterface = "http://www.wowinterface.com/downloads/info5541-AtlasLootEnhanced.html",
 	},
 	authors = {
 		["Hegarol"] = {
 			email = "hegarol@atlasloot.net",
-			ingame = {"Hegarol@Dun Morogh"},
+			ingame = {"Hegarol@Dun Morogh", "Areghol@Dun Morogh"},
 		},
 		["Lag"] = {
 			email = "lag@atlasloot.net",
-			ingame = {"Lâg@Arthas", "Calî@Arthas", "Shijera@Arthas"},
-			friends = {"Malina@Nera'thor", "Slýk@Nera'thor", "Hernandez@Arthas"},
+			ingame = {"Lág@Ysera", "Calî@Ysera", "Shijera@Ysera", "Làg@Ysera", "Terija@Ysera", "Choreria@Ysera"},
+			friends = {"Meena@Ysera", "Purzlschn@Ysera"},
 		},
 		["Celellach"] = {
 			email = "celellach@atlasloot.net",
@@ -33,6 +34,10 @@ AtlasLoot.AddonInfo = {
 		["Daviesh"] = {
 			email = "daviesh@atlasloot.net",
 			ingame = {"Daviesh@Thaurissan"},
+		},
+		["Dynaletik"] = {
+			email = "dynaletik@gmail.com",
+			ingame = {"Dynaletik@Nera'thor", "Dynarix@Nera'thor"},
 		},
 	},
 	help = {

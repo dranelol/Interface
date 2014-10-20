@@ -25,6 +25,7 @@ local dynamicButtons = {
 	MiniMapRecordingButton = L["Video Recording Button (Mac OSX Only, When Available)"],
 	MiniMapVoiceChatFrame = L["Voice Chat Button (When Available)"],
 	QueueStatusMinimapButton = L["Queue Status (PvP/LFG) Button (When Available)"],
+	GarrisonLandingPageMinimapButton = L["Garrison Button (When Available)"],
 }
 local addonButtons = { -- For the rare addons that don't use LibDBIcon for some reason :(
 	EnxMiniMapIcon = "Enchantrix",
@@ -54,6 +55,10 @@ local addonButtons = { -- For the rare addons that don't use LibDBIcon for some 
 	RBSMinimapButton = "Raid Buff Status",
 	BankItems_MinimapButton = "BankItems",
 	OQ_MinimapButton = "oQueue",
+	ItemRackMinimapFrame = "ItemRack",
+	MageNug_MinimapFrame = "Mage Nuggets",
+	CraftBuster_MinimapFrame = "CraftBuster",
+	wlMinimapButton = "Wowhead Looter",
 }
 
 local options = {
@@ -265,7 +270,7 @@ do
 		-- Minimap or Minimap icons including nil checks to compensate for other addons
 		local f, focus = anim:GetParent(), GetMouseFocus()
 		local n = f:GetName()
-		if focus and ((focus:GetName() == "Minimap") or (focus:GetParent() and focus:GetParent():GetName() and focus:GetParent():GetName():find("Mini[Mm]ap"))) then
+		if focus and not focus:IsForbidden() and ((focus:GetName() == "Minimap") or (focus:GetParent() and focus:GetParent():GetName() and focus:GetParent():GetName():find("Mini[Mm]ap"))) then
 			f:SetAlpha(1)
 		elseif not mod.db.visibilitySettings[n] or mod.db.visibilitySettings[n] == "hover" then -- Check this again in case the user changed the setting to "visible" during fade
 			f:SetAlpha(0)
@@ -295,7 +300,7 @@ do
 	local OnLeave = function()
 		if not mod.db.controlVisibility or moving then return end
 		local focus = GetMouseFocus() -- Minimap or Minimap icons including nil checks to compensate for other addons
-		if focus and ((focus:GetName() == "Minimap") or (focus:GetParent() and focus:GetParent():GetName() and focus:GetParent():GetName():find("Mini[Mm]ap"))) then
+		if focus and not focus:IsForbidden() and ((focus:GetName() == "Minimap") or (focus:GetParent() and focus:GetParent():GetName() and focus:GetParent():GetName():find("Mini[Mm]ap"))) then
 			fadeStop = true
 			return
 		end
@@ -352,6 +357,10 @@ do
 				-- Configure dragging
 				if n == "MiniMapTracking" then
 					self:MakeMovable(MiniMapTrackingButton, f)
+				elseif n == "CraftBuster_MinimapFrame" then
+					if CraftBuster_MinimapButtonButton then
+						self:MakeMovable(CraftBuster_MinimapButtonButton, f)
+					end
 				else
 					self:MakeMovable(f)
 				end

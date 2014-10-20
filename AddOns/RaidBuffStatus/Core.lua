@@ -5,7 +5,7 @@ local GI = LibStub("LibGroupInSpecT-1.0")
 
 RaidBuffStatus = LibStub("AceAddon-3.0"):NewAddon("RaidBuffStatus", "AceEvent-3.0", "AceTimer-3.0", "AceConsole-3.0", "AceSerializer-3.0")
 RBS_svnrev = {}
-RBS_svnrev["Core.lua"] = select(3,string.find("$Revision: 657 $", ".* (.*) .*"))
+RBS_svnrev["Core.lua"] = select(3,string.find("$Revision: 679 $", ".* (.*) .*"))
 
 local addon = RaidBuffStatus
 local profile
@@ -33,6 +33,7 @@ local nextitemcheck = 0
 local currentsheep = {}
 local currentsheepspell = {}
 local lasthealerdrinking = 0
+local maxdistance = 100000
 addon.lasttobuf = ""
 addon.version = ""
 addon.revision = ""
@@ -196,11 +197,11 @@ local utilinit = {
 	[92649]  = { category="Cauldron", itemid=62288, limit=10, slow=true, duration=600 }, -- Cauldron of Battle
 	[92712]  = { category="Cauldron", itemid=65460, limit=30, slow=true, duration=600 }, -- Big Cauldron of Battle
 
-	[43987]  = { category="Table", label=L["Refreshment Table"], slow=true, duration=180 }, -- Ritual of Refreshment 
+	[43987]  = { category="Table", cast=true, slow=true, duration=180 }, -- Ritual of Refreshment 
 
-	[29893]  = { category="Soulwell", itemid=5512, label=L["Soul Well"], slow=true, duration=120 },  -- Create Soulwell 
+	[29893]  = { category="Soulwell", itemid=5512, cast=true, slow=true, duration=120 },  -- Create Soulwell 
 
-	[126459] = { category="Blingtron", itemid=87214, label=L["Blingtron"], duration=600, ungrouped=true }, -- Blingtron 4000
+	[126459] = { category="Blingtron", itemid=87214, duration=600, ungrouped=true }, -- Blingtron 4000
 
 	[54710]  = { category="Mailbox", item=40768, label=L["Mailbox"], duration=600, ungrouped=true }, 
 
@@ -209,24 +210,24 @@ local utilinit = {
 	[54711]  = { category="Repair", itemid=40769, label=L["Repair Bot"], duration=600, ungrouped=true }, -- Scrapbot
 	[67826]  = { category="Repair", itemid=49040, label=L["Repair Bot"], duration=600, ungrouped=true }, -- Jeeves
 
-	[53142]  = { category="Portal", slow=true }, -- Dalaran
-	[11419]  = { category="Portal", slow=true }, -- Darnassus
-	[32266]  = { category="Portal", slow=true }, -- Exodar
-	[11416]  = { category="Portal", slow=true }, -- Ironforge
-	[11417]  = { category="Portal", slow=true }, -- Orgrimmar
-	[35717]  = { category="Portal", slow=true }, -- Shattrath
-	[33691]  = { category="Portal", slow=true }, -- Shattrath
-	[32267]  = { category="Portal", slow=true }, -- Silvermoon
-	[49361]  = { category="Portal", slow=true }, -- Stonard
-	[10059]  = { category="Portal", slow=true }, -- Stormwind
-	[49360]  = { category="Portal", slow=true }, -- Theramore
-	[11420]  = { category="Portal", slow=true }, -- Thunder Bluff
-	[88346]  = { category="Portal", slow=true }, -- Tol Barad
-	[88345]  = { category="Portal", slow=true }, -- Tol Barad
-	[11418]  = { category="Portal", slow=true }, -- Undercity
-	[132626] = { category="Portal", slow=true }, -- Vale of Eternal Blossoms
-	[132620] = { category="Portal", slow=true }, -- Vale of Eternal Blossoms
-	[120146] = { category="Portal", slow=true }, -- Ancient Dalaran
+	[53142]  = { category="Portal", slow=true, cast=true }, -- Dalaran
+	[11419]  = { category="Portal", slow=true, cast=true }, -- Darnassus
+	[32266]  = { category="Portal", slow=true, cast=true }, -- Exodar
+	[11416]  = { category="Portal", slow=true, cast=true }, -- Ironforge
+	[11417]  = { category="Portal", slow=true, cast=true }, -- Orgrimmar
+	[35717]  = { category="Portal", slow=true, cast=true }, -- Shattrath
+	[33691]  = { category="Portal", slow=true, cast=true }, -- Shattrath
+	[32267]  = { category="Portal", slow=true, cast=true }, -- Silvermoon
+	[49361]  = { category="Portal", slow=true, cast=true }, -- Stonard
+	[10059]  = { category="Portal", slow=true, cast=true }, -- Stormwind
+	[49360]  = { category="Portal", slow=true, cast=true }, -- Theramore
+	[11420]  = { category="Portal", slow=true, cast=true }, -- Thunder Bluff
+	[88346]  = { category="Portal", slow=true, cast=true }, -- Tol Barad
+	[88345]  = { category="Portal", slow=true, cast=true }, -- Tol Barad
+	[11418]  = { category="Portal", slow=true, cast=true }, -- Undercity
+	[132626] = { category="Portal", slow=true, cast=true }, -- Vale of Eternal Blossoms
+	[132620] = { category="Portal", slow=true, cast=true }, -- Vale of Eternal Blossoms
+	[120146] = { category="Portal", slow=true, cast=true }, -- Ancient Dalaran
 }
 local utildata = {}
 function addon:UpdateUtilData()
@@ -425,6 +426,7 @@ function addon:OnInitialize()
 		HowMany = 4,
 		HowOften = 3,
 		foodlevel = 250,
+		ignoreeating = false,
 		OldFlasksElixirs = false,
 		FeastTT = true,
 --		ShowGroupNumber = false,
@@ -567,6 +569,7 @@ function addon:OnInitialize()
 
 		antispam = true,
 		nonleadspeak = false,
+		announceExpiration = true,
 		feastautowhisper = true,
 		cauldronsautowhisper = false,
 		wellautowhisper = false,
@@ -587,17 +590,17 @@ function addon:OnInitialize()
 		buffsort = {},
 	}}
 	local BF = addon.BF
-	for buffcheck, _ in pairs(BF) do
-		if BF[buffcheck].list then
-			report[BF[buffcheck].list] = {} -- add empty list to report
+	for buffcheck, info in pairs(BF) do
+		if info.list then
+			report[info.list] = {} -- add empty list to report
 		end
-		if BF[buffcheck].default then  -- if default setting for buff check is enabled
-			profiledefaults.profile[BF[buffcheck].check] = true
+		if info.default then  -- if default setting for buff check is enabled
+			profiledefaults.profile[info.check] = true
 		else
-			profiledefaults.profile[BF[buffcheck].check] = false
+			profiledefaults.profile[info.check] = false
 		end
 		for _, defname in ipairs({"buff", "warning", "dash", "dashcombat", "boss", "trash"}) do
-			if BF[buffcheck]["default" .. defname] then
+			if info["default" .. defname] then
 				profiledefaults.profile[buffcheck .. defname] = true
 			else
 				profiledefaults.profile[buffcheck .. defname] = false
@@ -608,6 +611,11 @@ function addon:OnInitialize()
 		profiledefaults.profile.buffsort[3] = "defaultorder"
 		profiledefaults.profile.buffsort[4] = "defaultorder"
 		profiledefaults.profile.buffsort[5] = "defaultorder"
+		if info.itemcheck then
+			info.itemcheck.list = info.itemcheck.list or info.list
+			info.itemcheck.results = {}
+			addon.itemcheck[buffcheck] = info.itemcheck
+		end
 	end
 	RaidBuffStatusDefaultProfile = RaidBuffStatusDefaultProfile or {false, "Modders: In your SavedVars, replace the first argument of this table with the profile you want loaded by default, like 'Default'."}
 	self.db = LibStub("AceDB-3.0"):New("RaidBuffStatusDB", profiledefaults, RaidBuffStatusDefaultProfile[1])
@@ -621,6 +629,10 @@ function addon:OnInitialize()
 	self.db.RegisterCallback(self, "OnProfileReset", "OnProfileChanged")
 	GI.RegisterCallback(self, "GroupInSpecT_Update")
 --	addon:Debug('Init, init?')
+end
+
+local function GameTooltip_Hide()
+	GameTooltip:Hide()
 end
 
 -- credit for original code goes to Peragor and GridLayoutPlus
@@ -852,9 +864,6 @@ local function TalentButton_OnEnter(self)
 	GameTooltip:Show()
      end
 end
-local function TalentButton_OnLeave(self)
-     GameTooltip:Hide()
-end
 
 local function TalentButton_OnClick(self)
      if self.spellid then
@@ -888,9 +897,7 @@ function addon:CopyTalentRowDataToRowFrames()
 		tfi.rowframes[i].class:SetScript("OnEnter", function() 
 			addon:Tooltip(tfi.rowframes[i].class, LOCALIZED_CLASS_NAMES_MALE[class], nil)
 		end )
-		tfi.rowframes[i].class:SetScript("OnLeave", function()
-			GameTooltip:Hide()
-		end)
+		tfi.rowframes[i].class:SetScript("OnLeave", GameTooltip_Hide)
 		local f = tfi.rowframes[i].role
 		f.tex = f.tex or f:CreateTexture()
 		f.tex:SetAllPoints()
@@ -903,25 +910,21 @@ function addon:CopyTalentRowDataToRowFrames()
 		end
 		f:SetNormalTexture(f.tex)
 		f:SetScript("OnEnter", function() addon:Tooltip(f, role, nil) end)
-		f:SetScript("OnLeave", function() GameTooltip:Hide() end)
+		f:SetScript("OnLeave", GameTooltip_Hide)
 		if raid.classes[class][name].talents then
 			local specname = raid.classes[class][name].specname
 			local specicon = raid.classes[class][name].specicon
 			tfi.rowframes[i].spec:SetScript("OnEnter", function()
 				addon:Tooltip(tfi.rowframes[i].spec, specname)
 			end )
-			tfi.rowframes[i].spec:SetScript("OnLeave", function()
-				GameTooltip:Hide()
-			end)
+			tfi.rowframes[i].spec:SetScript("OnLeave", GameTooltip_Hide)
 			tfi.rowframes[i].spec:SetNormalTexture(specicon or specicons.UNKNOWN)
 		else
 			tfi.rowframes[i].spec:SetNormalTexture(specicons.UNKNOWN)
 			tfi.rowframes[i].spec:SetScript("OnEnter", function()
 				addon:Tooltip(tfi.rowframes[i].spec, "Unknown")
 			end )
-			tfi.rowframes[i].spec:SetScript("OnLeave", function()
-				GameTooltip:Hide()
-			end)
+			tfi.rowframes[i].spec:SetScript("OnLeave", GameTooltip_Hide)
 		end
 		for j, v in ipairs (tfi.rowframes[i].specialisations) do
 			v:Hide()
@@ -933,7 +936,7 @@ function addon:CopyTalentRowDataToRowFrames()
 
 				v:SetScript("OnEnter", TalentButton_OnEnter)
 				v:SetScript("OnClick", TalentButton_OnClick)
-				v:SetScript("OnLeave", TalentButton_OnLeave)
+				v:SetScript("OnLeave", GameTooltip_Hide)
 				v:Show()
 			end
 		end
@@ -945,8 +948,8 @@ function addon:DoReport(force)
 		nextdurability = 0
 		nextitemcheck = 0
 		wipe(addon.lastweapcheck)
-		for itemcheck, _ in pairs(addon.itemcheck) do
-			addon.itemcheck[itemcheck].next = 0
+		for check, info in pairs(addon.itemcheck) do
+			info.next = 0
 		end
 	else -- not forced
 		if nextscan > GetTime() then
@@ -994,16 +997,16 @@ function addon:DoReport(force)
 			addon:SendAddonMessage("CTRA", "DURC")
 		end
 		if GetTime() > nextitemcheck  then
-			for itemcheck, _ in pairs(addon.itemcheck) do
-				if report.checking[addon.itemcheck[itemcheck].check] and GetTime() > addon.itemcheck[itemcheck].next then
+			for check, info in pairs(addon.itemcheck) do
+				if report.checking[check] and GetTime() > (info.next or 0) then
 					nextitemcheck = GetTime() + 3
---					addon:Debug("Item:" .. addon.itemcheck[itemcheck].item)
-					addon:SendAddonMessage("CTRA", "ITMC " .. addon.itemcheck[itemcheck].item)
-					addon:SendAddonMessage("oRA3", addon:Serialize("InventoryCount", addon.itemcheck[itemcheck].item))
-					if #report[addon.itemcheck[itemcheck].list] >= addon.itemcheck[itemcheck].min then
-						addon.itemcheck[itemcheck].next = GetTime() + addon.itemcheck[itemcheck].frequencymissing
+--					addon:Debug("Item:" .. info.item)
+					addon:SendAddonMessage("CTRA", "ITMC " .. info.item)
+					addon:SendAddonMessage("oRA3", addon:Serialize("InventoryCount", info.item))
+					if #report[info.list] >= info.min then
+						info.next = GetTime() + info.frequencymissing
 					else
-						addon.itemcheck[itemcheck].next = GetTime() + addon.itemcheck[itemcheck].frequency
+						info.next = GetTime() + info.frequency
 					end
 					break
 				end
@@ -1053,7 +1056,12 @@ function addon:CalculateReport()
 			local unit = raid.classes[class][name]
 			if unit.online then
 				local zonedin = true
-				if thiszone ~= unit.zone and not UnitIsVisible(unit.unitid) then
+				local distance_thresh = 250 -- big enough to encompass nalak/galleon vicinity
+				if not UnitIsVisible(unit.unitid) -- not in visible range
+				   and (thiszone ~= unit.zone -- different subzone
+				        or (unit.distance and unit.distance > distance_thresh))  -- or far in this world zone
+				   and not (unit.distance and unit.distance < distance_thresh) -- not nearby in the world across subzone boundary
+				   then
 					zonedin = false
 					if profile.checkzone then
 						table.insert(report.zonelist, name)
@@ -1402,6 +1410,7 @@ function addon:ReadRaid()
 	elseif not IsInRaid() then -- party group
 		raid.isparty = true
 		raid.israid = false
+		addon:DistanceBegin()
 		for i = 1, groupnum do
 			local unitid = "party" .. i
 			if i == groupnum then unitid = "player" end
@@ -1419,6 +1428,7 @@ function addon:ReadRaid()
 			   addon:Debug("MISSING RAIDID FOR: "..unitid.." "..(name or "unknown"))
 			end
 		end
+		addon:DistanceEnd()
 	else -- raid group
 		if raid.isparty then -- Party has converted to Raid!
 			if profile.AutoShowDashRaid then
@@ -1430,13 +1440,13 @@ function addon:ReadRaid()
 		raid.isparty = false
 		raid.israid = true
 
+		addon:DistanceBegin()
 		for i = 1, groupnum do
 			addon:ReadUnit("raid" .. i, i)
 		end
+		addon:DistanceEnd()
 	end
-	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
-	  raid.islfg = true
-	end
+	raid.islfg = IsInGroup(LE_PARTY_CATEGORY_INSTANCE)
 	addon:DeleteOldUnits()
 	if raid.israid then
 		local minguildies = 0.75 * groupnum
@@ -1471,6 +1481,7 @@ function addon:ReadUnit(unitid, unitindex)
 		return
 	end
 	local wellfed = GetSpellInfo(35272)-- Well Fed
+	local eating = GetSpellInfo(104934) -- Food (eating)
 	local name, realm = UnitName(unitid)
 	local class = select(2, UnitClass(unitid))
 	if name and name ~= UNKNOWNOBJECT and name ~= UKNOWNBEING and
@@ -1551,6 +1562,8 @@ function addon:ReadUnit(unitid, unitindex)
 					RBSToolScanner:Reset()
 					RBSToolScanner:SetUnitBuff(unitid, b)
 					hasbuff["foodz"] = getglobal('RBSToolScannerTextLeft2'):GetText()
+				elseif buffName == eating then
+					hasbuff["eating"] = true
 				end
 				local hb = hasbuff[buffName] or {}
 				hasbuff[buffName] = hb
@@ -1626,6 +1639,7 @@ function addon:ReadUnit(unitid, unitindex)
 		
 		rcn.readid = raid.readid
 		rcn.zone = zone
+		rcn.distance = addon:DistanceQuery(unitid)
 		rcn.role = role
 		rcn.istank = istank
 		rcn.hasmana = hasmana
@@ -1646,6 +1660,60 @@ function addon:DeleteOldUnits()
 			end
 		end
 	end
+end
+
+function addon:DistanceBegin()
+  if incombat or not profile.checkzone then return end
+  addon.dist_info = addon.dist_info or {}
+  local d = addon.dist_info
+  local lvl = GetCurrentMapDungeonLevel()
+  if lvl and lvl > 0 then
+    d.disabled = true -- SetDungeonMapLevel doesn't correctly reset the map in many cases, 
+                      -- and we don't really need distance info anyway while inside a dungeon
+    return
+  else
+    d.disabled = nil
+  end
+  d.oldcont = GetCurrentMapContinent()
+  d.oldmap = GetCurrentMapAreaID()
+  if WorldMapFrame then -- prevent map flicker
+    WorldMapFrame.blockWorldMapUpdate = true
+  end
+  SetMapZoom(0)  -- azeroth continent
+  d.px,d.py = GetPlayerMapPosition("player")
+  d.contscalex = 47714
+  d.contscaley = 31809
+  if d.px == 0 and d.py == 0 then
+    SetMapZoom(3)  -- outland continent
+    d.px,d.py = GetPlayerMapPosition("player")
+    d.contscalex = 16321
+    d.contscaley = 10854
+  end
+end
+
+function addon:DistanceQuery(unitid) -- return approximate distance in yards between player and unit. 
+                                     -- Results are only meaningful when both units are in the outside world on the same continent
+  local d = addon.dist_info
+  if incombat or not profile.checkzone or d.disabled then return nil end
+  if d.px == 0 and d.py == 0 then -- i am not in the world, no answer
+    return nil
+  end
+  local x,y = GetPlayerMapPosition(unitid)
+  if (x == 0 and y == 0) then -- he is not in the world on my continent, inf distance
+    return maxdistance
+  end
+  return math.sqrt(math.pow(d.contscalex*(d.px - x),2)+math.pow(d.contscaley*(d.py - y),2))
+end
+
+function addon:DistanceEnd()
+  local d = addon.dist_info
+  if incombat or not profile.checkzone or d.disabled then return end
+  -- some addons (eg GatherMate2) foolishly assume the world map doesn't change via other addons, so unconditionally put it back
+  if GetCurrentMapContinent() ~= d.oldcont then SetMapZoom(d.oldcont) end
+  if GetCurrentMapAreaID() ~= d.oldmap then SetMapByID(d.oldmap) end
+  if WorldMapFrame then
+    WorldMapFrame.blockWorldMapUpdate = nil
+  end
 end
 
 local linelimit = 150
@@ -1672,7 +1740,9 @@ function addon:Say(msg, player, prepend, channel)
 	  if prepend then
 		str = "RBS::"..str
 	  end
-	  if player then
+	  if player and type(player) == "number" then -- BNet ID
+	  	BNSendWhisper(player, str)
+	  elseif player then
 	  	player = player:gsub("%s*%(.+%)$","")  -- remove note suffix
 		SendChatMessage(str, "WHISPER", nil, player)
 	  elseif channel then
@@ -1817,7 +1887,7 @@ function addon:SetupFrames()
 	addon.readybutton = button
 	button:SetText(L["R"])
 	button:SetWidth(22)
-	button:SetPoint("BOTTOM", addon.frame, "BOTTOM", 0, 5)
+	button:SetPoint("BOTTOMRIGHT", addon.frame, "BOTTOM", 0, 5)
 	button:SetScript("OnClick", function()
 		if UnitIsGroupLeader("player") or UnitIsGroupAssistant("player") then
 			DoReadyCheck()
@@ -1825,6 +1895,41 @@ function addon:SetupFrames()
 			addon:OfficerWarning()
 		end
 	end)
+	button:SetScript("OnEnter", function(owner)  
+			GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
+			GameTooltip:SetText(L["Ready Check"]) 
+			GameTooltip:Show() 
+		end)
+	button:SetScript("OnLeave", GameTooltip_Hide)
+	button:Show()
+
+	button = CreateFrame("Button", "$parentPullButton", addon.frame, "OptionsButtonTemplate")
+	addon.pullbutton = button
+	button:SetText(L["P"])
+	button:SetWidth(22)
+	button:SetPoint("BOTTOMLEFT", addon.frame, "BOTTOM", 0, 5)
+	button:SetScript("OnClick", function()
+		if UnitIsGroupLeader("player") or UnitIsGroupAssistant("player") then
+			local func = SlashCmdList["DEADLYBOSSMODS"]
+			if func then
+				func("pull 10")
+				return
+			end
+			func = SlashCmdList.BIGWIGSPULL
+			if func then
+				func("10")
+				return
+			end
+		else
+			addon:OfficerWarning()
+		end
+	end)
+	button:SetScript("OnEnter", function(owner)  
+			GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
+			GameTooltip:SetText(L["Pull Timer"]) 
+			GameTooltip:Show() 
+		end)
+	button:SetScript("OnLeave", GameTooltip_Hide)
 	button:Show()
 
 	button = CreateFrame("Button", "$parentTalentsButton", addon.frame, "SecureActionButtonTemplate")
@@ -2238,6 +2343,7 @@ function addon:AddBuffButtons()
 	else
 		currenty = 8
 	end
+	if profile.dashcols < 6 then profile.dashcols = 6 end -- minimum raised from 5 to 6 in 5.9.2
 	local maxcols = profile.dashcols
 	local cols = { 10, 32, 54, 76, 98, 120, 142, 164, 186, 208, 230, 252, 274, 296, 318, 340, 362, 384, 402, 424, 446, 468, 490}
 	if profile.statusbarpositioning == "bottom" then
@@ -2265,16 +2371,16 @@ function addon:AddBuffButtons()
 		addon.bossbutton:Hide()
 		addon.trashbutton:Hide()
 		addon.readybutton:Hide()
+		addon.pullbutton:Hide()
 		if incombat then
 			addon.talentsbutton:Hide()
 			addon.optionsbutton:Hide()
-			addon.scanbutton:Hide()
-			currenty = currenty - 18
 		end
 	else
 		addon.bossbutton:Show()
 		addon.trashbutton:Show()
 		addon.readybutton:Show()
+		addon.pullbutton:Show()
 		addon.talentsbutton:Show()
 		addon.optionsbutton:Show()
 		addon.scanbutton:Show()
@@ -2407,7 +2513,7 @@ function addon:AddBuffButton(name, x, y, icon, update, click, tooltip)
 		button:SetAlpha(1)
 		local count = button:CreateFontString(nil, "ARTWORK","GameFontNormalSmall")
 		button.count = count
-		count:SetWidth(20)
+		count:SetWidth(25)
 		count:SetHeight(20)
 		count:SetFont(count:GetFont(),11,"OUTLINE")
 		count:SetPoint("CENTER", button, "CENTER", 0, 0)
@@ -2451,7 +2557,7 @@ function addon:AddOptionsBuffButton(buffname, x, y, icon, tooltip)
 	button:SetPoint("TOPLEFT", addon.optionsframe, "TOPLEFT", x, y)
 	if tooltip then
 		button:SetScript("OnEnter", tooltip)
-		button:SetScript("OnLeave", function() GameTooltip:Hide() end)
+		button:SetScript("OnLeave", GameTooltip_Hide)
 	end
 	button:Show()
 end
@@ -2782,7 +2888,7 @@ function addon:Tooltip(self, title, list, tlist, blist, slist, messagelist, item
 	GameTooltip:SetText(title,1,1,1,1,1)
 	local str = ""
 	if list and #list > 0 then
-	  if tlist or list[1]:match("%(.+%)$") then
+	  if tlist or list[1]:match("%(.+%)$") or list.notes then
 	    addon:TooltipAddNames(list, tlist)
 	  else
 	    GameTooltip:AddLine(addon:FormatNameList(list, tlist),nil,nil,nil,1)
@@ -2833,7 +2939,7 @@ function addon:Tooltip(self, title, list, tlist, blist, slist, messagelist, item
 		                    addon:FormatNameList(unknownlist),RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b, 1)
 	end
 	if zonelist then
-		for _,name in pairs(zonelist) do
+		for _,name in ipairs(zonelist) do
 			local cname = addon:ClassColor(name)
 			local zone = ""
     			local unit = addon:GetUnitFromName(name)
@@ -3007,7 +3113,40 @@ function addon:ButtonClick(self, button, down, buffcheck, cheapspell, nonselfbuf
 				addon.targetclickpos = addon.targetclickpos or {}
 				local clickpos = addon.targetclickpos[buffcheck]
 				local minid, minunit, newpos
-				for _, name in ipairs(list) do
+				if buffcheck == "zone" then
+				  local now = GetTime()
+				  addon.zoneclickgen = addon.zoneclickgen or {}
+				  newpos = clickpos or 0 -- generation
+			  	  if now > (addon.lastzoneclick or 0) + 120 then -- reset zone traversal after inactivity
+					newpos = 0
+					wipe(addon.zoneclickgen)
+				  end
+				  addon.lastzoneclick = now
+				  -- generational traversal of the list, favoring more distant or recently-added players
+				  local mingen, maxdist, minname
+				  for _, name in ipairs(list) do
+					local unit = addon:GetUnitFromName(name)
+					if unit and unit.unitid then
+						local ugen = addon.zoneclickgen[name] or 0
+						local udist = unit.distance or maxdistance
+						if not minunit or   -- first seen
+						   ugen < mingen or -- older gen or new to list
+						   (ugen == mingen and udist > maxdist) or -- farthest
+						   (ugen == mingen and udist == maxdist and name < minname) -- alphabetical name subkey
+						then
+						  mingen = ugen
+						  maxdist = udist
+						  minname = name
+						  minunit = unit.unitid
+						end
+					end
+				  end
+				  if minunit then
+				    if newpos < mingen then newpos = mingen end -- generation advance
+				    addon.zoneclickgen[minname] = newpos + 1 -- place in next generation
+				  end
+				else
+				  for _, name in ipairs(list) do
 					local unit = addon:GetUnitFromName(name)
 					if unit and unit.unitid then
 						local id,cid
@@ -3030,6 +3169,7 @@ function addon:ButtonClick(self, button, down, buffcheck, cheapspell, nonselfbuf
 							end
 						end
 					end
+				  end
 				end
 				if minunit then
 					addon.targetclickpos[buffcheck] = newpos
@@ -3095,21 +3235,6 @@ function addon:WhisperBuff(buff, report, raid, prefix)
 			buff.whispertobuff(report[buff.list], prefix, buff.buffinfo)
 		end
 	end
-end
-
-function addon:SortNameBySuffix(thetable)
-	table.sort(thetable, function (a,b)
-		local grpa = select(3, a:find"(%d+)")
-		local grpb = select(3, b:find"(%d+)")
-		if grpa and grpb then
-			if grpa == grpb then
-				return a < b
-			end
-			return grpa < grpb
-		else
-			return a < b
-		end
-	end)
 end
 
 function addon:TitleCaps(str)
@@ -4045,7 +4170,7 @@ function addon:Announces(message, who, callback, spellID)
 	local expiring = message:find("Expiring")
 	local setting = "announce"..message:gsub("Expiring","")
 	if not profile[setting] then return end
-	if expiring and (incombat or isdead) then return end
+	if expiring and (incombat or isdead or not profile.announceExpiration) then return end
 
 	local shortwho = who:gsub("%-[^%-]+$","")
 	local label
@@ -4135,9 +4260,13 @@ function addon:Announces(message, who, callback, spellID)
 		else
 			addon:PingMinimap(who)
 			if addon:TimeToAnnounce(message, spellID) then
-				msg = shortwho.." "..string.format(L["has set us up a %s"],label)..linksuffix
+				if info.cast then
+					msg = shortwho.." "..string.format(L["casts %s"],label)..linksuffix
+				else
+					msg = shortwho.." "..string.format(L["sets up a %s"],label)..linksuffix
+				end
 				local zone = GetRealZoneText()
-				if info.duration then
+				if info.duration and profile.announceExpiration then
 					addon:ScheduleTimer(function()
 						if zone ~= GetRealZoneText() then
 							addon:Debug("Skipping expiration message due to zone change")
@@ -4168,7 +4297,7 @@ function addon:Announces(message, who, callback, spellID)
 		SendChatMessage(msg, "PARTY")
 	elseif canspeak then
 		SendChatMessage(msg, "RAID_WARNING")
-	else
+	elseif IsInRaid() then -- might be false if we just left raid
 		SendChatMessage(msg, "RAID")
 	end
 end
@@ -4407,7 +4536,7 @@ function addon:SelectSeal()
 	if not raid.classes.PALADIN[playername] then
 		return
 	end
-	if raid.classes.PALADIN[playername].spec == L["Holy"] then
+	if raid.classes.PALADIN[playername].spec == 1 then -- holy
 		return BS[20165] -- Seal of Insight
 	end
 	return BS[31801] -- Seal of Truth
@@ -4688,8 +4817,8 @@ function addon:CanAutoInvite(whom)
 	end
 	local queued = nil
 	for c,n in pairs(LFG_CATEGORY_NAMES) do
-	  local s = select(3,GetLFGInfoServer(c))
-	  if s then queued = n; break end
+	  local party, isjoined, isqueued = GetLFGInfoServer(c)
+	  if isjoined or isqueued then queued = n; break end
 	end
 	if queued then
 		addon:Say(L["Sorry, I am queued for"].." "..queued, whom, true)
@@ -4698,16 +4827,29 @@ function addon:CanAutoInvite(whom)
 	return true
 end
 
+function addon:FQname(name) -- make sure a toon name is fully qualified
+	if not name then return nil end
+	local nn, rn = name:match("^(.*)%s*-%s*([^-]*)$")
+	if not rn or #rn == 0 then
+		nn = name
+		rn = GetRealmName()
+	end
+	rn = rn:gsub("%s","") 
+	return nn.."-"..rn
+end
+
+local invstr = "%s*"..(L["invite"]):lower().."%s*"
 function addon:CHAT_MSG_WHISPER(event, msg, whom)
 	addon:Debug(":" .. msg .. ":" .. whom .. ":")
-	if msg:lower() ~= (L["invite"]):lower() or not whom then
+	if not msg:lower():match(invstr) or not whom then
 		return
 	end
+	local fwhom = addon:FQname(tostring(whom)) -- might be a bnet pid
 	if not addon:CanAutoInvite(whom) then return end
 	if profile.aiwguildmembers and IsInGuild() then
 		for i=1, GetNumGuildMembers() do
-			name = GetGuildRosterInfo(i)
-			if name == whom then
+			local name = GetGuildRosterInfo(i)
+			if addon:FQname(name) == fwhom then
 				addon:SendInvite(whom)
 				return
 			end
@@ -4715,8 +4857,8 @@ function addon:CHAT_MSG_WHISPER(event, msg, whom)
 	end
 	if profile.aiwfriends then
 		for i=1, GetNumFriends() do
-			name = GetFriendInfo(i)
-			if name == whom then
+			local name = GetFriendInfo(i)
+			if addon:FQname(name) == fwhom then
 				addon:SendInvite(whom)
 				return
 			end
@@ -4724,16 +4866,21 @@ function addon:CHAT_MSG_WHISPER(event, msg, whom)
 	end
 	if profile.aiwbnfriends and BNFeaturesEnabledAndConnected() then
 		for i=1, BNGetNumFriends() do
-			local pID,pName,battletag,isBT,toonname,_,client,isOnline = BNGetFriendInfo(i)
-			if (client == "WoW" and isOnline) then
-				if whom == toonname then
-					addon:SendInvite(whom)
+		   local pID,pName,battletag,isBT,toonname,_,client,isOnline = BNGetFriendInfo(i)
+		   if isOnline then
+		     for j=1, BNGetNumFriendToons(i) do
+			local _, toonName, client, realmName, realmId, faction = BNGetFriendToonInfo(i,j)
+			if client == "WoW" and faction == UnitFactionGroup("player") then
+				if fwhom == toonName.."-"..realmName:gsub("%s","") then -- regular wsp from local bnet friend
+					addon:SendInvite(fwhom)
 					return
 				elseif whom == pID then -- CHAT_MSG_BN_WHISPER
   		                        FriendsFrame_BattlenetInvite(nil, pID)
 					return
 				end
 			end
+		     end
+		   end
 		end
 	end
 end
@@ -4762,11 +4909,12 @@ function addon:PARTY_INVITE_REQUEST(event, whom)
 	if not whom then
 		return
 	end
+	local fwhom = addon:FQname(whom)
 	if profile.guildmembers and IsInGuild() then
 		for i=1, GetNumGuildMembers() do
-			name = GetGuildRosterInfo(i)
-			if name == whom then
-	                        if not addon:CanAutoInvite(whom) then return end -- may send a whisper
+			local name = GetGuildRosterInfo(i)
+			if addon:FQname(name) == fwhom then
+	                        if not addon:CanAutoInvite(fwhom) then return end -- may send a whisper
 				addon:Print((L["Invite auto-accepted from guild member %s."]):format(whom))
 				addon:AcceptInvite()
 				return
@@ -4775,8 +4923,8 @@ function addon:PARTY_INVITE_REQUEST(event, whom)
 	end
 	if profile.friends then
 		for i=1, GetNumFriends() do
-			name = GetFriendInfo(i)
-			if name == whom then
+			local name = GetFriendInfo(i)
+			if addon:FQname(name) == fwhom then
 	                        if not addon:CanAutoInvite(whom) then return end -- may send a whisper
 				addon:Print((L["Invite auto-accepted from friend %s."]):format(whom))
 				addon:AcceptInvite()
@@ -4787,16 +4935,21 @@ function addon:PARTY_INVITE_REQUEST(event, whom)
 	if profile.bnfriends and BNFeaturesEnabledAndConnected() then
 		local myrealm = GetRealmName()
 		for i=1, BNGetNumFriends() do
-			local pID,_,_,_,_,_,client,isOnline = BNGetFriendInfo(i)
-			if (client == "WoW" and isOnline) then
-				local _,name,_,realm = BNGetToonInfo(pID)
-				if name == whom then
-	                                if not addon:CanAutoInvite(whom) then return end -- may send a whisper
-					addon:Print((L["Invite auto-accepted from battle.net friend %s."]):format(whom))
+	  	   local pID,_,_,_,_,_,client,isOnline = BNGetFriendInfo(i)
+		   if isOnline then
+		     for j=1, BNGetNumFriendToons(i) do
+		        local _, toonName, client, realmName, realmId, faction = BNGetFriendToonInfo(i,j)
+			if client == "WoW" then
+				--local _,name,_,realm = BNGetToonInfo(pID)
+				if fwhom == toonName.."-"..realmName:gsub("%s","") then
+	                                if not addon:CanAutoInvite(pID) then return end -- may send a whisper
+					addon:Print((L["Invite auto-accepted from battle.net friend %s."]):format(fwhom))
 					addon:AcceptInvite()
 					return
 				end
 			end
+		     end
+		   end
 		end
 	end
 end
@@ -4804,7 +4957,7 @@ end
 function addon:AcceptInvite()
 	for i=1, STATICPOPUP_NUMDIALOGS do
 		local d = _G["StaticPopup"..i]
-		if d:IsShown() and d.which == "PARTY_INVITE" then
+		if d:IsShown() and (d.which == "PARTY_INVITE" or d.which == "PARTY_INVITE_XREALM") then
 		        _G["StaticPopup"..i.."Button1"]:Click()
 			break
 		end
@@ -4880,15 +5033,21 @@ function addon:SendDurability(event, sender)
 end
 
 function addon:UpdateInventory(sender, itemname, numitems)
-	for itemcheck, _ in pairs(addon.itemcheck) do
-		if itemname == addon.itemcheck[itemcheck].item then
-			addon.itemcheck[itemcheck].results[sender] = tonumber(numitems)
-			if addon.itemcheck[itemcheck].next - GetTime() < (addon.itemcheck[itemcheck].frequencymissing - 15) then
-				addon.itemcheck[itemcheck].next = GetTime() + addon.itemcheck[itemcheck].frequency
+	for check, info in pairs(addon.itemcheck) do
+		if itemname == info.item then
+			info.results[sender] = tonumber(numitems)
+			if (info.next or 0) - GetTime() < (info.frequencymissing - 15) then
+				info.next = GetTime() + info.frequency
 			end
 			break
 		end
 	end
+end
+
+function addon:ItemQuery(check, name)
+	local info = addon.itemcheck[check]
+	if not info then return nil end
+	return info.results[name] or info.results[name.."-"..GetRealmName()]
 end
 
 function addon:AddBars(currenty)
@@ -4938,7 +5097,7 @@ end
 function addon:IsInBGQueue()
 	for i = 1, GetMaxBattlefieldID() do
 		local status = GetBattlefieldStatus(i)
-		if status == "queued" then
+		if status ~= "none" then
 			return true
 		end
 	end

@@ -162,6 +162,60 @@ local conversions = {
 		["item:2452:0:0:0:0:0:0"] = {rate=.05, source="mill"},
 	},
 
+	--Vanilla Gems
+	["item:774:0:0:0:0:0:0"] = { -- malachite
+		["item:2770:0:0:0:0:0:0"] = {rate=.5, source="prospect"},
+	},
+	["item:818:0:0:0:0:0:0"] = { -- Tigerseye
+		["item:2770:0:0:0:0:0:0"] = {rate=.5, source="prospect"},
+	},
+	["item:1210:0:0:0:0:0:0"] = { -- Shadowgem
+		["item:2771:0:0:0:0:0:0"] = {rate=.4, source="prospect"},
+		["item:2770:0:0:0:0:0:0"] = {rate=.1, source="prospect"},
+	},
+	["item:1206:0:0:0:0:0:0"] = { -- Moss Agate
+		["item:2771:0:0:0:0:0:0"] = {rate=.3, source="prospect"},
+	},
+	["item:1705:0:0:0:0:0:0"] = { -- Lesser moonstone
+		["item:2771:0:0:0:0:0:0"] = {rate=.4, source="prospect"},
+		["item:2772:0:0:0:0:0:0"] = { rate=.3, source="prospect"},
+	},
+	["item:1529:0:0:0:0:0:0"] = { -- Jade
+		["item:2772:0:0:0:0:0:0"] = {rate=.4, source="prospect"},
+		["item:2771:0:0:0:0:0:0"] = {rate=.03, source="prospect"},
+	},
+	["item:3864:0:0:0:0:0:0"] = { -- Citrine
+		["item:2772:0:0:0:0:0:0"] = {rate=.4, source="prospect"}, --	iron
+		["item:3858:0:0:0:0:0:0"] = {rate=.3, source="prospect"}, -- mith
+		["item:2771:0:0:0:0:0:0"] = {rate=.03, source="prospect"}, -- tin
+	},
+	["item:7909:0:0:0:0:0:0"] = { -- Aquamarine
+		["item:3858:0:0:0:0:0:0"] = {rate=.3, source="prospect"},
+		["item:2772:0:0:0:0:0:0"] = {rate=.05, source="prospect"},
+		["item:2771:0:0:0:0:0:0"] = {rate=.03, source="prospect"},
+	},
+	["item:7910:0:0:0:0:0:0"] = { -- Star Ruby
+		["item:3858:0:0:0:0:0:0"] = {rate=.4, source="prospect"},
+		["item:10620:0:0:0:0:0:0"] = {rate=.1, source="prospect"},
+		["item:2772:0:0:0:0:0:0"] = {rate=.05, source="prospect"},
+	},
+	["item:12361:0:0:0:0:0:0"] = { -- Blue Sapphire
+		["item:10620:0:0:0:0:0:0"] = {rate=.3, source="prospect"},
+		["item:3858:0:0:0:0:0:0"] = {rate=.03, source="prospect"},
+	},
+	["item:12799:0:0:0:0:0:0"] = { -- Large Opal
+		["item:10620:0:0:0:0:0:0"] = {rate =.3, source="prospect"}, -- thorium
+		["item:3858:0:0:0:0:0:0"] = {rate=.03, source="prospect"}, -- Mith
+	},
+	["item:12800:0:0:0:0:0:0"] = { -- Azerothian Diamond
+		["item:10620:0:0:0:0:0:0"] = {rate=.3, source="prospect"},
+		["item:3858:0:0:0:0:0:0"] = {rate=.02, source="prospect"},
+	},
+	["item:12364:0:0:0:0:0:0"] = { -- Huge Emerald
+		["item:10620:0:0:0:0:0:0"] = {rate=.3, source="prospect"},
+		["item:3858:0:0:0:0:0:0"] = {rate=.02, source="prospect"},
+	},
+
 	-- uncommon gems
 	["item:23117:0:0:0:0:0:0"] = { -- Azure Moonstone
 		["item:23424:0:0:0:0:0:0"] = {rate=.2, source="prospect"},

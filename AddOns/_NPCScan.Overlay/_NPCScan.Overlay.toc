@@ -1,4 +1,4 @@
-## Interface: 50400
+## Interface: 60000
 ## Title: _NPCScan.Overlay
 ## Notes: Adds mob patrol paths to your map.
 ## Notes-deDE: Fügt deiner Karte die Laufpfade hinzu
@@ -29,17 +29,17 @@
 ## X-Credits-ruRU: Localization: The_DimoK, Sarymian, dartraiden
 ## X-Credits-zhCN: Localization: tss1398383123, zhTW, ananhaid, dh0000
 ## X-Credits-zhTW: Localization: s8095324, pepper_ep, zhTW, alpha2009, BNSSNB, titanium0107
-## Version: 5.4.2.1
-## X-Date: 2014-01-06T03:19:47Z
+## Version: 6.0.2.1
+## X-Date: 2014-10-15T07:05:06Z
 ## X-Category: Map
 ## X-License: GPLv3
 ## X-Email: jcallahan@curse.com
 ## X-WoWI-ID: 14686
 ## X-Localizations: deDE, enCN, enTW, enUS, esES, esMX, frFR, koKR, ptBR, ptPT, ruRU, zhCN, zhTW
 ## X-CompatibleLocales: deDE, enCN, enTW, enUS, esES, esMX, frFR, koKR, ptBR, ptPT, ruRU, zhCN, zhTW
-## SavedVariables: _NPCScanOverlayOptions, _NPCScanMiniMapIcon
+## SavedVariables: _NPCScanOverlayOptions, _NPCScanMiniMapIcon, _NPCScanOverlayKeyColors
 ## OptionalDeps: Ace3, _NPCScan, OmegaMap, Carbonite
-## X-Curse-Packaged-Version: 5.4.2.1
+## X-Curse-Packaged-Version: 6.0.2.1
 ## X-Curse-Project-Name: _NPCScan.Overlay
 ## X-Curse-Project-ID: npcscan-overlay
 ## X-Curse-Repository-ID: wow/npcscan-overlay/mainline
@@ -49,6 +49,7 @@ Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 Libs\AceEvent-3.0\AceEvent-3.0.xml
 Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
+Libs\LibQTip-1.0\lib.xml
 
 # See http://wow.curseforge.com/addons/npcscan-overlay/localization/
 Locales\Locale-enUS.lua
@@ -63,8 +64,10 @@ Locales\Locale-zhCN.lua
 Locales\Locale-zhTW.lua
 
 Templates.xml
+Constants.lua
 Overlay.lua
 Config.lua
+ColorConfig.lua
 Modules.lua
 PathData.lua
 

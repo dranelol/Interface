@@ -96,6 +96,7 @@ function Options:DrawGeneralSettings(container)
 						{
 							type = "Dropdown",
 							label = L["Default Operation Tab"],
+							relativeWidth = 0.49,
 							list = { L["General"], L["Post"], L["Cancel"], L["Reset"] },
 							settingInfo = { TSM.db.global, "defaultOperationTab" },
 							tooltip = L["This dropdown determines the default tab when you visit an operation."],
@@ -103,6 +104,7 @@ function Options:DrawGeneralSettings(container)
 						{
 							type = "Dropdown",
 							label = L["Enable Sounds"],
+							relativeWidth = 0.5,
 							list = {L["None"], "AuctionWindowOpen", "Fishing Reel in", "HumanExploration", "LEVELUP", "MapPing", "MONEYFRAMEOPEN", "QUESTCOMPLETED", "ReadyCheck"},
 							settingInfo = { TSM.db.global, "scanCompleteSound" },
 							tooltip = L["Play the selected sound when a post / cancel scan is complete and items are ready to be posted / canceled (the gray bar is all the way across).Select None to disable sounds"],
@@ -110,6 +112,7 @@ function Options:DrawGeneralSettings(container)
 						{
 							type = "Button",
 							text = L["Test Selected Sound"],
+							relativeWidth = 0.49,
 							callback = function()
 								if TSM.db.global.scanCompleteSound ~= 1 then
 									PlaySound(TSM.Options:GetScanCompleteSound(TSM.db.global.scanCompleteSound), "Master")
@@ -428,6 +431,14 @@ function Options:DrawOperationGeneral(container, operationName)
 							disabled = operation.relationships.ignoreLowDuration,
 							tooltip = L["Any auctions at or below the selected duration will be ignored. Selecting \"<none>\" will cause no auctions to be ignored based on duration."],
 						},
+						{
+							type = "EditBox",
+							label = L["Blacklisted Players"],
+							settingInfo = { operation, "blacklist" },
+							relativeWidth = 1,
+							disabled = operation.relationships.blacklist,
+							tooltip = L["This is a comma-separated list of players which you'd like to blacklist. This means that Auctioning will ignore your minimum price if the cheapest auction is posted by somebody on your blacklist and undercut them no matter what price they are posting at."],
+						},
 					},
 				},
 			},
@@ -551,7 +562,7 @@ function Options:DrawOperationPost(container, operationName)
 							type = "Dropdown",
 							label = L["When Below Minimum"],
 							relativeWidth = 0.5,
-							list = { ["none"] = L["Don't Post Items"], ["minPrice"] = L["Post at Minimum Price"], ["maxPrice"] = L["Post at Maximum Price"], ["normalPrice"] = L["Post at Normal Price"], ["ignore"] = L["Ignore Auctions Below Minimum"] },
+							list = { ["none"] = L["Don't Post Items"], ["minPrice"] = L["Post at Minimum Price"], ["maxPrice"] = L["Post at Maximum Price"], ["normalPrice"] = L["Post at Normal Price"], ["ignore"] = L["Ignore Auctions Below Min"] },
 							settingInfo = { operation, "priceReset" },
 							disabled = operation.relationships.priceReset,
 							tooltip = L["This dropdown determines what Auctioning will do when the market for an item goes below your minimum price. You can not post the items, post at one of your configured prices, or have Auctioning ignore all the auctions below your minimum price (and likely undercut the lowest auction above your mimimum price)."],
@@ -581,7 +592,7 @@ function Options:DrawOperationPost(container, operationName)
 							relativeWidth = 0.49,
 							acceptCustom = true,
 							disabled = operation.relationships.normalPrice,
-							tooltip = L["Price to post at if there are none on of an item on the AH."],
+							tooltip = L["Price to post at if there are none of an item currently on the AH."],
 						},
 					},
 				},
@@ -743,6 +754,7 @@ function Options:DrawOperationRelationships(container, operationName)
 			label = L["General Settings"],
 			{ key = "matchStackSize", label = L["Match Stack Size"] },
 			{ key = "ignoreLowDuration", label = L["Ignore Low Duration Auctions"] },
+			{ key = "blacklist", label = L["Blacklisted Players"] },
 		},
 		{
 			label = L["Post Settings"],

@@ -18,7 +18,7 @@ function AutoMail:OnEnable()
 end
 
 function AutoMail:SendItems(items, target, callback, codPerItem)
-	if private.isSending or strlower(target) == strlower(UnitName("player")) or not MailFrame:IsVisible() then return end
+	if private.isSending or TSMAPI:IsPlayer(target) or not MailFrame:IsVisible() then return end
 	private.isSending = true
 	private.items = items
 	private.target = target

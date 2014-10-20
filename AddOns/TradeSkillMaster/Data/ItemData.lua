@@ -29,4 +29,12 @@ TSMAPI.SOULBOUND_MATS = {
 	["item:98717:0:0:0:0:0:0"] = true, -- Balanced Trillium Ingot
 	["item:98619:0:0:0:0:0:0"] = true, -- Celestial Cloth
 	["item:98617:0:0:0:0:0:0"] = true, -- Hardened Magnificent Hide
+	["item:108257:0:0:0:0:0:0"] = true, -- Truesteel Ingot
+	["item:108995:0:0:0:0:0:0"] = true, -- Metamorphic Crystal
+	["item:108996:0:0:0:0:0:0"] = true, -- Alchemical Catalyst
+	["item:110611:0:0:0:0:0:0"] = true, -- Burnished Leather
+	["item:111366:0:0:0:0:0:0"] = true, -- Gearspring Parts
+	["item:111556:0:0:0:0:0:0"] = true, -- Hexweave Cloth
+	["item:112377:0:0:0:0:0:0"] = true, -- War Paints
+	["item:115524:0:0:0:0:0:0"] = true, -- Taladite Crystal
 }

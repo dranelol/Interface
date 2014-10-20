@@ -67,6 +67,7 @@ function TSM:OnInitialize()
 			operation.resetMaxInventory = operation.resetMaxInventory or TSM.operationDefaults.resetMaxInventory
 			operation.aboveMax = operation.aboveMax or TSM.operationDefaults.aboveMax
 			operation.keepQuantity = operation.keepQuantity or TSM.operationDefaults.keepQuantity
+			operation.blacklist = operation.blacklist or ""
 		end
 	end
 end
@@ -117,6 +118,7 @@ end
 TSM.operationDefaults = {
 	-- general
 	matchStackSize = nil,
+	blacklist = "",
 	ignoreLowDuration = 0,
 	ignorePlayer = {},
 	ignoreFactionrealm = {},
@@ -158,7 +160,7 @@ function TSM:GetTooltip(itemString)
 	if not operations or not operations[1] or not TSM.operations[operations[1]] then return end
 	
 	TSMAPI:UpdateOperation("Auctioning", operations[1])
-	local prices = TSM.Util:GetItemPrices(TSM.operations[operations[1]], itemString)
+	local prices = TSM.Util:GetItemPrices(TSM.operations[operations[1]], itemString, {minPrice=true, maxPrice=true, normalPrice=true})
 	if prices then
 		local minPrice, normPrice, maxPrice
 		if moneyCoinsTooltip then

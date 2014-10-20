@@ -126,9 +126,9 @@ function private:CreateSendGoldBox(frame)
 	targetBox:SetPoint("TOPLEFT", targetBoxLabel, "TOPRIGHT", 5, 0)
 	targetBox:SetWidth(80)
 	targetBox:SetHeight(20)
-	targetBox:SetText(TSM.db.factionrealm.goldMailTarget)
+	targetBox:SetText(TSM.db.char.goldMailTarget)
 	targetBox:SetScript("OnEnterPressed", function(self)
-			TSM.db.factionrealm.goldMailTarget = self:GetText():trim()
+			TSM.db.char.goldMailTarget = self:GetText():trim()
 			self:ClearFocus()
 			frame.btn:Update()
 		end)
@@ -147,9 +147,9 @@ function private:CreateSendGoldBox(frame)
 	goldBox:SetPoint("TOPRIGHT", -5, -30)
 	goldBox:SetHeight(20)
 	goldBox:SetNumeric(true)
-	goldBox:SetNumber(TSM.db.factionrealm.goldKeepAmount)
+	goldBox:SetNumber(TSM.db.char.goldKeepAmount)
 	goldBox:SetScript("OnTextChanged", function(self)
-			TSM.db.factionrealm.goldKeepAmount = self:GetNumber()
+			TSM.db.char.goldKeepAmount = self:GetNumber()
 			frame.btn:Update()
 		end)
 	goldBox:SetScript("OnEnterPressed", function(self) self:ClearFocus() end)
@@ -157,14 +157,14 @@ function private:CreateSendGoldBox(frame)
 
 	
 	local function OnClick()
-		local extra = (GetMoney() - 30) - (TSM.db.factionrealm.goldKeepAmount * COPPER_PER_GOLD)
+		local extra = (GetMoney() - 30) - (TSM.db.char.goldKeepAmount * COPPER_PER_GOLD)
 		if extra <= 0 then
 			TSM:Print(L["Not sending any gold as you have less than the specified limit."])
 			return
 		end
 		SetSendMailMoney(extra)
-		SendMail(TSM.db.factionrealm.goldMailTarget, L["TSM_Mailing Excess Gold"], "")
-		TSM:Printf(L["Sent %s to %s."], TSMAPI:FormatTextMoney(extra), TSM.db.factionrealm.goldMailTarget)
+		SendMail(TSM.db.char.goldMailTarget, L["TSM_Mailing Excess Gold"], "")
+		TSM:Printf(L["Sent %s to %s."], TSMAPI:FormatTextMoney(extra), TSM.db.char.goldMailTarget)
 	end
 	
 	local btn = TSMAPI.GUI:CreateButton(frame, 15)
@@ -174,15 +174,15 @@ function private:CreateSendGoldBox(frame)
 	btn:SetScript("OnClick", OnClick)
 	btn.tooltip = L["Click this button to send excess gold to the specified character."]
 	btn.Update = function(self)
-		if TSM.db.factionrealm.goldMailTarget == "" then
+		if TSM.db.char.goldMailTarget == "" then
 			self:Disable()
 			self:SetText(L["Not Target Specified"])
-		elseif strlower(TSM.db.factionrealm.goldMailTarget) == strlower(UnitName("player")) then
+		elseif TSMAPI:IsPlayer(TSM.db.char.goldMailTarget) then
 			self:Disable()
 			self:SetText(L["Target is Current Player"])
 		else
 			self:Enable()
-			self:SetText(format(L["Send Excess Gold to %s"], TSM.db.factionrealm.goldMailTarget))
+			self:SetText(format(L["Send Excess Gold to %s"], TSM.db.char.goldMailTarget))
 		end
 	end
 	btn:Update()

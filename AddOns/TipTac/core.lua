@@ -177,7 +177,7 @@ tt.tipsToModify = TT_TipsToModify;
 local tipBackdrop = { tile = false, insets = {} };
 
 -- Constants
-local TT_LevelMatch = "^"..TOOLTIP_UNIT_LEVEL:gsub("%%s",".+"); -- Was changed to match other localizations properly, used to match: "^"..LEVEL.." .+" -- Az: doesn't actually match the level line on the russian client!
+local TT_LevelMatch = "^"..TOOLTIP_UNIT_LEVEL:gsub("%%s",".+"); -- Was changed to match other localizations properly, used to match: "^"..LEVEL.." .+" -- Az: doesn't actually match the level line on the russian client! 14.02.24: Doesn't match for Italian client either.
 local TT_LevelMatchPet = "^"..TOOLTIP_WILDBATTLEPET_LEVEL_CLASS:gsub("%%s",".+");
 local TT_NotSpecified = "Not specified";
 local TT_Reaction = {
@@ -1190,11 +1190,11 @@ function tt:ApplySettings()
 			tipIcon:Hide();
 		end
 	end
-	-- ChatFrame Hyperlink Hover
+	-- ChatFrame Hyperlink Hover -- Az: this may need some more testing, code seems wrong
 	if (cfg.enableChatHoverTips or self.hookedHoverHyperlinks) then
 		for i = 1, NUM_CHAT_WINDOWS do
 			local chat = _G["ChatFrame"..i];
-			if (i == 1) and (cfg.enableChatHoverTips) and (not self.hookedHoverHyperlinks) then
+			if (i == 1) and (cfg.enableChatHoverTips) and (not self.hookedHoverHyperlinks) then		-- Az: why only on first window?
 				self["oldOnHyperlinkEnter"..i] = chat:GetScript("OnHyperlinkEnter");
 				self["oldOnHyperlinkLeave"..i] = chat:GetScript("OnHyperlinkLeave");
 				self.hookedHoverHyperlinks = true;

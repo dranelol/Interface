@@ -142,6 +142,7 @@ function Options:DrawOperationGeneral(container, operationName)
 							type = "EditBox",
 							label = L["Target Player"],
 							settingInfo = {operationSettings, "target"},
+							autoComplete = AUTOCOMPLETE_LIST.MAIL,
 							relativeWidth = 0.5,
 							disabled = operationSettings.relationships.target,
 							tooltip = L["The name of the player you want to mail items to."].."\n\n"..TSM.SPELLING_WARNING,
@@ -240,7 +241,7 @@ function Options:LoadGeneralSettings(container)
 							type = "Dropdown",
 							label = L["Default Mailing Page"],
 							relativeWidth = 0.49,
-							list = {L["Inbox"], L["TSM Groups"], L["Quick Send"], L["Other"]},
+							list = {INBOX, L["TSM Groups"], L["Quick Send"], OTHER},
 							settingInfo = {TSM.db.global, "defaultPage"},
 							tooltip = L["Specifies the default page that'll show when you select the TSM_Mailing tab."],
 						},
@@ -301,6 +302,19 @@ function Options:LoadGeneralSettings(container)
 								TSM.db.global.resendDelay = value
 							end,
 							tooltip = L["When you shift-click a send mail button, after the initial send, it will check for new items to send at this interval."],
+						},
+						{
+							type = "Slider",
+							value = TSM.db.global.keepMailSpace,
+							label = L["Keep Free Bag Space"],
+							min = 0,
+							max = 20,
+							step = 1,
+							relativeWidth = 0.49,
+							callback = function(self,_,value)
+								TSM.db.global.keepMailSpace = value
+							end,
+							tooltip = L["This slider controls how much free space to keep in your bags when looting from the mailbox. This only applies to bags that any item can go in."],
 						},
 					},
 				},

@@ -9,7 +9,7 @@
 ## Title-zhTW: PitBull4 |r[|cffeda55f蝕星蔽月|r]
 ## Notes: Show Druid Eclipse Bar.
 ## Notes-deDE: Eclipse-Leiste für Druiden anzeigen.
-## Notes-esES: Show Druid Eclipse Bar.
+## Notes-esES: Mostrar la barra de Eclipse para druidas.
 ## Notes-frFR: Affiche la barre d'éclipse du druide.
 ## Notes-koKR: 드루이드 일월식 바
 ## Notes-ruRU: Отображать панель Затмения друидов.
@@ -19,9 +19,9 @@
 ## DefaultState: enabled
 ## LoadOnDemand: 1
 ## Dependencies: PitBull4
-## Version: v4.0.0-beta48
+## Version: v4.0.0-beta51
 ## X-PitBull4-Condition: return select(2, UnitClass("player")) == "DRUID" and PowerBarColor["ECLIPSE"]
-## X-Curse-Packaged-Version: v4.0.0-beta48
+## X-Curse-Packaged-Version: v4.0.0-beta51
 ## X-Curse-Project-Name: PitBull Unit Frames 4.0
 ## X-Curse-Project-ID: pitbull4
 ## X-Curse-Repository-ID: wow/pitbull4/mainline

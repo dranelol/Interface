@@ -13,6 +13,7 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("TradeSkillMaster_Accounting", "enUS", true)
 if not L then return end
 
+L["|cffff0000IMPORTANT:|r When TSM_Accounting last saved data for this realm, it was too big for WoW to handle, so old data was automatically trimmed in order to avoid corruption of the saved variables. The last %s of %s data has been preserved."] = true
 L["%s ago"] = true
 L["Accounting has not yet collected enough information for this tab. This is likely due to not having recorded enough data points or not seeing any significant fluctuations (over 1k gold) in your gold on hand."] = true
 L["Activity Type"] = true
@@ -84,7 +85,6 @@ L["None"] = true
 L["Options"] = true
 L["Other Income"] = true
 L["Other Player"] = true
-L["Other"] = true
 L["Player Gold"] = true
 L["Player"] = true
 L["Per Item"] = true

@@ -115,6 +115,27 @@ local function CreateCustomPriceFrame()
 		},
 	}
 	
+	if next(TSM.db.global.customPriceSources) then
+		frame:SetHeight(500)
+		local widgets = {
+			{
+				type = "HeadingLine",
+				relativeWidth = 1,
+			},
+			{
+				type = "Label",
+				text = TSMAPI.Design:GetInlineColor("category")..L["Custom Price Sources"].."|r",
+				relativeWidth = 1,
+			},
+		}
+		for name in pairs(TSM.db.global.customPriceSources) do
+			tinsert(widgets, {type="Label", text=name, relativeWidth=1})
+		end
+		for _, widget in ipairs(widgets) do
+			tinsert(page, widget)
+		end
+	end
+	
 	TSMAPI:BuildPage(container, page)
 	
 	return frame
@@ -291,6 +312,7 @@ local Add = {
 		local editBoxWidget = CreateWidget("TSMEditBox", parent, args)
 		editBoxWidget:SetText(args.value)
 		editBoxWidget:DisableButton(args.onTextChanged)
+		editBoxWidget:SetAutoComplete(args.autoComplete)
 		local function callback(self, event, value)
 			if args.acceptCustom then
 				local badPriceSource = type(args.acceptCustom) == "string" and strlower(args.acceptCustom)

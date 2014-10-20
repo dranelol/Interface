@@ -167,6 +167,7 @@ EQdkp-Plus Raid-Log-Import 0.5.6.x]=] ]==]
 -- MRT_L.Options["MP_Description"] = "Tracks raids, loot and attendance"
 -- MRT_L.Options["MP_Enabled"] = "Enable automatic tracking"
 -- MRT_L.Options["MP_MinimapIcon"] = "Show minimap icon"
+-- MRT_L.Options["MP_ResetGuiPos"] = "Reset GUI position"
 -- MRT_L.Options["MP_SlashCmd"] = "Slash command"
 -- MRT_L.Options["TP_AskForDKPValue"] = "Ask for item cost"
 -- MRT_L.Options["TP_CreateNewRaidOnNewZone"] = "Create new raid on new zone"

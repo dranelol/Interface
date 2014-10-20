@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(709, "DBM-TerraceofEndlessSpring", nil, 320)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10980 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetCreatureID(60999)--61042 Cheng Kang, 61046 Jinlun Kun, 61038 Yang Guoshi, 61034 Terror Spawn
 mod:SetEncounterID(1431)
 mod:SetUsedIcons(8, 7, 6, 5, 4)
@@ -50,7 +50,7 @@ local MoveWarningRight					= mod:NewSpecialWarning("MoveRight", nil, false)--War
 local MoveWarningBack					= mod:NewSpecialWarning("MoveBack", nil, false)--Move back to starting position
 -- Heroic Phase 2
 local specWarnDreadThrash				= mod:NewSpecialWarningSpell(132007, mod:IsTank(), nil, nil, 3)--Extra emphesis special warning.
-local specWarnNakedAndAfraidOther		= mod:NewSpecialWarningTarget(120669, mod:IsTank())
+local specWarnNakedAndAfraidOther		= mod:NewSpecialWarningTaunt(120669)
 local specWarnWaterspoutCast			= mod:NewSpecialWarningSpell(120519, nil, nil, nil, 2)
 local specWarnWaterspout				= mod:NewSpecialWarningYou(120519)
 local specWarnWaterspoutNear			= mod:NewSpecialWarningClose(120519)

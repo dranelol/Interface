@@ -46,7 +46,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull				= "Can you feel a chill wind blow?"
+	Pull				= "Can you feel a chill wind blow? The storm is coming..."
 })
 
 ---------------------------
@@ -88,7 +88,7 @@ L= DBM:GetModLocalization(859)
 
 L:SetMiscLocalization({
 	Pull					= "We shall see.",
-	Victory					= "SOME RANDOM BLAH BLAH BLAH",
+	Victory					= "Though you will be surrounded by foes greater than you can imagine, your fortitude shall allow you to endure. Remember this in the times ahead.",
 	VictoryDem				= "Rakkas shi alar re pathrebosh il zila rethule kiel shi shi belaros rikk kanrethad adare revos shi xi thorje Rukadare zila te lok zekul melar "--Cover all bases and all
 })
 
@@ -118,4 +118,13 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Pull					= "You will take my place on the eternal brazier."
+})
+
+-----------------
+--  Zandalari  --
+-----------------
+L = DBM:GetModLocalization("Zandalari")
+
+L:SetGeneralLocalization({
+	name =	"Zandalari"
 })

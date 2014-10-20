@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Shot", "DBM-DMF")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10922 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 11506 $"):sub(12, -3))
 mod:SetZone()
 
 mod:RegisterCombat("combat")
@@ -10,6 +10,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED 101871",
 	"SPELL_AURA_REMOVED 101871"
 )
+mod.noStatistics = true
 
 local timerGame		= mod:NewBuffActiveTimer(60, 101871)
 

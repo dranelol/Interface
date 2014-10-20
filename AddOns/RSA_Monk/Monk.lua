@@ -15,6 +15,17 @@ local spellinfo,spelllinkinfo,extraspellinfo,extraspellinfolink,missinfo
 function RSA_Monk:OnEnable()
 	RSA.db.profile.Modules.Monk = true -- Set state to loaded, to know if we should announce when a spell is refreshed.
 	local pName = UnitName("player")
+	local MonitorConfig_Monk = {
+		player_profile = RSA.db.profile.Monk,
+		SPELL_DISPEL = {
+			[115450] = {-- DETOX
+				profile = 'Detox',
+				replacements = { TARGET = 1, extraSpellName = "[AURA]", extraSpellLink = "[AURALINK]" }
+			},
+		}
+	}
+	RSA.MonitorConfig(MonitorConfig_Monk, UnitGUID("player"))
+	local MonitorAndAnnounce = RSA.MonitorAndAnnounce
 	local function Monk_Spells(self, _, timestamp, event, hideCaster, sourceGUID, source, sourceFlags, sourceRaidFlag, destGUID, dest, destFlags, destRaidFlags, spellID, spellName, spellSchool, missType, ex2, ex3, ex4)
 		local petName = UnitName("pet")
 		if source == pName or source == petName then
@@ -710,45 +721,6 @@ function RSA_Monk:OnEnable()
 					end
 				end -- SPEAR HAND STRIKE
 			end -- IF EVENT IS SPELL_INTERRUPT
-			if event == "SPELL_DISPEL" then
-				if spellID == 115450 then -- DETOX
-					spellinfo = GetSpellInfo(spellID)
-					spelllinkinfo = GetSpellLink(spellID)
-					extraspellinfo = GetSpellInfo(missType)
-					extraspellinfolink = GetSpellLink(missType)
-					RSA.Replacements = {["[SPELL]"] = spellinfo, ["[LINK]"] = spelllinkinfo, ["[TARGET]"] = dest, ["[AURA]"] = extraspellinfo, ["[AURALINK]"] = extraspellinfolink,}
-					if RSA.db.profile.Monk.Spells.Detox.Messages.Start ~= "" then
-						if RSA.db.profile.Monk.Spells.Detox.Local == true then
-							RSA.Print_LibSink(string.gsub(RSA.db.profile.Monk.Spells.Detox.Messages.Start, ".%a+.", RSA.String_Replace))
-						end
-						if RSA.db.profile.Monk.Spells.Detox.Yell == true then
-							RSA.Print_Yell(string.gsub(RSA.db.profile.Monk.Spells.Detox.Messages.Start, ".%a+.", RSA.String_Replace))
-						end
-						if RSA.db.profile.Monk.Spells.Detox.Whisper == true and dest ~= pName and RSA.Whisperable(destFlags) then
-							RSA.Replacements = {["[SPELL]"] = spellinfo, ["[LINK]"] = spelllinkinfo, ["[TARGET]"] = L["You"],}
-							RSA.Print_Whisper(string.gsub(RSA.db.profile.Monk.Spells.Detox.Messages.Start, ".%a+.", RSA.String_Replace), dest)
-							RSA.Replacements = {["[SPELL]"] = spellinfo, ["[LINK]"] = spelllinkinfo, ["[TARGET]"] = dest,}
-						end
-						if RSA.db.profile.Monk.Spells.Detox.CustomChannel.Enabled == true then
-							RSA.Print_Channel(string.gsub(RSA.db.profile.Monk.Spells.Detox.Messages.Start, ".%a+.", RSA.String_Replace), RSA.db.profile.Monk.Spells.Detox.CustomChannel.Channel)
-						end
-						if RSA.db.profile.Monk.Spells.Detox.Smart.Say == true then
-							RSA.Print_Say(string.gsub(RSA.db.profile.Monk.Spells.Detox.Messages.Start, ".%a+.", RSA.String_Replace))
-						end
-						if RSA.db.profile.Monk.Spells.Detox.Smart.RaidParty == true then
-							RSA.Print_Smart_RaidParty(string.gsub(RSA.db.profile.Monk.Spells.Detox.Messages.Start, ".%a+.", RSA.String_Replace))
-						end
-						if RSA.db.profile.Monk.Spells.Detox.Party == true then
-							if RSA.db.profile.Monk.Spells.Detox.Smart.RaidParty == true and GetNumGroupMembers() == 0 and InstanceType ~= "arena" then return end
-							RSA.Print_Party(string.gsub(RSA.db.profile.Monk.Spells.Detox.Messages.Start, ".%a+.", RSA.String_Replace))
-						end
-						if RSA.db.profile.Monk.Spells.Detox.Raid == true then
-							if RSA.db.profile.Monk.Spells.Detox.Smart.RaidParty == true and GetNumGroupMembers() > 0 then return end
-							RSA.Print_Raid(string.gsub(RSA.db.profile.Monk.Spells.Detox.Messages.Start, ".%a+.", RSA.String_Replace))
-						end
-					end
-				end -- DETOX
-			end -- IF EVENT IS SPELL_DISPEL
 			if event == "SPELL_HEAL" then
 			end -- IF EVENT IS SPELL_HEAL
 			if event == "SPELL_MISSED" and missType ~= "Immune" then
@@ -950,6 +922,7 @@ function RSA_Monk:OnEnable()
 					end
 				end -- PARALYSIS
 			end -- IF EVENT IS SPELL_MISSED AND IS Immune
+			MonitorAndAnnounce(self, _, timestamp, event, hideCaster, sourceGUID, source, sourceFlags, sourceRaidFlag, destGUID, dest, destFlags, destRaidFlags, spellID, spellName, spellSchool, missType, ex2, ex3, ex4)
 		end -- IF SOURCE IS PLAYER
 	end -- END ENTIRELY
 	RSA.CombatLogMonitor:SetScript("OnEvent", Monk_Spells)

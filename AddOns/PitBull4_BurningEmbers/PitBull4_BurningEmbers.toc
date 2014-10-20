@@ -1,7 +1,7 @@
 ## Interface: 50400
 ## Title: PitBull4 |r[|cffeda55fBurning embers|r]
 ## Title-deDE: PitBull4 |r[|cffeda55fBurning embers|r]
-## Title-esES: PitBull4 |r[|cffeda55fBurning embers|r]
+## Title-esES: PitBull4 |r[|cffeda55fAscuas ardientes|r]
 ## Title-frFR: PitBull4 |r[|cffeda55fBurning embers|r]
 ## Title-koKR: PitBull4 |r[|cffeda55fBurning embers|r]
 ## Title-ruRU: PitBull4 |r[|cffeda55fРаскаленные угли|r]
@@ -9,7 +9,7 @@
 ## Title-zhTW: PitBull4 |r[|cffeda55f燃火餘燼|r]
 ## Notes: Show destruction warlock burning embers.
 ## Notes-deDE: Show destruction warlock burning embers.
-## Notes-esES: Show destruction warlock burning embers.
+## Notes-esES: Mostrar ascuas ardientes para brujos de destrucción.
 ## Notes-frFR: Show destruction warlock burning embers.
 ## Notes-koKR: Show destruction warlock burning embers.
 ## Notes-ruRU: Показывает раскаленные угли чернокнижника специализации "Разрушение".
@@ -19,9 +19,9 @@
 ## DefaultState: enabled
 ## LoadOnDemand: 1
 ## Dependencies: PitBull4
-## Version: v4.0.0-beta48
+## Version: v4.0.0-beta51
 ## X-PitBull4-Condition: return select(2, UnitClass("player")) == "WARLOCK" and select(4, GetBuildInfo()) >= 50000
-## X-Curse-Packaged-Version: v4.0.0-beta48
+## X-Curse-Packaged-Version: v4.0.0-beta51
 ## X-Curse-Project-Name: PitBull Unit Frames 4.0
 ## X-Curse-Project-ID: pitbull4
 ## X-Curse-Repository-ID: wow/pitbull4/mainline

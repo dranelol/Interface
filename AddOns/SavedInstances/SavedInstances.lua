@@ -13,7 +13,7 @@ local maxdiff = 10 -- max number of instance difficulties
 local maxcol = 4 -- max columns per player+instance
 
 addon.svnrev = {}
-addon.svnrev["SavedInstances.lua"] = tonumber(("$Revision: 365 $"):match("%d+"))
+addon.svnrev["SavedInstances.lua"] = tonumber(("$Revision: 383 $"):match("%d+"))
 
 -- local (optimal) references to provided functions
 local table, math, bit, string, pairs, ipairs, unpack, strsplit, time, type, wipe, tonumber, select, strsub = 
@@ -82,6 +82,7 @@ local currency = {
   515, -- Darkmoon Prize Ticket
   241, -- Champion's Seal
   391, -- Tol Barad Commendation
+  416, -- Mark of the World Tree
   789, -- Bloody Coin
 }
 addon.currency = currency
@@ -140,12 +141,12 @@ local _specialQuests = {
   -- Timeless Isle
   [32962] = { zid=951, aid=8743, daily=true },  -- Zarhym
   [32961] = { zid=951, daily=true },  -- Scary Ghosts and Nice Sprites
-  [32956] = { zid=951, aid=8727, aline="Right7" }, -- Blackguard's Jetsam
-  [32957] = { zid=951, aid=8727, aline="Left7" },  -- Sunken Treasure
-  [32970] = { zid=951, aid=8727, aline="Left8" },  -- Gleaming Treasure Satchel
-  [32968] = { zid=951, aid=8726, aline="Right7" }, -- Rope-Bound Treasure Chest
-  [32969] = { zid=951, aid=8726, aline="Left7" },  -- Gleaming Treasure Chest
-  [32971] = { zid=951, aid=8726, aline="Left8" },  -- Mist-Covered Treasure Chest
+  [32956] = { zid=951, aid=8727, acid=2, aline="Right7" }, -- Blackguard's Jetsam
+  [32957] = { zid=951, aid=8727, acid=1, aline="Left7" },  -- Sunken Treasure
+  [32970] = { zid=951, aid=8727, acid=3, aline="Left8" },  -- Gleaming Treasure Satchel
+  [32968] = { zid=951, aid=8726, acid=2, aline="Right7" }, -- Rope-Bound Treasure Chest
+  [32969] = { zid=951, aid=8726, acid=1, aline="Left7" },  -- Gleaming Treasure Chest
+  [32971] = { zid=951, aid=8726, acid=3, aline="Left8" },  -- Mist-Covered Treasure Chest
 }
 function addon:specialQuests()
   for qid, qinfo in pairs(_specialQuests) do
@@ -160,6 +161,11 @@ function addon:specialQuests()
 	if name and #name > 0 then
           qinfo.name = name.." ("..LOOT..")"
 	end
+      end
+    elseif not qinfo.name and qinfo.aid and qinfo.acid then
+      local l = GetAchievementCriteriaInfo(qinfo.aid, qinfo.acid)
+      if l then
+        qinfo.name = l:gsub("%p$","")
       end
     elseif not qinfo.name and qinfo.aid then
       scantt:SetOwner(UIParent,"ANCHOR_NONE")
@@ -187,6 +193,8 @@ end
 
 local QuestExceptions = { 
   -- some quests are misidentified in scope
+  [7905]  = "Regular", -- Darkmoon Faire referral -- old addon versions misidentified this as monthly
+  [7926]  = "Regular", -- Darkmoon Faire referral
   [31752] = "AccountDaily", -- Blingtron
   -- also pre-populate a few important quests
   [32640] = "Weekly",  -- Champions of the Thunder King
@@ -283,6 +291,13 @@ vars.defaultDB = {
 				-- FarmCropPlanted: key: spellID value: count
 				-- FarmCropReady: key: spellID value: count
 				-- FarmExpires: expiration
+
+				-- BonusRoll: key: int value:
+				   -- name: string
+				   -- time: int
+				   -- currencyID: int
+				   -- money: integer or nil
+				   -- item: linkstring or nil
 
 	Indicators = {
 		D1Indicator = "BLANK", -- indicator: ICON_*, BLANK
@@ -631,6 +646,7 @@ addon.transInstance = {
   [534] = 195, 	-- The Battle for Mount Hyjal
   [509] = 160, 	-- Ruins of Ahn'Qiraj
   [557] = 179,  -- Auchindoun: Mana-Tombs : ticket 72 zhTW
+  [556] = 180,  -- Auchindoun: Sethekk Halls : ticket 151 frFR
   [568] = 340,  -- Zul'Aman: frFR 
   [1004] = 474, -- Scarlet Monastary: deDE
   [600] = 215,  -- Drak'Tharon: ticket 105 deDE
@@ -1033,6 +1049,7 @@ function addon:UpdateToonData()
 		  local donetoday, money = GetLFGDungeonRewards(id)
 		  local expires = addon:GetNextDailyResetTime()
 		  if donetoday and i.Random and (
+		    (i.LFDID == 258) or  -- random classic dungeon
 		    (UnitLevel("player") == 85 and 
 		     (i.LFDID == 300 or i.LFDID == 301 or i.LFDID == 434)) -- reg/her cata and HoT at 85
 		   ) then -- donetoday flag is falsely set for some level/dungeon combos where no daily incentive is available
@@ -1204,6 +1221,7 @@ end
 
 function addon:QuestIsDarkmoonMonthly()
   if QuestIsDaily() then return false end
+  if GetQuestID() == 7905 or GetQuestID() == 7926 then return false end -- one-time referral quest
   for i=1,GetNumRewardCurrencies() do
     local name,texture,amount = GetQuestCurrencyInfo("reward",i)
     if texture:find("_ticket_darkmoon_") then
@@ -1302,21 +1320,22 @@ end
 local function openIndicator(...)
   indicatortip = QTip:Acquire("SavedInstancesIndicatorTooltip", ...)
   indicatortip:Clear()
-  indicatortip:SetHeaderFont(tooltip:GetHeaderFont())
+  indicatortip:SetHeaderFont(core:HeaderFont())
   indicatortip:SetScale(vars.db.Tooltip.Scale)
 end
 
-local function finishIndicator()
-  indicatortip:SetAutoHideDelay(0.1, tooltip)
+local function finishIndicator(parent)
+  parent = parent or tooltip
+  indicatortip:SetAutoHideDelay(0.1, parent)
   indicatortip.OnRelease = function() indicatortip = nil end -- extra-safety: update our variable on auto-release
-  indicatortip:SmartAnchorTo(tooltip)
+  indicatortip:SmartAnchorTo(parent)
   indicatortip:SetFrameLevel(100) -- ensure visibility when forced to overlap main tooltip
   addon:SkinFrame(indicatortip,"SavedInstancesIndicatorTooltip")
   indicatortip:Show()
 end
 
 local function ShowToonTooltip(cell, arg, ...)
-	local toon = arg[1]
+	local toon = arg
 	if not toon then return end
 	local t = vars.db.Toons[toon]
 	if not t then return end
@@ -1425,14 +1444,14 @@ function addon:plantName(spellid)
 end
 
 local function ShowFarmTooltip(cell, arg, ...)
-        local toon, cstr = unpack(arg)
+        local toon = arg
         local t = vars.db.Toons[toon]
         if not t then return end
 	openIndicator(2, "LEFT","RIGHT")
 	local tname = ClassColorise(t.Class, toon)
         indicatortip:AddHeader()
 	indicatortip:SetCell(1,1,tname,"LEFT")
-	indicatortip:SetCell(1,2,cstr,"RIGHT")
+	indicatortip:SetCell(1,2,L["Farm Crops"],"RIGHT")
 
         local exp = t.FarmExpires
 	if exp and exp > time() then
@@ -1456,6 +1475,43 @@ local function ShowFarmTooltip(cell, arg, ...)
           end
 	end
 	finishIndicator()
+end
+
+local function ShowBonusTooltip(cell, arg, ...)
+        local toon = arg
+        local parent
+	if type(toon) == "table" then
+	   toon, parent = unpack(toon)
+	end
+        local t = vars.db.Toons[toon]
+        if not t or not t.BonusRoll then return end
+        openIndicator(4, "LEFT","LEFT","LEFT","LEFT")
+        local tname = ClassColorise(t.Class, toon)
+        indicatortip:AddHeader()
+        indicatortip:SetCell(1,1,tname,"LEFT",2)
+        indicatortip:SetCell(1,3,L["Recent Bonus Rolls"],"RIGHT",2)
+
+        local line = indicatortip:AddLine()
+	for i,roll in ipairs(t.BonusRoll) do
+	    if i > 10 then break end
+            local line = indicatortip:AddLine()
+	    local icon = roll.currencyID and select(3,GetCurrencyInfo(roll.currencyID))
+	    if icon then
+              indicatortip:SetCell(line,1, " \124T"..icon..":0\124t ")
+	    end
+	    if roll.name then
+              indicatortip:SetCell(line,2,roll.name)
+	    end
+	    if roll.item then
+              indicatortip:SetCell(line,3,roll.item)
+	    elseif roll.money then
+              indicatortip:SetCell(line,3,GetMoneyString(roll.money))
+	    end
+	    if roll.time then
+              indicatortip:SetCell(line,4,date("%b %d %H:%M",roll.time))
+	    end
+	end
+        finishIndicator(parent)
 end
 
 local function ShowHistoryTooltip(cell, arg, ...)
@@ -1729,6 +1785,8 @@ function core:OnInitialize()
 	db.Tooltip.CombineLFR = (db.Tooltip.CombineLFR == nil and true) or db.Tooltip.CombineLFR
 	db.Tooltip.TrackSkills = (db.Tooltip.TrackSkills == nil and true) or db.Tooltip.TrackSkills
 	db.Tooltip.TrackFarm = (db.Tooltip.TrackFarm == nil and true) or db.Tooltip.TrackFarm
+	db.Tooltip.TrackBonus = (db.Tooltip.TrackBonus == nil and false) or db.Tooltip.TrackBonus
+	db.Tooltip.AugmentBonus = (db.Tooltip.AugmentBonus == nil and true) or db.Tooltip.AugmentBonus
 	db.Tooltip.TrackDailyQuests = (db.Tooltip.TrackDailyQuests == nil and true) or db.Tooltip.TrackDailyQuests
 	db.Tooltip.TrackWeeklyQuests = (db.Tooltip.TrackWeeklyQuests == nil and true) or db.Tooltip.TrackWeeklyQuests
 	db.Tooltip.RemindCharms = (db.Tooltip.RemindCharms == nil and true) or db.Tooltip.RemindCharms
@@ -1764,7 +1822,7 @@ function core:OnInitialize()
 	RequestRaidInfo() -- get lockout data
 	RequestLFDPlayerLockInfo()
 	vars.dataobject = vars.LDB and vars.LDB:NewDataObject("SavedInstances", {
-		text = "",
+		text = addonName,
 		type = "launcher",
 		icon = "Interface\\Addons\\SavedInstances\\icon.tga",
 		OnEnter = function(frame)
@@ -1788,6 +1846,7 @@ function core:OnInitialize()
 		vars.icon:Register(addonName, vars.dataobject, db.MinimapIcon)
 		vars.icon:Refresh(addonName)
 	end
+	addon.BonusRollShow() -- catch roll-on-load
 end
 
 function addon:SetupVersion()
@@ -1822,8 +1881,11 @@ function core:OnEnable()
 	self:RegisterEvent("TRADE_SKILL_UPDATE")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", RequestRaidInfo)
 	self:RegisterEvent("LFG_LOCK_INFO_RECEIVED", RequestRaidInfo)
+	self:RegisterEvent("BONUS_ROLL_RESULT", "BonusRollResult")
 	self:RegisterEvent("PLAYER_LOGOUT", function() addon.logout = true ; addon:UpdateToonData() end) -- update currency spent
-	self:RegisterEvent("LFG_COMPLETION_REWARD") -- for random daily dungeon tracking
+	self:RegisterEvent("LFG_COMPLETION_REWARD", "RefreshLockInfo") -- for random daily dungeon tracking
+	self:RegisterEvent("ENCOUNTER_END", "EncounterEnd")
+	self:RegisterEvent("CHAT_MSG_MONSTER_YELL")
 	self:RegisterEvent("TIME_PLAYED_MSG", function(_,total,level) 
 	                      local t = thisToon and vars and vars.db and vars.db.Toons[thisToon]
 	                      if total > 0 and t then
@@ -1860,17 +1922,43 @@ end
 function core:ADDON_LOADED()
 	if DBM and DBM.EndCombat and not addon.dbmhook then
 	  addon.dbmhook = true
-	  hooksecurefunc(DBM, "EndCombat", function() debug("DBM:EndCombat refresh"); core:LFG_COMPLETION_REWARD() end)
+	  hooksecurefunc(DBM, "EndCombat", function(self, mod, wipe) 
+	     core:BossModEncounterEnd("DBM:EndCombat", mod and mod.combatInfo and mod.combatInfo.name) 
+	  end)
 	end
 	if BigWigsLoader and not addon.bigwigshook then
 	  addon.bigwigshook = true
-	  BigWigsLoader.RegisterMessage(self, "BigWigs_OnBossWin", function() debug("BigWigs_OnBossWin refresh"); core:LFG_COMPLETION_REWARD() end)
+	  BigWigsLoader.RegisterMessage(self, "BigWigs_OnBossWin", function(self, event, mod) 
+	      core:BossModEncounterEnd("BigWigs_OnBossWin", mod and mod.displayName)
+	  end)
 	end
 end
 
 function core:OnDisable()
 	self:UnregisterAllEvents()
         addon.resetDetect:SetScript("OnEvent", nil)
+end
+
+function core:RequestLockInfo() -- request lock info from the server immediately
+	RequestRaidInfo()
+	RequestLFDPlayerLockInfo()
+end
+
+function core:RefreshLockInfo() -- throttled lock update with retry
+	local now = GetTime()
+	if now > (core.lastrefreshlock or 0) + 1 then
+		core.lastrefreshlock = now
+		core:RequestLockInfo()
+	end
+	if now > (core.lastrefreshlocksched or 0) + 120 then
+                -- make sure we update any lockout info (sometimes there's server-side delay)
+		core.lastrefreshlockshed = now
+  		core:ScheduleTimer("RequestLockInfo",5)
+  		core:ScheduleTimer("RequestLockInfo",30)
+  		core:ScheduleTimer("RequestLockInfo",60)
+  		core:ScheduleTimer("RequestLockInfo",90)
+  		core:ScheduleTimer("RequestLockInfo",120)
+	end
 end
 
 local currency_msg = CURRENCY_GAINED:gsub(":.*$","")
@@ -1882,13 +1970,57 @@ function core:CheckSystemMessage(event, msg)
 	   (msg:find(INSTANCE_SAVED) or -- first boss kill
 	    msg:find(currency_msg)) -- subsequent boss kills (unless capped or over level)
 	   then
-	   RequestRaidInfo()
+	   core:RefreshLockInfo()
 	end
 end
 
-function core:LFG_COMPLETION_REWARD()
-	RequestRaidInfo()
-	RequestLFDPlayerLockInfo()
+function core:CHAT_MSG_MONSTER_YELL(event, msg, bossname)
+  -- cheapest possible outdoor boss detection for players lacking a proper boss mod
+  -- should work for sha and nalak, oon and gal report a related mob
+  local t = vars.db.Toons[thisToon]
+  local now = time()
+  if bossname and t then
+    bossname = tostring(bossname) -- for safety
+    local diff = select(4,GetInstanceInfo())
+    if diff and #diff > 0 then bossname = bossname .. ": ".. diff end
+    t.lastbossyell = bossname
+    t.lastbossyelltime = now
+    --debug("CHAT_MSG_MONSTER_YELL: "..tostring(bossname)); 
+  end
+end
+
+function core:BossModEncounterEnd(modname, bossname)
+  local t = vars.db.Toons[thisToon]
+  local now = time()
+  if bossname and t and now > (t.lastbosstime or 0) + 2*60 then 
+    -- boss mods can often detect completion before ENCOUNTER_END
+    -- also some world bosses never send ENCOUNTER_END
+    -- enough timeout to prevent overwriting, but short enough to prevent cross-boss contamination
+    bossname = tostring(bossname) -- for safety
+    local diff = select(4,GetInstanceInfo())
+    if diff and #diff > 0 then bossname = bossname .. ": ".. diff end
+    t.lastboss = bossname
+    t.lastbosstime = now
+  end
+  debug((modname or "BossMod").." refresh: "..tostring(bossname)); 
+  core:RefreshLockInfo()
+end
+
+function core:EncounterEnd(event, encounterID, encounterName, difficultyID, raidSize, endStatus)
+  debug("EncounterEnd:"..tostring(encounterID)..":"..tostring(encounterName)..":"..tostring(difficultyID)..":"..tostring(raidSize)..":"..tostring(endStatus))
+  if endStatus ~= 1 then return end -- wipe
+  core:RefreshLockInfo()
+  local t = vars.db.Toons[thisToon]
+  if not t then return end
+  local name = encounterName
+  if difficultyID and difficultyID > 0 then
+    local diff = GetDifficultyInfo(difficultyID)
+    if diff and #diff > 0 then
+      name = name ..": "..diff
+    end
+  end
+  t.lastboss = name
+  t.lastbosstime = time()
 end
 
 function addon:InGroup() 
@@ -1970,7 +2102,7 @@ end
 
 
 addon.histReapTime = 60*60 -- 1 hour
-addon.histLimit = 5 -- instances per hour
+addon.histLimit = 10 -- instances per hour
 function addon:histZoneKey()
   local instname, insttype, diff, diffname, maxPlayers, playerDifficulty, isDynamicInstance = GetInstanceInfo()
   if insttype == nil or insttype == "none" or insttype == "arena" or insttype == "pvp" then -- pvp doesnt count
@@ -2461,6 +2593,18 @@ local function addColumns(columns, toon, tooltip)
 	columnCache[ShowAll()][toon] = true
 end
 
+function core:HeaderFont()
+  if not addon.headerfont then
+    local temp = QTip:Acquire("SavedInstancesHeaderTooltip", 1, "LEFT")
+    addon.headerfont = CreateFont("SavedInstancedTooltipHeaderFont")
+    local hFont = temp:GetHeaderFont()
+    local hFontPath, hFontSize,_ hFontPath, hFontSize, _ = hFont:GetFont()
+    addon.headerfont:SetFont(hFontPath, hFontSize, "OUTLINE")
+    QTip:Release(temp)
+  end
+  return addon.headerfont
+end
+
 function core:ShowTooltip(anchorframe)
 	local showall = ShowAll()
 	if tooltip and tooltip:IsShown() and 
@@ -2478,13 +2622,7 @@ function core:ShowTooltip(anchorframe)
 	tooltip:SetScript("OnUpdate", UpdateTooltip)
 	tooltip:Clear()
 	tooltip:SetScale(vars.db.Tooltip.Scale)
-	if not addon.headerfont then
-	  addon.headerfont = CreateFont("SavedInstancedTooltipHeaderFont")
-	  local hFont = tooltip:GetHeaderFont()
-	  local hFontPath, hFontSize,_ hFontPath, hFontSize, _ = hFont:GetFont()
-	  addon.headerfont:SetFont(hFontPath, hFontSize, "OUTLINE")
-	end
-	tooltip:SetHeaderFont(addon.headerfont)
+	tooltip:SetHeaderFont(core:HeaderFont())
 	addon:HistoryUpdate()
 	local histinfo = ""
 	if addon.histLiveCount and addon.histLiveCount > 0 then
@@ -2920,7 +3058,42 @@ function core:ShowTooltip(anchorframe)
 		for toon, t in cpairs(vars.db.Toons) do
 			if toonfarm[toon] then
 				tooltip:SetCell(show, columns[toon..1], ClassColorise(t.Class,toonfarm[toon]), "CENTER",maxcol)
-		                tooltip:SetCellScript(show, columns[toon..1], "OnEnter", ShowFarmTooltip, {toon, L["Farm Crops"]})
+		                tooltip:SetCellScript(show, columns[toon..1], "OnEnter", ShowFarmTooltip, toon)
+		                tooltip:SetCellScript(show, columns[toon..1], "OnLeave", CloseTooltips)
+			end
+		end
+        end
+
+	if vars.db.Tooltip.TrackBonus or showall then
+		local show
+		local toonbonus = localarr("toonbonus")
+		for toon, t in cpairs(vars.db.Toons) do
+			if t.BonusRoll and t.BonusRoll[1] then
+				local gold = 0
+				for _,roll in ipairs(t.BonusRoll) do
+					if roll.money then 
+						gold = gold + 1
+					else
+						break
+					end
+				end
+				toonbonus[toon] = gold
+				show = true
+				addColumns(columns, toon, tooltip)
+			end
+		end
+		if show then
+			if not firstcategory and vars.db.Tooltip.CategorySpaces then
+				addsep()
+			end
+			show = tooltip:AddLine(YELLOWFONT .. L["Roll Bonus"] .. FONTEND)		
+		end
+		for toon, t in cpairs(vars.db.Toons) do
+			if toonbonus[toon] then
+				local str = toonbonus[toon]
+				if str > 0 then str = "+"..str end
+				tooltip:SetCell(show, columns[toon..1], ClassColorise(t.Class,str), "CENTER",maxcol)
+		                tooltip:SetCellScript(show, columns[toon..1], "OnEnter", ShowBonusTooltip, toon)
 		                tooltip:SetCellScript(show, columns[toon..1], "OnLeave", CloseTooltips)
 			end
 		end
@@ -3007,7 +3180,7 @@ function core:ShowTooltip(anchorframe)
 			end
 			tooltip:SetCell(headLine, col, ClassColorise(vars.db.Toons[toon].Class, toonstr), 
 			                tooltip:GetHeaderFont(), "CENTER", maxcol)
-			tooltip:SetCellScript(headLine, col, "OnEnter", ShowToonTooltip, {toon})
+			tooltip:SetCellScript(headLine, col, "OnEnter", ShowToonTooltip, toon)
 			tooltip:SetCellScript(headLine, col, "OnLeave", CloseTooltips)
 	 		--[[
 			tooltip:SetCellScript(headLine, col, "OnEnter", function() 
@@ -3512,4 +3685,70 @@ function core:UNIT_SPELLCAST_SUCCEEDED(evt, unit, spellName, rank, lineID, spell
   end
 end
 
+function core:BonusRollResult(event, rewardType, rewardLink, rewardQuantity, rewardSpecID)
+  local t = vars.db.Toons[thisToon]
+  debug("BonusRollResult:"..tostring(rewardType)..":"..tostring(rewardLink)..":"..tostring(rewardQuantity)..":"..tostring(rewardSpecID)..
+        " (boss="..tostring(t and t.lastboss).."|"..tostring(t and t.lastbossyell)..")")
+  if not t then return end
+  if not rewardType then return end -- sometimes get a bogus message, ignore it
+  t.BonusRoll = t.BonusRoll or {}
+  --local rewardstr = _G["BONUS_ROLL_REWARD_"..string.upper(rewardType)]
+  local now = time()
+  local bossname = t.lastboss
+  if now > (t.lastbosstime or 0) + 3*60 then -- user rolled before lastboss was updated, ignore the stale one. Roll timeout is 3 min.
+    bossname = nil
+  end
+  if not bossname and t.lastbossyell and now < (t.lastbossyelltime or 0) + 10*60 then
+    bossname = t.lastbossyell -- yell fallback
+  end
+  if not bossname then
+    bossname = GetSubZoneText() or GetRealZoneText() -- zone fallback
+  end
+  local roll = { name = bossname, time = now, currencyID = BonusRollFrame.currencyID }
+  if rewardType == "money" then
+    roll.money = rewardQuantity
+  elseif rewardType == "item" then
+    roll.item = rewardLink
+  end
+  table.insert(t.BonusRoll, 1, roll)
+  local limit = 25
+  for i=limit+1, table.maxn(t.BonusRoll) do
+    t.BonusRoll[i] = nil
+  end
+end
+
+function addon.BonusRollShow()
+  local t = vars.db.Toons[thisToon]
+  if not t or not BonusRollFrame then return end
+  local binfo = t.BonusRoll
+  local frame = addon.BonusFrame
+  if not binfo or #binfo == 0 or not vars.db.Tooltip.AugmentBonus then
+    if frame then frame:Hide() end
+    return
+  end
+  if not frame then
+    frame = CreateFrame("Button", "SavedInstancesBonusRollFrame", BonusRollFrame, "SpellBookSkillLineTabTemplate")
+    addon.BonusFrame = frame
+    --frame:SetSize(BonusRollFrame:GetHeight(), BonusRollFrame:GetHeight())
+    frame:SetPoint("LEFT", BonusRollFrame, "RIGHT",0,8)
+    frame.text = addon.BonusFrame:CreateFontString(nil, "OVERLAY","GameFontNormal")
+    frame.text:SetPoint("CENTER")
+    frame:SetScript("OnEnter", function() ShowBonusTooltip(nil, { thisToon, frame }) end )
+    frame:SetScript("OnLeave", CloseTooltips)
+    frame:SetScript("OnClick", nil)
+    frame.text:Show()
+  end
+  local bonus = 0
+  for _,rinfo in ipairs(binfo) do
+    if rinfo.money then 
+       bonus = bonus + 1
+    else
+       break
+    end
+  end
+  frame.text:SetText((bonus > 0 and "+" or "")..bonus)
+  frame:Show()
+end
+
+hooksecurefunc("BonusRollFrame_StartBonusRoll", addon.BonusRollShow)
 

@@ -60,7 +60,7 @@
 
 --]]
 
-local lib = LibStub:NewLibrary("LibParse", 1)
+local lib = LibStub:NewLibrary("LibParse", 2)
 if not lib then return end
 
 local pairs, ipairs, tonumber, tostring = pairs, ipairs, tonumber, tostring
@@ -92,6 +92,10 @@ end
 
 function JsonWriter:Append(s)
 	self.buffer[#self.buffer+1] = s
+	if #self.buffer > 1000 then
+		local temp = table.concat(self.buffer)
+		self.buffer = {temp}
+	end
 end
 
 function JsonWriter:ToString()

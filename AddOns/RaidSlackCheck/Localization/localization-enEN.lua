@@ -144,6 +144,8 @@ rscadditionalstat4    = "Agi"
 rscadditionalstat5    = "Str"
 rscadditionalstatbonus = "bonus"
 rscpartanonsfoodadd        = "count %s food"
+rsceating				= "E"
+rsceating2				= "E"
 
 
 end

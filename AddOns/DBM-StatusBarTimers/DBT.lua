@@ -56,6 +56,8 @@ local instances = {}
 local updateClickThrough
 local options
 local setupHandlers
+local applyFailed = false
+local totalBars = 0
 local function stringFromTimer(t)
 	if t <= 60 then
 		return ("%.1f"):format(t)
@@ -64,8 +66,11 @@ local function stringFromTimer(t)
 	end
 end
 
+local updateFrame = CreateFrame("Frame")
+
 local ipairs, pairs, next, type = ipairs, pairs, next, type
 local tinsert = table.insert
+local GetTime = GetTime
 
 -----------------------
 --  Default Options  --
@@ -106,6 +111,10 @@ options = {
 	IconRight = {
 		type = "boolean",
 		default = false,
+	},
+	IconLocked = {
+		type = "boolean",
+		default = true,
 	},
 	Texture = {
 		type = "string",
@@ -332,6 +341,19 @@ do
 		tinsert(instances, obj)
 		return obj
 	end
+	
+	local function delaySkinCheck(self)
+		local skins = self:GetSkins()
+		if not skins then--Returns nil if checked too soon
+			DBM:Schedule(3, delaySkinCheck, self)
+			return
+		end
+		local enabled = GetAddOnEnableState(UnitName("player"), "DBM-DefaultSkin")
+		if enabled ~= 0 and skins[self.options.Skin].loaded == nil then
+			-- The currently set skin is no longer loaded, revert to DefaultSkin. If enabled (else, person wants textureless bar on purpose)
+			self:SetSkin("DefaultSkin")
+		end
+	end
 
 	function DBT:LoadOptions(id)
 		-- recover old options (DBM_SavedOptions) if possible (saved by DBM, before DBT was a separate addon)
@@ -345,6 +367,7 @@ do
 		self.secAnchor:ClearAllPoints()
 		self.mainAnchor:SetPoint(self.options.TimerPoint, UIParent, self.options.TimerPoint, self.options.TimerX, self.options.TimerY)
 		self.secAnchor:SetPoint(self.options.HugeTimerPoint, UIParent, self.options.HugeTimerPoint, self.options.HugeTimerX, self.options.HugeTimerY)
+		DBM:Schedule(2, delaySkinCheck, self)
 	end
 end
 
@@ -401,6 +424,7 @@ do
 		if (self.numBars or 0) >= 15 and not isDummy then return end
 		local newBar = self:GetBar(id)
 		if newBar then -- update an existing bar
+			newBar.lastUpdate = GetTime()
 			newBar:SetTimer(timer) -- this can kill the timer and the timer methods don't like dead timers
 			if newBar.dead then return end
 			newBar:SetElapsed(0) -- same
@@ -412,6 +436,7 @@ do
 			newBar = next(unusedBarObjects, nil)
 			local newFrame = createBarFrame(self)
 			if newBar then
+				newBar.lastUpdate = GetTime()
 				unusedBarObjects[newBar] = nil
 				newBar.dead = nil -- resurrected it :)
 				newBar.frame = newFrame
@@ -437,11 +462,13 @@ do
 					fadingIn = 0,
 					small = small,
 					color = color,
-					flashing = nil
+					flashing = nil,
+					lastUpdate = GetTime()
 				}, mt)
 			end
 			newFrame.obj = newBar
 			self.numBars = (self.numBars or 0) + 1
+			totalBars = self.numBars
 			local enlargeTime = self.options.Style ~= "BigWigs" and self.options.EnlargeBarsTime or 11
 			if (timer <= enlargeTime or huge) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
 				newBar.enlarged = true
@@ -510,6 +537,10 @@ end
 --	end
 --end
 function DBT:GetBarIterator()
+	if not self.bars then
+		DBM:Debug("GetBarIterator failed for unknown reasons")
+		return
+	end
 	return pairs(self.bars)
 end
 
@@ -607,45 +638,49 @@ function barPrototype:Update(elapsed)
 	local spark = _G[frame_name.."BarSpark"]
 	local timer = _G[frame_name.."BarTimer"]
 	local obj = self.owner
-	local sparkEnabled = obj.options.Style ~= "BigWigs" and obj.options.Spark
+	local currentStyle = obj.options.Style
+	local sparkEnabled = currentStyle ~= "BigWigs" and obj.options.Spark
+	local isMoving = self.moving
 	self.timer = self.timer - elapsed
+	local timerValue = self.timer
+	local totaltimeValue = self.totalTime
 	if obj.options.DynamicColor and not self.color then
-		local r = obj.options.StartColorR  + (obj.options.EndColorR - obj.options.StartColorR) * (1 - self.timer/self.totalTime)
-		local g = obj.options.StartColorG  + (obj.options.EndColorG - obj.options.StartColorG) * (1 - self.timer/self.totalTime)
-		local b = obj.options.StartColorB  + (obj.options.EndColorB - obj.options.StartColorB) * (1 - self.timer/self.totalTime)
+		local r = obj.options.StartColorR  + (obj.options.EndColorR - obj.options.StartColorR) * (1 - timerValue/totaltimeValue)
+		local g = obj.options.StartColorG  + (obj.options.EndColorG - obj.options.StartColorG) * (1 - timerValue/totaltimeValue)
+		local b = obj.options.StartColorB  + (obj.options.EndColorB - obj.options.StartColorB) * (1 - timerValue/totaltimeValue)
 		bar:SetStatusBarColor(r, g, b)
 		if sparkEnabled then
 			spark:SetVertexColor(r, g, b)
 		end
 	end
-	if self.timer <= 0 then
+	if timerValue <= 0 then
 		return self:Cancel()
 	else
 		if obj.options.FillUpBars then
-			if obj.options.Style == "BigWigs" and self.enlarged then
-				bar:SetValue(1 - self.timer/(self.totalTime < 11 and self.totalTime or 11))
+			if currentStyle == "BigWigs" and self.enlarged then
+				bar:SetValue(1 - timerValue/(totaltimeValue < 11 and totaltimeValue or 11))
 			else
-				bar:SetValue(1 - self.timer/self.totalTime)
+				bar:SetValue(1 - timerValue/totaltimeValue)
 			end
 		else
-			if obj.options.Style == "BigWigs" and self.enlarged then
-				bar:SetValue(self.timer/(self.totalTime < 11 and self.totalTime or 11))
+			if currentStyle == "BigWigs" and self.enlarged then
+				bar:SetValue(timerValue/(totaltimeValue < 11 and totaltimeValue or 11))
 			else
-				bar:SetValue(self.timer/self.totalTime)
+				bar:SetValue(timerValue/totaltimeValue)
 			end
 		end
-		timer:SetText(stringFromTimer(self.timer))
+		timer:SetText(stringFromTimer(timerValue))
 	end
-	if self.fadingIn and self.fadingIn < 0.5 and obj.options.Style ~= "BigWigs" then
+	if self.fadingIn and self.fadingIn < 0.5 and currentStyle ~= "BigWigs" then
 		self.fadingIn = self.fadingIn + elapsed
 		frame:SetAlpha((self.fadingIn) / 0.5)
 	elseif self.fadingIn then
 		self.fadingIn = nil
 	end
-	if self.timer <= 7.75 and not self.flashing and obj.options.Flash and obj.options.Style ~= "BigWigs" then
+	if timerValue <= 7.75 and not self.flashing and obj.options.Flash and currentStyle ~= "BigWigs" then
 		self.flashing = true
 		self.ftimer = 0
-	elseif self.flashing and self.timer > 7.75 then
+	elseif self.flashing and timerValue > 7.75 then
 		self.flashing = nil
 		self.ftimer = nil
 	end
@@ -676,41 +711,42 @@ function barPrototype:Update(elapsed)
 		end
 		self.ftimer = self.ftimer + elapsed
 	end
-	if self.moving == "move" and self.moveElapsed <= 0.5 then
+	if isMoving == "move" and self.moveElapsed <= 0.5 then
 		self.moveElapsed = self.moveElapsed + elapsed
-		local newX = self.moveOffsetX + (obj.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 0.5)
+		local melapsed = self.moveElapsed
+		local newX = self.moveOffsetX + (obj.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"] - self.moveOffsetX) * (melapsed / 0.5)
 		local newY
 		if obj.options.ExpandUpwards then
-			newY = self.moveOffsetY + obj.options.Height * 2 + (obj.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 0.5)
+			newY = self.moveOffsetY + obj.options.Height * 2 + (obj.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
 		else
-			newY = self.moveOffsetY + (-obj.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 0.5)
+			newY = self.moveOffsetY + (-obj.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY) * (melapsed / 0.5)
 		end
 		frame:ClearAllPoints()
 		frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
-	elseif self.moving == "move" then
+	elseif isMoving == "move" then
 		self.moving = nil
 		self:SetPosition()
-	elseif self.moving == "next" then
+	elseif isMoving == "next" then
 		self.moving = nil
-		local newX = self.moveOffsetX + (obj.options.BarXOffset - self.moveOffsetX)
+		local newX = self.moveOffsetX + (obj.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"] - self.moveOffsetX)
 		local newY
 		if obj.options.ExpandUpwards then
-			newY = self.moveOffsetY + obj.options.Height * 2 + (obj.options.BarYOffset - self.moveOffsetY)
+			newY = self.moveOffsetY + obj.options.Height * 2 + (obj.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY)
 		else
-			newY = self.moveOffsetY + (-obj.options.BarYOffset - self.moveOffsetY)
+			newY = self.moveOffsetY + (-obj.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"] - self.moveOffsetY)
 		end
 		frame:ClearAllPoints()
 		frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
 		self:SetPosition()
-	elseif self.moving == "enlarge" and self.moveElapsed <= 1 then
+	elseif isMoving == "enlarge" and self.moveElapsed <= 1 then
 		self:AnimateEnlarge(elapsed)
-	elseif self.moving == "enlarge" then
+	elseif isMoving == "enlarge" then
 		self.moving = nil
 		self.enlarged = true
 		obj.hugeBars:Append(self)
 		self:ApplyStyle()
 		self:SetPosition()
-	elseif self.moving == "nextEnlarge" then
+	elseif isMoving == "nextEnlarge" then
 		self.moving = nil
 		self.enlarged = true
 		local newAnchor = (obj.hugeBars.last and obj.hugeBars.last.frame) or obj.secAnchor
@@ -718,9 +754,9 @@ function barPrototype:Update(elapsed)
 		local oldY = self.frame:GetTop()
 		self.frame:ClearAllPoints()
 		if obj.options.ExpandUpwards then
-			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", obj.options.BarXOffset, 40 + obj.options.BarYOffset)
+			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", obj.options.HugeBarXOffset, 40 + obj.options.HugeBarYOffset)
 		else
-			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", obj.options.BarXOffset, -obj.options.BarYOffset)
+			self.frame:SetPoint("TOP", newAnchor, "BOTTOM", obj.options.HugeBarXOffset, -obj.options.HugeBarYOffset)
 		end
 		local newX = self.frame:GetRight() - self.frame:GetWidth()/2
 		local newY = self.frame:GetTop()
@@ -730,9 +766,9 @@ function barPrototype:Update(elapsed)
 		self:ApplyStyle()
 		self:SetPosition()
 	end
-	local enlargeTime = obj.options.Style ~= "BigWigs" and obj.options.EnlargeBarsTime or 11
-	local enlargePer = obj.options.Style ~= "BigWigs" and obj.options.EnlargeBarsPercent or 0
-	if (self.timer <= enlargeTime or (self.timer/self.totalTime) <= enlargePer) and (not self.small) and not self.enlarged and self.moving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
+	local enlargeTime = currentStyle ~= "BigWigs" and obj.options.EnlargeBarsTime or 11
+	local enlargePer = currentStyle ~= "BigWigs" and obj.options.EnlargeBarsPercent or 0
+	if (timerValue <= enlargeTime or (timerValue/totaltimeValue) <= enlargePer) and (not self.small) and not self.enlarged and isMoving ~= "enlarge" and obj:GetOption("HugeBarsEnabled") then
 		local next = self.next
 		self:RemoveFromList()
 		local oldX, oldY
@@ -749,11 +785,13 @@ function barPrototype:Update(elapsed)
 end
 
 do
-	local frame = CreateFrame("Frame")
-	frame:SetScript("OnUpdate", function(self, elapsed)
+	updateFrame:SetScript("OnUpdate", function(self, elapsed)
+		if totalBars == 0 then
+			self:Hide()
+		end
 		if UIParent:IsShown() then return end
 		for i, v in ipairs(instances) do
-			for bar in v:GetBarIterator() do
+			for bar in pairs(v.bars) do
 				bar:Update(elapsed)
 			end
 		end
@@ -824,6 +862,7 @@ function barPrototype:Cancel()
 	unusedBarObjects[self] = self
 	self.dead = true
 	self.owner.numBars = (self.owner.numBars or 1) - 1
+	totalBars = self.owner.numBars 
 end
 
 
@@ -834,9 +873,14 @@ function DBT:ApplyStyle()
 	for bar in self:GetBarIterator() do
 		bar:ApplyStyle()
 	end
+	if applyFailed then
+		applyFailed = false
+		DBM:AddMsg(DBM_CORE_LOAD_SKIN_COMBAT)
+	end
 end
 
 function barPrototype:ApplyStyle()
+	applyFailed = true
 	local frame = self.frame
 	local frame_name = frame:GetName()
 	local bar = _G[frame_name.."Bar"]
@@ -863,13 +907,15 @@ function barPrototype:ApplyStyle()
 	timer:SetTextColor(self.owner.options.TextColorR, self.owner.options.TextColorG, self.owner.options.TextColorB)
 	if self.owner.options.IconLeft then icon1:Show() else icon1:Hide() end
 	if self.owner.options.IconRight then icon2:Show() else icon2:Hide() end
-	if self.enlarged then frame:SetWidth(self.owner.options.HugeWidth); frame:SetHeight(self.owner.options.Height); else frame:SetWidth(self.owner.options.Width); frame:SetHeight(self.owner.options.Height); end
 	if self.enlarged then bar:SetWidth(self.owner.options.HugeWidth); bar:SetHeight(self.owner.options.Height); else bar:SetWidth(self.owner.options.Width) bar:SetHeight(self.owner.options.Height); end
 	if self.enlarged then frame:SetScale(self.owner.options.HugeScale) else frame:SetScale(self.owner.options.Scale) end
-	icon1:SetWidth(self.owner.options.Height)
-	icon1:SetHeight(self.owner.options.Height)
-	icon2:SetWidth(self.owner.options.Height)
-	icon2:SetHeight(self.owner.options.Height)
+	if self.owner.options.IconLocked then
+		if self.enlarged then frame:SetWidth(self.owner.options.HugeWidth); frame:SetHeight(self.owner.options.Height); else frame:SetWidth(self.owner.options.Width); frame:SetHeight(self.owner.options.Height); end
+		icon1:SetWidth(self.owner.options.Height)
+		icon1:SetHeight(self.owner.options.Height)
+		icon2:SetWidth(self.owner.options.Height)
+		icon2:SetHeight(self.owner.options.Height)
+	end
 	self.frame:Show()
 	if sparkEnabled then
 		spark:SetAlpha(1)
@@ -881,6 +927,8 @@ function barPrototype:ApplyStyle()
 	name:SetPoint("LEFT", bar, "LEFT", 3, 0)
 	timer:SetFont(self.owner.options.Font, self.owner.options.FontSize)
 	self:Update(0)
+	applyFailed = false--Got to end with no script ran too long
+	if not updateFrame:IsShown() then updateFrame:Show() end
 end
 
 local function updateOrientation(self)
@@ -900,6 +948,8 @@ end
 options.ExpandUpwards.onChange = updateOrientation
 options.BarYOffset.onChange = updateOrientation
 options.BarXOffset.onChange = updateOrientation
+options.HugeBarYOffset.onChange = updateOrientation
+options.HugeBarXOffset.onChange = updateOrientation
 
 function updateClickThrough(self, newValue)
 	if not self.movable then
@@ -942,10 +992,11 @@ do
 		if not skin then
 			error("skin " .. id .. " doesn't exist", 2)
 		end
-		-- changing the skin cancels all timers; this is much easier than creating new frames for all currently running timers
+--[[		-- changing the skin cancels all timers; this is much easier than creating new frames for all currently running timers
+			-- This just fails and I can't see why so disabling this and just blocking setting skins with timers active instead
 		for bar in self:GetBarIterator() do
 			bar:Cancel()
-		end
+		end--]]
 		self:SetOption("Skin", id)
 		-- throw away old bars (note: there is no way to re-use them as the new skin uses a different XML template)
 		-- note: this doesn't update dummy bars (and can't do it by design); anyone who has a dummy bar for preview purposes (i.e. the GUI) must create new bars (e.g. in a callback)
@@ -955,7 +1006,13 @@ do
 			if k ~= "TimerPoint" and k ~= "TimerX" and k ~= "TimerY" -- do not reset the position
 				and k ~= "HugeTimerPoint" and k ~= "HugeTimerX" and k ~= "HugeTimerY"
 				and k ~= "Skin" then -- do not reset the skin we just set
-				self:SetOption(k, skin.defaults[k] or v.default)
+				-- A custom skin might have some settings as false, so need to check explicitly for nil.
+				-- skin.defaults will be nil if there isn't a skin (e.g. DefaultSkin) loaded, so check for that too.
+				if skin.defaults and skin.defaults[k] ~= nil then
+					self:SetOption(k, skin.defaults[k])
+				else
+					self:SetOption(k, v.default)
+				end
 			end
 		end
 	end
@@ -964,9 +1021,6 @@ do
 		if GetAddOnMetadata(i, "X-DBM-Timer-Skin") then
 			-- load basic skin data
 			local id = GetAddOnInfo(i)
-			if not IsAddOnLoadOnDemand(i) then
-				geterrorhandler()(id .. " should be marked as load on demand")
-			end
 			if id:sub(0, 4) == "DBM-" then
 				id = id:sub(5)
 			end
@@ -1041,9 +1095,9 @@ function barPrototype:SetPosition()
 	local anchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
 	self.frame:ClearAllPoints()
 	if self.owner.options.ExpandUpwards then
-		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, self.owner.options.Height * 2 + self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options.Height * 2 + self.owner.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"])
 	else
-		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"])
 	end
 end
 
@@ -1054,9 +1108,9 @@ function barPrototype:MoveToNextPosition(oldX, oldY)
 	local oldY = oldY or (self.frame:GetTop())
 	self.frame:ClearAllPoints()
 	if self.owner.options.ExpandUpwards then
-		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, self.owner.options.Height * 2 + self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"], self.owner.options.Height * 2 + self.owner.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"])
 	else
-		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options[self.enlarged and "HugeBarXOffset" or "BarXOffset"], -self.owner.options[self.enlarged and "HugeBarYOffset" or "BarYOffset"])
 	end
 	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local newY = self.frame:GetTop()
@@ -1077,9 +1131,9 @@ function barPrototype:Enlarge()
 	local oldY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
 	if self.owner.options.ExpandUpwards then
-		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, 40 + self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.HugeBarXOffset, 40 + self.owner.options.HugeBarYOffset)
 	else
-		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.HugeBarXOffset, -self.owner.options.HugeBarYOffset)
 	end
 	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local newY = self.frame:GetTop()
@@ -1100,16 +1154,16 @@ end
 ---------------------------
 function barPrototype:AnimateEnlarge(elapsed)
 	self.moveElapsed = self.moveElapsed + elapsed
-	local newX = self.moveOffsetX + (self.owner.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
+	local newX = self.moveOffsetX + (self.owner.options.HugeBarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
 	local newY
 	if self.owner.options.ExpandUpwards then
-		newY = self.moveOffsetY + 50 + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
+		newY = self.moveOffsetY + 50 + (self.owner.options.HugeBarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
 	else
-		newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
+		newY = self.moveOffsetY + (self.owner.options.HugeBarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
 	end
 	local newWidth = self.owner.options.Width + (self.owner.options.HugeWidth - self.owner.options.Width ) * (self.moveElapsed / 1)
 	local newScale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 1)
-	if (self.moveOffsetY > 0 and newY > self.owner.options.BarYOffset) or (self.moveOffsetY < 0 and newY < self.owner.options.BarYOffset) then
+	if (self.moveOffsetY > 0 and newY > self.owner.options.HugeBarYOffset) or (self.moveOffsetY < 0 and newY < self.owner.options.HugeBarYOffset) then
 		self.frame:ClearAllPoints()
 		self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
 		self.frame:SetScale(newScale)
@@ -1128,24 +1182,19 @@ end
 -- Bar event handlers --
 ------------------------
 do
-
 	local function onUpdate(self, elapsed)
-		if (self.obj.moving or "") == "enlarge" then
-			self.elap = 0
-			self.obj:Update(elapsed)
-		else
-			self.elap = (self.elap or 0) + elapsed
-			if self.elap >= 0.04 then
-				if self.obj then
-					self.obj:Update(self.elap)
-				else
-					-- This should *never* happen; .obj is only set to nil when calling :Hide() and :Show() is only called in a function that also sets .obj
-					-- However, there have been several reports of this happening since WoW 5.x, wtf?
-					-- Unfortunately, none of the developers was ever able to reproduce this.
-					-- The bug reports show screenshots of expired timers that are still visible (showing 0.00) with all clean-up operations (positioning, list entry) except for the :Hide() call being performed...
-					self:Hide()
-				end
-				self.elap = 0
+		self.obj.curTime = GetTime()
+		self.obj.delta = self.obj.curTime - self.obj.lastUpdate
+		if (self.obj.moving or "") == "enlarge" or self.obj.delta >= 0.04 then
+			if self.obj then
+				self.obj.lastUpdate = self.obj.curTime
+				self.obj:Update(self.obj.delta)
+			else
+				-- This should *never* happen; .obj is only set to nil when calling :Hide() and :Show() is only called in a function that also sets .obj
+				-- However, there have been several reports of this happening since WoW 5.x, wtf?
+				-- Unfortunately, none of the developers was ever able to reproduce this.
+				-- The bug reports show screenshots of expired timers that are still visible (showing 0.00) with all clean-up operations (positioning, list entry) except for the :Hide() call being performed...
+				self:Hide()
 			end
 		end
 	end

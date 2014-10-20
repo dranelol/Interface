@@ -8,5 +8,6 @@
     <Script file="constants.mx.lua"/>
     <Script file="constants.cn.lua"/>
     <Script file="constants.ru.lua"/>
+    <Script file="constants.pt.lua"/>
     <!--<Script file="constants.kr.lua"/>-->
 </Ui>

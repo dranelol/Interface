@@ -1,7 +1,7 @@
-﻿## Interface: 50200
+﻿## Interface: 50400
 ## Author: Aznamir
 ## Title: PallyPower
-## Version: v5.0.8 
+## Version: v5.0.9 
 ## Notes: Personal and Raid/Party Paladin buffs
 ## DefaultState: enabled
 ## Dependencies:
@@ -9,7 +9,7 @@
 ## X-Category: Paladin
 ## X-Embeds: Ace3, LibSharedMedia-3.0
 ## SavedVariables: PallyPowerDB
-## X-Curse-Packaged-Version: v5.0.8
+## X-Curse-Packaged-Version: v5.0.9
 ## X-Curse-Project-Name: PallyPower
 ## X-Curse-Project-ID: pally-power
 ## X-Curse-Repository-ID: wow/pally-power/mainline

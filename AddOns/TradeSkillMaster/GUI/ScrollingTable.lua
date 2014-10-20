@@ -63,8 +63,8 @@ local function GetTableIndex(tbl, value)
 	end
 end
 
-local function OnColumnClick(self, ...)
-	if self.st.sortInfo.enabled then
+local function OnColumnClick(self, button, ...)
+	if self.st.sortInfo.enabled and button == "LeftButton" then
 		if self.st.sortInfo.col == self.colNum then
 			self.st.sortInfo.ascending = not self.st.sortInfo.ascending
 		else
@@ -75,7 +75,7 @@ local function OnColumnClick(self, ...)
 		self.st:RefreshRows()
 	end
 	if self.st.handlers.OnColumnClick then
-		self.st.handlers.OnColumnClick(self, ...)
+		self.st.handlers.OnColumnClick(self, button, ...)
 	end
 end
 

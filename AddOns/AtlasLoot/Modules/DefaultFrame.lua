@@ -1,3 +1,4 @@
+-- $Id: DefaultFrame.lua 4248 2013-09-10 09:29:27Z lag123 $
 --[[
 Atlasloot Enhanced
 Author Hegarol
@@ -8,6 +9,7 @@ local AtlasLoot = LibStub("AceAddon-3.0"):GetAddon("AtlasLoot")
 
 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
 
+--local _ = nil
 local MODULENAME = "DefaultFrame"
 local DefaultFrame = AtlasLoot:NewModule(MODULENAME)
 
@@ -29,6 +31,8 @@ local dbDefaults = {
 		DefaultFrameLocked = false,
 		module = "AtlasLootCataclysm",
 		instance = "BlackrockCaverns",
+		point = nil,
+		NEWpoint = {"CENTER"}
 	},
 }
 
@@ -76,13 +80,16 @@ function DefaultFrame:OnInitialize()
 	db = self.db.profile
 	
 	self:CreateDefaultFrame()
+	--self:Helper()
 	self:CreateInstanceTab()
+	self.Frame:SetPoint(unpack(db.NEWpoint))
 	tinsert(UISpecialFrames, frameName)
 	--AtlasLoot:RegisterModuleOptions(MODULENAME, getOptions, MODULENAME)
 	AtlasLoot:RegisterPFrame(frameName, { "TOPLEFT", frameName, "TOPLEFT", "18", "-84" })
 	AtlasLoot:AddResetCommand(DefaultFrame.ResetCom, "DefaultFrame", "frames")
 	--DefaultFrame:SetInstanceTable()
-	DefaultFrame:DropDownRefresh()
+	-- Call this later or it conflict with blizzard raids frames?
+	--DefaultFrame:DropDownRefresh()
 	AtlasLoot.ShowFrame_MiniMap = DefaultFrame.MiniMap_OnClick_Replace
 	AtlasLoot:DefaultFrame_RefreshScale()
 end
@@ -98,6 +105,7 @@ end
 function DefaultFrame:ResetCom()
 	DefaultFrame.Frame:SetPoint("CENTER", UIParent, "CENTER")
 end
+
 -- FRAME
 do
 
@@ -108,7 +116,13 @@ do
 			end
 		end
 	end
-
+	
+	local function onDragStop(self)
+		self:StopMovingOrSizing()
+		local a,b,c,d,e = self:GetPoint()
+		db.NEWpoint = { a, nil, c, d, e }
+	end
+	
 	local function setFrameLvl(self)
 		self:SetFrameLevel( self:GetParent():GetFrameLevel() + 1 )
 		--self:SetToplevel(true)
@@ -152,6 +166,7 @@ do
 		FauxScrollFrame_OnVerticalScroll(self, offset, 15, scrollBarUpdate); 
 	end
 	
+	local DropDownRefresh = false
 	local function onShow()
 		AtlasLoot.AtlasLootPanel:SetParent(_G[frameName])
 		AtlasLoot.AtlasLootPanel:SetPoint("TOP", frameName, "BOTTOM", 0, 9)
@@ -165,7 +180,17 @@ do
 		else
 			AtlasLoot.AtlasLootPanel:Show();
 		end 
+		
+		AtlasLoot:DefaultFrame_RefreshScale()
+		AtlasLoot:DefaultFrame_RefreshAlpha()
+		
+		if not DropDownRefresh then
+			DefaultFrame:DropDownRefresh()
+			DropDownRefresh = true
+		end
+		
 		AtlasLoot.AtlasInfoFrame:Show()
+		AtlasLootItemsFrame:Show()
 	end
 	
 	local function onEnter()
@@ -175,6 +200,13 @@ do
 	local function onLeave()
 		AtlasLoot:DefaultFrame_RefreshAlpha(true)
 	end
+	
+	local function onCompareFrameClick()
+		if db.instance then
+			if AtlasLoot.CompareFrame:IsShown() then AtlasLoot.CompareFrame:Hide() end
+			AtlasLoot:CompareFrame_LoadInstance( db.instance ) 
+		end 
+	end
 
 	function DefaultFrame:CreateDefaultFrame()
 		if self.Frame then return end
@@ -183,7 +215,7 @@ do
 		local Frame = self.Frame
 		Frame:ClearAllPoints()
 		Frame:SetParent(UIParent)
-		Frame:SetPoint("CENTER", UIParent, "CENTER")
+		Frame:SetPoint(unpack(db.NEWpoint))
 		--Frame:SetFrameStrata("HIGH")
 		Frame:SetWidth(921)
 		Frame:SetHeight(601)
@@ -192,10 +224,10 @@ do
 		Frame:RegisterForDrag("LeftButton")
 		Frame:RegisterForDrag("LeftButton", "RightButton")
 		Frame:SetScript("OnMouseDown", onDragStart)
-		Frame:SetScript("OnMouseUp", Frame.StopMovingOrSizing)
+		Frame:SetScript("OnMouseUp", onDragStop)
 		Frame:SetScript("OnShow", onShow)
-		Frame:SetScript("OnEnter", onEnter)
-		Frame:SetScript("OnLeave", onLeave)
+		--Frame:SetScript("OnEnter", onEnter)
+		--Frame:SetScript("OnLeave", onLeave)
 		Frame:SetToplevel(true)
 		Frame:SetClampedToScreen(true)
 		
@@ -204,24 +236,25 @@ do
 		Frame.CloseButton:SetScript("OnShow", setFrameLvl)
 		
 		Frame.LockButton = CreateFrame("Button", frameName.."_LockButton",Frame,"OptionsButtonTemplate")
-		Frame.LockButton:SetWidth(32)
-		Frame.LockButton:SetHeight(32)
-		Frame.LockButton:SetPoint("RIGHT", Frame.CloseButton, "LEFT", 10, 0)
+		Frame.LockButton:SetWidth(25)
+		Frame.LockButton:SetHeight(25)
+		Frame.LockButton:SetPoint("RIGHT", Frame.CloseButton, "LEFT", 5, 0)
 		Frame.LockButton:SetScript("OnClick", toggleLock)
 		
 		Frame.LockButton.NormalTexture = Frame:CreateTexture(frameName.."_NormalTexture", "ARTWORK")
-		Frame.LockButton.NormalTexture:SetPoint("TOPLEFT", Frame.LockButton, "TOPLEFT")	
+		Frame.LockButton.NormalTexture:SetPoint("TOPLEFT", Frame.LockButton, "TOPLEFT", -3, 3)	
 		
 		Frame.LockButton.PushedTexture = Frame:CreateTexture(frameName.."_PushedTexture", "ARTWORK")
-		Frame.LockButton.PushedTexture:SetPoint("TOPLEFT", Frame.LockButton, "TOPLEFT")
+		Frame.LockButton.PushedTexture:SetPoint("TOPLEFT", Frame.LockButton, "TOPLEFT", -3, 3)
 
 		Frame.LockButton.HighlightTexture = Frame:CreateTexture(frameName.."_HighlightTexture", "ARTWORK")
-		Frame.LockButton.HighlightTexture:SetPoint("TOPLEFT", Frame.LockButton, "TOPLEFT")
+		Frame.LockButton.HighlightTexture:SetPoint("TOPLEFT", Frame.LockButton, "TOPLEFT", -3, 3)
 		Frame.LockButton.HighlightTexture:SetTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Highlight")
 		
 		Frame.LockButton:SetNormalTexture(Frame.LockButton.NormalTexture)
 		Frame.LockButton:SetPushedTexture(Frame.LockButton.PushedTexture)
 		Frame.LockButton:SetHighlightTexture(Frame.LockButton.HighlightTexture, "ADD")
+
 		updateLock()
 		
 		
@@ -287,6 +320,17 @@ do
 		
 		Frame.ScrollFrame.Buttons = {}
 		
+		Frame.CompareFrame = CreateFrame("Button", frameName.."_CompareFrame", Frame, "UIPanelButtonTemplate")
+		Frame.CompareFrame:SetWidth(200)
+		Frame.CompareFrame:SetHeight(20)
+		Frame.CompareFrame:SetPoint("TOPLEFT", Frame, "TOPLEFT", 545, -560)
+		Frame.CompareFrame:SetText(AL["Show in Compare Frame"])
+		Frame.CompareFrame:SetScript("OnClick", onCompareFrameClick)
+		
+		Frame.EncounterJournal = AtlasLoot:EncounterJournal_CreateButton(frameName.."_EncounterJournal", Frame)
+		Frame.EncounterJournal:SetPoint("LEFT", Frame.CompareFrame, "RIGHT", 0, 0)
+		Frame:Hide()
+		
 		Frame.ModuleSelect = CreateFrame("Frame", frameName.."_ModuleSelect", Frame, "UIDropDownMenuTemplate")
 		Frame.ModuleSelect:SetPoint("TOPLEFT", Frame, "TOPLEFT", 60, -50)
 		Frame.ModuleSelect.info = {}
@@ -310,6 +354,13 @@ do
 end
 
 function DefaultFrame:DropDownRefresh()
+	if type(db.module) == "table" then
+		if UnitLevel("player") == 85 then
+			db.module = db.module[2]
+		else
+			db.module = db.module[1]
+		end
+	end
 	UIDropDownMenu_Initialize(_G[frameName.."_ModuleSelect"], DefaultFrame.ModuleSelect_Initialize)
 	UIDropDownMenu_SetSelectedValue(_G[frameName.."_ModuleSelect"], db.module)
 	UIDropDownMenu_SetWidth(_G[frameName.."_ModuleSelect"], 190)
@@ -346,21 +397,55 @@ end
 function DefaultFrame:InstanceSelect_Initialize(level)
 	--if not level then return end
 	local info = self.info
+	local first = true
 	wipe(info)
 	if level == 1 or not level then
 		if instances[db.module] then
 			for k,v in ipairs(instances[db.module]) do
-				if k == 1 and db.instance == "" then
-					db.instance = v
+				if not v[2] then
+					if first and db.instance == "" then
+						db.instance = v[1]
+						first = false
+					end
+					info.text = AtlasLoot_LootTableRegister["Instances"][v[1]]["Info"][1]
+					info.value = v[1]
+					info.func = DefaultFrame.InstanceSelect_OnClick
+					if DEFAULTFRAME_STYLE_NUM_DUMMY == 2 then
+						info.hasArrow = true
+					end
+					info.checked = nil
+					UIDropDownMenu_AddButton(info, level)
 				end
-				info.text = AtlasLoot_LootTableRegister["Instances"][v]["Info"][1]
-				info.value = v
-				info.func = DefaultFrame.InstanceSelect_OnClick
-				if DEFAULTFRAME_STYLE_NUM_DUMMY == 2 then
-					info.hasArrow = true
+			end
+			
+			info.text = ""
+			info.value = nil
+			info.func = nil
+			info.checked = nil
+			info.notCheckable = true
+			info.isTitle = true
+			info.justifyH = "CENTER"
+			UIDropDownMenu_AddButton(info, level)
+			
+			info.text = "--- "..tostring(RAIDS or "RAIDS").." ---"
+			UIDropDownMenu_AddButton(info, level)
+			
+			info.notCheckable = false
+			info.isTitle = false
+			info.disabled = false
+			info.justifyH = nil
+			
+			for k,v in ipairs(instances[db.module]) do
+				if v[2] then
+					info.text = AtlasLoot_LootTableRegister["Instances"][v[1]]["Info"][1]
+					info.value = v[1]
+					info.func = DefaultFrame.InstanceSelect_OnClick
+					if DEFAULTFRAME_STYLE_NUM_DUMMY == 2 then
+						info.hasArrow = true
+					end
+					info.checked = nil
+					UIDropDownMenu_AddButton(info, level)
 				end
-				info.checked = nil
-				UIDropDownMenu_AddButton(info, level)
 			end
 		end
 	elseif level == 2 and DEFAULTFRAME_STYLE_NUM_DUMMY == 2 then
@@ -395,12 +480,21 @@ function DefaultFrame:SetInstanceTable()
 		DefaultFrame:DropDownRefresh()
 	end
 	local iniName = curInstance["Info"][1]
+	if curInstance["Info"] and curInstance["Info"].disableCompare then
+		self.Frame.CompareFrame:Hide()
+	else
+		self.Frame.CompareFrame:Show()
+	end
+	if curInstance["Info"] and curInstance["Info"].EncounterJournalID then
+		self.Frame.EncounterJournal.info = { curInstance["Info"].EncounterJournalID, nil }
+		AtlasLoot:EncounterJournal_ButtonsRefresh()	
+	else
+		self.Frame.EncounterJournal.info = nil
+		AtlasLoot:EncounterJournal_ButtonsRefresh()	
+	end
 	curInstance = curInstance["Bosses"]
 	if not curInstance then return end
 	scrollCurLines = #curInstance
-	
-
-
 
 	if DEFAULTFRAME_STYLE_NUM_DUMMY == 1 then
 		DefaultFrame.Frame.InstanceName:SetText(iniName)
@@ -426,9 +520,10 @@ function DefaultFrame:SetInstanceTable()
 		end
 
 		local buttonNum = 1
+		local bossname
 		for k,v in ipairs(curInstance) do
 			if AtlasLoot:FormatDataID(v[1]) and not v.hide then
-				local bossname = AtlasLoot:GetTableInfo(v[1])
+				bossname = AtlasLoot:GetTableInfo(v[1])
 				DefaultFrame.Frame.ScrollFrame.Buttons[buttonNum].Text:SetText(bossname)
 				DefaultFrame.Frame.ScrollFrame.Buttons[buttonNum]:Show()
 				DefaultFrame.Frame.ScrollFrame.Buttons[buttonNum].Loot:Show()
@@ -500,10 +595,12 @@ do
 		for ini,iniTab in SortTable(AtlasLoot_LootTableRegister["Instances"]) do
 			if iniTab["Info"] and iniTab["Info"][2] and type(iniTab["Info"][2]) == "table" then
 				for k,v in ipairs(iniTab["Info"][2]) do
-					instances[ v ][#instances[ v ] + 1] = ini
+					if instances[ v ] then
+						instances[ v ][#instances[ v ] + 1] = {ini, iniTab["Info"].raid}
+					end
 				end
 			elseif iniTab["Info"] and instances[ iniTab["Info"][2] ] then
-				instances[ iniTab["Info"][2] ][#instances[ iniTab["Info"][2] ] + 1] = ini
+				instances[ iniTab["Info"][2] ][#instances[ iniTab["Info"][2] ] + 1] = {ini, iniTab["Info"].raid}
 			end
 		end
 	end
@@ -526,15 +623,10 @@ do
 		mapRegister = {}
 		for instance,iniTab in pairs(AtlasLoot_LootTableRegister["Instances"]) do
 			if iniTab["Info"] and iniTab["Info"].mapname then
-				if iniTab["Info"][2] and type(iniTab["Info"][2]) == "table" then
+				if iniTab["Info"][2] then
 					mapRegister[iniTab["Info"].mapname] = {
 						instance,
 						iniTab["Info"][2],
-					}
-				else
-					mapRegister[iniTab["Info"].mapname] = {
-						instance,
-						iniTab["Info"][2][#iniTab["Info"][2]],
 					}
 				end
 			end
@@ -544,10 +636,17 @@ do
 	function DefaultFrame:AutoSelect()
 		if not mapRegister then createMapRegister() end
 		local mapname = GetMapInfo()
-		
 		if not mapname or not mapRegister[mapname] then return end
 		
-		db.module = mapRegister[mapname][2]
+		if type(mapRegister[mapname][2]) == "table" then
+			if UnitLevel("player") >= 85 and mapRegister[mapname][2][2] then
+				db.module = mapRegister[mapname][2][2]
+			else
+				db.module = mapRegister[mapname][2][1]
+			end
+		else
+			db.module = mapRegister[mapname][2]
+		end
 		db.instance = mapRegister[mapname][1]
 		
 		DefaultFrame:DropDownRefresh()
@@ -598,3 +697,29 @@ function AtlasLoot:DefaultFrame_SetInstance(module, instance, iniBoss)
 		DefaultFrame:SetBoss(iniBoss)
 	end
 end
+
+--[[
+-----------------------------------------------------------------
+-- HelpPlate
+-- 13 down 46x46
+-- frameName
+--	"18", "-84"
+local DefaultFrame_HelpPlate = {
+	FramePos = { x = 0,          y = -35 },
+	FrameSize = { width = 921, height = 566 },
+	[1] = { ButtonPos = { x = 520,	y = -514.5 },  HighLightBox = { x = 545, y = -527, width = 200, height = 20 },	 ToolTipDir = "DOWN",  ToolTipText = "CompareFrame" },
+	[2] = { ButtonPos = { x = 745,	y = -511.5 },  HighLightBox = { x = 745, y = -524, width = 23, height = 23 },	 ToolTipDir = "RIGHT",  ToolTipText = "EJ" },
+	[3] = { ButtonPos = { x = 701,	y = -311.5 },  HighLightBox = { x = 540, y = -147, width = 368, height = 375 },	 ToolTipDir = "UP",  ToolTipText = "Boss Select" },
+	[4] = { ButtonPos = { x = 250,	y = -237 },  HighLightBox = { x = 18, y = -49, width = 510, height = 450 },	 ToolTipDir = "UP",  ToolTipText = "ItemFrame" },
+	[5] = { ButtonPos = { x = 162,	y = -497 },  HighLightBox = { x = 185, y = -507, width = 155, height = 25 },	 ToolTipDir = "LEFT",  ToolTipText = "QuickLoot" },
+	[6] = { ButtonPos = { x = 397,	y = -497 },  HighLightBox = { x = 340, y = -507, width = 80, height = 25 },	 ToolTipDir = "RIGHT",  ToolTipText = "Filter" },
+	[7] = { ButtonPos = { x = 157,	y = -1 },  HighLightBox = { x = 70, y = -1, width = 220, height = 45 },	 ToolTipDir = "DOWN",  ToolTipText = "Module select" },
+	[8] = { ButtonPos = { x = 395,	y = -1 },  HighLightBox = { x = 308, y = -1, width = 220, height = 45 },	 ToolTipDir = "DOWN",  ToolTipText = "Instance select" },
+}
+local Helper = LibStub("LibHelpPlate")
+function DefaultFrame:Helper()
+	self.Frame.HelpPlate = Helper:Create(self.Frame, DefaultFrame_HelpPlate)
+	self.Frame.HelpPlate:SetPoint("TOPLEFT", self.Frame, "TOPLEFT", 53, 10)
+	
+end
+]]--

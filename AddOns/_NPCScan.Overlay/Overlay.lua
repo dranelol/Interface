@@ -1,27 +1,44 @@
---[[****************************************************************************
-  * _NPCScan.Overlay by Saiket                                                 *
-  * _NPCScan.Overlay.lua - Adds mob patrol paths to your map.                  *
-  ****************************************************************************]]
+-------------------------------------------------------------------------------
+-- Localized Lua globals.
+-------------------------------------------------------------------------------
+local _G = getfenv(0)
 
+-- Functions
+local next = _G.next
+local pairs = _G.pairs
+local tonumber = _G.tonumber
+local tostring = _G.tostring
+local type = _G.type
 
-_NPCScan = _NPCScan or {};
-local _NPCScan = _NPCScan;
+-- Libraries
+local math = _G.math
+local table = _G.table
+
+-------------------------------------------------------------------------------
+-- AddOn namespace.
+-------------------------------------------------------------------------------
+_NPCScan = _NPCScan or {}
+local _NPCScan = _NPCScan
 local FOLDER_NAME, private = ...
 local L = private.L
 _G._NPCScan.Overlay = private
 
---local MiniMapIcon = LibStub("LibDBIcon-1.0")
+local LibQTip = LibStub('LibQTip-1.0')
+
 _NPCScanMiniMapIcon = {}
 
-private.Version = GetAddOnMetadata( FOLDER_NAME, "Version" ):match( "^([%d.]+)" );
+private.Version = _G.GetAddOnMetadata(FOLDER_NAME, "Version"):match("^([%d.]+)")
 
-private.Options = {
+_NPCScanOverlayOptions = {
 	Version = private.Version,
 	Modules = {},
 	ModulesAlpha = {},
 	ModulesExtra = {},
 	MiniMapIcon = {},
-};
+	ShowAll = false,
+	ShowKey = true,
+	LockSwap = false,
+}
 
 private.OptionsDefault = {
 	Version = private.Version,
@@ -31,683 +48,669 @@ private.OptionsDefault = {
 	MiniMapIcon = {},
 	ShowAll = false,
 	ShowKey = true,
-};
+	LockSwap = false,
+}
 
-private.TextureTable = {};
-private.CurrentTexture = nil;
-private.CurrentTextureMob = nil;
+private.TextureTable = {}
+private.CurrentTexture = nil
+private.CurrentTextureMob = nil
 
-private.NPCsEnabled = {};
-private.NPCCounts = {}; -- Number of enabled NPCs that use this NPC path
-private.NPCMaps = {}; -- [ NpcID ] = { [ MapID1 ] = (true|{FoundX,FoundY}); ... };
-private.NPCsFoundIgnored = {
-	[ 32487 ] = true; -- Putridus the Ancient
-	[ 50009 ] = true; -- Mobus
-};
-private.NPCAliases = { -- (Key) NPC shows (Value) NPC's path instead
-	-- Note: Circular references will lock client!
-	-- Madexx (Brown)
-	[ 51401 ] = 50154; -- Madexx (Red)
-	[ 51402 ] = 50154; -- Madexx (Green)
-	[ 51403 ] = 50154; -- Madexx (Black)
-	[ 51404 ] = 50154; -- Madexx (Blue)
-};
-private.Achievements = { -- Achievements whos criteria mobs are all mapped
-		[ 1312 ] = true; -- Bloody Rare (Outlands)
-		[ 2257 ] = true; -- Frostbitten (Northrend)
-		[ 7317 ] = true; -- One Of Many
-		[ 7439 ] = true; -- Glorious! (Pandaria)
-		[ 8103 ] = true; -- Champions of Lei Shen
-		[ 8714 ] = true;  --Timeless Champion
-};
+private.NPCsEnabled = {}
+private.NPCCounts = {} -- Number of enabled NPCs that use this NPC path
+private.NPCMaps = {} -- [ NpcID ] = { [ MapID1 ] = (true|{FoundX,FoundY}) ... }
+private.DetectionRadius = 100 -- yards
 
---Color's used for the paths.  Need to revisit to replace the duplicated colors if possible
-private.Colors = {
-	RAID_CLASS_COLORS.SHAMAN,
-	RAID_CLASS_COLORS.DEATHKNIGHT,
-	GREEN_FONT_COLOR,
-	RAID_CLASS_COLORS.DRUID,
-	RAID_CLASS_COLORS.PALADIN,
-	UnitPopupButtons.RAID_TARGET_1.color,
-	UnitPopupButtons.RAID_TARGET_5.color,
-	UnitPopupButtons.RAID_TARGET_6.color,
-	UnitPopupButtons.RAID_TARGET_3.color,
-	RAID_CLASS_COLORS.MONK,
-	RAID_CLASS_COLORS.HUNTER,
+local TexturesUnused = _G.CreateFrame("Frame")
 
-	RAID_CLASS_COLORS.SHAMAN,
-	RAID_CLASS_COLORS.DEATHKNIGHT,
-	GREEN_FONT_COLOR,
-	RAID_CLASS_COLORS.DRUID,
-	RAID_CLASS_COLORS.PALADIN,
-	UnitPopupButtons.RAID_TARGET_1.color,
-	UnitPopupButtons.RAID_TARGET_5.color,
-	UnitPopupButtons.RAID_TARGET_6.color,
-	UnitPopupButtons.RAID_TARGET_3.color,
-	RAID_CLASS_COLORS.MONK,
-	RAID_CLASS_COLORS.HUNTER,
+private.Events = _G.LibStub("AceEvent-3.0"):Embed({})
+local MESSAGE_REGISTER = "NpcOverlay_RegisterScanner"
+local MESSAGE_ADD = "NpcOverlay_Add"
+local MESSAGE_REMOVE = "NpcOverlay_Remove"
+local MESSAGE_FOUND = "NpcOverlay_Found"
 
-	RAID_CLASS_COLORS.SHAMAN,
-	RAID_CLASS_COLORS.DEATHKNIGHT,
-	GREEN_FONT_COLOR,
-	RAID_CLASS_COLORS.DRUID,
-	RAID_CLASS_COLORS.PALADIN,
-	UnitPopupButtons.RAID_TARGET_1.color,
-	UnitPopupButtons.RAID_TARGET_5.color,
-	UnitPopupButtons.RAID_TARGET_6.color,
-	UnitPopupButtons.RAID_TARGET_3.color,
-	RAID_CLASS_COLORS.MONK,
-	RAID_CLASS_COLORS.HUNTER,
+-- Prepares an unused texture on the given frame.
+-- @param Layer Draw layer for texture.
+-- @param ... Color and optional alpha to set texture to.
+local TextureCount = 0
+function private:TextureCreate(Layer, R, G, B, A)
+	TextureCount = TextureCount + 1
 
---[[
-	RAID_CLASS_COLORS.WARLOCK,	--Purple
-	RAID_CLASS_COLORS.PALADIN,	--Pink
-	RAID_CLASS_COLORS.MAGE,		--Blue
-	RAID_CLASS_COLORS.ROGUE,		--Yellow
-	NORMAL_FONT_COLOR,
-	RED_FONT_COLOR,			--Red
-	GRAY_FONT_COLOR,			--Grey
-	UnitPopupButtons.RAID_TARGET_4.color,
-	YELLOW_FONT_COLOR,			--Yellow
-	ORANGE_FONT_COLOR,			--Orange
-	PASSIVE_SPELL_FONT_COLOR,
-	BATTLENET_FONT_COLOR,					--Change
-	QuestDifficultyColors.trivial,
-	QuestDifficultyColors.header,
-	UnitPopupButtons.RAID_TARGET_1.color,
-	UnitPopupButtons.RAID_TARGET_2.color,
-	UnitPopupButtons.RAID_TARGET_5.color,
-	UnitPopupButtons.RAID_TARGET_6.color,
-	RAID_CLASS_COLORS.HUNTER,	-- Green
-	RAID_CLASS_COLORS.WARLOCK,	--Purple
-	RAID_CLASS_COLORS.PRIEST,	--White
-	RAID_CLASS_COLORS.PALADIN,	--Pink
-	RAID_CLASS_COLORS.MAGE,		--Blue
-	RAID_CLASS_COLORS.ROGUE,		--Yellow
-	RAID_CLASS_COLORS.DRUID,		--Orange
-	RAID_CLASS_COLORS.SHAMAN,	--??	
-	RAID_CLASS_COLORS.DEATHKNIGHT,--Dark Red ]]--	
-};
-
-private.DetectionRadius = 100; -- yards
-
-local TexturesUnused = CreateFrame( "Frame" );
-
-private.Events = LibStub( "AceEvent-3.0" ):Embed( {} );
-local MESSAGE_REGISTER = "NpcOverlay_RegisterScanner";
-local MESSAGE_ADD = "NpcOverlay_Add";
-local MESSAGE_REMOVE = "NpcOverlay_Remove";
-local MESSAGE_FOUND = "NpcOverlay_Found";
-
-
-
-
---- Prepares an unused texture on the given frame.
--- @param Layer  Draw layer for texture.
--- @param ...  Color and optional alpha to set texture to.
-local TextureCount = 0;
-function private:TextureCreate ( Layer, R, G, B, A )
-	TextureCount = TextureCount + 1;
-	local Texture = #TexturesUnused > 0 and TexturesUnused[ #TexturesUnused ];
-	if ( Texture ) then
-		TexturesUnused[ #TexturesUnused ] = nil;
-		Texture:SetParent( self );
-		Texture:SetDrawLayer( Layer );
-		Texture:ClearAllPoints();
-		Texture:Show();
+	local texture = #TexturesUnused > 0 and TexturesUnused[#TexturesUnused]
+	if texture then
+		TexturesUnused[#TexturesUnused] = nil
+		texture:SetParent(self)
+		texture:SetDrawLayer(Layer)
+		texture:ClearAllPoints()
+		texture:Show()
 	else
-		Texture = self:CreateTexture( "ScannerOverlayMobTexture"..TextureCount, Layer );
+		texture = self:CreateTexture("ScannerOverlayMobTexture" .. TextureCount, Layer)
 	end
-	Texture:SetVertexColor( R, G, B, A or 1 );
-	Texture:SetBlendMode( "BLEND" );
+	texture:SetVertexColor(R, G, B, A or 1)
+	texture:SetBlendMode("BLEND")
 
-	self[ #self + 1 ] = Texture;
-	return Texture;
+	self[#self + 1] = texture
+	return texture
 end
+
 do
-	local ApplyTransform;
+	local ApplyTransform
 	do
-		local Det, AF, BF, CD, CE;
-		local ULx, ULy, LLx, LLy, URx, URy, LRx, LRy;
-		--- Applies an affine transformation to Texture.
-		-- @param Texture  Texture to set TexCoords for.
-		-- @param ...  First 6 elements of transformation matrix.
-		function ApplyTransform( Texture, A, B, C, D, E, F )
-			Det = A * E - B * D;
-			if ( Det == 0 ) then
-				return Texture:Hide(); -- Scaled infinitely small
+		-- Bounds to prevent "TexCoord out of range" errors
+		local function NormalizeBounds(coordinate)
+			if coordinate < -1e4 then
+				coordinate = -1e4
+			elseif coordinate > 1e4 then
+				coordinate = 1e4
 			end
-			AF, BF, CD, CE = A * F, B * F, C * D, C * E;
+			return coordinate
+		end
 
-			ULx, ULy = ( BF - CE ) / Det, ( CD - AF ) / Det;
-			LLx, LLy = ( BF - CE - B ) / Det, ( CD - AF + A ) / Det;
-			URx, URy = ( BF - CE + E ) / Det, ( CD - AF - D ) / Det;
-			LRx, LRy = ( BF - CE + E - B ) / Det, ( CD - AF - D + A ) / Det;
+		-- Applies an affine transformation to Texture.
+		-- @param texture Texture to set TexCoords for.
+		-- @param ... First 6 elements of transformation matrix.
+		function ApplyTransform(texture, A, B, C, D, E, F)
+			local det = A * E - B * D
 
-			-- Bounds to prevent "TexCoord out of range" errors
-			if ( ULx < -1e4 ) then ULx = -1e4; elseif ( ULx > 1e4 ) then ULx = 1e4; end
-			if ( ULy < -1e4 ) then ULy = -1e4; elseif ( ULy > 1e4 ) then ULy = 1e4; end
-			if ( LLx < -1e4 ) then LLx = -1e4; elseif ( LLx > 1e4 ) then LLx = 1e4; end
-			if ( LLy < -1e4 ) then LLy = -1e4; elseif ( LLy > 1e4 ) then LLy = 1e4; end
-			if ( URx < -1e4 ) then URx = -1e4; elseif ( URx > 1e4 ) then URx = 1e4; end
-			if ( URy < -1e4 ) then URy = -1e4; elseif ( URy > 1e4 ) then URy = 1e4; end
-			if ( LRx < -1e4 ) then LRx = -1e4; elseif ( LRx > 1e4 ) then LRx = 1e4; end
-			if ( LRy < -1e4 ) then LRy = -1e4; elseif ( LRy > 1e4 ) then LRy = 1e4; end
+			if det == 0 then
+				return texture:Hide() -- Scaled infinitely small
+			end
+			local AF = A * F
+			local BF = B * F
+			local CD = C * D
+			local CE = C * E
 
-			return Texture:SetTexCoord( ULx, ULy, LLx, LLy, URx, URy, LRx, LRy );
+			local ULx = NormalizeBounds((BF - CE) / det)
+			local ULy = NormalizeBounds((CD - AF) / det)
+
+			local LLx = NormalizeBounds((BF - CE - B) / det)
+			local LLy = NormalizeBounds((CD - AF + A) / det)
+
+			local URx = NormalizeBounds((BF - CE + E) / det)
+			local URy = NormalizeBounds((CD - AF - D) / det)
+
+			local LRx = NormalizeBounds((BF - CE + E - B) / det)
+			local LRy = NormalizeBounds((CD - AF - D + A) / det)
+
+			return texture:SetTexCoord(ULx, ULy, LLx, LLy, URx, URy, LRx, LRy)
 		end
 	end
-	local min, max = min, max;
-	local MinX, MinY, WindowX, WindowY;
-	local ABx, ABy, BCx, BCy;
-	local ScaleX, ScaleY, ShearFactor, Sin, Cos;
-	local Parent, Width, Height;
-	local SinScaleX, SinScaleY, CosScaleX, CosScaleY;
-	local BorderScale, BorderOffset = 512 / 510, -1 / 512; -- Removes one-pixel transparent border
-	local TrianglePath = [[Interface\AddOns\]]..FOLDER_NAME..[[\Skin\Triangle]]
-	--- Draw a triangle texture with vertices at relative coords.  (0,0) is top-left, (1,1) is bottom-right.
-	function private:TextureAdd ( Layer, R, G, B, Ax, Ay, Bx, By, Cx, Cy )
-		ABx, ABy, BCx, BCy = Ax - Bx, Ay - By, Bx - Cx, By - Cy;
-		ScaleX = ( BCx * BCx + BCy * BCy ) ^ 0.5;
-		if ( ScaleX == 0 ) then
-			return; -- Points B and C are the same
+
+	-- Removes one-pixel transparent border
+	local BORDER_OFFSET = -1 / 512
+	local BORDER_SCALE = 512 / 510
+	local TRIANGLE_PATH = [[Interface\AddOns\]] .. FOLDER_NAME .. [[\Skin\Triangle]]
+
+	-- Draw a triangle texture with vertices at relative coords.  (0,0) is top-left, (1,1) is bottom-right.
+	function private:TextureAdd(layer, r, g, b, aX, aY, bX, bY, cX, cY)
+		local abX = aX - bX
+		local abY = aY - bY
+		local bcX = bX - cX
+		local bcY = bY - cY
+		local scaleX = (bcX * bcX + bcY * bcY) ^ 0.5
+
+		if scaleX == 0 then
+			return -- Points B and C are the same
 		end
-		ScaleY = ( ABx * BCy - ABy * BCx ) / ScaleX;
-		if ( ScaleY == 0 ) then
-			return; -- Points are co-linear
+		local scaleY = (abX * bcY - abY * bcX) / scaleX
+
+		if scaleY == 0 then
+			return -- Points are co-linear
 		end
-		ShearFactor = -( ABx * BCx + ABy * BCy ) / ( ScaleX * ScaleX );
-		Sin, Cos = BCy / ScaleX, -BCx / ScaleX;
+		local shearFactor = -(abX * bcX + abY * bcY) / (scaleX * scaleX)
+		local sin = bcY / scaleX
+		local cos = -bcX / scaleX
 
 		-- Note: The texture region is made as small as possible to improve framerates.
-		MinX, MinY = min( Ax, Bx, Cx ), min( Ay, By, Cy );
-		WindowX, WindowY = max( Ax, Bx, Cx ) - MinX, max( Ay, By, Cy ) - MinY;
-
+		local minX = math.min(aX, bX, cX)
+		local minY = math.min(aY, bY, cY)
+		local windowX = math.max(aX, bX, cX) - minX
+		local windowY = math.max(aY, bY, cY) - minY
 
 		-- Get a texture
-		local Texture = private.TextureCreate( self, Layer, R, G, B );
-		Texture:SetTexture( TrianglePath );
-		Width, Height = self:GetSize();
-		Texture:SetPoint( "TOPLEFT", MinX * Width, -MinY * Height );
-		Texture:SetSize( WindowX * Width, WindowY * Height );
+		local texture = private.TextureCreate(self, layer, r, g, b)
+		texture:SetTexture(TRIANGLE_PATH)
 
+		local width, height = self:GetSize()
+		texture:SetPoint("TOPLEFT", minX * width, -minY * height)
+		texture:SetSize(windowX * width, windowY * height)
 
 		--[[ Transform parallelogram so its corners lie on the tri's points:
-		local Matrix = Identity;
+		local Matrix = Identity
 		-- Remove transparent border
-		Matrix = Matrix:Scale( BorderScale, BorderScale );
-		Matrix = Matrix:Translate( BorderOffset, BorderOffset );
+		Matrix = Matrix:Scale( BorderScale, BorderScale )
+		Matrix = Matrix:Translate( BorderOffset, BorderOffset )
 
-		Matrix = Matrix:Shear( ShearFactor ); -- Shear the image so its bottom left corner aligns with point A
-		Matrix = Matrix:Scale( ScaleX, ScaleY ); -- Scale X by the length of line BC, and Y by the length of the perpendicular line from BC to point A
-		Matrix = Matrix:Rotate( Sin, Cos ); -- Align the top of the triangle with line BC.
+		Matrix = Matrix:Shear( ShearFactor ) -- Shear the image so its bottom left corner aligns with point A
+		Matrix = Matrix:Scale( ScaleX, ScaleY ) -- Scale X by the length of line BC, and Y by the length of the perpendicular line from BC to point A
+		Matrix = Matrix:Rotate( Sin, Cos ) -- Align the top of the triangle with line BC.
 
-		Matrix = Matrix:Translate( Bx - MinX, By - MinY ); -- Move origin to overlap point B
-		Matrix = Matrix:Scale( 1 / WindowX, 1 / WindowY ); -- Adjust for change in texture size
+		Matrix = Matrix:Translate( Bx - MinX, By - MinY ) -- Move origin to overlap point B
+		Matrix = Matrix:Scale( 1 / WindowX, 1 / WindowY ) -- Adjust for change in texture size
 
-		ApplyTransform( unpack( Matrix, 1, 6 ) );
+		ApplyTransform( unpack( Matrix, 1, 6 ) )
 		]]
 
 		-- Common operations
-		WindowX, WindowY = BorderScale / WindowX, BorderScale / WindowY;
-		SinScaleX, SinScaleY = -Sin * ScaleX, Sin * ScaleY;
-		CosScaleX, CosScaleY =  Cos * ScaleX, Cos * ScaleY;
+		local cosScaleX = cos * scaleX
+		local cosScaleY = cos * scaleY
+		local sinScaleX = -sin * scaleX
+		local sinScaleY = sin * scaleY
 
-		 ApplyTransform( Texture,
-			WindowX * CosScaleX,
-			WindowX * ( SinScaleY + CosScaleX * ShearFactor ),
-			WindowX * ( ( SinScaleY + CosScaleX * ( 1 + ShearFactor ) ) * BorderOffset + Bx - MinX ) / BorderScale,
-			WindowY * SinScaleX,
-			WindowY * ( CosScaleY + SinScaleX * ShearFactor ),
-			WindowY * ( ( CosScaleY + SinScaleX * ( 1 + ShearFactor ) ) * BorderOffset + By - MinY ) / BorderScale );
-		
-		return Texture;
-	end
-end
---- Recycles all textures added to a frame using TextureCreate.
-function private:TextureRemoveAll ()
-	for Index = #self, 1, -1 do
-		local Texture = self[ Index ];
-		self[ Index ] = nil;
-		Texture:Hide();
-		Texture:SetParent( TexturesUnused );
-		TexturesUnused[ #TexturesUnused + 1 ] = Texture;
+		windowX = BORDER_SCALE / windowX
+		windowY = BORDER_SCALE / windowY
+
+		ApplyTransform(texture,
+			windowX * cosScaleX,
+			windowX * (sinScaleY + cosScaleX * shearFactor),
+			windowX * ((sinScaleY + cosScaleX * (1 + shearFactor)) * BORDER_OFFSET + bX - minX) / BORDER_SCALE,
+			windowY * sinScaleX,
+			windowY * (cosScaleY + sinScaleX * shearFactor),
+			windowY * ((cosScaleY + sinScaleX * (1 + shearFactor)) * BORDER_OFFSET + bY - minY) / BORDER_SCALE)
+
+		return texture
 	end
 end
 
+-- Recycles all textures added to a frame using TextureCreate.
+function private:TextureRemoveAll()
+	for index = #self, 1, -1 do
+		local texture = self[index]
+		texture:Hide()
+		texture:SetParent(TexturesUnused)
+
+		self[index] = nil
+		TexturesUnused[#TexturesUnused + 1] = texture
+	end
+end
 
 do
-	local DWORD_LENGTH = 4;
-	--- @return DWORD read from binary Data at Offset.
-	local function ReadDWord ( Data, Offset )
-		local B1, B2, B3, B4 = Data:byte( Offset + 1, Offset + DWORD_LENGTH );
-		return B1 * 2 ^ 24 + B2 * 2 ^ 16 + B3 * 2 ^ 8 + B4; -- Big-endian
+	local DWORD_LENGTH = 4
+	-- @return DWORD read from binary Data at Offset.
+	local function ReadDWord(Data, Offset)
+		local B1, B2, B3, B4 = Data:byte(Offset + 1, Offset + DWORD_LENGTH)
+		return B1 * 2 ^ 24 + B2 * 2 ^ 16 + B3 * 2 ^ 8 + B4 -- Big-endian
 	end
-	--- @return Offset of points, lines, and triangles within PathData.
-	function private.GetPathPrimitiveOffsets ( PathData )
-		return ReadDWord( PathData, 0 ) + 1, -- Points
-			ReadDWord( PathData, DWORD_LENGTH ) + 1, -- Lines
-			ReadDWord( PathData, DWORD_LENGTH * 2 ) + 1; -- Triangles
+
+	-- @return Offset of points, lines, and triangles within PathData.
+	function private.GetPathPrimitiveOffsets(PathData)
+		return ReadDWord(PathData, 0) + 1, -- Points
+		ReadDWord(PathData, DWORD_LENGTH) + 1, -- Lines
+		ReadDWord(PathData, DWORD_LENGTH * 2) + 1 -- Triangles
 	end
 end
+
 do
-	local COORD_MAX = 2 ^ 16 - 1;
-	local BYTES_PER_TRIANGLE = 2 * 2 * 3;
-	local Ax1, Ax2, Ay1, Ay2, Bx1, Bx2, By1, By2, Cx1, Cx2, Cy1, Cy2;
-	--- Draws the given NPC's path onto a frame.
-	-- @param PathData  Binary path data string.
-	function private:DrawPath ( PathData, Layer, R, G, B )
-		local PointsOffset, LinesOffset, TrianglesOffset = private.GetPathPrimitiveOffsets( PathData );
-		for Index = TrianglesOffset, #PathData, BYTES_PER_TRIANGLE do
-			Ax1, Ax2, Ay1, Ay2, Bx1, Bx2, By1, By2, Cx1, Cx2, Cy1, Cy2 = PathData:byte( Index, Index + BYTES_PER_TRIANGLE - 1 );
-			local Texture = private.TextureAdd( self, Layer, R, G, B,
-				( Ax1 * 256 + Ax2 ) / COORD_MAX, 1 - ( Ay1 * 256 + Ay2 ) / COORD_MAX,
-				( Bx1 * 256 + Bx2 ) / COORD_MAX, 1 - ( By1 * 256 + By2 ) / COORD_MAX,
-				( Cx1 * 256 + Cx2 ) / COORD_MAX, 1 - ( Cy1 * 256 + Cy2 ) / COORD_MAX );
+	local COORD_MAX = 2 ^ 16 - 1
+	local BYTES_PER_TRIANGLE = 2 * 2 * 3
+	local Ax1, Ax2, Ay1, Ay2, Bx1, Bx2, By1, By2, Cx1, Cx2, Cy1, Cy2
 
-				local Name = Texture:GetName()
-				if (private.TextureTable[private.CurrentTextureMob]) then
+	-- Draws the given NPC's path onto a frame.
+	-- @param PathData Binary path data string.
+	function private:DrawPath(pathData, layer, r, g, b)
+		local pointsOffset, linesOffset, trianglesOffset = private.GetPathPrimitiveOffsets(pathData)
 
-				private.TextureTable[private.CurrentTextureMob][Name] = true;
+		for index = trianglesOffset, #pathData, BYTES_PER_TRIANGLE do
+			Ax1, Ax2, Ay1, Ay2, Bx1, Bx2, By1, By2, Cx1, Cx2, Cy1, Cy2 = pathData:byte(index, index + BYTES_PER_TRIANGLE - 1)
 
-				else private.TextureTable[private.CurrentTextureMob] = {[Name] = true}; end
+			local texture = private.TextureAdd(self, layer, r, g, b,
+				(Ax1 * 256 + Ax2) / COORD_MAX, 1 - (Ay1 * 256 + Ay2) / COORD_MAX,
+				(Bx1 * 256 + Bx2) / COORD_MAX, 1 - (By1 * 256 + By2) / COORD_MAX,
+				(Cx1 * 256 + Cx2) / COORD_MAX, 1 - (Cy1 * 256 + Cy2) / COORD_MAX)
+
+			local textureName = texture:GetName()
+			if private.TextureTable[private.CurrentTextureMob] then
+				private.TextureTable[private.CurrentTextureMob][textureName] = true
+			else
+				private.TextureTable[private.CurrentTextureMob] = {
+					[textureName] = true
+				}
+			end
 		end
 	end
 end
+
 do
-	local RingWidth = 1.14; -- Ratio of texture width to ring width
-	local GlowWidth = 1.25;
-	local FoundCount = 0;
-	local FoundCountMax = 3
-	local FoundTextures = {};
-	--- Adds a found NPC's range circle onto a frame.
-	-- @param X..Y  Relative coordinate to center circle on.  (0,0) is top-left, (1,1) is bottom-right.
-	-- @param RadiusX  Radius relative to the frame's width.  That is, 0.5 for a circle as wide as the frame.
-	function private:DrawFound ( X, Y, RadiusX, Layer, R, G, B )
-		local Width, Height = self:GetSize();
-		FoundCount = FoundCount + 1;
-		if FoundCount > FoundCountMax then
-			FoundCount = 1;
+	local TEXTURE_INDEX_MAX = 3
+	local GLOW_WIDTH = 1.25
+	local RING_WIDTH = 1.14 -- Ratio of texture width to ring width
+
+	local textureIndex = 0
+	local FoundTextures = {}
+
+	-- Adds a found NPC's range circle onto a frame.
+	-- @param X..Y Relative coordinate to center circle on.  (0,0) is top-left, (1,1) is bottom-right.
+	-- @param RadiusX Radius relative to the frame's width.  That is, 0.5 for a circle as wide as the frame.
+	function private:DrawFound(x, y, radiusX, layer, r, g, b)
+		textureIndex = textureIndex + 1
+		if textureIndex > TEXTURE_INDEX_MAX then
+			textureIndex = 1
 		end
 
-		local OldTexture = FoundTextures[FoundCount]
-		if OldTexture then
-			OldTexture[1]:Hide()
-			OldTexture[2]:Hide()
+		local oldTexture = FoundTextures[textureIndex]
+		if oldTexture then
+			oldTexture[1]:Hide()
+			oldTexture[2]:Hide()
 		end
 
+		local width, height = self:GetSize()
+		local Size = radiusX * 2 * width
+		x = x * width
+		y = -y * height
 
-		X, Y = X * Width, -Y * Height;
-		local Size = RadiusX * 2 * Width;
+		local foundRing = private.TextureCreate(self, layer, r, g, b)
+		foundRing:SetTexture([[Interface\Minimap\Ping\ping2]])
+		foundRing:SetTexCoord(0, 1, 0, 1)
+		foundRing:SetBlendMode("ADD")
+		foundRing:SetPoint("CENTER", self, "TOPLEFT", x, y)
+		foundRing:SetSize(Size * RING_WIDTH, Size * RING_WIDTH)
 
-		local Texture = private.TextureCreate( self, Layer, R, G, B );
-		Texture:SetTexture( [[Interface\Minimap\Ping\ping2]] );
-		Texture:SetTexCoord( 0, 1, 0, 1 );
-		Texture:SetBlendMode( "ADD" );
-		Texture:SetPoint( "CENTER", self, "TOPLEFT", X, Y );
-		Texture:SetSize( Size * RingWidth, Size * RingWidth );
-		local FoundRing = Texture
+		local foundGlow = private.TextureCreate(self, layer, r, g, b, 0.5)
+		foundGlow:SetTexture([[Textures\SunCenter]])
+		foundGlow:SetTexCoord(0, 1, 0, 1)
+		foundGlow:SetBlendMode("ADD")
+		foundGlow:SetPoint("CENTER", self, "TOPLEFT", x, y)
+		foundGlow:SetSize(Size * GLOW_WIDTH, Size * GLOW_WIDTH)
 
-		Texture = private.TextureCreate( self, Layer, R, G, B, 0.5 );
-		Texture:SetTexture( [[Textures\SunCenter]] );
-		Texture:SetTexCoord( 0, 1, 0, 1 );
-		Texture:SetBlendMode( "ADD" );
-		Texture:SetPoint( "CENTER", self, "TOPLEFT", X, Y );
-		Texture:SetSize( Size * GlowWidth, Size * GlowWidth );
-		local FoundGlow = Texture
-		FoundTextures[FoundCount] = {[1] = FoundRing, [2]= FoundGlow};
-
+		FoundTextures[textureIndex] = {
+			foundRing,
+			foundGlow
+		}
 	end
 end
 
 -- Cache achievement NPC names
-local AchievementNPCNames = {};
-for AchievementID in pairs( private.Achievements ) do
-	for Criteria = 1, GetAchievementNumCriteria( AchievementID ) do
-		local Name, CriteriaType, _, _, _, _, _, AssetID = GetAchievementCriteriaInfo( AchievementID, Criteria );
-		if ( CriteriaType == 0 ) then -- Mob kill type
-			AchievementNPCNames[ AssetID ] = Name;
+local AchievementNPCNames = {}
+for achievementID in pairs(private.Achievements) do
+	for criteria = 1, _G.GetAchievementNumCriteria(achievementID) do
+		local name, criteriaType, _, _, _, _, _, assetID = _G.GetAchievementCriteriaInfo(achievementID, criteria)
+		if criteriaType == 0 then -- Mob kill type
+			AchievementNPCNames[assetID] = name
 		end
 	end
 end
 
 -- Passes info for all enabled NPCs in a zone to a callback function.
 -- @param Callback  Function( self, PathData, [FoundX], [FoundY], R, G, B, NpcID )
-function private:ApplyZone ( Map, Callback )
-	local MapData = private.PathData[ Map ];
+function private:ApplyZone(mapID, callbackFunc)
+	local mapData = private.PathData[mapID]
+	if not mapData then
+		return
+	end
 
-	if (MapData) then
-		local ColorIndex = 0;
-		local AlphaList = {} --List of mob names to sort
-		local NPCList = {} --Index of Mob Name to MobIDs
+	local colorIndex = 0
+	local alphaList = {} --List of mob names to sort
+	local npcList = {} --Index of Mob Name to MobIDs
 
 	--Sorts Mobs in current zone by name
-		for MobID, pathx in pairs(MapData) do
-			local MobName = AchievementNPCNames[MobID] or L.NPCs[tostring(MobID)] or MobID
-			NPCList[MobName] = MobID
-			table.insert(AlphaList, MobName)
-			table.sort(AlphaList)
-		end
+	for npcID, pathX in pairs(mapData) do
+		local npcName = AchievementNPCNames[npcID] or L.NPCs[tostring(npcID)] or npcID
+		npcList[npcName] = npcID
+		table.insert(alphaList, npcName)
+	end
+	table.sort(alphaList)
 
-		for _, NpcName in pairs(AlphaList) do
-			local NpcID, PathData = NPCList[NpcName], MapData[NPCList[NpcName]]
-			ColorIndex = ColorIndex + 1;
-			if ( private.Options.ShowAll or private.NPCCounts[ NpcID ] ) then
-				local Color = assert( private.Colors[ ColorIndex ], "Ran out of unique path colors." );
-				local Found, FoundX, FoundY = private.NPCMaps[ NpcID ][ Map ];
-				if ( type( Found ) == "table" ) then
-					FoundX, FoundY = unpack( Found );
-				end
-				Callback( self, PathData, FoundX, FoundY, Color.r, Color.g, Color.b, NpcID );
+	for _, npcName in pairs(alphaList) do
+		local npcID, pathData = npcList[npcName], mapData[npcList[npcName]]
+		colorIndex = colorIndex + 1
+
+		if private.Options.ShowAll or private.NPCCounts[npcID] then
+			local color = assert(private.OverlayKeyColors[colorIndex], "Ran out of unique path colors.")
+			local found = private.NPCMaps[npcID][mapID]
+			local foundX, foundY
+
+			if type(found) == "table" then
+				foundX, foundY = unpack(found)
+			end
+
+			callbackFunc(self, pathData, foundX, foundY, color.r, color.g, color.b, npcID)
+		end
+	end
+end
+
+-- @return Aliased NPC ID, or original if not aliased.
+local function GetRealNpcID(NpcID)
+	local aliasID = private.NPCAliases[NpcID]
+
+	while (aliasID) do
+		NpcID, aliasID = aliasID, private.NPCAliases[aliasID]
+	end
+
+	return NpcID
+end
+
+-- @return First Map ID that NpcID can be found on or nil if unknown.
+function private.GetNPCMapID(NpcID)
+	local maps = private.NPCMaps[GetRealNpcID(NpcID)]
+
+	if maps then
+		return (next(maps))
+	end
+end
+
+-- Enables an NPC map overlay by NpcID.
+local function NPCAdd(npcID)
+	local aliasID, npcID = npcID, GetRealNpcID(npcID)
+	if not private.NPCsEnabled[aliasID] and private.NPCMaps[npcID] then
+		private.NPCsEnabled[aliasID] = true
+
+		private.NPCCounts[npcID] = (private.NPCCounts[npcID] or 0) + 1
+		if private.NPCCounts[npcID] == 1 and not private.Options.ShowAll then
+			for mapID in pairs(private.NPCMaps[npcID]) do
+				private.Modules.UpdateMap(mapID)
 			end
 		end
 	end
 end
 
---- @return Aliased NPC ID, or original if not aliased.
-local function GetRealNpcID ( NpcID )
-	local AliasID = private.NPCAliases[ NpcID ];
-	while ( AliasID ) do
-		NpcID, AliasID = AliasID, private.NPCAliases[ AliasID ];
+-- Disables an NPC map overlay by NpcID.
+local function NPCRemove(npcID)
+	if not private.NPCsEnabled[npcID] then
+		return
 	end
-	return NpcID;
-end
---- @return First Map ID that NpcID can be found on or nil if unknown.
-function private.GetNPCMapID ( NpcID )
-	local Maps = private.NPCMaps[ GetRealNpcID( NpcID ) ];
-	if ( Maps ) then
-		return ( next( Maps ) );
-	end
-end
+	private.NPCsEnabled[npcID] = nil
+	npcID = GetRealNpcID(npcID)
 
---- Enables an NPC map overlay by NpcID.
-local function NPCAdd ( NpcID )
-	local AliasID, NpcID = NpcID, GetRealNpcID( NpcID );
-	if ( not private.NPCsEnabled[ AliasID ] and private.NPCMaps[ NpcID ] ) then
-		private.NPCsEnabled[ AliasID ] = true;
+	local Count = assert(private.NPCCounts[npcID], "Enabled NPC wasn't active.")
+	private.NPCCounts[npcID] = Count > 1 and Count - 1 or nil
 
-		private.NPCCounts[ NpcID ] = ( private.NPCCounts[ NpcID ] or 0 ) + 1;
-		if ( private.NPCCounts[ NpcID ] == 1 and not private.Options.ShowAll ) then
-			for Map in pairs( private.NPCMaps[ NpcID ] ) do
-				private.Modules.UpdateMap( Map );
-			end
+	if not (Count > 1 or private.Options.ShowAll) then
+		for Map in pairs(private.NPCMaps[npcID]) do
+			private.Modules.UpdateMap(Map)
 		end
 	end
 end
---- Disables an NPC map overlay by NpcID.
-local function NPCRemove ( NpcID )
-	if ( private.NPCsEnabled[ NpcID ] ) then
-		private.NPCsEnabled[ NpcID ] = nil;
 
-		NpcID = GetRealNpcID( NpcID );
-		local Count = assert( private.NPCCounts[ NpcID ], "Enabled NPC wasn't active." );
-		private.NPCCounts[ NpcID ] = Count > 1 and Count - 1 or nil;
-
-		if ( not ( Count > 1 or private.Options.ShowAll ) ) then
-			for Map in pairs( private.NPCMaps[ NpcID ] ) do
-				private.Modules.UpdateMap( Map );
-			end
-		end
-	end
-end
-local NPCFound;
+local NPCFound
 do
-	--- Saves the position of NpcID on Map and updates displays.
-	local function SaveFound ( NpcID, Map, X, Y )
-		local Found = private.NPCMaps[ NpcID ][ Map ];
-		if ( type( Found ) ~= "table" ) then
-			Found = {};
-			private.NPCMaps[ NpcID ][ Map ] = Found;
+	-- Saves the position of NpcID on Map and updates displays.
+	local function SaveFound(npcID, mapID, X, Y)
+		local found = private.NPCMaps[npcID][mapID]
+
+		if type(found) ~= "table" then
+			found = {}
+			private.NPCMaps[npcID][mapID] = found
 		end
-		Found[ 1 ], Found[ 2 ] = X, Y;
-		if ( private.Options.ShowAll or private.NPCCounts[ NpcID ] ) then
-			private.Modules.UpdateMap( Map );
+		found[1], found[2] = X, Y
+
+		if private.Options.ShowAll or private.NPCCounts[npcID] then
+			private.Modules.UpdateMap(mapID)
 		end
 	end
-	--- Saves an NPC's last seen position at the given position or the player.
-	function NPCFound ( NpcID, Map, X, Y )
-		NpcID = GetRealNpcID( NpcID );
-		if ( not private.NPCMaps[ NpcID ] or private.NPCsFoundIgnored[ NpcID ] ) then
-			return;
+
+	-- Saves an NPC's last seen position at the given position or the player.
+	function NPCFound(npcID, mapID, x, y)
+		npcID = GetRealNpcID(npcID)
+
+		if not private.NPCMaps[npcID] or private.NPCsFoundIgnored[npcID] then
+			return
 		end
-		if ( Map and X and Y ) then
-			if ( private.NPCMaps[ NpcID ][ Map ] ) then
-				SaveFound( NpcID, Map, X, Y );
-				local MapOld = GetCurrentMapAreaID();
-				SetMapByID( Map );
-				local X, Y = GetPlayerMapPosition( "player" );
-				if ( X == 0 and Y == 0 ) then -- Player isn't on the same map
-					SetMapByID( MapOld ); -- Undo map change if mob isn't nearby
+
+		if mapID and x and y then
+			if private.NPCMaps[npcID][mapID] then
+				SaveFound(npcID, mapID, x, y)
+
+				local MapOld = _G.GetCurrentMapAreaID()
+				_G.SetMapByID(mapID)
+
+				local playerX, playerY = _G.GetPlayerMapPosition("player")
+				if playerX == 0 and playerY == 0 then -- Player isn't on the same map
+					_G.SetMapByID(MapOld) -- Undo map change if mob isn't nearby
 				end
 			end
 		else
-			local MapOld, MapNew = GetCurrentMapAreaID(), nil;
-			SetMapToCurrentZone();
-			local MapCurrent = GetCurrentMapAreaID();
-			for Map in pairs( private.NPCMaps[ NpcID ] ) do
-				SetMapByID( Map );
-				local X, Y = GetPlayerMapPosition( "player" );
-				if ( X ~= 0 or Y ~= 0 ) then -- Found on this map
-					SaveFound( NpcID, Map, X, Y );
-					if ( not MapNew or Map == MapCurrent ) then -- Current map has priority if found there
-						MapNew = Map; -- Force map to view found rare
+			local oldMapID = _G.GetCurrentMapAreaID()
+			_G.SetMapToCurrentZone()
+
+			local currentMapID = _G.GetCurrentMapAreaID()
+			local newMapID
+
+			for npcMapID in pairs(private.NPCMaps[npcID]) do
+				_G.SetMapByID(npcMapID)
+
+				local playerX, playerY = _G.GetPlayerMapPosition("player")
+				if playerX ~= 0 or playerY ~= 0 then -- Found on this map
+					SaveFound(npcID, npcMapID, playerX, playerY)
+
+					if not newMapID or npcMapID == currentMapID then -- Current map has priority if found there
+						newMapID = npcMapID -- Force map to view found rare
 					end
 				end
 			end
-			SetMapByID( MapNew or MapOld );
+
+			_G.SetMapByID(newMapID or oldMapID)
 		end
 	end
 end
-
 
 do
 	-- See <http://sites.google.com/site/wowsaiket/Add-Ons/NPCScanOverlay/API>
 	-- for Overlay message documentation.
-	local ScannerAddOn;
-	--- Grants exclusive control of mob path visibility to the first addon that registers.
-	-- @param AddOn  Logically true identifier for the controller addon.  Must be
-	--   used in all subsequent messages.
-	private.Events[ MESSAGE_REGISTER ] = function ( self, Event, AddOn )
-		self:UnregisterMessage( Event );
-		self[ Event ] = nil;
-		ScannerAddOn = assert( AddOn, "Registration message must provide an addon identifier." );
+	local ScannerAddOn
+	-- Grants exclusive control of mob path visibility to the first addon that registers.
+	-- @param AddOn Logically true identifier for the controller addon.  Must be
+	-- used in all subsequent messages.
+	private.Events[MESSAGE_REGISTER] = function(self, Event, AddOn)
+		self:UnregisterMessage(Event)
+		self[Event] = nil
+		ScannerAddOn = assert(AddOn, "Registration message must provide an addon identifier.")
 
 		-- Quit showing all by default and let the scanning addon control visibility
-		for NpcID in pairs( private.NPCsEnabled ) do
-			NPCRemove( NpcID );
+		for NpcID in pairs(private.NPCsEnabled) do
+			NPCRemove(NpcID)
 		end
 
-		self:RegisterMessage( MESSAGE_ADD );
-		self:RegisterMessage( MESSAGE_REMOVE );
-	end;
-	--- Shows a mob's path, if available.
-	-- @param NpcID  Numeric creature ID to add.
-	-- @param AddOn  Identifier used in registration message.
-	private.Events[ MESSAGE_ADD ] = function ( self, _, NpcID, AddOn )
-		if ( ScannerAddOn and AddOn == ScannerAddOn ) then
-			return NPCAdd( assert( tonumber( NpcID ),
-				"Add message NpcID must be numeric." ) );
+		self:RegisterMessage(MESSAGE_ADD)
+		self:RegisterMessage(MESSAGE_REMOVE)
+	end
+
+	-- Shows a mob's path, if available.
+	-- @param NpcID Numeric creature ID to add.
+	-- @param AddOn Identifier used in registration message.
+	private.Events[MESSAGE_ADD] = function(self, _, NpcID, AddOn)
+		if ScannerAddOn and AddOn == ScannerAddOn then
+			return NPCAdd(assert(tonumber(NpcID),
+				"Add message NpcID must be numeric."))
 		end
-	end;
-	--- Removes a mob's path if it has already been shown.
-	-- @param NpcID  Numeric creature ID to remove.
-	-- @param AddOn  Identifier used in registration message.
-	private.Events[ MESSAGE_REMOVE ] = function ( self, _, NpcID, AddOn )
-		if ( ScannerAddOn and AddOn == ScannerAddOn ) then
-			return NPCRemove( assert( tonumber( NpcID ),
-				"Remove message NpcID must be numeric." ) );
+	end
+
+	-- Removes a mob's path if it has already been shown.
+	-- @param NpcID Numeric creature ID to remove.
+	-- @param AddOn Identifier used in registration message.
+	private.Events[MESSAGE_REMOVE] = function(self, _, NpcID, AddOn)
+		if ScannerAddOn and AddOn == ScannerAddOn then
+			return NPCRemove(assert(tonumber(NpcID),
+				"Remove message NpcID must be numeric."))
 		end
-	end;
-	--- Saves an NPC's last seen position at the given position or at the player.
+	end
+
+	-- Saves an NPC's last seen position at the given position or at the player.
 	-- Will fail if the given or current zone doesn't have path data.
-	-- @param NpcID  Numeric creature ID that was found.
-	-- @param MapID  Optional numeric map ID that the NPC was found on.
-	-- @param X..Y  Optional numeric coordinates of NPC on MapID.
-	private.Events[ MESSAGE_FOUND ] = function ( self, _, NpcID, MapID, X, Y )
-		return NPCFound( assert( tonumber( NpcID ), "Found message Npc ID must be a number." ),
-			tonumber( MapID ), tonumber( X ), tonumber( Y ) );
-	end;
+	-- @param NpcID Numeric creature ID that was found.
+	-- @param MapID Optional numeric map ID that the NPC was found on.
+	-- @param X..Y Optional numeric coordinates of NPC on MapID.
+	private.Events[MESSAGE_FOUND] = function(self, _, NpcID, MapID, X, Y)
+		return NPCFound(assert(tonumber(NpcID), "Found message Npc ID must be a number."),
+			tonumber(MapID), tonumber(X), tonumber(Y))
+	end
 end
 
-
-
-
---- Enables always showing all paths.
--- @return True if changed.
-function private.SetShowAll ( Enable )
-	Enable = not not Enable;
-	if ( Enable ~= private.Options.ShowAll ) then
-		private.Options.ShowAll = Enable;
-
-		private.Config.ShowAll:SetChecked( Enable );
-
+-- Enables always showing all paths.
+function private.SetShowAll(enable)
+	if enable == true then
 		-- Update all affected maps
-		for Map, MapData in pairs( private.PathData ) do
+		for Map, MapData in pairs(private.PathData) do
 			-- If a map has a disabled path, it must be redrawn
-			for NpcID in pairs( MapData ) do
-				if ( not private.NPCCounts[ NpcID ] ) then
-					private.Modules.UpdateMap( Map );
-					break;
+			for NpcID in pairs(MapData) do
+				if not private.NPCCounts[NpcID] then
+					private.Modules.UpdateMap(Map)
+					break
 				end
 			end
 		end
+	end
+	private.Options.ShowAll = enable
+	private.Config.ShowAll:SetChecked(enable)
+end
 
-		return true;
+-- Enables always showing all paths.
+-- @return True if changed.
+function private.SetLockSwap(Enable)
+	private.Options.LockSwap = Enable
+	private.Config.LockSwap:SetChecked(Enable)
+end
+
+--Creates LDB icon and click actions
+local function ConfigEntry_OnMouseUp(tooltipCell, configEntry, button)
+	if configEntry == "WorldMapKey" then
+		private.WorldMapKey_ToggleOnClick()
+	elseif configEntry == "MiniMap" then
+		if private.Options.Modules["Minimap"] then
+			private.Modules.Disable("Minimap")
+		else
+			private.Modules.Enable("Minimap")
+		end
+	elseif configEntry == "WorldMap" then
+		if private.Options.Modules["WorldMap"] then
+			private.Modules.Disable("WorldMap")
+		else
+			private.Modules.Enable("WorldMap")
+		end
+	elseif configEntry == "Maps" then
+		if private.Options.Modules["Minimap"] then
+			private.Modules.Disable("Minimap")
+			private.Modules.Disable("WorldMap")
+		else
+			private.Modules.Enable("Minimap")
+			private.Modules.Enable("WorldMap")
+		end
+	elseif configEntry == "Options" then
+		_G.InterfaceOptionsFrame_OpenToCategory(private.Config)
 	end
 end
 
-
---- Reloads enabled modules from saved settings.
-function private.Synchronize ( Options )
-	-- Load defaults if settings omitted
-	if ( not Options ) then
-		Options = private.OptionsDefault;
-	end
-	_NPCScanOverlayOptions.ShowKey = Options.ShowKey 
-	private.SetShowAll( Options.ShowAll );
-	private.Modules.OnSynchronize( Options );
-
-end
- 
- --Creates LDB icon and click actgions
-local LDB = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("_NPCScan.Overlay", {
+local LDB = _G.LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("_NPCScan.Overlay", {
 	type = "launcher",
 	text = "_NPCScan.Overlay",
 	icon = "Interface\\Icons\\INV_Misc_EngGizmos_20",
 	OnClick = function(_, button)
-		if button == "LeftButton" then
-			-- for LeftButton, toggle the module Enabled or Disabled
-			if( IsShiftKeyDown() ) then
-				NSO_KeyToggleOnClick()
-			else
-								-- if Control Key down, toggle stuff on Main World Map
-				if ( private.Options.Modules[ "WorldMap" ] ) then
-					private.Modules.Disable( "WorldMap" );
-				else
-					private.Modules.Enable( "WorldMap" );
-				end
-			end
-		elseif button == "RightButton" then
-							-- else toggle Stuff Mini Map
-				if ( private.Options.Modules[ "Minimap" ] ) then
-					private.Modules.Disable( "Minimap" );
-				else
-					private.Modules.Enable( "Minimap" );
-				end
-		elseif button == "MiddleButton" then
-			if( IsShiftKeyDown() ) then
-				InterfaceOptionsFrame_OpenToCategory( private.Config );
-			else
-				if ( private.Options.Modules[ "Minimap" ] ) then
-					private.Modules.Disable( "Minimap" );
-					private.Modules.Disable( "WorldMap" );
-				else
-					private.Modules.Enable( "Minimap" );
-					private.Modules.Enable( "WorldMap" );
-				end
-			end
-		end
+		_G.InterfaceOptionsFrame_OpenToCategory(private.Config)
 	end,
-	OnTooltipShow = function(tooltip)
-		if not tooltip or not tooltip.AddLine then return end
-		tooltip:AddLine(L.BUTTON_TOOLTIP_LINE1)
-		tooltip:AddLine(L.BUTTON_TOOLTIP_LINE2)
-		tooltip:AddLine(L.BUTTON_TOOLTIP_LINE3)
-		tooltip:AddLine(L.BUTTON_TOOLTIP_LINE4)
-		tooltip:AddLine(L.BUTTON_TOOLTIP_LINE5)
-		tooltip:AddLine(L.BUTTON_TOOLTIP_LINE6)
+	OnEnter = function(self)
+		if LibQTip:IsAcquired(FOLDER_NAME) then
+			return
+		end
+		local tooltip = LibQTip:Acquire(FOLDER_NAME, 3)
+		tooltip:SetAutoHideDelay(0.1, self)
+		tooltip:SmartAnchorTo(self)
+		tooltip:Clear()
+
+		tooltip:SetCell(tooltip:AddLine(), 1, L.BUTTON_TOOLTIP_LINE1, "CENTER", 0)
+		tooltip:AddSeparator()
+
+		local line = tooltip:AddLine()
+		tooltip:SetCell(line, 1, L.BUTTON_TOOLTIP_LINE2)
+		tooltip:SetCellScript(line, 1, "OnMouseUp", ConfigEntry_OnMouseUp, "WorldMap")
+
+		line = tooltip:AddLine()
+		tooltip:SetCell(line, 1, L.BUTTON_TOOLTIP_LINE3)
+		tooltip:SetCellScript(line, 1, "OnMouseUp", ConfigEntry_OnMouseUp, "WorldMapKey")
+
+		line = tooltip:AddLine()
+		tooltip:SetCell(line, 1, L.BUTTON_TOOLTIP_LINE4)
+		tooltip:SetCellScript(line, 1, "OnMouseUp", ConfigEntry_OnMouseUp, "MiniMap")
+
+		line = tooltip:AddLine()
+		tooltip:SetCell(line, 1, L.BUTTON_TOOLTIP_LINE5)
+		tooltip:SetCellScript(line, 1, "OnMouseUp", ConfigEntry_OnMouseUp, "Maps")
+
+		line = tooltip:AddLine()
+		tooltip:SetCell(line, 1, L.BUTTON_TOOLTIP_LINE6)
+		tooltip:SetCellScript(line, 1, "OnMouseUp", ConfigEntry_OnMouseUp, "Options")
+
+		tooltip:Show()
+	end,
+	OnLeave = function(self)
+		-- Null operation: Some LDB displays get cranky if this method is missing.
 	end,
 })
 
-
-
 do
-	private.GetMapName = GetMapNameByID; -- For backwards compatibility with older versions of _NPCScan
-	local MapIDs = {}; -- [ LocalizedZoneName ] = MapID;
-	--- @return Map ID for localized zone name or nil if unknown.
+	private.GetMapName = _G.GetMapNameByID -- For backwards compatibility with older versions of _NPCScan
+	local MapIDs = {} -- [ LocalizedZoneName ] = MapID
+
+	-- @return Map ID for localized zone name or nil if unknown.
 	-- Note that only true continent sub-zones are supported.
-	function private.GetMapID ( Name )
-		return MapIDs[ Name ];
-	end
-	local MapWidths, MapHeights = {}, {};
-	--- @return Width and height of Map in yards or nil if unavailable.
-	function private.GetMapSize ( Map )
-		return MapWidths[ Map ], MapHeights[ Map ];
+	function private.GetMapID(Name)
+		return MapIDs[Name]
 	end
 
-	--- Loads defaults, validates settings, and begins listening for Overlay API messages.
-	function private.Events:ADDON_LOADED ( Event, AddOn )
-		if ( AddOn == FOLDER_NAME ) then
-			self[ Event ] = nil;
-			self:UnregisterEvent( Event );
+	local MapWidths, MapHeights = {}, {}
 
-			-- Build a reverse lookup of NpcIDs to zones, and add them all by default
-			for Map, MapData in pairs( private.PathData ) do
-				SetMapByID( Map );
-				local _, X1, Y1, X2, Y2 = GetCurrentMapZone();
-				local Width, Height = X1 - X2, Y1 - Y2;
-				if ( Width == 0 or Height == 0 ) then
-					error( "Zone dimensions unavailable for map "..Map.."." );
-				end
-				MapWidths[ Map ], MapHeights[ Map ] = Width, Height;
-				MapIDs[ GetMapNameByID( Map ) ] = Map;
+	-- @return Width and height of Map in yards or nil if unavailable.
+	function private.GetMapSize(Map)
+		return MapWidths[Map], MapHeights[Map]
+	end
 
-				for NpcID in pairs( MapData ) do
-					if ( not private.NPCMaps[ NpcID ] ) then
-						private.NPCMaps[ NpcID ] = {};
-					end
-					private.NPCMaps[ NpcID ][ Map ] = true;
-					NPCAdd( NpcID );
-				end
-			end
-
-			local Options = _NPCScanOverlayOptions;
-			_NPCScanOverlayOptions = private.Options;
-			if ( Options and not Options.ModulesExtra ) then -- 3.3.5.1: Moved module options to options sub-tables
-				Options.ModulesExtra = {};
-			end
-
-			private.Synchronize( Options ); -- Loads defaults if nil
-			self:RegisterMessage( MESSAGE_REGISTER );
-			self:RegisterMessage( MESSAGE_FOUND );
-			--MiniMapIcon:Register("_NPCScan.Minimap", LDB, _NPCScanMiniMapIcon)
-			
+	-- Loads defaults, validates settings, and begins listening for Overlay API messages.
+	function private.Events:ADDON_LOADED(eventName, addonName)
+		if addonName ~= FOLDER_NAME then
+			return
 		end
+		self[eventName] = nil
+		self:UnregisterEvent(eventName)
+
+		private.Options = _G._NPCScanOverlayOptions
+		private.OverlayKeyColors = _G._NPCScanOverlayKeyColors
+
+		if not private.Options then
+			private.Options = private.OptionsDefault
+		end
+
+		-- Build a reverse lookup of NpcIDs to zones, and add them all by default
+		for mapID, mapData in pairs(private.PathData) do
+			_G.SetMapByID(mapID)
+			local _, X1, Y1, X2, Y2 = _G.GetCurrentMapZone()
+			local Width, Height = X1 - X2, Y1 - Y2
+
+			if Width == 0 or Height == 0 then
+				error("Zone dimensions unavailable for map " .. mapID .. ".")
+			end
+			MapWidths[mapID], MapHeights[mapID] = Width, Height
+			MapIDs[_G.GetMapNameByID(mapID)] = mapID
+
+			for NpcID in pairs(mapData) do
+				if not private.NPCMaps[NpcID] then
+					private.NPCMaps[NpcID] = {}
+				end
+				private.NPCMaps[NpcID][mapID] = true
+				NPCAdd(NpcID)
+			end
+		end
+
+		if private.Options and not private.Options.ModulesExtra then -- 3.3.5.1: Moved module options to options sub-tables
+			private.Options.ModulesExtra = {}
+		end
+
+		private.SetShowAll(private.Options.ShowAll)
+		private.SetLockSwap(private.Options.LockSwap)
+		private.Modules.OnSynchronize(private.Options)
+		private.SetKeyIconTexture()
+		private.SetPathIconTexture()
+		self:RegisterMessage(MESSAGE_REGISTER)
+		self:RegisterMessage(MESSAGE_FOUND)
 	end
 end
 
-
-
-local FlashTable = {};
+local FlashTable = {}
 
 --Flashes selected Mob route
-function private.FlashRoute(MobID)
-	for ID, Mob in pairs(private.TextureTable) do
-		 if MobID == ID then
-			flashtable = nil;
-			for text in pairs(Mob) do
+function private.FlashRoute(npcID)
+	for ID, npcData in pairs(private.TextureTable) do
+		if npcID == ID then
+			for text in pairs(npcData) do
 				local flasher = _G[text]:CreateAnimationGroup()
 				FlashTable[text] = flasher
+
 				local fade1 = flasher:CreateAnimation("Alpha")
 				fade1:SetDuration(0.25)
 				fade1:SetChange(1)
@@ -721,7 +724,7 @@ function private.FlashRoute(MobID)
 				flasher:SetLooping("BOUNCE")
 				flasher:SetScript("OnFinished", function() _G[text]:SetAlpha(1) end)
 
-				flasher:Play() 
+				flasher:Play()
 			end
 		end
 	end
@@ -734,10 +737,4 @@ function private.FlashStop(MobID)
 	end
 end
 
-private.Events:RegisterEvent( "ADDON_LOADED" );
-
-
-
-
---http://wowprogramming.com/BlizzArt/Interface/ICONS/Ability_Hunter_MasterMarksman.png
---http://wowprogramming.com/BlizzArt/Interface/ICONS/INV_Misc_EngGizmos_20.png
+private.Events:RegisterEvent("ADDON_LOADED")

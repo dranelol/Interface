@@ -102,13 +102,13 @@ end
 -- the font_string table.
 local original_setfont
 local original_getfont
-function setfont(font_string, font, size, flags)
+local function setfont(font_string, font, size, flags)
 	font_string.font = font
 	font_string.size = size
 	return original_setfont(font_string, font, size, flags)
 end
 
-function getfont(font_string, ...)
+local function getfont(font_string, ...)
 	local font, size, flags = original_getfont(font_string)
 	-- the retrieved font can be nil if the font we set is not available.
 	-- size will be possibly uninitalized so it can be any value including 0 or
@@ -207,6 +207,9 @@ local function create_control(kind, name, inheritTemplate, parent)
 	end
 	if kind == "Animation" or kind == "Alpha" then
 		return parent:CreateAnimation(kind, name)
+	end
+	if kind == "Cooldown" then
+		return CreateFrame(kind, name, parent, "CooldownFrameTemplate")
 	end
 	return CreateFrame(kind, name, parent, inheritTemplate)
 end
@@ -395,7 +398,6 @@ function PitBull4.Controls.MakeCooldown(parent)
 	if DEBUG then
 		expect(parent, 'typeof', 'frame')
 	end
-	
 	return fetch_control("Cooldown", parent)
 end
 

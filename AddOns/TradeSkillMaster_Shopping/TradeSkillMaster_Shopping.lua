@@ -23,11 +23,12 @@ local savedDBDefaults = {
 		quickPostingDuration = 2,
 		quickPostingHideGrouped = true,
 		sidebarBtn = 1,
-		appInfo = {},
 		postUndercut = 1,
 		marketValueSource = "dbmarket",
 		destroyingTargetItems = {},
 		tooltip = true,
+		minDeSearchLvl = 1,
+		maxDeSearchLvl = 600,
 		maxDeSearchPercent = 1,
 		sniperVendorPrice = true,
 		sniperMaxPrice = true,
@@ -47,6 +48,7 @@ function TSM:OnInitialize()
 	TSM:RegisterModule()
 
 	TSM.db.profile.dealfinding = nil
+	TSM.db.global.appInfo = nil
 end
 
 -- registers this module with TSM by first setting all fields and then calling TSMAPI:NewModule().
@@ -57,6 +59,8 @@ function TSM:RegisterModule()
 	TSM.moduleAPIs = {
 		{ key = "runSearch", callback = "StartFilterSearch" },
 		{ key = "runDestroySearch", callback = "StartDestroySearch" },
+		{ key = "getSidebarPage", callback = "Sidebar:GetCurrentPage" },
+		{ key = "getSearchMode", callback = "Search:GetCurrentSearchMode" },
 	}
 
 	TSMAPI:NewModule(TSM)
@@ -70,30 +74,6 @@ TSM.operationDefaults = {
 	ignoreFactionrealm = {},
 	relationships = {},
 }
-
-function TSM:OnTSMDBShutdown()
-	TSM.db.global.appInfo = {}
-	for profile in TSMAPI:GetTSMProfileIterator() do
-		local profileData = {}
-		for itemString, operations in pairs(TSMAPI:GetModuleItems("Shopping")) do
-			local groupName = TSMAPI:FormatGroupPath(TSMAPI:GetGroupPath(itemString))
-			local operationName = operations[1]
-			local name, _, _, _, _, iType = TSMAPI:GetSafeItemInfo(itemString)
-			local WEAPON, ARMOR = GetAuctionItemClasses()
-			local random = (itemString == TSMAPI:GetBaseItemString(itemString) and (iType == ARMOR or iType == WEAPON))
-			TSMAPI:UpdateOperation("Shopping", operationName)
-			local operation = TSM.operations[operationName]
-			if operation then
-				local maxPrice = TSM:GetMaxPrice(operation.maxPrice, itemString)
-				if maxPrice then
-					profileData[groupName] = profileData[groupName] or {}
-					profileData[groupName][itemString] = { itemid = TSMAPI:GetItemID(itemString), name = name, maxPrice = maxPrice, evenStacks = operation.evenStacks, random = random }
-				end
-			end
-		end
-		TSM.db.global.appInfo[profile] = profileData
-	end
-end
 
 function TSM:GetOperationInfo(operationName)
 	TSMAPI:UpdateOperation("Shopping", operationName)

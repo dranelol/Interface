@@ -1,5 +1,3 @@
-if select(6, GetAddOnInfo("PitBull4_" .. (debugstack():match("[o%.][d%.][u%.]les\\(.-)\\") or ""))) ~= "MISSING" then return end
-
 local PitBull4 = _G.PitBull4
 if not PitBull4 then
 	error("PitBull4_Border requires PitBull4")
@@ -24,6 +22,14 @@ PitBull4_Border:SetDefaults({
 	size = 16,
 	padding = 3,
 })
+
+local EXEMPT_UNITS = {}
+for i = 1, 5 do
+	EXEMPT_UNITS[("target"):rep(i)] = true
+end
+
+local target_guid = nil
+local mouse_focus = nil
 
 local LibSharedMedia
 local LibSharedMedia_border_None = [[Interface\None]]

@@ -165,6 +165,7 @@ MRT_L.Options["MP_Debug"] = "啟用除錯訊息"
 MRT_L.Options["MP_Description"] = "追蹤團隊,拾取與參與者"
 MRT_L.Options["MP_Enabled"] = "啟用MRT自動追蹤" -- Needs review
 MRT_L.Options["MP_MinimapIcon"] = "顯示小地圖圖示"
+-- MRT_L.Options["MP_ResetGuiPos"] = "Reset GUI position"
 MRT_L.Options["MP_SlashCmd"] = "斜線指令"
 MRT_L.Options["TP_AskForDKPValue"] = "詢問物品價值"
 MRT_L.Options["TP_CreateNewRaidOnNewZone"] = "在新地區時建立新團隊紀錄"

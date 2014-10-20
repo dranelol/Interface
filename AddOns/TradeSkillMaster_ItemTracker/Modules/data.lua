@@ -17,6 +17,13 @@ local throttleFrames = {}
 local isScanning = false
 
 function Data:Initialize()
+	local _, _, _, tocversion = GetBuildInfo()
+	if tocversion >= 60000 then
+		Data:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED", "EventHandler")
+		TSMAPI:RegisterForBankChange(function(...) Data:GetReagentBankData(...) end)
+	else
+		wipe(TSM.characters[TSM.CURRENT_PLAYER].reagentbank)
+	end
 	Data:RegisterEvent("GUILDBANKFRAME_OPENED", "EventHandler")
 	Data:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED", "EventHandler")
 	Data:RegisterEvent("AUCTION_OWNED_LIST_UPDATE", "EventHandler")
@@ -96,6 +103,8 @@ function Data:EventHandler(event, fire)
 			Data:GetGuildBankData()
 		elseif event == "AUCTION_OWNED_LIST_UPDATE" then
 			Data:ScanPlayerAuctions()
+		elseif event == "PLAYERREAGENTBANKSLOTS_CHANGED" then
+			Data:GetReagentBankData()
 		end
 	end
 end
@@ -125,6 +134,25 @@ function Data:GetBankData(state)
 		end
 	end
 	TSM.characters[TSM.CURRENT_PLAYER].lastUpdate.bank = time()
+	TSM.Sync:BroadcastUpdateRequest()
+end
+
+-- scan the player's reagent bank
+function Data:GetReagentBankData()
+	wipe(TSM.characters[TSM.CURRENT_PLAYER].reagentbank)
+	for slot = 1, 98 do
+		local link = GetContainerItemLink(-3, slot)
+		local itemString = TSMAPI:GetItemString(link)
+		if itemString then
+			local _, quantity = GetContainerItemInfo(-3, slot)
+			local baseItemString = TSMAPI:GetBaseItemString(itemString)
+			TSM.characters[TSM.CURRENT_PLAYER].reagentbank[itemString] = (TSM.characters[TSM.CURRENT_PLAYER].reagentbank[itemString] or 0) + quantity
+			if itemString ~= baseItemString then
+				TSM.characters[TSM.CURRENT_PLAYER].reagentbank[baseItemString] = (TSM.characters[TSM.CURRENT_PLAYER].reagentbank[baseItemString] or 0) + quantity
+			end
+		end
+	end
+	TSM.characters[TSM.CURRENT_PLAYER].lastUpdate.reagentbank = time()
 	TSM.Sync:BroadcastUpdateRequest()
 end
 
@@ -165,8 +193,8 @@ function Data:ScanPlayerAuctions()
 		local link = GetAuctionItemLink("owner", i)
 		local itemString = TSMAPI:GetItemString(link)
 		local baseItemString = TSMAPI:GetBaseItemString(link)
-		local name, _, quantity, _, _, _, _, _, _, buyout, _, _, _, wasSold, _, wasSold_54 = GetAuctionItemInfo("owner", i)
-		if select(4, GetBuildInfo()) == 50400 then wasSold = wasSold_54 end
+		local name, _, quantity, _, _, _, _, _, _, buyout, _, _, _, _, _, wasSold = GetAuctionItemInfo("owner", i)
+		--if select(4, GetBuildInfo()) == 50400 then wasSold = wasSold_54 end
 		if wasSold == 0 and itemString then
 			TSM.characters[TSM.CURRENT_PLAYER].auctions[itemString] = (TSM.characters[TSM.CURRENT_PLAYER].auctions[itemString] or 0) + quantity
 			if itemString ~= baseItemString then
@@ -225,7 +253,7 @@ do
 		end
 		tinsert(TSM.characters[player].mailInbox, index, data)
 	end
-	
+
 	local function RemoveInboxMail(player, index)
 		local playerMail = TSM.characters[player].mail
 		for _, itemData in ipairs(TSM.characters[player].mailInbox[index].items) do
@@ -246,7 +274,7 @@ do
 		end
 		tremove(TSM.characters[player].mailInbox, index)
 	end
-	
+
 	local function RemoveInboxMailItem(player, index, itemIndex)
 		local playerMail = TSM.characters[player].mail
 		local itemData = TSM.characters[player].mailInbox[index].items[itemIndex]
@@ -275,12 +303,12 @@ do
 			items = ...
 		else
 			local link, count = ...
-			items = {{link=link, count=count}}
+			items = { { link = link, count = count } }
 		end
 		if not items then error() end
-		InsertInboxMail(player, 1, {items=items, index=nil})
+		InsertInboxMail(player, 1, { items = items, index = nil })
 	end
-	
+
 	local function RemoveMailItem(index, itemIndex)
 		local link = GetInboxItemLink(index, itemIndex)
 		if not link then return end
@@ -300,8 +328,8 @@ do
 			end
 		end
 	end
-	
-	
+
+
 	local tmpBuyouts = {}
 	local function OnAuctionBid(listType, index, bidPlaced)
 		local link = GetAuctionItemLink(listType, index)
@@ -310,6 +338,7 @@ do
 			tinsert(tmpBuyouts, { name = name, link = link, count = count })
 		end
 	end
+
 	local function OnChatMsg(_, msg)
 		if msg:match(gsub(ERR_AUCTION_WON_S, "%%s", "")) then
 			while #tmpBuyouts > 0 do
@@ -322,7 +351,7 @@ do
 			end
 		end
 	end
-	
+
 	local function OnAuctionCanceled(index)
 		local link = GetAuctionItemLink("owner", index)
 		local count = select(3, GetAuctionItemInfo("owner", index))
@@ -344,13 +373,13 @@ do
 			local link = GetSendMailItemLink(i)
 			if link then
 				local count = select(3, GetSendMailItem(i))
-				tinsert(items, {link=link, count=count})
+				tinsert(items, { link = link, count = count })
 			end
 		end
 		AddIncomingMail(altName, items)
 		tinsert(playersToUpdate, altName)
 	end
-	
+
 	local function OnTakeInboxItem(index, itemIndex)
 		for i = (itemIndex or 1), (itemIndex or ATTACHMENTS_MAX_RECEIVE) do
 			local link = GetInboxItemLink(index, i)
@@ -359,7 +388,7 @@ do
 			end
 		end
 	end
-	
+
 	local function OnReturnMail(index)
 		local sender = select(3, GetInboxHeaderInfo(index))
 		local items = {}
@@ -367,7 +396,7 @@ do
 			local link = GetInboxItemLink(index, itemIndex)
 			if link then
 				local count = select(3, GetInboxItem(index, itemIndex))
-				tinsert(items, {link=link, count=count})
+				tinsert(items, { link = link, count = count })
 				RemoveMailItem(index, itemIndex)
 			end
 		end
@@ -383,19 +412,19 @@ do
 		if numItems == totalItems then
 			wipe(player.mailInbox)
 		end
-		
+
 		local index = 1
-		for i=1, numItems do
+		for i = 1, numItems do
 			local items = {}
 			if select(8, GetInboxHeaderInfo(i)) then
-				for j=1, ATTACHMENTS_MAX_RECEIVE do
+				for j = 1, ATTACHMENTS_MAX_RECEIVE do
 					local link = GetInboxItemLink(i, j)
 					if link then
-						tinsert(items, {link=link, count=select(3, GetInboxItem(i, j))})
+						tinsert(items, { link = link, count = select(3, GetInboxItem(i, j)) })
 					end
 				end
 				local matchIndex
-				for k=index, #player.mailInbox do
+				for k = index, #player.mailInbox do
 					if #player.mailInbox[k].items == #items then
 						local temp = {}
 						for _, data in ipairs(player.mailInbox[k].items) do
@@ -406,7 +435,7 @@ do
 							temp[data.link] = temp[data.link] - data.count
 							if temp[data.link] == 0 then temp[data.link] = nil end
 						end
-						
+
 						if not next(temp) then
 							matchIndex = k
 							break
@@ -418,12 +447,12 @@ do
 						player.mailInbox[matchIndex].index = i
 						index = index + 1
 					elseif matchIndex > index then
-						for k=1, matchIndex-index do
+						for k = 1, matchIndex - index do
 							RemoveInboxMail(TSM.CURRENT_PLAYER, index)
 						end
 					end
 				else
-					InsertInboxMail(TSM.CURRENT_PLAYER, index, {items=items, index=i})
+					InsertInboxMail(TSM.CURRENT_PLAYER, index, { items = items, index = i })
 					index = index + 1
 				end
 			end

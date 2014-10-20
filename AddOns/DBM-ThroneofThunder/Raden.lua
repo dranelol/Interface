@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(831, "DBM-ThroneofThunder", nil, 362)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10977 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetCreatureID(69473)--69888
 mod:SetEncounterID(1580, 1581)
 mod:SetZone()
@@ -18,6 +18,7 @@ mod:RegisterEventsInCombat(
 	"UNIT_POWER_FREQUENT boss1",
 	"CHAT_MSG_MONSTER_YELL"
 )
+mod.onlyHeroic = true
 
 --Anima
 local warnAnima					= mod:NewSpellAnnounce(138331, 2)--Switched to anima phase
@@ -107,10 +108,6 @@ function mod:OnCombatStart(delay)
 	horrorCount = 0
 	timerCreationCD:Start(11-delay, 1)
 	countdownCreation:Start(11-delay)
-	if not BigWigs and not self.Options.ShowedBigWigsmessage then
-		DBM:AddMsg(L.BigWigsRecommendation)
-		self.Options.ShowedBigWigsmessage = true
-	end
 end
 
 function mod:SPELL_CAST_START(args)

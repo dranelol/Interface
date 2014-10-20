@@ -144,6 +144,7 @@ function rsclocalel()
 	rsczonereport7 = "|cffff0000错误！|r当前区域已经在列表中！"
 	rsczonereport8 = "|cffff0000错误！|r当前区域未在列表中发现！"
 	rsczonereport9 = "需要重置区域列表 - |cffff0000再次|r点击此按钮"
+	rsceating = "正在食用"
 
 
 end

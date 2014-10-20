@@ -643,7 +643,7 @@ end
 --репорт части с хрон порядка
 if ar2>=0 and partrep then
 
-if PSFmainfrainsavedinfo_slid2:GetValue()>=PSFmainfrainsavedinfo_slid1:GetValue() then
+if math.floor(PSFmainfrainsavedinfo_slid2:GetValue())>=math.floor(PSFmainfrainsavedinfo_slid1:GetValue()) then
 
 if pspartoftextofkicks and #pspartoftextofkicks>0 then
 	for i=1,#pspartoftextofkicks do

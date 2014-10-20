@@ -1,3 +1,29 @@
+v2.4.1
+*Fixed lua error on fresh install.
+
+v2.4
+*Updated for patch 6.0.2
+
+v2.3.2
+*Storing more info to differentiate sales vs purchases.
+*Cleaned up some code.
+
+v2.3.1
+*Accounting will now actively attempt to retrieve seller/buyer names for AH mail to avoid recording a "?" as the name.
+
+v2.3
+*Accounting will now automatically trim old sales / purchases if the data is too larger for WoW to handle without corrupting the saved variables.
+*Added a message which will be displayed upon logging in when sales / purchases were previous trimmed.
+
+v2.2.16
+*Fixed bug with other income/expense not being recorded.
+
+v2.2.15
+*Fixed bug with smart average buy price.
+
+v2.2.14
+*Minor code change.
+
 v2.2.13
 *Fixed bug with "...since last purchase" tooltip line.
 

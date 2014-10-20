@@ -8,9 +8,6 @@ local private = select( 2, ... );
 local panel = {};
 private.Modules.WorldMapTemplate = panel;
 
-
-
-
 do
 	local MapCurrent;
 	--- Callback to draw a single NPC's paths for a zone.
@@ -34,17 +31,28 @@ do
 		private.ApplyZone( self, Map, PaintPath );
 	end
 end
+
 local MapUpdate;
 do
+	local GetCurrentMapAreaID = _G.GetCurrentMapAreaID;
+	local GetCurrentMapDungeonLevel = _G.GetCurrentMapDungeonLevel;
 	--- Repaints at most once per frame, and only when the displayed zome changes.
 	local function OnUpdate ( self )
 		self:SetScript( "OnUpdate", nil );
 
 		local Map = GetCurrentMapAreaID();
-		if ( Map ~= self.MapLast ) then
+		local MapLevel = GetCurrentMapDungeonLevel();
+		if ( Map ~= self.MapLast or MapLevel ~= self.MapLevelLast ) then
 			self.MapLast = Map;
-
-			return self:Paint( Map );
+			self.MapLevelLast = MapLevel;
+			if ( MapLevel ~= 0 ) then
+				private.TextureRemoveAll( self );
+				if ( _NPCScanOverlayKey ~= nil ) then 
+					_NPCScanOverlayKey:Hide();
+				end
+			else
+				return self:Paint( Map );
+			end
 		end
 	end
 	--- Throttles calls to the Paint method.
@@ -52,13 +60,11 @@ do
 	function MapUpdate ( self, Force )
 		if ( Force ) then
 			self.MapLast = nil;
+			self.MapLevelLast = nil;
 		end
 		self:SetScript( "OnUpdate", OnUpdate );
 	end
 end
-
-
-
 
 --- Update the map if the viewed zone changes.
 function panel:WORLD_MAP_UPDATE ()
@@ -68,9 +74,6 @@ end
 function panel:OnShow ()
 	MapUpdate( self );
 end
-
-
-
 
 --- Force an update if shown paths change.
 -- @param Map  AreaID that changed, or nil if all zones must update.
@@ -119,9 +122,6 @@ do
 		end
 	end
 end
-
-
-
 
 do
 	local Inherit = {

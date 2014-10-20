@@ -47,7 +47,7 @@ function private.Create(parent)
 				StartAuction(data.buyout*TSM.db.global.postBidPercent, data.buyout, TSM.db.global.quickPostingDuration, 1, 1)
 				TSM:Printf(L["Posted a %s with a buyout of %s."], data.link, TSMAPI:FormatTextMoney(data.buyout))
 				
-				TSM:RegisterMessage("TSM_AH_EVENTS", function() private.UpdateSTData(frame) end)
+				TSM:RegisterMessage("TSM_AH_EVENTS", function() TSMAPI:FireEvent("SHOPPING:QUICKPOST:POSTEDITEM", data) private.UpdateSTData(frame) end)
 				TSMAPI:WaitForAuctionEvents("Post")
 			else
 				TSM.Search:StartFilterSearch(data.name.."/exact")

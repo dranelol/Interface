@@ -1,11 +1,11 @@
-## Interface: 50400
+## Interface: 60000
 ## Title: |cff00ff00TradeSkillMaster_Warehousing|r
 ## Notes: Manages your inventory by allowing you to easily move predefined groups of items between your bags, bank, and guild bank.
 ## Author: Sapu94, Bart39
-## Version: v2.0.9
+## Version: v2.1
 ## SavedVariables: TradeSkillMaster_WarehousingDB
 ## Dependency: TradeSkillMaster
-## X-Curse-Packaged-Version: v2.0.9
+## X-Curse-Packaged-Version: v2.1
 ## X-Curse-Project-Name: TradeSkillMaster_Warehousing
 ## X-Curse-Project-ID: tradeskillmaster_warehousing
 ## X-Curse-Repository-ID: wow/tradeskillmaster_warehousing/mainline

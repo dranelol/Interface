@@ -74,9 +74,9 @@ function private:LoadItemRecords(csvData, recordType, key)
 	local saveTimeIndex = 1
 	local saveTimes
 	if recordType == "sales" then
-		saveTimes = TSM:SafeStrSplit(TSM.db.factionrealm.saveTimeSales, ",")
+		saveTimes = TSMAPI:SafeStrSplit(TSM.db.realm.saveTimeSales, ",")
 	elseif recordType == "buys" then
-		saveTimes = TSM:SafeStrSplit(TSM.db.factionrealm.saveTimeBuys, ",")
+		saveTimes = TSMAPI:SafeStrSplit(TSM.db.realm.saveTimeBuys, ",")
 	end
 	for _, record in ipairs(select(2, LibParse:CSVDecode(csvData)) or {}) do
 		local itemString = record.itemString
@@ -119,20 +119,20 @@ function Data:Load()
 	-- Decode item records
 	TSM.items = {}
 	TSM.cache = {}
-	private:LoadItemRecords(TSM.db.factionrealm.csvSales, "sales")
-	private:LoadItemRecords(TSM.db.factionrealm.csvBuys, "buys")
-	private:LoadItemRecords(TSM.db.factionrealm.csvCancelled, "auctions", "Cancel")
-	private:LoadItemRecords(TSM.db.factionrealm.csvExpired, "auctions", "Expire")
+	private:LoadItemRecords(TSM.db.realm.csvSales, "sales")
+	private:LoadItemRecords(TSM.db.realm.csvBuys, "buys")
+	private:LoadItemRecords(TSM.db.realm.csvCancelled, "auctions", "Cancel")
+	private:LoadItemRecords(TSM.db.realm.csvExpired, "auctions", "Expire")
 	
 	-- Decode money records
 	TSM.money = {}
-	private:LoadMoneyRecords(TSM.db.factionrealm.csvIncome, "income")
-	private:LoadMoneyRecords(TSM.db.factionrealm.csvExpense, "expense")
+	private:LoadMoneyRecords(TSM.db.realm.csvIncome, "income")
+	private:LoadMoneyRecords(TSM.db.realm.csvExpense, "expense")
 	
 	-- Decode the gold log
-	for player, data in pairs(TSM.db.factionrealm.goldLog) do
+	for player, data in pairs(TSM.db.realm.goldLog) do
 		if type(data) == "string" then
-			TSM.db.factionrealm.goldLog[player] = select(2, LibParse:CSVDecode(data))
+			TSM.db.realm.goldLog[player] = select(2, LibParse:CSVDecode(data))
 		end
 	end
 	Data:SetupDataTracking()
@@ -151,8 +151,29 @@ function Data:SetupDataTracking()
 	Data:RegisterEvent("MERCHANT_SHOW", "SetupRepairCost")
 	Data:RegisterEvent("MERCHANT_UPDATE", "ResetRepairMoney")
 	Data:RegisterEvent("UPDATE_INVENTORY_DURABILITY", "AddRepairCosts")
+	Data:RegisterEvent("MAIL_SHOW")
+	Data:RegisterEvent("MAIL_CLOSED")
 	TSMAPI:RegisterForBagChange(function(...) Data:ScanBagItems(...) end)
 	TSMAPI:CreateFunctionRepeat("accountingGoldTracking", Data.LogGold)
+end
+
+function private:RequestSellerInfo()
+	local isDone = true
+	for i=1, GetInboxNumItems() do
+		local invoiceType, _, seller = GetInboxInvoiceInfo(i)
+		if invoiceType and seller == "" then
+			isDone = false
+		end
+	end
+	if isDone and GetInboxNumItems() > 0 then
+		TSMAPI:CancelFrame("accountingGetSellers")
+	end
+end
+function Data:MAIL_SHOW()
+	TSMAPI:CreateTimeDelay("accountingGetSellers", 0.1, private.RequestSellerInfo, 0.1)
+end
+function Data:MAIL_CLOSED()
+	TSMAPI:CancelFrame("accountingGetSellers")
 end
 
 
@@ -213,12 +234,12 @@ end
 function Data:InsertMoneyIncomeRecord(key, copper, destination, timeStamp)
 	if not (key and copper and destination and copper > 0) then return end
 	if key ~= "Transfer" then return end
-	private:InsertMoneyRecord("income", {copper=copper, otherPlayer=destination, time=timeStamp})
+	private:InsertMoneyRecord("income", {key=key, copper=copper, otherPlayer=destination, time=timeStamp})
 end
 function Data:InsertMoneyExpenseRecord(key, copper, destination, timeStamp)
 	if not (key and copper and destination and copper > 0) then return end
 	if key ~= "Postage" and key ~= "Repair" and key ~= "Transfer" then return end
-	private:InsertMoneyRecord("expense", {copper=copper, otherPlayer=destination, time=timeStamp})
+	private:InsertMoneyRecord("expense", {key=key, copper=copper, otherPlayer=destination, time=timeStamp})
 end
 
 
@@ -343,7 +364,7 @@ function Data:ScanCollectedMail(oFunc, attempt, index, subIndex)
 	local sender, subject, money, codAmount, _, itemCount = select(3, GetInboxHeaderInfo(index))
 	if not subject then return end
 	local success = true
-	if attempt > 1 then
+	if attempt > 2 then
 		if buyer == "" then
 			buyer = "?"
 		elseif sender == "" then
@@ -504,13 +525,13 @@ end
 
 -- returns a formatted time in the format that the user has selected
 function private:GetFormattedTime(rTime)
-	if TSM.db.factionrealm.timeFormat == "ago" then
+	if TSM.db.realm.timeFormat == "ago" then
 		return format(L["%s ago"], SecondsToTime(time() - rTime) or "?")
-	elseif TSM.db.factionrealm.timeFormat == "usdate" then
+	elseif TSM.db.realm.timeFormat == "usdate" then
 		return date("%m/%d/%y %H:%M", rTime)
-	elseif TSM.db.factionrealm.timeFormat == "eudate" then
+	elseif TSM.db.realm.timeFormat == "eudate" then
 		return date("%d/%m/%y %H:%M", rTime)
-	elseif TSM.db.factionrealm.timeFormat == "aidate" then
+	elseif TSM.db.realm.timeFormat == "aidate" then
 		return date("%y/%m/%d %H:%M", rTime)
 	end
 end
@@ -529,7 +550,7 @@ function private:IsItemFiltered(itemString, filters)
 		return true
 	end
 	
-	if not TSM.db.factionrealm.displayGreys and rarity == 0 then
+	if not TSM.db.realm.displayGreys and rarity == 0 then
 		return true
 	end
 	
@@ -548,7 +569,7 @@ function private:IsRecordFiltered(record, filters)
 	if filters.otherPlayer and record.otherPlayer ~= filters.otherPlayer then
 		return true
 	end
-	if not TSM.db.factionrealm.displayTransfers and record.key == "Transfer" then
+	if not TSM.db.realm.displayTransfers and record.key == "Transfer" then
 		return true
 	end
 	if filters.time and floor(record.time/SECONDS_PER_DAY) < (floor(time()/SECONDS_PER_DAY) - filters.time) then
@@ -654,7 +675,7 @@ function private:GetItemSummaryData(filters, includeProfit)
 
 			if isValidItem then
 				itemData[itemString] = {buyNum=buyNum, sellNum=sellNum, profit=profit, profitText=profitText}
-				if TSM.db.factionrealm.priceFormat == "total" then
+				if TSM.db.realm.priceFormat == "total" then
 					itemData[itemString].avgSell = sellNum > 0 and sellTotal or 0
 					itemData[itemString].avgBuy = buyNum > 0 and buyTotal or 0
 				else
@@ -711,7 +732,7 @@ function Data.GetItemSummarySTData(filters)
 	local stData = {}
 	for itemString, data in pairs(itemData) do
 		local name = TSM.items[itemString].name
-		local marketValue = TSMAPI:GetItemValue(itemString, TSM.db.factionrealm.mvSource)
+		local marketValue = TSMAPI:GetItemValue(itemString, TSM.db.realm.mvSource)
 		local row = {
 			cols = {
 				{
@@ -1139,7 +1160,7 @@ do
 	end
 
 	local function onChatMsg(_, msg)
-		if not TSM.db.factionrealm.trackTrades then return
+		if not TSM.db.realm.trackTrades then return
 		end
 		if msg == ERR_TRADE_COMPLETE and tradeInfo then
 			-- trade went through
@@ -1193,7 +1214,7 @@ do
 					Data:InsertItemBuyRecord(info.itemString, "Trade", info.count, info.price, tradeInfo.target.name)
 				end
 			end
-			if TSM.db.factionrealm.autoTrackTrades then
+			if TSM.db.realm.autoTrackTrades then
 				InsertTradeRecord()
 			else
 				StaticPopupDialogs["TSMAccountingOnTrade"] = {
@@ -1224,8 +1245,8 @@ function Data:LogGold()
 	if not player then return end
 	lastTrackMinute = currentMinute
 
-	TSM.db.factionrealm.goldLog[player] = TSM.db.factionrealm.goldLog[player] or {}
-	local goldLog = TSM.db.factionrealm.goldLog[player]
+	TSM.db.realm.goldLog[player] = TSM.db.realm.goldLog[player] or {}
+	local goldLog = TSM.db.realm.goldLog[player]
 	local currentGold = TSM:Round(GetMoney(), COPPER_PER_GOLD * 1000)
 	if #goldLog > 0 and currentGold == goldLog[#goldLog].copper then
 		goldLog[#goldLog].endMinute = currentMinute

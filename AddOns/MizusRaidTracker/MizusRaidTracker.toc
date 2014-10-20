@@ -1,15 +1,15 @@
-## Interface: 50400
+## Interface: 60000
 ## Title: Mizus RaidTracker
-## Version: 0.54.8
+## Version: 0.60.0
 ## Notes: Tracks raid, loot and attendance
 ## Author: Mîzukichan@EU-Antonidas
 ## LoadOnDemand: 0
 ## DefaultState: enabled
 ## SavedVariables: MRT_Options, MRT_RaidLog, MRT_PlayerDB, MRT_NumOfCurrentRaid, MRT_NumOfLastBoss
-## X-Max-Interface: 50400
+## X-Max-Interface: 60000
 ## X-Min-Interface: 50001
 ## X-Website: http://nanaki.affenfelsen.de
-## X-Curse-Packaged-Version: v0.54.15
+## X-Curse-Packaged-Version: v0.60.0
 ## X-Curse-Project-Name: Mizus RaidTracker
 ## X-Curse-Project-ID: mizusraidtracker
 ## X-Curse-Repository-ID: wow/mizusraidtracker/mainline

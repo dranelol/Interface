@@ -20,12 +20,21 @@ local UNIT_GROUPS = {
 	"partypet",
 	"partypettarget",
 	"partypettargettarget",
+	"arena",
+	"arenatarget",
+	"arenatargettarget",
+	"arenapet",
+	"arenapettarget",
+	"arenapettargettarget",
 	"raid",
 	"raidtarget",
 	"raidtargettarget",
 	"raidpet",
 	"raidpettarget",
 	"raidpettargettarget",
+	"boss",
+	"bosstarget",
+	"bosstargettarget",
 }
 
 local NORMAL_UNITS = {
@@ -39,8 +48,15 @@ for i = 1, MAX_PARTY_MEMBERS do
 	NORMAL_UNITS[#NORMAL_UNITS+1] = "party" .. i
 	NORMAL_UNITS[#NORMAL_UNITS+1] = "partypet" .. i
 end
+for i = 1, 5 do
+	NORMAL_UNITS[#NORMAL_UNITS+1] = "arena" .. i
+	NORMAL_UNITS[#NORMAL_UNITS+1] = "arenapet" .. i
+end
 for i = 1, MAX_RAID_MEMBERS do
 	NORMAL_UNITS[#NORMAL_UNITS+1] = "raid" .. i
+end
+for i = 1, MAX_BOSS_FRAMES do
+	NORMAL_UNITS[#NORMAL_UNITS+1] = "boss" .. i
 end
 
 do
@@ -180,6 +196,7 @@ local DATABASE_DEFAULTS = {
 			},
 		},
 		class_order = {},
+		role_order = { "TANK", "HEALER", "DAMAGER", "NONE" },
 	}
 }
 for class, color in pairs(RAID_CLASS_COLORS) do
@@ -234,11 +251,12 @@ local _G = _G
 local PitBull4 = select(2, ...)
 PitBull4 = LibStub("AceAddon-3.0"):NewAddon(PitBull4, "PitBull4", "AceEvent-3.0", "AceTimer-3.0")
 _G.PitBull4 = PitBull4
+local wod_600 = select(4, GetBuildInfo()) >= 60000
 
 local DEBUG = PitBull4.DEBUG
 local expect = PitBull4.expect
 
-PitBull4.version = "v4.0.0-beta48"
+PitBull4.version = "v4.0.0-beta51"
 if PitBull4.version:match("@") then
 	PitBull4.version = "Development"
 end
@@ -274,7 +292,6 @@ do
 	end
 	
 	local wipe = _G.wipe
-	
 	--- Delete a table, clearing it and putting it back into the queue
 	-- @usage local t = PitBull4.new()
 	-- t = del(t)
@@ -734,7 +751,12 @@ function PitBull4:IterateFramesForGUID(guid)
 	if DEBUG then
 		expect(guid, 'typeof', 'string;nil')
 		if guid then
-			expect(guid, 'match', '^0x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x$')
+			if not wod_600 then
+				expect(guid, 'match', '^0x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x$')
+			else
+				local unit_type = strsplit(":", guid)
+				expect(unit_type, 'inset', 'Player;Creature;Pet;Vehicle;GameObject')
+			end
 		end
 	end
 	
@@ -770,7 +792,12 @@ function PitBull4:IterateFramesForGUIDs(...)
 		if DEBUG then
 			expect(guid, 'typeof', 'string;nil')
 			if guid then
-				expect(guid, 'match', '^0x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x$')
+				if not wod_600 then
+					expect(guid, 'match', '^0x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x$')
+				else
+					local unit_type = strsplit(":", guid)
+					expect(unit_type, 'inset', 'Player;Creature;Pet;Vehicle;GameObject')
+				end
 			end
 		end
 		
@@ -851,7 +878,7 @@ function PitBull4:IterateHeadersForUnitGroup(unit_group)
 		return do_nothing
 	end
 	
-	return not also_hidden and iterate_shown_frames or half_next, headers
+	return iterate_shown_frames or half_next, headers
 end
 
 --- Iterate over all headers with the given super-classification.
@@ -863,7 +890,7 @@ end
 function PitBull4:IterateHeadersForSuperUnitGroup(super_unit_group)
 	if DEBUG then
 		expect(super_unit_group, 'typeof', 'string')
-		expect(super_unit_group, 'inset', 'party;raid')
+		expect(super_unit_group, 'inset', 'party;raid;boss;arena')
 	end
 	
 	local headers = rawget(super_unit_group_to_headers, super_unit_group)
@@ -871,7 +898,7 @@ function PitBull4:IterateHeadersForSuperUnitGroup(super_unit_group)
 		return do_nothing
 	end
 	
-	return not also_hidden and iterate_shown_frames or half_next, headers
+	return iterate_shown_frames or half_next, headers
 end
 
 local function return_same(object, key)
@@ -933,26 +960,8 @@ function PitBull4:CallMethodOnModules(method_name, ...)
 	end
 end
 
--- variable to hold the AceTimer3 repeating timer we use to catch the first
--- main tank list update that oRA doesn't bother to generate an event for.
-local main_tank_timer
-
--- Callback for when the main tank list updates from oRA or CTRA
+-- Callback for when the main tank list updates from oRA
 function PitBull4.OnTanksUpdated()
-	if oRA and not oRA.maintanktable then
-		-- if oRA is loaded but there's no maintanktable that means oRA isn't
-		-- fully loaded.  
-		if not main_tank_timer then
-			-- No timer so we start one.
-			main_tank_timer = PitBull4:ScheduleRepeatingTimer(PitBull4.OnTanksUpdated,1)
-		end
-		-- No main tank list means nothing to do.
-		return
-	else
-		-- We have the list, can cancel the timer and normal events will work
-		-- from now on.
-		PitBull4:CancelTimer(main_tank_timer, true)
-	end
 	for header in PitBull4:IterateHeadersForSuperUnitGroup("raid") do
 		local group_db = header.group_db
 		if group_db and group_db.group_filter == "MAINTANK" then
@@ -1043,92 +1052,55 @@ function PitBull4:OnInitialize()
 
 	local fresh_config = not PitBull4DB
 
-	db = LibStub("AceDB-3.0"):New("PitBull4DB", DATABASE_DEFAULTS, 'Default')
+	db = LibStub("AceDB-3.0"):New("PitBull4DB", DATABASE_DEFAULTS, "Default")
 	DATABASE_DEFAULTS = nil
 	self.db = db
-	
+
 	if fresh_config then
 		db.global.config_version = CURRENT_CONFIG_VERSION
 	end
-		
+
 	db.RegisterCallback(self, "OnProfileChanged")
 	db.RegisterCallback(self, "OnProfileReset")
 	db.RegisterCallback(self, "OnNewProfile") 
 	db.RegisterCallback(self, "OnProfileCopied", "OnProfileChanged")
 
 	LibStub("LibDualSpec-1.0"):EnhanceDatabase(db, "PitBull4")
-	
-	-- used for run-once-only initialization
-	self:RegisterEvent("ADDON_LOADED")
-	self:ADDON_LOADED()
-	
-	LoadAddOn("LibDataBroker-1.1")
-	LoadAddOn("LibDBIcon-1.0")
-	LoadAddOn("LibBossIDs-1.0", true)
-end
 
-local db_icon_done, ctra_done, ora2_done, ora3_done
-function PitBull4:ADDON_LOADED()
-	if not PitBull4.LibDataBrokerLauncher then
-		local LibDataBroker = LibStub("LibDataBroker-1.1", true)
-		if LibDataBroker then
-			PitBull4.LibDataBrokerLauncher = LibDataBroker:NewDataObject("PitBull4", {
-				type = "launcher",
-				icon = [[Interface\AddOns\PitBull4\pitbull]],
-				OnClick = function(clickedframe, button)
-					if button == "RightButton" then 
-						if IsShiftKeyDown() then
-							PitBull4.db.profile.frame_snap = not PitBull4.db.profile.frame_snap
-						else
-							PitBull4.db.profile.lock_movement = not PitBull4.db.profile.lock_movement
-						end
-						LibStub("AceConfigRegistry-3.0"):NotifyChange("PitBull4")
-					else 
-						return PitBull4.Options.OpenConfig() 
-					end
-				end,
-				OnTooltipShow = function(tt)
-					tt:AddLine(L["PitBull Unit Frames 4.0"])
-					tt:AddLine("|cffffff00" .. L["%s|r to open the options menu"]:format(L["Click"]), 1, 1, 1)
-					tt:AddLine("|cffffff00" .. L["%s|r to toggle frame lock"]:format(L["Right-click"]), 1, 1, 1)
-					tt:AddLine("|cffffff00" .. L["%s|r to toggle frame snapping"]:format(L["Shift Right-click"]), 1, 1, 1)
-				end,
-			})
-		end
+	local LibDataBrokerLauncher = LibStub("LibDataBroker-1.1"):NewDataObject("PitBull4", {
+		type = "launcher",
+		icon = [[Interface\AddOns\PitBull4\pitbull]],
+		OnClick = function(frame, button)
+			if button == "RightButton" then 
+				if IsShiftKeyDown() then
+					self.db.profile.frame_snap = not self.db.profile.frame_snap
+				else
+					self.db.profile.lock_movement = not self.db.profile.lock_movement
+				end
+				LibStub("AceConfigRegistry-3.0"):NotifyChange("PitBull4")
+			else 
+				return self.Options.OpenConfig() 
+			end
+		end,
+		OnTooltipShow = function(tt)
+			tt:AddLine(L["PitBull Unit Frames 4.0"])
+			tt:AddLine("|cffffff00" .. L["%s|r to open the options menu"]:format(L["Click"]), 1, 1, 1)
+			tt:AddLine("|cffffff00" .. L["%s|r to toggle frame lock"]:format(L["Right-click"]), 1, 1, 1)
+			tt:AddLine("|cffffff00" .. L["%s|r to toggle frame snapping"]:format(L["Shift Right-click"]), 1, 1, 1)
+		end,
+	})
+
+	local LibDBIcon = LibStub("LibDBIcon-1.0", true)
+	if LibDBIcon then
+		LibDBIcon:Register("PitBull4", LibDataBrokerLauncher, self.db.profile.minimap_icon)
 	end
 
-	if not db_icon_done and PitBull4.LibDataBrokerLauncher then
-		local LibDBIcon = LibStub("LibDBIcon-1.0", true)
-		if LibDBIcon and not IsAddOnLoaded("Broker2FuBar") then
-			LibDBIcon:Register("PitBull4", PitBull4.LibDataBrokerLauncher, PitBull4.db.profile.minimap_icon)
-			db_icon_done = true
-		end
-	end
-
-	if not ctra_done and _G.CT_RAOptions_UpdateMTs then
-		hooksecurefunc("CT_RAOptions_UpdateMTs",PitBull4.OnTanksUpdated)
-		ctra_done = true
-	end
-
-	if not ora2_done and oRA then
-		LibStub("AceEvent-2.0"):RegisterEvent("oRA_MainTankUpdate",PitBull4.OnTanksUpdated)
-		-- We register for CoreEnabled to know when oRA loads it's LOD modules in particular
-		-- ParticipantMT so we can then set a timer to watch for the maintanktable to be
-		-- loaded from the savedvariables, because it doesn't bother to generate a
-		-- MainTankUpdate event for this.  *sigh*
-		LibStub("AceEvent-2.0"):RegisterEvent("oRA_CoreEnabled",PitBull4.OnTanksUpdated)
-		ora2_done = true
-	end
-
-	if not ora3_done and oRA3 then
-		oRA3.RegisterCallback(self,"OnTanksUpdated")
+	if oRA3 then
+		oRA3.RegisterCallback(self, "OnTanksUpdated")
 		self.OnTanksUpdated()
-		ora3_done = true
 	end
 
-	if not PitBull4.LibBossIDs then
-		PitBull4.LibBossIDs = LibStub("LibBossIDs-1.0", true)
-	end
+	self.LibBossIDs = LibStub("LibBossIDs-1.0", true)
 end
 
 do
@@ -1154,7 +1126,6 @@ do
 		end
 		
 		local name = GetAddOnInfo(i)
-		
 		-- must start with PitBull4_
 		local module_name = name:match("^PitBull4_(.*)$")
 		if not module_name then
@@ -1267,6 +1238,7 @@ function PitBull4:OnProfileChanged()
 	self.PowerColors = db.profile.colors.power
 	self.ReactionColors = db.profile.colors.reaction
 	self.ClassOrder = db.profile.class_order
+	self.RoleOrder = db.profile.role_order
 	for i, v in ipairs(CLASS_SORT_ORDER) do
 		local found = false
 		for j, u in ipairs(self.ClassOrder) do
@@ -1279,7 +1251,7 @@ function PitBull4:OnProfileChanged()
 			self.ClassOrder[#self.ClassOrder + 1] = v
 		end
 	end
-	
+
 	-- Notify modules that the profile has changed.
 	for _, module in PitBull4:IterateEnabledModules() do
 		if module.OnProfileChanged then
@@ -1563,7 +1535,7 @@ function PitBull4:ZONE_CHANGED_NEW_AREA()
 	-- When we change zones if we lose the vehicle we don't get events for it.
 	-- So we need to simulate the events for all the relevent units.
 	for unit in pairs(self.unit_id_to_guid) do
-		self:UNIT_EXITED_VEHICLE(_, unit)
+		self:UNIT_EXITED_VEHICLE(nil, unit)
 	end
 end
 

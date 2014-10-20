@@ -1,11 +1,10 @@
 local mod	= DBM:NewMod(861, "DBM-Pandaria", nil, 322, 1)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 11005 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 3 $"):sub(12, -3))
 mod:SetCreatureID(72057)
 mod:SetReCombatTime(20)
 mod:SetZone()
-mod:SetMinSyncRevision(10466)
 mod:SetUsedIcons(8, 7, 6)
 
 mod:RegisterCombat("combat_yell", L.Pull)
@@ -72,6 +71,9 @@ function mod:SPELL_AURA_APPLIED(args)
 --		timerBurningSoulCD:Start()
 		if args:IsPlayer() then
 			specWarnBurningSoul:Show()
+			specWarnBurningSoul:Schedule(2)
+			specWarnBurningSoul:Schedule(4)
+			specWarnBurningSoul:Schedule(6)
 			yellBurningSoul:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(8)

@@ -1,4 +1,5 @@
-﻿local AtlasLoot = _G.AtlasLoot
+-- $Id: Options.lua 4293 2014-05-23 08:55:03Z Dynaletik $
+local AtlasLoot = _G.AtlasLoot
 --Invoke libraries
 local AL = LibStub("AceLocale-3.0"):GetLocale("AtlasLoot");
 
@@ -37,7 +38,7 @@ do
 						inline = true,
 						name = "",
 						args = {
-							all = {						
+							all = {
 								type = "group",
 								inline = true,
 								name = "",
@@ -54,11 +55,12 @@ do
 									},]]
 									HideMiniMapButton = {
 										type = "toggle",
-										name = AL["Minimap Button"],
-										--desc = ,
+										name = AL["Toggle Minimap Button"],
+										desc = AL["Toggles the display of the minimap icon"],
 										order = 20,
 										get = function() return not AtlasLootLoaderDB.MiniMapButton.hide end,
 										set = AtlasLoot.MiniMapButtonHideShow,
+										width = "full",
 									},
 									
 								},
@@ -85,51 +87,71 @@ do
 										get = getOpt,
 										set = setOpt,
 									},
-									SafeLinks = {
-										type = "toggle",
-										name = AL["Safe Chat Links"],
-										--desc = ,
-										order = 30,
-										get = getOpt,
-										set = setOpt,
-									},
 									EquipCompare = {
 										type = "toggle",
-										name = AL["Comparison TT"],
+										name = AL["Comparison Tooltips"],
 										desc = AL["Show Comparison Tooltips"],
-										order = 40,
+										order = 30,
 										get = getOpt,
 										set = AtlasLoot.OptionsComparisonTT,
-									},
-									ItemSpam = {
-										type = "toggle",
-										name = AL["Supress item query text"],
-										--desc = ,
-										order = 50,
-										get = getOpt,
-										set = setOpt,
-										width = "full",
-									},
-									ShowPriceAndDesc = {
-										type = "toggle",
-										name = AL["Show price and slot if possible"],
-										--desc = ,
-										order = 60,
-										get = getOpt,
-										set = setOpt,
-										width = "full",
 									},
 									UseGameTooltip = {
 										type = "toggle",
 										name = AL["Use GameTooltip"],
 										desc = AL["Use the standard GameTooltip instead of the custom AtlasLoot tooltip"],
-										order = 70,
+										order = 40,
 										get = getOpt,
 										set = function(info, value)
 											setOpt(info, value)
 											AtlasLoot:SetupTooltip()
 											return value
 										end,
+									},
+									ShowBossTooltip = {
+										type = "toggle",
+										name = AL["Show Boss Tooltip"],
+										desc = AL["Show wishlist items in bosses tooltip"],
+										order = 45,
+										get = getOpt,
+										set = setOpt,
+									},
+									ShowBonusRollInfoInTT = {
+										type = "toggle",
+										name = AL["Show BonusRoll info"],
+										desc = AL["Shows if a item is available with bonus roll or raid finder loot."],
+										order = 46,
+										get = getOpt,
+										set = setOpt,
+									},
+									ShowPriceAndDesc = {
+										type = "toggle",
+										name = AL["Show price and slot if possible"],
+										--desc = ,
+										order = 50,
+										get = getOpt,
+										set = setOpt,
+										width = "full",
+									},
+									EnableMouseOverDesc = {
+										type = "toggle",
+										name = AL["Enable mouse on item descriptions"],
+										--desc = ,
+										order = 60,
+										get = getOpt,
+										set = setOpt,
+										width = "full",
+									},
+									CurrentUpgradeLvl = {
+										type = "range",
+										name = AL["Upgrade Level:"],
+										--desc = ,
+										min = 0, max = 4, bigStep = 1,
+										get = getOpt,
+										set = function(info, value)
+											setOpt(info, value)
+											if AtlasLoot.RefreshLootPage then AtlasLoot:RefreshLootPage() end
+										end,
+										order = 70,
 										width = "full",
 									},
 								},
@@ -278,7 +300,7 @@ do
 end
 
 --[[
-AtlasLoot:OptionsInitialize()
+-> AtlasLoot:OptionsInitialize()
 ]]
 function AtlasLoot:ReplaceOptions()
 	LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("AtlasLoot", getOptions)
@@ -317,6 +339,7 @@ end
 --- Shows the AtlasLoot Options
 function AtlasLoot:OptionsToggle()
 	InterfaceOptionsFrame_OpenToCategory("AtlasLoot")
+	InterfaceOptionsFrame_OpenToCategory("AtlasLoot") -- Silly fix. Call it twice to force the expected category to be opened.
 end
 -- Hides the AtlasLoot Panel
 function AtlasLoot:OptionsHidePanel()

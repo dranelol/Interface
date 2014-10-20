@@ -65,7 +65,7 @@ function Scan.ProcessGetAllScan(self)
 		end
 	end
 	
-	TSM.db.factionrealm.lastCompleteScan = time()
+	TSM.db.realm.lastCompleteScan = time()
 	TSM.Data:ProcessData(data)
 	
 	TSM.GUI:UpdateStatus(L["Processing data..."])
@@ -181,7 +181,7 @@ function Scan:ProcessScanData(scanData)
 	for itemString, obj in pairs(scanData) do
 		if TSMAPI:GetBaseItemString(itemString) == itemString then
 			local itemID = obj:GetItemID()
-			local quantity, minBuyout, records = 0, 0
+			local quantity, minBuyout = 0, 0
 			local records = {}
 			for _, record in ipairs(obj.records) do
 				local itemBuyout = record:GetItemBuyout()
@@ -198,7 +198,7 @@ function Scan:ProcessScanData(scanData)
 	end
 	
 	if Scan.isScanning ~= "group" then
-		TSM.db.factionrealm.lastCompleteScan = time()
+		TSM.db.realm.lastCompleteScan = time()
 	end
 	TSM.Data:ProcessData(data, Scan.groupItems)
 end
@@ -219,6 +219,6 @@ function Scan:ProcessImportedData(auctionData)
 		end
 		data[itemID] = {records=records, minBuyout=minBuyout, quantity=quantity}
 	end
-	TSM.db.factionrealm.lastCompleteScan = time()
+	TSM.db.realm.lastCompleteScan = time()
 	TSM.Data:ProcessData(data)
 end

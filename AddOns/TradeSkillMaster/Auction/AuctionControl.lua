@@ -208,6 +208,7 @@ function private:DoPost(postInfo)
 		private.postFrame:Hide()
 		postInfo.duration = postInfo.duration == 1 and 3 or 4
 		TSM:AuctionControlCallback("OnPost", postInfo)
+		TSMAPI:FireEvent("TSM:AUCTIONCONTROL:ITEMPOSTED", postInfo)
 	end
 	private:RegisterMessage("TSM_AH_EVENTS", OnPost)
 	TSMAPI:WaitForAuctionEvents("Post", postInfo.numAuctions > 1)
@@ -382,6 +383,7 @@ function private:ShowPostWindow()
 	diffFrame:Show()
 	private.postFrame:Show()
 	private:UpdatePostFrame()
+	TSMAPI:FireEvent("TSM:AUCTIONCONTROL:POSTSHOWN")
 end
 
 function TSMAPI.AuctionControl:HideConfirmation()
@@ -423,8 +425,8 @@ function private:UpdatePostFrame()
 	private.postFrame.numInBags = numInBags
 	private.postFrame.linkText:SetText(private.currentAuction.link)
 	private.postFrame.proceed:Enable()
-	private.postFrame.buyoutInputBox:SetText(TSMAPI:FormatTextMoney(currentBuyout))
-	private.postFrame.perItemInputBox:SetText(TSMAPI:FormatTextMoney(currentPerItem))
+	private.postFrame.buyoutInputBox:SetText(TSMAPI:FormatTextMoney(currentBuyout, nil, nil, nil, true))
+	private.postFrame.perItemInputBox:SetText(TSMAPI:FormatTextMoney(currentPerItem, nil, nil, nil, true))
 	private.postFrame.numAuctionsInputBox.max = numInBags
 	private.postFrame.numAuctionsInputBox.btn:SetText(format(L["max %d"], floor(numInBags/stackSize)))
 	private.postFrame.numAuctionsInputBox:SetNumber(1)
@@ -612,11 +614,11 @@ function private:CreatePostFrame(parent)
 		if copper then
 			local stackSize = frame.stackSizeInputBox:GetNumber()
 			if self == frame.buyoutInputBox then
-				frame.perItemInputBox:SetText(TSMAPI:FormatTextMoney(floor(copper/stackSize)))
+				frame.perItemInputBox:SetText(TSMAPI:FormatTextMoney(floor(copper/stackSize), nil, nil, nil, true))
 			elseif self == frame.perItemInputBox then
-				frame.buyoutInputBox:SetText(TSMAPI:FormatTextMoney(copper*stackSize))
+				frame.buyoutInputBox:SetText(TSMAPI:FormatTextMoney(copper*stackSize, nil, nil, nil, true))
 			end
-			self:SetText(TSMAPI:FormatTextMoney(copper))
+			self:SetText(TSMAPI:FormatTextMoney(copper, nil, nil, nil, true))
 			self:ClearFocus()
 		else
 			self:SetFocus()
@@ -684,7 +686,7 @@ function private:CreatePostFrame(parent)
 		frame.numAuctionsInputBox.btn:SetText(format(L["max %d"], floor(frame.numInBags/stackSize)))
 		frame.stackSizeInputBox.btn:SetText(format(L["max %d"], min(frame.stackSizeInputBox.max, floor(frame.numInBags/numAuctions))))
 		local perItem = TSMAPI:UnformatTextMoney(frame.perItemInputBox:GetText())
-		frame.buyoutInputBox:SetText(TSMAPI:FormatTextMoney(perItem*stackSize))
+		frame.buyoutInputBox:SetText(TSMAPI:FormatTextMoney(perItem*stackSize, nil, nil, nil, true))
 	end
 	
 	local function OnCountInputBoxTextChanged(self)

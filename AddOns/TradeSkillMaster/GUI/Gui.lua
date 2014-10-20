@@ -9,10 +9,11 @@
 -- This module holds some GUI helper functions for modules to use.
 
 local TSM = select(2, ...)
-local lib = TSMAPI
+local private = {}
+TSMAPI:RegisterForTracing(private, "TradeSkillMaster.Gui_private")
+private.frames = {}
 
 TSMAPI.GUI = {}
-local GUI = TSMAPI.GUI
 
 
 -- Tooltips!
@@ -44,7 +45,7 @@ local function HideTooltip()
 	GameTooltip:Hide()
 end
 
-function GUI:CreateButton(parent, textHeight, name, isSecure)
+function TSMAPI.GUI:CreateButton(parent, textHeight, name, isSecure)
 	local btn = CreateFrame("Button", name, parent, isSecure and "SecureActionButtonTemplate")
 	TSMAPI.Design:SetContentColor(btn)
 	local highlight = btn:CreateTexture(nil, "HIGHLIGHT")
@@ -68,7 +69,7 @@ function GUI:CreateButton(parent, textHeight, name, isSecure)
 	return btn
 end
 
-function GUI:CreateHorizontalLine(parent, ofsy, relativeFrame, invertedColor)
+function TSMAPI.GUI:CreateHorizontalLine(parent, ofsy, relativeFrame, invertedColor)
 	relativeFrame = relativeFrame or parent
 	local barTex = parent:CreateTexture()
 	barTex:SetPoint("TOPLEFT", relativeFrame, "TOPLEFT", 2, ofsy)
@@ -82,7 +83,7 @@ function GUI:CreateHorizontalLine(parent, ofsy, relativeFrame, invertedColor)
 	return barTex
 end
 
-function GUI:CreateVerticalLine(parent, ofsx, relativeFrame, invertedColor)
+function TSMAPI.GUI:CreateVerticalLine(parent, ofsx, relativeFrame, invertedColor)
 	relativeFrame = relativeFrame or parent
 	local barTex = parent:CreateTexture()
 	barTex:SetPoint("TOPLEFT", relativeFrame, "TOPLEFT", ofsx, -2)
@@ -96,7 +97,7 @@ function GUI:CreateVerticalLine(parent, ofsx, relativeFrame, invertedColor)
 	return barTex
 end
 
-function GUI:CreateInputBox(parent, name)
+function TSMAPI.GUI:CreateInputBox(parent, name, autoComplete)
 	local function OnEscapePressed(self)
 		self:ClearFocus()
 		self:HighlightText(0, 0)
@@ -113,21 +114,40 @@ function GUI:CreateInputBox(parent, name)
 	return eb
 end
 
-function GUI:CreateLabel(parent, size)
+function TSMAPI.GUI:SetAutoComplete(inputBox, params)
+	local autoCompleteHandlers = {"OnTabPressed", "OnEnterPressed", "OnTextChanged", "OnChar", "OnEditFocusLost", "OnEscapePressed", "OnArrowPressed"}
+	if params then
+		if inputBox._priorTSMHandlers then return end -- already done
+		inputBox.autoCompleteParams = params
+		inputBox._priorTSMHandlers = {}
+		for _, name in ipairs(autoCompleteHandlers) do
+			inputBox._priorTSMHandlers[name] = inputBox:GetScript(name)
+			inputBox:SetScript(name, function(self, ...) return _G["AutoCompleteEditBox_"..name](self, ...) or (self._priorTSMHandlers[name] and self._priorTSMHandlers[name](self, ...)) end)
+		end
+	else
+		if not inputBox._priorTSMHandlers then return end -- already done
+		for _, name in ipairs(autoCompleteHandlers) do
+			inputBox:SetScript(name, inputBox._priorTSMHandlers[name])
+		end
+		inputBox._priorTSMHandlers = nil
+	end
+end
+
+function TSMAPI.GUI:CreateLabel(parent, size)
 	local label = parent:CreateFontString()
 	label:SetFont(TSMAPI.Design:GetContentFont(size))
 	TSMAPI.Design:SetWidgetLabelColor(label)
 	return label
 end
 
-function GUI:CreateTitleLabel(parent, size)
+function TSMAPI.GUI:CreateTitleLabel(parent, size)
 	local label = parent:CreateFontString()
 	label:SetFont(TSMAPI.Design:GetBoldFont(), size)
 	TSMAPI.Design:SetTitleTextColor(label)
 	return label
 end
 
-function GUI:CreateStatusBar(parent, baseName)
+function TSMAPI.GUI:CreateStatusBar(parent, baseName)
 	local function UpdateStatus(self, majorStatus, minorStatus)
 		if majorStatus then
 			self.majorStatusBar:SetValue(majorStatus)
@@ -204,7 +224,7 @@ function GUI:CreateStatusBar(parent, baseName)
 	return frame
 end
 
-function GUI:CreateDropdown(parent, list, tooltip)
+function TSMAPI.GUI:CreateDropdown(parent, list, tooltip)
 	local dd = LibStub("AceGUI-3.0"):Create("TSMDropdown")
 	dd:SetDisabled()
 	dd:SetMultiselect(false)
@@ -217,7 +237,7 @@ function GUI:CreateDropdown(parent, list, tooltip)
 	return dd
 end
 
-function GUI:CreateCheckBox(parent, tooltip)
+function TSMAPI.GUI:CreateCheckBox(parent, tooltip)
 	local cb = LibStub("AceGUI-3.0"):Create("TSMCheckBox")
 	cb.frame:SetParent(parent)
 	cb.frame:Show()
@@ -227,7 +247,7 @@ function GUI:CreateCheckBox(parent, tooltip)
 	return cb
 end
 
-function GUI:CreateItemLinkLabel(parent, textHeight)
+function TSMAPI.GUI:CreateItemLinkLabel(parent, textHeight)
 	local btn = CreateFrame("Button", nil, parent)
 	btn:SetScript("OnEnter", function(self) if self.link then ShowTooltip(self) end end)
 	btn:SetScript("OnLeave", HideTooltip)
@@ -242,4 +262,74 @@ function GUI:CreateItemLinkLabel(parent, textHeight)
 	text:SetJustifyV("CENTER")
 	btn:SetFontString(text)
 	return btn
+end
+
+
+
+-- Registers a movable/resizable frame which TSM will keep track of and persistently store its position / size.
+-- The frame must be named for this function to work.
+-- Required defaults
+--          x  -  x position
+--          y  -  y position
+--      width  -  width
+--     height  -  height
+--      scale  -  scale
+function TSMAPI:CreateMovableFrame(name, defaults, parent)
+	local options = TSM.db.global.frameStatus[name] or CopyTable(defaults)
+	options.defaults = defaults
+	TSM.db.global.frameStatus[name] = options
+	options.hasLoaded = nil
+	
+	local frame = CreateFrame("Frame", name, parent)
+	frame:Hide()
+	frame:SetHeight(options.height)
+	frame:SetWidth(options.width)
+	frame:SetScale(UIParent:GetScale()*options.scale)
+	frame:SetPoint("CENTER", frame:GetParent())
+	frame:SetToplevel(true)
+	frame:EnableMouse(true)
+	frame:SetMovable(true)
+	frame:SetClampedToScreen(true)
+	frame:SetClampRectInsets(options.width-50, -(options.width-50), -(options.height-50), options.height-50)
+	frame.SavePositionAndSize = function(self)
+		if not options.hasLoaded then return end
+		options.width = self:GetWidth()
+		options.height = self:GetHeight()
+		options.x = self:GetLeft()
+		options.y = self:GetBottom()
+		self:SetClampRectInsets(options.width-50, -(options.width-50), -(options.height-50), options.height-50)
+	end
+	frame:SetScript("OnMouseDown", frame.StartMoving)
+	frame:SetScript("OnMouseUp", function(self) self:StopMovingOrSizing() self:SavePositionAndSize() end)
+	frame:SetScript("OnSizeChanged", frame.SavePositionAndSize)
+	frame.RefreshPosition = function(self)
+		options.hasLoaded = true
+		self:SetScale(UIParent:GetScale()*options.scale)
+		self:SetFrameLevel(0)
+		self:ClearAllPoints()
+		self:SetPoint("BOTTOMLEFT", UIParent, options.x, options.y)
+		self:SetWidth(options.width)
+		self:SetHeight(options.height)
+	end
+	frame:SetScript("OnShow", frame.RefreshPosition)
+	frame.options = options
+	tinsert(private.frames, frame)
+	
+	return frame
+end
+
+function TSM:ResetFrames()
+	for _, frame in ipairs(private.frames) do
+		-- reset all fields to the default values without breaking any table references
+		local options = TSM.db.global.frameStatus[frame:GetName()]
+		options.hasLoaded = true
+		local defaults = options.defaults
+		for i, v in pairs(defaults) do options[i] = v end
+		if frame and frame:IsVisible() then
+			frame:RefreshPosition()
+		end
+	end
+	
+	-- explicitly reset bankui since it can't easily use TSMAPI:CreateMovableFrame
+	TSM:ResetBankUIFramePosition()
 end

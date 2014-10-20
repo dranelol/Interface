@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(825, "DBM-ThroneofThunder", nil, 362)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10977 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetCreatureID(67977)
 mod:SetEncounterID(1565)
 mod:SetZone()
@@ -102,7 +102,7 @@ function mod:OnCombatStart(delay)
 	countdownStomp:Start(27-delay)
 	timerBreathCD:Start(-delay)
 	countdownBreath:Start(-delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+	if self:IsHeroic() then
 		if self.Options.InfoFrame then
 			DBM.InfoFrame:SetHeader(L.WrongDebuff:format(shelldName))
 			DBM.InfoFrame:Show(5, "playergooddebuff", 137633)

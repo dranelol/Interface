@@ -15,9 +15,9 @@ if not L then return end
 
 L["Action"] = "功能"
 L["Added '%s' to your favorite searches."] = "添加'%s'到你最喜欢的搜索"
--- L["Below Custom Price ('0c' to disable)"] = ""
--- L["Below Max Price"] = ""
--- L["Below Vendor Sell Price"] = ""
+L["Below Custom Price ('0c' to disable)"] = "低于用户价格（忽略“0C”）" -- Needs review
+L["Below Max Price"] = "低于最高价" -- Needs review
+L["Below Vendor Sell Price"] = "低于贩卖价" -- Needs review
 L["Bid Percent"] = "竞价百分比"
 L["Buyout"] = "一口价"
 L[ [=[Click to search for an item.
@@ -41,7 +41,7 @@ L["Give the new operation a name. A descriptive name will help you find this ope
 L["Hide Grouped Items"] = "隐藏分组项目"
 L["If checked, auctions above the max price will be shown."] = "如果勾选,将显示高于最高价格的拍卖品。"
 L["If checked, only auctions posted in even quantities will be considered for purchasing."] = "如果勾选, 只有数量合适的发布物品才会考虑购买"
--- L["If checked, the maximum shopping price will be shown in the tooltip for the item."] = ""
+L["If checked, the maximum shopping price will be shown in the tooltip for the item."] = "如果勾选，每件物品最大购买价格将显示在提示栏" -- Needs review
 L["If set, only items which are usable by your character will be included in the results."] = "如果设置,只有对你角色可用的物品将在结果中显示。"
 L["If set, only items which exactly match the search filter you have set will be included in the results."] = "如果设置, 只有严格匹配你设置的筛选条件的物品才会被显示在结果中。"
 L["Import"] = "导入"
@@ -70,7 +70,8 @@ L["Item SubClass"] = "物品子类型"
 -- L["Items which are below this custom price will be displayed in Sniper searches."] = ""
 L["Left-Click to run this search."] = "左键点击来进行这个搜索"
 L["Log"] = "日志"
--- L["Management"] = ""
+L["Management"] = [=[Management
+]=] -- Needs review
 L["% Market Value"] = "%s 市场价"
 L["Market Value Price Source"] = "市场价来源"
 -- L["% Mat Price"] = ""

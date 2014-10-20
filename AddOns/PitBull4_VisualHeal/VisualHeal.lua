@@ -1,5 +1,3 @@
-if select(6, GetAddOnInfo("PitBull4_" .. (debugstack():match("[o%.][d%.][u%.]les\\(.-)\\") or ""))) ~= "MISSING" then return end
-
 local PitBull4 = _G.PitBull4
 if not PitBull4 then
 	error("PitBull4_VisualHeal requires PitBull4")
@@ -14,7 +12,6 @@ local EPSILON = 1e-5
 local L = PitBull4.L
 
 local PitBull4_VisualHeal = PitBull4:NewModule("VisualHeal", "AceEvent-3.0")
-local mop_520 = select(4, GetBuildInfo()) >= 50200
 
 PitBull4_VisualHeal:SetModuleType("custom")
 PitBull4_VisualHeal:SetName(L["Visual heal"])
@@ -34,9 +31,7 @@ function PitBull4_VisualHeal:OnEnable()
 	self:RegisterEvent("UNIT_HEAL_PREDICTION")
 	self:RegisterEvent("UNIT_HEALTH","UNIT_HEAL_PREDICTION")
 	self:RegisterEvent("UNIT_MAXHEALTH", "UNIT_HEAL_PREDICTION")
-	if mop_520 then
-		self:RegisterEvent("UNIT_ABSORB_AMOUNT_CHANGED",  "UNIT_HEAL_PREDICTION")
-	end
+	self:RegisterEvent("UNIT_ABSORB_AMOUNT_CHANGED",  "UNIT_HEAL_PREDICTION")
 end
 
 local function clamp(value, min, max)
@@ -66,10 +61,7 @@ function PitBull4_VisualHeal:UpdateFrame(frame)
 
 	local player_healing = UnitGetIncomingHeals(unit, 'player')
 	local all_healing = UnitGetIncomingHeals(unit)
-	local all_absorbs
-	if mop_520 then
-		all_absorbs = UnitGetTotalAbsorbs(unit)
-	end
+	local all_absorbs = UnitGetTotalAbsorbs(unit)
 	-- Bail out early if nothing going on for this unit
 	if not player_healing and not all_healing and not all_absorbs then
 		return self:ClearFrame(frame)
@@ -261,7 +253,6 @@ PitBull4_VisualHeal:SetColorOptionsFunction(function(self)
 		set = set,
 		hasAlpha = true,
 		width = 'double',
-		hidden = not mop_520,
 	},
 	'auto_luminance', {
 		type = 'toggle',
@@ -311,7 +302,6 @@ PitBull4_VisualHeal:SetLayoutOptionsFunction(function(self)
 		set = function(info, value)
 			PitBull4.Options.GetLayoutDB(self).show_overabsorb = value
 		end,
-		hidden = not mop_520,
 		disabled = disabled,
 	}
 

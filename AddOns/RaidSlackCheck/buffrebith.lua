@@ -411,18 +411,18 @@ end
 
 function rscslider51()
 	if psversion then
-rscbufftimers[1] = PSFrscbuff_Timer1:GetValue()
+rscbufftimers[1] = math.floor(PSFrscbuff_Timer1:GetValue())
 	else
-rscbufftimers[1] = rscmain5_Timer1:GetValue()
+rscbufftimers[1] = math.floor(rscmain5_Timer1:GetValue())
 	end
 rsctxttitlemain:SetText(rscbuffspart1.." |cff00ff00"..rscbufftimers[1].." "..rscsec.."|r "..rscbuffspart2.." |cff00ff00"..rscbufftimers[2].." "..rscsec.."|r "..rscbuffspart3)
 end
 
 function rscslider52()
 	if psversion then
-rscbufftimers[2] = PSFrscbuff_Timer2:GetValue()
+rscbufftimers[2] = math.floor(PSFrscbuff_Timer2:GetValue())
 	else
-rscbufftimers[1] = rscmain5_Timer1:GetValue()
+rscbufftimers[1] = math.floor(rscmain5_Timer1:GetValue())
 	end
 rsctxttitlemain:SetText(rscbuffspart1.." |cff00ff00"..rscbufftimers[1].." "..rscsec.."|r "..rscbuffspart2.." |cff00ff00"..rscbufftimers[2].." "..rscsec.."|r "..rscbuffspart3)
 end

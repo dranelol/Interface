@@ -1,13 +1,14 @@
 local mod	= DBM:NewMod("Cannon", "DBM-DMF")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10922 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 11506 $"):sub(12, -3))
 mod:SetZone()
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS 102120",
 	"UNIT_AURA player"
 )
+mod.noStatistics = true
 
 local timerMagicWings				= mod:NewBuffFadesTimer(8.5, 102116)
 

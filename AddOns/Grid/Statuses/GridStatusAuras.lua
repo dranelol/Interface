@@ -258,15 +258,15 @@ GridStatusAuras.defaultDB = {
 	},
 
 	-- Priest
-	[GridStatusAuras:StatusForSpell(spell_names["Grace"], true)] = {
-		buff = spell_names["Grace"],
-		desc = format(L["Buff: %s"], spell_names["Grace"]),
-		text = GridStatusAuras:TextForSpell(spell_names["Grace"]),
-		color = { r = 0.2, g = 0.8, b = 1, a = 1 },
-		countLow = 1,
-		countHigh = 3,
-		mine = true,
-	},
+--	[GridStatusAuras:StatusForSpell(spell_names["Grace"], true)] = {
+--		buff = spell_names["Grace"],
+--		desc = format(L["Buff: %s"], spell_names["Grace"]),
+--		text = GridStatusAuras:TextForSpell(spell_names["Grace"]),
+--		color = { r = 0.2, g = 0.8, b = 1, a = 1 },
+--		countLow = 1,
+--		countHigh = 3,
+--		mine = true,
+--	},
 	[GridStatusAuras:StatusForSpell(spell_names["Power Word: Shield"], true)] = {
 		desc = format(L["Buff: %s"], spell_names["Power Word: Shield"]),
 		buff = spell_names["Power Word: Shield"],
@@ -620,7 +620,6 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 						["name"] = L["Buff name"],
 						["duration"] = L["Time left"],
 						["count"] = L["Stack count"],
-						["count_duration"] = L["Stack count"].." & "..L["Time left"]
 					},
 					get = function()
 						return self.db.profile[status].statusText
@@ -647,8 +646,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 						self:UpdateAllUnitAuras()
 					end,
 					hidden = function()
-						return not self.db.profile.advancedOptions or
-							(self.db.profile[status].statusText ~= "duration" and self.db.profile[status].statusText ~= "count_duration")
+						return not self.db.profile.advancedOptions or self.db.profile[status].statusText ~= "duration"
 					end,
 				},
 				countSettings = {
@@ -802,7 +800,7 @@ function GridStatusAuras:OptionsForStatus(status, isBuff)
 						self:UpdateAllUnitAuras()
 					end,
 					hidden = function()
-						return not self.db.profile.advancedOptions or (self.db.profile[status].statusColor ~= "duration" and self.db.profile[status].statusText ~= "count_duration")
+						return not self.db.profile.advancedOptions or self.db.profile[status].statusColor ~= "duration"
 					end,
 				},
 			},
@@ -963,12 +961,12 @@ end
 
 function GridStatusAuras:UpdateAllUnitAuras()
 	for guid, unitid in GridRoster:IterateRoster() do
-		self:ScanUnitAuras("UpdateAllUnitAuras", unitid)
+		self:ScanUnitAuras("UpdateAllUnitAuras", unitid, guid)
 	end
 end
 
 function GridStatusAuras:Grid_UnitJoined(event, guid, unitid)
-	self:ScanUnitAuras(event, unitid)
+	self:ScanUnitAuras(event, unitid, guid)
 end
 
 function GridStatusAuras:UpdateDispellable()
@@ -1102,7 +1100,7 @@ function GridStatusAuras:UnitGainedDurationStatus(status, guid, class, name, ran
 	local settings = self.db.profile[status]
 	if not settings then return end
 
-	if settings.enable and (settings.statusText == "duration" or settings.statusText == "count_duration" or settings.statusColor == "duration") then
+	if settings.enable and (settings.statusText == "duration" or settings.statusColor == "duration") then
 		if not self.durationAuras[status] then
 			self.durationAuras[status] = {}
 		end
@@ -1192,19 +1190,13 @@ function GridStatusAuras:StatusTextColor(settings, count, timeLeft)
 
 	if settings.statusText == "name" then
 		text = settings.text
+	elseif settings.statusText == "count" then
+		text = tostring(count)
 	elseif settings.statusText == "duration" then
 		if settings.durationTenths then
 			text = format("%.1f", timeLeft)
 		else
 			text = format("%d", timeLeft)
-		end
-	elseif settings.statusText == "count" then
-		text = tostring(count)
-	elseif settings.statusText == "count_duration" then
-		if settings.durationTenths then
-			text = format("%d-%.1f", count, timeLeft)
-		else
-			text = format("%d-%d", count, timeLeft)
 		end
 	end
 
@@ -1503,10 +1495,10 @@ local player_buff_names_seen = {}
 local debuff_names_seen = {}
 local debuff_types_seen = {}
 
-function GridStatusAuras:ScanUnitAuras(event, unit)
+function GridStatusAuras:ScanUnitAuras(event, unit, guid)
 	local name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable
 
-	local guid = UnitGUID(unit)
+	if not guid then guid = UnitGUID(unit) end
 	if not GridRoster:IsGUIDInRaid(guid) then
 		return
 	end
@@ -1534,45 +1526,40 @@ function GridStatusAuras:ScanUnitAuras(event, unit)
 		end
 	end
 
-	-- scan for buffs
-	for buff_name in pairs(buff_names) do
-		name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL")
-
-		if name then
-			buff_names_seen[name] = true
-			self:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
-		end
-	end
-
 	if UnitIsVisible(unit) then
+		-- scan for buffs
+		for buff_name in pairs(buff_names) do
+			name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL")
+			if name then
+				buff_names_seen[name] = true
+				self:UnitGainedBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
+			end
+		end
+
+		-- scan for buffs cast by the player
 		for buff_name in pairs(player_buff_names) do
 			name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, buff_name, nil, "HELPFUL|PLAYER")
-
 			if name then
 				player_buff_names_seen[name] = true
 				self:UnitGainedPlayerBuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
 			end
 		end
-	end
 
-	-- scan for debuffs
-	local index = 1
-	while true do
-		name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, index, "HARMFUL")
-
-		if not name then
-			break
+		-- scan for debuffs
+		for index = 1, 40 do
+			name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = UnitAura(unit, index, "HARMFUL")
+			if not name then
+				break
+			end
+			if debuff_names[name] then
+				debuff_names_seen[name] = true
+				self:UnitGainedDebuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
+			elseif debuff_types[debuffType] then
+				-- elseif so that a named debuff doesn't trigger the type status
+				debuff_types_seen[debuffType] = true
+				self:UnitGainedDebuffType(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
+			end
 		end
-		if debuff_names[name] then
-			debuff_names_seen[name] = true
-			self:UnitGainedDebuff(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
-		elseif debuff_types[debuffType] then
-			-- elseif so that a named debuff doesn't trigger the type status
-			debuff_types_seen[debuffType] = true
-			self:UnitGainedDebuffType(guid, class, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable)
-		end
-
-		index = index + 1
 	end
 
 	-- handle lost buffs

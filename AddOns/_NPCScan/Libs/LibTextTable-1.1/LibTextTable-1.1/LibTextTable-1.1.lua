@@ -57,13 +57,16 @@ function RowMethods:GetData()
 end
 
 
+-----------------------------------------------------------------------
+-- Table methods.
+-----------------------------------------------------------------------
 do
-	--- Clears visible element contents.
+	-- Clears visible element contents.
 	-- @param Count Number of visible elements to clear.
 	-- @param ... Row elements.
 	local function ClearElements(Count, ...)
-		for Index = 1, Count do
-			local Element = select(Index, ...)
+		for index = 1, Count do
+			local Element = select(index, ...)
 			Element:Hide()
 			Element:SetText()
 		end
@@ -71,26 +74,25 @@ do
 
 
 	function TableMethods:Clear()
-		local Rows = self.Rows
+		local rows = self.Rows
 
-		if #Rows > 0 then
+		if #rows > 0 then
 			if self.View.YScroll then -- Force correct view resize
 				self.View.YScroll:SetValue(0)
 			end
 			self:SetSelection()
 			wipe(self.Keys)
 
-			for Index = #Rows, 1, -1 do -- Remove in reverse so rows don't move mid-loop
-				local Row = Rows[Index]
+			for index = #rows, 1, -1 do -- Remove in reverse so rows don't move mid-loop
+				local row = rows[index]
+				rows[index] = nil
+				self.UnusedRows[row] = true
+				row:Hide()
+				row.Key = nil
+				ClearElements(self.NumColumns, row:GetElements())
 
-				Rows[Index] = nil
-				self.UnusedRows[Row] = true
-				Row:Hide()
-				Row.Key = nil
-				ClearElements(self.NumColumns, Row:GetElements())
-
-				for Column = 1, self.NumColumns do -- Remove values
-					Row[Column] = nil
+				for column = 1, self.NumColumns do -- Remove values
+					row[column] = nil
 				end
 			end
 			self:Resize()
@@ -100,113 +102,109 @@ do
 end
 
 
------------------------------------------------------------------------
--- Table methods.
------------------------------------------------------------------------
 do
-	local function ColumnOnClick(Column)
+	local function Column_OnClick(Column)
 		PlaySound("igMainMenuOptionCheckBoxOn")
 		Column:GetParent().Table:SetSortColumn(Column)
 	end
 
 
-	local function ColumnCreate(Header)
-		local Index = #Header + 1
-		local Column = CreateFrame("Button", nil, Header)
+	local function CreateColumn(Header)
+		local index = #Header + 1
+		local column = CreateFrame("Button", nil, Header)
+		column:SetScript("OnClick", Column_OnClick)
+		column:SetID(index)
+		column:SetFontString(column:CreateFontString(nil, "ARTWORK", Header.Table.HeaderFont))
+		column:SetPoint("TOP")
+		column:SetPoint("BOTTOM")
 
-		Column:SetScript("OnClick", ColumnOnClick)
-		Column:SetID(Index)
-		Column:SetFontString(Column:CreateFontString(nil, "ARTWORK", Header.Table.HeaderFont))
-		Column:SetPoint("TOP")
-		Column:SetPoint("BOTTOM")
-
-		if Index == 1 then
-			Column:SetPoint("LEFT")
+		if index == 1 then
+			column:SetPoint("LEFT")
 		else
-			Column:SetPoint("LEFT", Header[Index - 1], "RIGHT")
+			column:SetPoint("LEFT", Header[index - 1], "RIGHT")
 		end
 
 		-- Artwork
-		local Arrow = Column:CreateTexture(nil, "OVERLAY")
-		Column.Arrow = Arrow
-		Arrow:Hide()
-		Arrow:SetSize(ROW_HEIGHT * 0.5, ROW_HEIGHT * 0.8)
-		Arrow:SetTexture([[Interface\Buttons\UI-SortArrow]])
+		local arrow = column:CreateTexture(nil, "OVERLAY")
+		column.Arrow = arrow
+		arrow:Hide()
+		arrow:SetSize(ROW_HEIGHT * 0.5, ROW_HEIGHT * 0.8)
+		arrow:SetTexture([[Interface\Buttons\UI-SortArrow]])
 
-		local Left = Column:CreateTexture(nil, "BACKGROUND")
-		Left:SetPoint("TOPLEFT")
-		Left:SetPoint("BOTTOM")
-		Left:SetWidth(COLUMN_PADDING)
-		Left:SetTexture([[Interface\FriendsFrame\WhoFrame-ColumnTabs]])
-		Left:SetTexCoord(0, 0.078125, 0, 0.75)
+		local left = column:CreateTexture(nil, "BACKGROUND")
+		left:SetPoint("TOPLEFT")
+		left:SetPoint("BOTTOM")
+		left:SetWidth(COLUMN_PADDING)
+		left:SetTexture([[Interface\FriendsFrame\WhoFrame-ColumnTabs]])
+		left:SetTexCoord(0, 0.078125, 0, 0.75)
 
-		local Right = Column:CreateTexture(nil, "BACKGROUND")
-		Right:SetPoint("TOPRIGHT")
-		Right:SetPoint("BOTTOM")
-		Right:SetWidth(COLUMN_PADDING)
-		Right:SetTexture([[Interface\FriendsFrame\WhoFrame-ColumnTabs]])
-		Right:SetTexCoord(0.90625, 0.96875, 0, 0.75)
+		local right = column:CreateTexture(nil, "BACKGROUND")
+		right:SetPoint("TOPRIGHT")
+		right:SetPoint("BOTTOM")
+		right:SetWidth(COLUMN_PADDING)
+		right:SetTexture([[Interface\FriendsFrame\WhoFrame-ColumnTabs]])
+		right:SetTexCoord(0.90625, 0.96875, 0, 0.75)
 
-		local Middle = Column:CreateTexture(nil, "BACKGROUND")
-		Middle:SetPoint("TOPLEFT", Left, "TOPRIGHT")
-		Middle:SetPoint("BOTTOMRIGHT", Right, "BOTTOMLEFT")
-		Middle:SetTexture([[Interface\FriendsFrame\WhoFrame-ColumnTabs]])
-		Middle:SetTexCoord(0.078125, 0.90625, 0, 0.75)
+		local middle = column:CreateTexture(nil, "BACKGROUND")
+		middle:SetPoint("TOPLEFT", left, "TOPRIGHT")
+		middle:SetPoint("BOTTOMRIGHT", right, "BOTTOMLEFT")
+		middle:SetTexture([[Interface\FriendsFrame\WhoFrame-ColumnTabs]])
+		middle:SetTexCoord(0.078125, 0.90625, 0, 0.75)
 
-		Column:SetHighlightTexture([[Interface\Buttons\UI-Panel-Button-Highlight]], "ADD")
-		Column:GetHighlightTexture():SetTexCoord(0, 0.625, 0, 0.6875)
+		column:SetHighlightTexture([[Interface\Buttons\UI-Panel-Button-Highlight]], "ADD")
+		column:GetHighlightTexture():SetTexCoord(0, 0.625, 0, 0.6875)
 
-		local Backdrop = Column:CreateTexture(nil, "OVERLAY")
-		Backdrop:Hide()
-		Backdrop:SetPoint("TOPLEFT", Column, "BOTTOMLEFT")
-		Backdrop:SetPoint("RIGHT")
-		Backdrop:SetPoint("BOTTOM", Header.Table.Body) -- Expand to bottom of view
-		Backdrop:SetTexture(0.15, 0.15, 0.15, 0.25)
-		Backdrop:SetBlendMode("ADD")
-		Column.Backdrop = Backdrop
+		local backdrop = column:CreateTexture(nil, "OVERLAY")
+		backdrop:Hide()
+		backdrop:SetPoint("TOPLEFT", column, "BOTTOMLEFT")
+		backdrop:SetPoint("RIGHT")
+		backdrop:SetPoint("BOTTOM", Header.Table.Body) -- Expand to bottom of view
+		backdrop:SetTexture(0.15, 0.15, 0.15, 0.25)
+		backdrop:SetBlendMode("ADD")
+		column.Backdrop = backdrop
 
-		Header[Index] = Column
-		return Column
+		Header[index] = column
+		return column
 	end
 
 
 	-- Sets this table's header to a list of column labels.
 	-- @param ...  Column labels.  Nil clears the column header.
 	function TableMethods:SetHeader(...)
-		local Header = self.Header
-		local NumColumns = select("#", ...)
+		local header = self.Header
+		local num_columns = select("#", ...)
 
 		if self.View.XScroll then -- Force correct view resize
 			self.View.XScroll:SetValue(0)
 		end
 
 		-- Create necessary column buttons
-		if #Header < NumColumns then
-			for Index = #Header + 1, NumColumns do
-				ColumnCreate(Header)
+		if #header < num_columns then
+			for index = #header + 1, num_columns do
+				CreateColumn(header)
 			end
 		end
 
 		-- Fill out buttons
-		for Index = 1, NumColumns do
-			local Column = Header[Index]
-			local Value = select(Index, ...)
-			Column:SetText(Value ~= nil and tostring(Value) or nil)
-			Column:Show()
-			Column.Width, Column.WidthChanged = Column:GetTextWidth(), true
+		for index = 1, num_columns do
+			local column = header[index]
+			local value = select(index, ...)
+			column:SetText(value ~= nil and tostring(value) or nil)
+			column:Show()
+			column.Width, column.WidthChanged = column:GetTextWidth(), true
 		end
 
-		for Index = NumColumns + 1, #Header do -- Hide unused
-			local Column = Header[Index]
-			Column:Hide()
-			Column:SetText()
-			Column.Sort = nil
+		for index = num_columns + 1, #header do -- Hide unused
+			local column = header[index]
+			column:Hide()
+			column:SetText()
+			column.Sort = nil
 		end
 
 		if not self:Clear() then
 			self:Resize() -- Fit to only headers
 		end
-		self.NumColumns = NumColumns
+		self.NumColumns = num_columns
 		self:SetSortHandlers() -- None
 	end
 end
@@ -218,17 +216,17 @@ end
 -- @param ...  Sort handlers for each column.
 -- @see SortSimple for custom sort function behavior.
 function TableMethods:SetSortHandlers(...)
-	local Header = self.Header
+	local header = self.Header
 
-	for Index = 1, self.NumColumns do
-		local Column = Header[Index]
-		local Handler = select(Index, ...)
-		Column.Sort = Handler
+	for index = 1, self.NumColumns do
+		local column = header[index]
+		local handler = select(index, ...)
+		column.Sort = handler
 
-		if Handler then
-			Column:Enable()
+		if handler then
+			column:Enable()
 		else
-			Column:Disable()
+			column:Disable()
 		end
 	end
 	self:SetSortColumn() -- None
@@ -238,48 +236,48 @@ end
 -- Selects or clears the column to sort by.
 -- @param Column  Column button or column ID to sort by, or nil to stop sorting.
 -- @param Inverted  False for normal order, or true for inverted order.  Inversion toggles intelligently if omitted.
-function TableMethods:SetSortColumn(Column, Inverted)
-	local Header = self.Header
+function TableMethods:SetSortColumn(column, inverted)
+	local header = self.Header
 
-	if tonumber(Column) then
-		Column = Header[tonumber(Column)]
+	if tonumber(column) then
+		column = header[tonumber(column)]
 	end
 
-	if Column then
-		assert(type(Column) == "table", "Invalid colum.")
-		assert(Column.Sort, "Column must have a sort handler assigned.")
+	if column then
+		assert(type(column) == "table", "Invalid colum.")
+		assert(column.Sort, "Column must have a sort handler assigned.")
 	end
 
-	if Header.SortColumn ~= Column then
-		if Header.SortColumn then
-			Header.SortColumn.Arrow:Hide()
-			Header.SortColumn.Backdrop:Hide()
+	if header.SortColumn ~= column then
+		if header.SortColumn then
+			header.SortColumn.Arrow:Hide()
+			header.SortColumn.Backdrop:Hide()
 		end
-		Header.SortColumn, Header.SortInverted = Column, Inverted or false
+		header.SortColumn, header.SortInverted = column, inverted or false
 
-		if Column then
-			Column.Arrow:Show()
-			Column.Backdrop:Show()
+		if column then
+			column.Arrow:Show()
+			column.Backdrop:Show()
 			self:Sort()
 		end
-	elseif Column then -- Selected same sort column
-		if Inverted == nil then -- Unspecified Flip inverted status
-			Inverted = not Header.SortInverted
+	elseif column then -- Selected same sort column
+		if inverted == nil then -- Unspecified Flip inverted status
+			inverted = not header.SortInverted
 		end
 
-		if Header.SortInverted ~= Inverted then
-			Header.SortInverted = Inverted
+		if header.SortInverted ~= inverted then
+			header.SortInverted = inverted
 			self:Sort()
 		end
 	end
 
-	if Column then
-		if Header.SortInverted then
-			Column.Arrow:SetPoint("LEFT", 0, 2)
-			Column.Arrow:SetTexCoord(0.0625, 0.5, 1, 0)
+	if column then
+		if header.SortInverted then
+			column.Arrow:SetPoint("LEFT", 0, 2)
+			column.Arrow:SetTexCoord(0.0625, 0.5, 1, 0)
 		else
-			Column.Arrow:SetPoint("LEFT", 0, -2)
-			Column.Arrow:SetTexCoord(0.0625, 0.5, 0, 1)
+			column.Arrow:SetPoint("LEFT", 0, -2)
+			column.Arrow:SetTexCoord(0.0625, 0.5, 0, 1)
 		end
 	end
 end

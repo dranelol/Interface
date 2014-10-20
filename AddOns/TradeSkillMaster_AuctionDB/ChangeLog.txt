@@ -1,3 +1,24 @@
+v2.5.1
+*Minor bug fix with desktop app and in-game scan interaction.
+
+v2.5
+*Updated for patch 6.0.2
+
+v2.4.4
+*Updated TSM App URL.
+
+v2.4.3
+*Fixed bug with some realms not loading data from the app properly.
+
+v2.4.2
+*Optimized code to reduce logout times for those using the app.
+
+v2.4.1
+*Removed old app code.
+
+v2.4
+*Updated to work with the new version of the TSM Desktop Application.
+
 v2.3.10
 *No update. Trying to fix issue with curse.
 

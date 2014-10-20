@@ -1,8 +1,8 @@
-## Interface: 50400
+## Interface: 60000
 ## Title: oRA3
 ## Notes: Raid and Party Assist
 ## Author: Funkydude, Nebula169
-## X-Curse-Packaged-Version: r740
+## X-Curse-Packaged-Version: r766
 ## X-Curse-Project-Name: oRA3
 ## X-Curse-Project-ID: ora3
 ## X-Curse-Repository-ID: wow/ora3/mainline
@@ -31,6 +31,7 @@ locales\esES.lua
 oRA3.lua
 modulePrototype.lua
 
+modules\BattleRes.lua
 modules\RoleIcons.lua
 modules\ReadyCheck.lua
 modules\Durability.lua

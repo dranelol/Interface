@@ -1,4 +1,4 @@
-﻿-- $Id: constants.kr.lua 3245 2011-01-22 11:41:05Z dynaletik $
+﻿-- $Id: constants.kr.lua 4212 2013-05-20 12:27:56Z dynaletik $
 --[[
 constants.en.lua
 This file defines an AceLocale table for all the various text strings needed
@@ -35,7 +35,6 @@ if AL then
 	AL["Safe Chat Links"] = "안전한 대화창 링크";
 	AL["Comparison TT"] = true;
 	AL["Show Comparison Tooltips"] = "비교 툴팁 표시";
-	AL["Supress item query text"] = "아이템 서버 요청 메시지 줄임";
 	AL["Opaque"] = "불투명도";
 	AL["Make Loot Table Opaque"] = "배경 불투명하게 표시";
 	AL["Treat Crafted Items:"] = true;
@@ -280,12 +279,6 @@ if AL then
 	AL["Set"] = true;
 	AL["Justice Points"] = true;
 	AL["Valor Points"] = true;
-	AL["Badge of Justice"] = true; --should be removed
-	AL["Emblem Rewards"] = true; --should be removed
-	AL["Emblem of Valor"] = true; --should be removed
-	AL["Emblem of Heroism"] = true; --should be removed
-	AL["Emblem of Conquest"] = true; --should be removed
-	AL["Emblem of Triumph"] = true; --should be removed
 	AL["Emblem of Frost"] = true; --should be removed
 	AL["BoE World Epics"] = true;
 	AL["Legendary Items"] = "전설 아이템";
@@ -295,10 +288,8 @@ if AL then
 	AL["Tier 3 Set"] = true;
 	AL["Tier 4/5/6 Set"] = true;
 	AL["Tier 7/8 Set"] = true;
-	AL["Tier 8 Set"] = true;
 	AL["Tier 9 Set"] = true;
 	AL["Tier 10 Set"] = true;
-	AL["Tier 11 Set"] = true;
 	AL["TCG Items"] = true; -- Trading Card Game Items
 	AL["Transformation Items"] = true;
 
@@ -309,11 +300,8 @@ if AL then
 	AL["PvP Weapons"] = "PvP 무기";
 	AL["PvP Non-Set Epics"] = "PvP 영웅 아이템";
 	AL["PvP Reputation Sets"] = true;
-	AL["Arena PvP Weapons"] = "투기장 무기";
 	AL["PvP Misc"] = true;
 	AL["PVP Gems/Enchants/Jewelcrafting Designs"] = true;
-	AL["PvP Class Items"] = true;
-	AL["NOT AVAILABLE ANYMORE"] = true;
 
 	-- World Events
 	AL["Abyssal Council"] = true;
@@ -322,7 +310,6 @@ if AL then
 	AL["Brewfest"] = true;
 	AL["Children's Week"] = true;
 	AL["Day of the Dead"] = true;
-	AL["Elemental Invasion"] = true;
 	AL["Ethereum Prison"] = true;
 	AL["Feast of Winter Veil"] = true;
 	AL["Gurubashi Arena Booty Run"] = true;
@@ -335,7 +322,6 @@ if AL then
 	AL["Pilgrim's Bounty"] = true;
 	AL["Skettis"] = true;
 	AL["Stranglethorn Fishing Extravaganza"] = true;
-	AL["Elemental Unrest"] = true;
 
 	-- Minimap Button
 	AL["|cff1eff00Left-Click|r Browse Loot Tables"] = "|cff1eff00왼쪽 클릭|r 아이템 테이블 화면";
@@ -381,9 +367,6 @@ if AL then
 	AL["Banner"] = "깃발";
 	AL["Set"] = "세트";
 	AL["Token"] = "휘장";
-	AL["Tokens"] = "휘장";
-	AL["Token Hand-Ins"] = true;
-	AL["Skinning Knife"] = true;
 	AL["Combat Pet"] = true;
 	AL["Fireworks"] = true;
 	AL["Transformation Item"] = true;
@@ -409,7 +392,7 @@ if AL then
 	AL["Enchant Cloak"] = true;
 	AL["Enchant Gloves"] = true;
 	AL["Enchant Ring"] = true;
-	AL["Enchant Shield"] = true;
+	AL["Enchant Shield & Off-Hand"] = true;
 	AL["Enchant 2H Weapon"] = true;
 	AL["Enchant Weapon"] = true;
 	AL["Cataclysm Vendor Sold Formulas"] = true;
@@ -430,7 +413,6 @@ if AL then
 	AL["Drums, Bags and Misc."] = true;
 
 	-- Tailoring
-	AL["Cloth Armor"] = true;
 	AL["Shirts"] = true;
 	AL["Bags"] = true;
 
@@ -442,16 +424,9 @@ if AL then
 	AL["Quest Reward"] = "퀘스트 보상";
 	AL["Old Quest Reward"] = true;
 	AL["Shared"] = "공통";
-	AL["Unique"] = "고유";
 	AL["Right Half"] = "오른쪽 반쪽";
 	AL["Left Half"] = "왼쪽 반쪽";
-	AL["28 Slot Soul Shard"] = "28칸 영혼석";--is this still an item?
-	AL["20 Slot"] = "20칸";
-	AL["18 Slot"] = "18칸";
-	AL["16 Slot"] = "16칸";
-	AL["10 Slot"] = "10칸";
 	AL["Currency"] = "보상아이템 구입에 사용";
-	AL["Conjured Item"] = true;
 	AL["Used to summon boss"] = true;
 	AL["Tradable for sunmote + item above"] = true;
 	AL["Card Game Item"] = "카드 게임 아이템";
@@ -460,8 +435,6 @@ if AL then
 	AL["Random Heroic Reward"] = true;
 	AL["Fishing Daily Reward"] = true;
 	AL["Collector's Edition"] = true;
-	AL["Blizzcon"] = true;
-	AL["WoW Anniversary Celebration"] = true;
 	AL["Daily Reward"] = true;
 
 	-- Minor Labels for loot table descriptions
@@ -489,15 +462,9 @@ if AL then
 	AL["10/25 Man"] = "10/25 인";
 	AL["Epic Set"] = "영웅 세트";
 	AL["Rare Set"] = "희귀 세트";
-	AL["Season 1"] = "시즌 1";
-	AL["Season 2"] = "시즌 2";
-	AL["Season 3"] = "시즌 3";
-	AL["Season 4"] = "시즌 4";
-	AL["Season 5"] = "시즌 5";
-	AL["Season 6"] = "시즌 6";
-	AL["Season 7"] = "시즌 7";
-	AL["Season 8"] = "시즌 8";
 	AL["Season 9"] = "시즌 9";
+	AL["Season 10"] = "시즌 10";
+	AL["Season 11"] = "시즌 11";
 	AL["Fire"] = true;
 	AL["Water"] = true;
 	AL["Wind"] = true;
@@ -508,7 +475,6 @@ if AL then
 	AL["Nature Resistance Gear"] = "자연 저항 장비";
 	AL["Frost Resistance Gear"] = "냉기 저항 장비";
 	AL["Shadow Resistance Gear"] = "암흑 저항 장비";
-	AL["Classic Sets"] = true;
 
 	-- Labels for loot table sections
 	AL["Additional Heroic Loot"] = true;
@@ -528,8 +494,6 @@ if AL then
 	AL["Heirloom"] = true;
 	AL["Weapons"] = true;
 	AL["Accessories"] = "장신구류";
-	AL["Low Level"] = true;
-	AL["High Level"] = true;
 	AL["Rare"] = "희귀";
 
 	-- Loot Table Names
@@ -545,20 +509,17 @@ if AL then
 	AL["Agility"] = true;
 	AL["Intellect"] = true;
 	AL["Strength"] = true;
-	AL["Agility, Intellect, Strength"] = true;
 	AL["Spell Power"] = true;
 	AL["Attack Power"] = true;
 	AL["Spell/Attack Power"] = true;
 	AL["Hit Rating"] = true;
 	AL["Crit Rating"] = true;
-	AL["Crit/Hit Rating"] = true;
 	AL["Haste Rating"] = true;
 	AL["Dodge Rating"] = true;
 	AL["Expertise Rating"] = true;
 	AL["Mastery Rating"] = true;
 	AL["Parry Rating"] = true;
 	AL["Other Ratings"] = true;
-	AL["Resistance"] = true;
 	AL["Health / Second"] = true;
 	AL["Mana / Second"] = true;
 	AL["Tracking"] = true;
@@ -574,44 +535,23 @@ if AL then
 	AL["Feasts"] = true;
 
 	-- Extra Text in Boss lists
-	AL["Set: Embrace of the Viper"] = "세트: 독사의 은총";
-	AL["Set: Defias Leather"] = "세트: 데피아즈단";
-	AL["Set: The Gladiator"] = "세트: 검투사";
-	AL["Set: Chain of the Scarlet Crusade"] = "세트: 붉은십자군";
-	AL["Set: The Postmaster"] = "세트: 우체국장";
-	AL["Set: Necropile Raiment"] = "세트: 시체더미 의복";
-	AL["Set: Cadaverous Garb"] = "세트: 시체 수의";
-	AL["Set: Bloodmail Regalia"] = "세트: 피고리 제복";
-	AL["Set: Deathbone Guardian"] = "세트: 죽음의 뼈갑옷";
-	AL["Set: Dal'Rend's Arms"] = "세트: 달렌드의 무기";
-	AL["Set: Spider's Kiss"] = "세트: 거미의 입맞춤";
 	AL["AQ20 Class Sets"] = "안퀴라즈 폐허 직업 세트";
 	AL["AQ Enchants"] = "안퀴라즈 마법부여";
 	AL["AQ40 Class Sets"] = "안퀴라즈 사원 직업 세트";
 	AL["AQ Opening Quest Chain"] = "안퀴라즈 열기 연퀘";
-	AL["ZG Class Sets"] = "줄구룹 직업 세트";
-	AL["ZG Enchants"] = "줄구룹 마법부여";
-	AL["Class Books"] = "직업 책";
 	AL["Tribute Run"] = "공물함";
 	AL["Dire Maul Books"] = "혈투의 전장 직업 책";
 	AL["Random Boss Loot"] = "렌덤 보스 드랍";
-	AL["BT Patterns/Plans"] = true;
-	AL["Hyjal Summit Designs"] = true;
-	AL["SP Patterns/Plans"] = true;
-	AL["Ulduar Formula/Patterns/Plans"] = true;
-	AL["Trial of the Crusader Patterns/Plans"] = true;
+	AL["Formula/Patterns/Plans"] = true;
 	AL["BRD Blacksmithing Plans"] = true;
+	AL["Patterns/Plans"] = true;
 
 	-- General titles
 	AL["Achievement"] = true;
-	AL["Promotional & Card Game"] = true;
 
 	-- Companions
-	AL["Achievement & Faction Reward Companions"] = true;
-	AL["Achievement & Faction Reward"] = true;
 	AL["Card Game Companions"] = true;
 	AL["Companion Accessories"] = true;
-	AL["Companion Store"] = true;
 	AL["Crafted Companions"] = true;
 	AL["Dungeon/Raid"] = true;
 	AL["Faction"] = true;
@@ -623,9 +563,7 @@ if AL then
 	AL["Unobtainable Companions"] = true;
 
 	-- Mounts
-	AL["Alliance Flying Mounts"] = true;
 	AL["Alliance Mounts"] = true;
-	AL["Horde Flying Mounts"] = true;
 	AL["Horde Mounts"] = true;
 	AL["Card Game Mounts"] = true;
 	AL["Crafted Mounts"] = true;
@@ -644,18 +582,14 @@ if AL then
 	AL["Alliance Tabards"] = true;
 	AL["Card Game Tabards"] = true;
 	AL["Horde Tabards"] = true;
-	AL["Neutral Faction Tabards"] = true;
 	AL["PvP Tabards"] = true;
 	AL["Unobtainable Tabards"] = true;
 
 	-- Darkmoon Faire
 	AL["Darkmoon Faire Rewards"] = true;
 	AL["Low Level Decks"] = true;
-	AL["Level 60 Trinkets"] = true;
-	AL["Level 70 Trinkets"] = true;
 	AL["Level 60 & 70 Trinkets"] = true;
-	AL["Level 80 Trinkets"] = true;
-	AL["Level 85 Trinkets"] = true;
+	AL["Trinkets"] = true;
 
 	-- Card Game Decks and descriptions
 	AL["Loot Card Items"] = true;
@@ -779,7 +713,6 @@ if AL then
 	AL["Venture Bay"] = true;
 
 	-- Karazhan Opera Event Headings
-	AL["Shared Drops"] = "공통 드랍";
 	AL["Wizard of Oz"] = "오즈의 마법사";
 	AL["Red Riding Hood"] = "빨간 두건";
 
@@ -787,17 +720,6 @@ if AL then
 	AL["Spider"] = "거미";
 	AL["Darkhound"] = "광포한 암흑사냥개";
 	AL["Bat"] = "박쥐";
-
-	-- ZG Tokens
-	AL["Primal Hakkari Kossack"] = "고대 학카리 조끼";
-	AL["Primal Hakkari Shawl"] = "고대 학카리 어깨걸이";
-	AL["Primal Hakkari Bindings"] = "고대 학카리 팔보호구";
-	AL["Primal Hakkari Sash"] = "고대 학카리 장식띠";
-	AL["Primal Hakkari Stanchion"] = "고대 학카리 손목갑옷";
-	AL["Primal Hakkari Aegis"] = "고대 학카리 아이기스";
-	AL["Primal Hakkari Girdle"] = "고대 학카리 벨트";
-	AL["Primal Hakkari Armsplint"] = "고대 학카리 어깨갑옷";
-	AL["Primal Hakkari Tabard"] = "고대 학카리 휘장";
 
 	-- AQ20 Tokens
 	AL["Qiraji Ornate Hilt"] = "화려한 퀴라지 자루";
@@ -817,8 +739,14 @@ if AL then
 	AL["Husk of the Old God"] = "고대신의 허물";
 	AL["Carapace of the Old God"] = "고대신의 껍질";
 
-	-- Classic WoW Sets
-	AL["Zul'Gurub Rings"] = true;
+	-- Faction related strings
+	AL["Neutral"] = "중립적";
+	AL["Friendly"] = "약간 우호적";
+	AL["Honored"] = "우호적";
+	AL["Revered"] = "매우 우호적";
+	AL["Exalted"] = "확고한 동맹";
+	AL["Best Friend"] = "가장 친한 친구";
+	AL["Winterfin Retreat"] = "겨울지느러미 은신처";
 
 	-- Recipe origin strings
 	AL["Trainer"] = true;
@@ -827,9 +755,6 @@ if AL then
 	AL["Drop"] = true;
 	AL["Vendor"] = true;
 	AL["Crafted"] = true;
-
-	-- Level 80 PvP Weapons
-	AL["Wrathful Gladiator\'s Weapons"] = true;
 
 	-- Months
 	AL["January"] = true;
@@ -862,13 +787,6 @@ if AL then
 	AL["Tanking"] = true;
 	AL["DPS"] = true;
 
-	-- Naxx Zones
-	AL["Construct Quarter"] = true;
-	AL["Arachnid Quarter"] = true;
-	AL["Military Quarter"] = true;
-	AL["Plague Quarter"] = true;
-	AL["Frostwyrm Lair"] = true;
-
 	-- NPCs missing from BabbleBoss
 	AL["Trash Mobs"] = "일반 몬스터";
 	AL["Dungeon Set 2 Summonable"] = "던전 세트 2 소환가능";
@@ -877,12 +795,7 @@ if AL then
 	AL["Druid of the Fang"] = "송곳니의 드루이드";
 	AL["Defias Strip Miner"] = "데피아즈단 갱부";
 	AL["Defias Overseer/Taskmaster"] =  "데피아즈단 갱부 감독관/작업반장";
-	AL["Scarlet Defender/Myrmidon"] = "붉은십자군 호위병/정예병";
-	AL["Scarlet Champion"] = "붉은십자군 용사";
-	AL["Scarlet Centurion"] = "붉은십자군 백인대장";
 	AL["Scarlet Trainee"] = "붉은십자군 신병";
-	AL["Herod/Mograine"] = "헤로드/모그레인";
-	AL["Scarlet Protector/Guardsman"] = "붉은십자군 수호병/보초";
 	AL["Shadowforge Flame Keeper"] = "어둠괴철로단 불꽃지기";
 	AL["Avatar of the Martyred"] = "순교자의 화신";
 	AL["Nexus Stalker"] = "연합 추적자";
@@ -899,7 +812,6 @@ if AL then
 	AL["Scholomance Adept"] = true;
 	AL["Scholomance Dark Summoner"] = true;
 	AL["Blackhand Elite"] = true;
-	AL["Blackhand Assassin"] = true;
 	AL["Firebrand Pyromancer"] = true;
 	AL["Firebrand Invoker"] = true;
 	AL["Firebrand Grunt"] = true;
@@ -912,7 +824,6 @@ if AL then
 	AL["Weapon Technician"] = true;
 	AL["Doomforge Craftsman"] = true;
 	AL["Murk Worm"] = true;
-	AL["Atal'ai Witch Doctor"] = true;
 	AL["Raging Skeleton"] = true;
 	AL["Ethereal Priest"] = true;
 	AL["Sethekk Ravenguard"] = true;
@@ -938,33 +849,11 @@ if AL then
 	AL["Aether-tech Assistant"] = true;
 	AL["Aether-tech Adept"] = true;
 	AL["Aether-tech Master"] = true;
-	AL["Trelopades"] = true;
-	AL["King Dorfbruiser"] = true;
-	AL["Gorgolon the All-seeing"] = true;
-	AL["Matron Li-sahar"] = true;
-	AL["Solus the Eternal"] = true;
 	AL["Smokywood Pastures Vendor"] = true;
-	AL["Darkscreecher Akkarai"] = true;
-	AL["Karrog"] = true;
-	AL["Gezzarak the Huntress"] = true;
-	AL["Vakkiz the Windrager"] = true;
-	AL["Terokk"] = true;
-	AL["Armbreaker Huffaz"] = true;
-	AL["Fel Tinkerer Zortan"] = true;
-	AL["Forgosh"] = true;
-	AL["Gul'bor"] = true;
-	AL["Malevus the Mad"] = true;
-	AL["Porfus the Gem Gorger"] = true;
-	AL["Wrathbringer Laz-tarash"] = true;
 	AL["Bash'ir Landing Stasis Chambers"] = true;
 	AL["Templars"] = true;
 	AL["Dukes"] = true;
 	AL["High Council"] = true;
-	AL["Barleybrew Brewery"] = true;
-	AL["Thunderbrew Brewery"] = true;
-	AL["Gordok Brewery"] = true;
-	AL["Drohn's Distillery"] = true;
-	AL["T'chali's Voodoo Brewery"] = true;
 	AL["Scarshield Quartermaster"] = true;
 	AL["Father Flame"] = true;
 	AL["Thomas Yance"] = true;
@@ -975,72 +864,40 @@ if AL then
 	AL["Razorfen Spearhide"] = true;
 	AL["Magregan Deepshadow"] = true;
 	AL["Don Carlos"] = true;
-	AL["Thomas Yance"] = true;
 	AL["Aged Dalaran Wizard"] = true;
 	AL["Felsteed"] = true;
 	AL["Shattered Hand Executioner"] = true;
-	AL["Time-Lost Proto Drake"] = true;
-	AL["Razzashi Raptor"] = true;
 	AL["Deviate Ravager/Deviate Guardian"] = true;
 	AL["Servant's Quarter Animal Bosses"] = true;
-	AL["Jadefang"] = true;
-	AL["Aeonaxx"] = true;
-	AL["Prince Sarsarun"] = true;
-	AL["Highlord Kruul"] = true; -- added until decided if the set gets removed
-	AL["Dormus the Camel-Hoarder"] = true; 
 
-	-- Zones
-	AL["World Drop"] = "월드 드랍";
-	AL["Trial of the Grand Crusader"] = true;
-	AL["Crusader's Square"] = true;
-	AL["The Gauntlet"] = true;
+	-- Zone related strings
+	AL["Azeroth"] = "아제로스";
+	AL["Blackrock Mountain"] = "검은바위 산";
+	AL["Caverns of Time"] = "시간의 동굴";
+	-- AL["Crusader's Square"] = true;
+	AL["Darkmoon Island"] = "다크문 축제";
+	AL["East"] = "동부";
+	AL["North"] = "북부";
+	-- AL["The Gauntlet"] = true;
+	-- AL["Trial of the Grand Crusader"] = true;
+	AL["West"] = "서부";
 
 	-- Shortcuts for Bossname files
-	AL["LBRS"] = true;
-	AL["UBRS"] = true;
-	AL["CoT1"] = true;
-	AL["CoT2"] = true;
-	AL["Scholo"] = true;
-	AL["Strat"] = true;
-	AL["Serpentshrine"] = true;
 	AL["Avatar"] = true; -- Avatar of the Martyred
 
 	-- Chests, etc
-	AL["Ring of Law"] = true;
-	AL["Monument of Franclorn Forgewright"] = true;
 	AL["The Grim Guzzler"] = true;
-	AL["Summoner's Tomb"] = true;
 	AL["The Secret Safe"] = "검은 금고";
 	AL["The Vault"] = "검은 금고";
 	AL["Ogre Tannin Basket"] = "오우거 타닌 바구니";
-	AL["Fengus's Chest"] = "펜쿠스의 궤짝";
 	AL["Unfinished Painting"] = "완성되지 않은 그림";
 	AL["Felvine Shard"] = "악령덩쿨 조각";
-	AL["Baelog's Chest"] = "밸로그의 궤짝";
-	AL["Lorgalis Manuscript"] = "로르갈리스 초본";
-	AL["Fathom Core"] = "심연의 핵";
 	AL["Gift of Adoration"] = true;
-	AL["Box of Chocolates"] = true;
 	AL["Treat Bag"] = true;
-	AL["Gaily Wrapped Present"] = true;
-	AL["Festive Gift"] = true;
-	AL["Ticking Present"] = true;
-	AL["Gently Shaken Gift"] = true;
-	AL["Carefully Wrapped Present"] = true;
-	AL["Winter Veil Gift"] = true;
-	AL["Smokywood Pastures Extra-Special Gift"] = true;
-	AL["Brightly Colored Egg"] = true;
-	AL["Lunar Festival Fireworks Pack"] = true;
-	AL["Lucky Red Envelope"] = true;
-	AL["Small Rocket Recipes"] = true;
-	AL["Large Rocket Recipes"] = true;
-	AL["Cluster Rocket Recipes"] = true;
-	AL["Large Cluster Rocket Recipes"] = true;
 	AL["Timed Reward Chest"] = true;
 	AL["Timed Reward Chest 1"] = true;
 	AL["Timed Reward Chest 2"] = true;
 	AL["Timed Reward Chest 3"] = true;
-	AL["Timed Reward Chest 4"] = true;
 	AL["The Talon King's Coffer"] = true;
 	AL["Krom Stoutarm's Chest"] = true;
 	AL["Garrett Family Chest"] = true;
@@ -1051,16 +908,6 @@ if AL then
 	AL["Second Fragment Guardian"] = true;
 	AL["Third Fragment Guardian"] = true;
 	AL["Overcharged Manacell"] = true;
-	AL["Mysterious Egg"] = true;
-	AL["Hyldnir Spoils"] = true;
-	AL["Ripe Disgusting Jar"] = true;
-	AL["Cracked Egg"] = true;
-	AL["Small Spice Bag"] = true;
-	AL["Handful of Candy"] = true;
-	AL["Lovely Dress Box"] = true;
-	AL["Dinner Suit Box"] = true;
-	AL["Bag of Heart Candies"] = true;
-	AL["Hidden Stash"] = true;
 
 	-- Error Messages and warnings
 	AL["AtlasLoot Error!"] = true;

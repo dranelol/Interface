@@ -11,7 +11,7 @@ local _G = getfenv(0)
 -- AddOn namespace.
 -----------------------------------------------------------------------
 local ADDON_NAME, private = ...
-LibStub = _G.LibStub
+local LibStub = _G.LibStub
 local AF = LibStub("LibBabble-Artifacts-3.0"):GetLookupTable()
 
 local sessionErrors = {}

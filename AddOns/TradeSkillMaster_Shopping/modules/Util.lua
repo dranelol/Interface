@@ -9,7 +9,7 @@
 local TSM = select(2, ...)
 local Util = TSM:NewModule("Util", "AceEvent-3.0", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("TradeSkillMaster_Shopping") -- loads the localization table
-local private = {auctions={}}
+local private = {auctions={}, eventThreadId=nil}
 TSMAPI:RegisterForTracing(private, "TradeSkillMaster_Shopping_private")
 Util.shoppingLog = {}
 
@@ -141,6 +141,7 @@ end
 function Util:HideSearchFrame()
 	private.searchFrame:Hide()
 	TSMAPI.AuctionControl:HideControlButtons()
+	Util:KillEventThread()
 	TSMAPI.AuctionScan:StopScan()
 	TSMAPI.AuctionScan:ClearCache()
 end
@@ -150,7 +151,7 @@ function Util:StartItemScan(itemList, callback)
 	if type(itemList) ~= "table" then return end
 	private:PrepareForScan(callback)
 	if #itemList == 1 then private.searchItem = itemList[1] end
-	TSMAPI:GenerateQueries(itemList, private.ScanCallback)
+	TSMAPI:GenerateQueries(itemList, private.QueueScanEvent)
 end
 
 function Util:StartFilterScan(filters, callback)
@@ -172,13 +173,20 @@ end
 
 function Util:StartLastPageScan(callback)
 	private:PrepareForScan(callback, true)
-	TSMAPI.AuctionScan:ScanLastPage(private.ScanCallback)
+	TSMAPI.AuctionScan:ScanLastPage(private.QueueScanEvent)
 end
 
 function Util:StopScan()
 	TSMAPI:CancelFrame("shoppingRestartSniper")
 	TSMAPI.AuctionScan:StopScan()
+	Util:KillEventThread()
 	private:ScanComplete()
+end
+
+function Util:KillEventThread()
+	if private.eventThreadId and TSMAPI.Threading:IsValid(private.eventThreadId) then
+		TSMAPI.Threading:Kill(private.eventThreadId)
+	end
 end
 
 
@@ -189,6 +197,8 @@ function private:PrepareForScan(callback, isLastPageScan)
 	private.searchItem = nil
 	private.isLastPageScan = isLastPageScan
 	private.callback = callback
+	Util:KillEventThread()
+	private.eventThreadId = TSMAPI.Threading:Start(private.ProcessEventThread, 0.7)
 	wipe(private.auctions)
 	if private.isLastPageScan then
 		private.searchFrame.statusBar:SetStatusText("Scanning last page...")
@@ -201,98 +211,112 @@ function private:PrepareForScan(callback, isLastPageScan)
 	TSM.moduleAPICallback = nil
 end
 
-local scanStatus, pageStatus
-function private.ScanCallback(event, ...)
-	if event == "QUERY_COMPLETE" then
-		private.filterList = ...
-		private.numFilters = #private.filterList
-		private:ScanNextFilter()
-	elseif event == "QUERY_UPDATE" then
-		local arg1, arg2 = ...
-		private:UpdateStatus("query", arg1, arg2)
-	elseif event == "SCAN_PAGE_UPDATE" then
-		private:UpdateStatus("page", ...)
-	elseif event == "SCAN_TIMEOUT" then
-		tremove(private.filterList, 1)
-		private:ScanNextFilter()
-	elseif event == "SCAN_COMPLETE" then
-		if not private.filterList or not private.filterList[1] then return end -- protect against sniper scan starts causing issues
-		local data = ...
-		if private.filterList[1].items then
-			for _, itemString in ipairs(private.filterList[1].items) do
-				if data[itemString] then
-					if data[itemString].isBaseItem then
-						for iString, auctionitem in pairs(data) do
-							if iString ~= itemString and TSMAPI:GetBaseItemString(iString) == itemString then
-								auctionitem.query = private.filterList[1]
-								private:ProcessItem(iString, auctionitem)
-							end
-						end
-					else
-						data[itemString].query = private.filterList[1]
-						private:ProcessItem(itemString, data[itemString])
-					end
-				end
-			end
-		else
-			for itemString, auctionData in pairs(data) do
-				if not auctionData.isBaseItem then
-					auctionData.query = private.filterList[1]
-					private:ProcessItem(itemString, auctionData)
-				end
-			end
-		end
-		private:UpdateRT()
-		private.searchFrame.rt:ClearSelection()
-		tremove(private.filterList, 1)
-		private:ScanNextFilter()
-	elseif event == "SCAN_LAST_PAGE_COMPLETE" then
-		local data = ...
-		for itemString, auctionData in pairs(data) do
-			if not auctionData.isBaseItem then
-				if auctionData and #auctionData.records > 0 then
-					if private.auctions[itemString] then
-						private.auctions[itemString].shouldCompact = true
-						private.auctions[itemString]:PopulateCompactRecords()
-						local existingRecords = {}
-						for _, record in ipairs(private.auctions[itemString].compactRecords) do
-							local key = strjoin("~", record.uniqueID, record.count, record.buyout, record.minBid, record.timeLeft)
-							existingRecords[key] = true
-						end
-						for _, record in ipairs(auctionData.records) do
-							local key = strjoin("~", record.uniqueID, record.count, record.buyout, record.minBid, record.timeLeft)
-							if not existingRecords[key] then
-								private.auctions[itemString]:AddRecord(record)
-							else
-								for _, record2 in ipairs(private.auctions[itemString].records) do
-									local key2 = strjoin("~", record.uniqueID, record.count, record.buyout, record.minBid, record.timeLeft)
-									if key2 == key and record2.seller ~= "?" then
-										record2.seller = record.seller
-										break
-									end
-								end
-							end
-						end
-					else
-						private.auctions[itemString] = auctionData
-					end
-					private.auctions[itemString] = private.callback("process", itemString, private.auctions[itemString])
-				end
-			end
-		end
-		private:UpdateRT()
-		private.searchFrame.rt:ClearSelection()
-		TSMAPI:CreateTimeDelay("shoppingRestartSniper", 0, function() TSMAPI.AuctionScan:ScanLastPage(private.ScanCallback) end)
+function private.QueueScanEvent(...)
+	if private.eventThreadId and TSMAPI.Threading:IsValid(private.eventThreadId) then
+		TSMAPI.Threading:SendMessage(private.eventThreadId, {...})
 	end
 end
 
+function private.ProcessEventThread(self)
+	while true do
+		local args = self:ReceiveMsg()
+		local event = tremove(args, 1)
+		if event == "QUERY_COMPLETE" then
+			private.filterList = unpack(args)
+			private.numFilters = #private.filterList
+			private:ScanNextFilter()
+		elseif event == "QUERY_UPDATE" then
+			local arg1, arg2 = unpack(args)
+			private:UpdateStatus("query", arg1, arg2)
+		elseif event == "SCAN_PAGE_UPDATE" then
+			private:UpdateStatus("page", unpack(args))
+		elseif event == "SCAN_TIMEOUT" then
+			tremove(private.filterList, 1)
+			private:ScanNextFilter()
+		elseif event == "SCAN_COMPLETE" then
+			if not private.filterList or not private.filterList[1] then return end -- protect against sniper scan starts causing issues
+			local data = unpack(args)
+			if private.filterList[1].items then
+				for _, itemString in ipairs(private.filterList[1].items) do
+					if data[itemString] then
+						if data[itemString].isBaseItem then
+							for iString, auctionitem in pairs(data) do
+								if iString ~= itemString and TSMAPI:GetBaseItemString(iString) == itemString then
+									auctionitem.query = private.filterList[1]
+									private:ProcessItem(iString, auctionitem)
+								end
+							end
+						else
+							data[itemString].query = private.filterList[1]
+							private:ProcessItem(itemString, data[itemString])
+						end
+					end
+					self:Yield()
+				end
+			else
+				for itemString, auctionData in pairs(data) do
+					if not auctionData.isBaseItem then
+						auctionData.query = private.filterList[1]
+						private:ProcessItem(itemString, auctionData)
+					end
+					self:Yield()
+				end
+			end
+			private:UpdateRT()
+			private.searchFrame.rt:ClearSelection()
+			tremove(private.filterList, 1)
+			private:ScanNextFilter()
+		elseif event == "SCAN_LAST_PAGE_COMPLETE" then
+			local data = unpack(args)
+			for itemString, auctionData in pairs(data) do
+				if not auctionData.isBaseItem then
+					if auctionData and #auctionData.records > 0 then
+						if private.auctions[itemString] then
+							private.auctions[itemString].shouldCompact = true
+							private.auctions[itemString]:PopulateCompactRecords()
+							local existingRecords = {}
+							for _, record in ipairs(private.auctions[itemString].compactRecords) do
+								local key = strjoin("~", record.uniqueID, record.count, record.buyout, record.minBid, record.timeLeft)
+								existingRecords[key] = true
+							end
+							for _, record in ipairs(auctionData.records) do
+								local key = strjoin("~", record.uniqueID, record.count, record.buyout, record.minBid, record.timeLeft)
+								if not existingRecords[key] then
+									private.auctions[itemString]:AddRecord(record)
+								else
+									for _, record2 in ipairs(private.auctions[itemString].records) do
+										local key2 = strjoin("~", record.uniqueID, record.count, record.buyout, record.minBid, record.timeLeft)
+										if key2 == key and record2.seller ~= "?" then
+											record2.seller = record.seller
+											break
+										end
+									end
+								end
+							end
+						else
+							private.auctions[itemString] = auctionData
+						end
+						private.auctions[itemString] = private.callback("process", itemString, private.auctions[itemString])
+					end
+				end
+				self:Yield()
+			end
+			private:UpdateRT()
+			private.searchFrame.rt:ClearSelection()
+			TSMAPI:CreateTimeDelay("shoppingRestartSniper", 0, function() TSMAPI.AuctionScan:ScanLastPage(private.QueueScanEvent) end)
+		end
+		self:Yield()
+	end
+end
+
+local scanStatus, pageStatus
 function private:ScanNextFilter()
 	if #private.filterList == 0 then
 		return private:ScanComplete()
 	end
 	pageStatus = {0, 1}
 	private:UpdateStatus("scan", private.numFilters-#private.filterList+1, private.numFilters)
-	TSMAPI.AuctionScan:RunQuery(private.filterList[1], private.ScanCallback, true, private.callback("filter", private.filterList[1]), true)
+	TSMAPI.AuctionScan:RunQuery(private.filterList[1], private.QueueScanEvent, true, private.callback("filter", private.filterList[1]), true)
 end
 
 function private:UpdateStatus(statusType, ...)
@@ -328,6 +352,7 @@ function private:ScanComplete()
 		TSM.moduleAPICallback()
 	end
 	private.callback("done", private.auctions)
+	TSMAPI:FireEvent("SHOPPING:SEARCH:SCANDONE", #private.searchFrame.rt.auctionData)
 end
 
 -- processes scan data for a specific item

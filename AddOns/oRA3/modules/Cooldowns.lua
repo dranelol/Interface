@@ -8,9 +8,9 @@ local L = LibStub("AceLocale-3.0"):GetLocale("oRA3")
 local AceGUI = LibStub("AceGUI-3.0")
 local candy = LibStub("LibCandyBar-3.0")
 local media = LibStub("LibSharedMedia-3.0")
-local LGIST = LibStub("LibGroupInSpecT-1.0")
+local LGIST = LibStub("LibGroupInSpecT-1.0", true) or LibStub("LibGroupInSpecT-1.1", true)
 
-module.VERSION = tonumber(("$Revision: 684 $"):sub(12, -3))
+module.VERSION = tonumber(("$Revision: 756 $"):sub(12, -3))
 
 --------------------------------------------------------------------------------
 -- Locals
@@ -1296,8 +1296,9 @@ local talentScanners = {
 
 function module:UpdateCooldownModifiers()
 	local info = LGIST:GetCachedInfo(playerGUID)
-	if not info then return end
-	self:UpdateGroupCooldownModifiers(info)
+	if info then
+		self:UpdateGroupCooldownModifiers(info)
+	end
 end
 
 function module:UpdateGroupCooldownModifiers(info)

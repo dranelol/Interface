@@ -8,12 +8,15 @@ local L = LibStub('AceLocale-3.0'):GetLocale(ADDON)
 local Frame = Addon:NewClass('Frame', 'Frame')
 Frame.OpenSound = 'igBackPackOpen'
 Frame.CloseSound = 'igBackPackClose'
+Frame.ItemFrame = Addon.ItemFrame
+Frame.BagFrame = Addon.BagFrame
+Frame.MoneyFrame = Addon.MoneyFrame
 
 
 --[[ Constructor ]]--
 
 function Frame:New(id)
-	local f = self:Bind(CreateFrame('Frame', 'BagnonFrame' .. id, UIParent))
+	local f = self:Bind(CreateFrame('Frame', ADDON .. 'Frame' .. id, UIParent))
 	f:SetClampedToScreen(true)
 	f:SetMovable(true)
 	f:EnableMouse(true)
@@ -63,6 +66,7 @@ function Frame:UpdateEvents()
 		self:RegisterMessage('DATABROKER_FRAME_ENABLE_UPDATE')
 		self:RegisterMessage('SEARCH_TOGGLE_ENABLE_UPDATE')
 		self:RegisterMessage('OPTIONS_TOGGLE_ENABLE_UPDATE')
+		self:RegisterMessage('SORT_ENABLE_UPDATE')
 	end
 end
 
@@ -142,7 +146,8 @@ do
 		'MONEY_FRAME_ENABLE_UPDATE',
 		'DATABROKER_FRAME_ENABLE_UPDATE',
 		'SEARCH_TOGGLE_ENABLE_UPDATE',
-		'OPTIONS_TOGGLE_ENABLE_UPDATE'
+		'OPTIONS_TOGGLE_ENABLE_UPDATE',
+		'SORT_ENABLE_UPDATE'
 	}
 	
 	for _, msg in ipairs(messages) do
@@ -238,7 +243,7 @@ function Frame:GetFrameOpacity()
 end
 
 function Frame:FadeInFrame(frame, alpha)
-	if Bagnon.Settings:IsFadingEnabled() then
+	if Addon.Settings:IsFadingEnabled() then
 		UIFrameFadeIn(frame, 0.2, 0, alpha or 1)
 	end
 	
@@ -370,35 +375,23 @@ function Frame:GetFrameLayer()
 end
 
 
---[[
-	Layout Methods
---]]
+--[[ Layout Methods ]]--
 
---place components & update size
 function Frame:Layout()
 	if not self:IsVisible() then
 		return
 	end
 
-	local width, height = 0, 0
+	local width, height = 24, 36
 
-	--place menu butons
-	local w = self:PlaceMenuButtons()
-	width = width + w
-
-	local w = self:PlaceCloseButton()
-	width = width + w
-
-	local w, h = self:PlaceOptionsToggle()
-	width = width + w + 24 --append spacing between close button and this
-	height = height + 20
-
-	local w = self:PlaceTitleFrame()
-	width = width + w
-
+	--place top menu frames
+	width = width + self:PlaceMenuButtons()
+	width = width + self:PlaceCloseButton()
+	width = width + self:PlaceOptionsToggle()
+	width = width + self:PlaceTitleFrame()
 	self:PlaceSearchFrame()
 
-	--place the middle frames
+	--place middle frames
 	local w, h = self:PlaceBagFrame()
 	width = max(w, width)
 	height = height + h
@@ -407,7 +400,7 @@ function Frame:Layout()
 	width = max(w, width)
 	height = height + h
 
-	--place the bottom menu frames
+	--place bottom menu frames
 	local w, h = self:PlaceMoneyFrame()
 	width = max(w, width)
 	height = height + h
@@ -419,7 +412,7 @@ function Frame:Layout()
 
 	--adjust size
 	self:SetWidth(max(width, 156) + 16)
-	self:SetHeight(height + 16)
+	self:SetHeight(height)
 end
 
 
@@ -429,34 +422,23 @@ function Frame:PlaceMenuButtons()
 	local menuButtons = self.menuButtons or {}
 	self.menuButtons = menuButtons
 
-	--hide the old buttons
+	--hide the old
 	for i, button in pairs(menuButtons) do
 		button:Hide()
 		menuButtons[i] = nil
 	end
 
+	--initiate new
 	if self:HasPlayerSelector() then
-		local selector = self:GetPlayerSelector() or self:CreatePlayerSelector()
-		tinsert(menuButtons, selector)
+		tinsert(menuButtons, self:GetPlayerSelector())
 	end
-
-	if self:HasBagFrame() and self:HasBagToggle() then
-		local toggle = self:GetBagToggle() or self:CreateBagToggle()
-		tinsert(menuButtons, toggle)
-	end
-	
-	-- guild bank support
-	if self:HasLogs() then
-		for i, toggle in ipairs(self:GetLogToggles()) do
-			tinsert(menuButtons, toggle)
-		end
-	end
+	self:GetSpecificButtons(menuButtons)
 
 	if self:HasSearchToggle() then
-		local toggle = self:GetSearchToggle() or self:CreateSearchToggle()
-		tinsert(menuButtons, toggle)
+		tinsert(menuButtons, self:GetSearchToggle() or self:CreateSearchToggle())
 	end
 
+	--position them
 	for i, button in ipairs(menuButtons) do
 		button:ClearAllPoints()
 		if i == 1 then
@@ -467,6 +449,7 @@ function Frame:PlaceMenuButtons()
 		button:Show()
 	end
 
+	--get used space
 	local numButtons = #menuButtons
 	if numButtons > 0 then
 		return (menuButtons[1]:GetWidth() + 4 * numButtons - 4), menuButtons[1]:GetHeight()
@@ -512,7 +495,7 @@ end
 --[[ search frame ]]--
 
 function Frame:CreateSearchFrame()
-	local f = Bagnon.SearchFrame:New(self:GetFrameID(), self)
+	local f = Addon.SearchFrame:New(self:GetFrameID(), self)
 	self.searchFrame = f
 	return f
 end
@@ -547,7 +530,7 @@ end
 --[[ search toggle ]]--
 
 function Frame:CreateSearchToggle()
-	local toggle =  Bagnon.SearchToggle:New(self:GetFrameID(), self)
+	local toggle =  Addon.SearchToggle:New(self:GetFrameID(), self)
 	self.searchToggle = toggle
 	return toggle
 end
@@ -561,10 +544,93 @@ function Frame:HasSearchToggle()
 end
 
 
+--[[ specific buttons ]]--
+
+function Frame:GetSpecificButtons(list)
+	if self:HasBagFrame() then
+		tinsert(list, self.bagToggle or self:CreateBagToggle())
+	end
+
+	if self:HasSortButton() then
+		tinsert(list, self.sortButton or self:CreateSortButton())
+	end
+
+end
+
+function Frame:CreateBagToggle()
+	local toggle = Addon.BagToggle:New(self:GetFrameID(), self)
+	self.bagToggle = toggle
+	return toggle
+end
+
+function Frame:CreateSortButton()
+	local button = Addon.SortButton:New(self)
+	self.sortButton = button
+	return button
+end
+
+
+
+--[[ title frame ]]--
+
+function Frame:GetTitleFrame()
+	return self.titleFrame or self:CreateTitleFrame()
+end
+
+function Frame:CreateTitleFrame()
+	local f = Addon.TitleFrame:New(self:GetFrameID(), self.Title, self)
+	self.titleFrame = f
+	return f
+end
+
+function Frame:PlaceTitleFrame()
+	local menuButtons = self:GetMenuButtons()
+	local frame = self:GetTitleFrame()
+	local w, h = 0, 0
+
+	frame:ClearAllPoints()
+	if #menuButtons > 0 then
+		frame:SetPoint('LEFT', menuButtons[#menuButtons], 'RIGHT', 4, 0)
+		w = frame:GetTextWidth() / 2 + 4
+		h = 20
+	else
+		frame:SetPoint('TOPLEFT', self, 'TOPLEFT', 8, -8)
+		w = frame:GetTextWidth() + 8
+		h = 20
+	end
+
+	if self:HasOptionsToggle() then
+		frame:SetPoint('RIGHT', self:GetOptionsToggle(), 'LEFT', -4, 0)
+	else
+		frame:SetPoint('RIGHT', self:GetCloseButton(), 'LEFT', -4, 0)
+	end
+	frame:SetHeight(20)
+
+	return w, h
+end
+
+
+--[[ player selector ]]--
+
+function Frame:GetPlayerSelector()
+	return self.playerSelector or self:CreatePlayerSelector()
+end
+
+function Frame:CreatePlayerSelector()
+	local f = Addon.PlayerSelector:New(self:GetFrameID(), self)
+	self.playerSelector = f
+	return f
+end
+
+function Frame:HasPlayerSelector()
+	return LibStub('LibItemCache-1.1'):HasCache()
+end
+
+
 --[[ bag frame ]]--
 
 function Frame:CreateBagFrame()
-	local f =  Bagnon.BagFrame:New(self:GetFrameID(), self)
+	local f =  self.BagFrame:New(self)
 	self.bagFrame = f
 	return f
 end
@@ -575,6 +641,10 @@ end
 
 function Frame:HasBagFrame()
 	return self:GetSettings():HasBagFrame()
+end
+
+function Frame:HasSortButton()
+	return self:GetSettings():HasSortButton()
 end
 
 function Frame:IsBagFrameShown()
@@ -612,67 +682,10 @@ function Frame:PlaceBagFrame()
 end
 
 
---[[ bag toggle ]]--
-
-function Frame:CreateBagToggle()
-	local toggle = Bagnon.BagToggle:New(self:GetFrameID(), self)
-	self.bagToggle = toggle
-	return toggle
-end
-
-function Frame:GetBagToggle()
-	return self.bagToggle
-end
-
---this exists purely so that it can be overridden by guildBank
-function Frame:HasBagToggle()
-	return true
-end
-
-
---[[ title frame ]]--
-
-function Frame:CreateTitleFrame()
-	local f = Bagnon.TitleFrame:New(self:GetFrameID(), self.Title, self)
-	self.titleFrame = f
-	return f
-end
-
-function Frame:GetTitleFrame()
-	return self.titleFrame
-end
-
-function Frame:PlaceTitleFrame()
-	local menuButtons = self:GetMenuButtons()
-	local frame = self:GetTitleFrame() or self:CreateTitleFrame()
-	local w, h = 0, 0
-
-	frame:ClearAllPoints()
-	if #menuButtons > 0 then
-		frame:SetPoint('LEFT', menuButtons[#menuButtons], 'RIGHT', 4, 0)
-		w = frame:GetTextWidth() / 2 + 4
-		h = 20
-	else
-		frame:SetPoint('TOPLEFT', self, 'TOPLEFT', 8, -8)
-		w = frame:GetTextWidth() + 8
-		h = 20
-	end
-
-	if self:HasOptionsToggle() then
-		frame:SetPoint('RIGHT', self:GetOptionsToggle(), 'LEFT', -4, 0)
-	else
-		frame:SetPoint('RIGHT', self:GetCloseButton(), 'LEFT', -4, 0)
-	end
-	frame:SetHeight(20)
-
-	return w, h
-end
-
-
 --[[ item frame ]]--
 
 function Frame:CreateItemFrame()
-	local f = Bagnon.ItemFrame:New(self:GetFrameID(), self)
+	local f = self.ItemFrame:New(self:GetFrameID(), self)
 	self.itemFrame = f
 	return f
 end
@@ -701,33 +714,16 @@ function Frame:PlaceItemFrame()
 end
 
 
---[[ player selector ]]--
+--[[ money frame ]]--
 
-function Frame:GetPlayerSelector()
-	return self.playerSelector
-end
-
-function Frame:CreatePlayerSelector()
-	local f = Bagnon.PlayerSelector:New(self:GetFrameID(), self)
-	self.playerSelector = f
+function Frame:CreateMoneyFrame()
+	local f = self.MoneyFrame:New(self:GetFrameID(), self)
+	self.moneyFrame = f
 	return f
 end
-
-function Frame:HasPlayerSelector()
-	return LibStub('LibItemCache-1.1'):HasCache()
-end
-
-
---[[ money frame ]]--
 
 function Frame:GetMoneyFrame()
 	return self.moneyFrame
-end
-
-function Frame:CreateMoneyFrame()
-	local f = Bagnon.MoneyFrame:New(self:GetFrameID(), self)
-	self.moneyFrame = f
-	return f
 end
 
 function Frame:HasMoneyFrame()
@@ -759,7 +755,7 @@ function Frame:GetBrokerDisplay()
 end
 
 function Frame:CreateBrokerDisplay()
-	local f = Bagnon.BrokerDisplay:New(1, self:GetFrameID(), self)
+	local f = Addon.BrokerDisplay:New(1, self:GetFrameID(), self)
 	self.brokerDisplay = f
 	return f
 end
@@ -799,7 +795,7 @@ function Frame:GetOptionsToggle()
 end
 
 function Frame:CreateOptionsToggle()
-	local f = Bagnon.OptionsToggle:New(self:GetFrameID(), self)
+	local f = Addon.OptionsToggle:New(self:GetFrameID(), self)
 	self.optionsToggle = f
 	return f
 end
@@ -822,23 +818,16 @@ function Frame:PlaceOptionsToggle()
 end
 
 function Frame:HasOptionsToggle()
-	local name, title, notes, enabled = GetAddOnInfo('Bagnon_Config')
-	return enabled and self:GetSettings():HasOptionsToggle()
-end
-
-function Frame:HasLogs()
-	return nil
+	return GetAddOnEnableState(UnitName('player'), ADDON .. '_Config') >= 2 and self:GetSettings():HasOptionsToggle()
 end
 
 
---[[
-	Frame Settings Access
---]]
+--[[ Usual Acessor Functions ]]--
 
 function Frame:GetFrameID()
 	return self.frameID
 end
 
 function Frame:GetSettings()
-	return Bagnon.FrameSettings:Get(self:GetFrameID())
+	return Addon.FrameSettings:Get(self:GetFrameID())
 end

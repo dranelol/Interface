@@ -1,4 +1,4 @@
-﻿## Interface: 50400
+﻿## Interface: 60000
 ## X-Min-Interface: 50001
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Pandaria|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0판다리아|r
@@ -15,13 +15,10 @@
 ## X-DBM-Mod-Type: RAID
 ## X-DBM-Mod-Category: MOP
 ## X-DBM-Mod-Has-Single-Format: 1
-## X-DBM-Mod-Sort: 6
+## X-DBM-Mod-World-Boss: 1
+## X-DBM-Mod-Sort: 206
 ## X-DBM-Mod-MapID: 870,1064
-## X-DBM-Mod-LoadCID: 62346,60491,69161,69099,71952,71954,72057,71953,71955
-## X-Curse-Packaged-Version: 5.4.7
-## X-Curse-Project-Name: Deadly Boss Mods
-## X-Curse-Project-ID: deadly-boss-mods
-## X-Curse-Repository-ID: wow/deadly-boss-mods/mainline
+## X-DBM-Mod-LoadCID: 62346,60491,69161,69099,71952,71954,72057,71953,71955,69768,69769,69841,69842
 localization.en.lua
 localization.de.lua
 localization.es.lua
@@ -40,3 +37,5 @@ Yulon.lua
 Niuzao.lua
 Xuen.lua
 Ordos.lua
+Zandalari.lua
+

@@ -17,8 +17,8 @@ Proculas.enabled = true
 
 -------------------------------------------------------
 -- Proculas Version
-Proculas.revision = "c70b5b769c60"
-Proculas.version = GetAddOnMetadata('Proculas', 'Version').." c70b5b769c60"
+Proculas.revision = "f9e5cd4868e7"
+Proculas.version = GetAddOnMetadata('Proculas', 'Version').." f9e5cd4868e7"
 if(Proculas.revision == "@".."project-abbreviated-hash".."@") then
 	Proculas.version = "DEV"
 end

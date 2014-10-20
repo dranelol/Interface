@@ -62,3 +62,21 @@ function Sidebar:ButtonClick(key)
 	private.frame.content[key]:Show()
 	private.currentPage = key
 end
+
+function Sidebar:GetCurrentPage()
+	if not private.frame or not private.frame:IsVisible() then return end
+	
+	if private.currentPage == L["Saved Searches"] then	
+		return "saved"
+	elseif private.currentPage == L["TSM Groups"] then	
+		return "groups"
+	elseif private.currentPage == L["Log"] then	
+		return "log"
+	elseif private.currentPage == L["Quick Posting"] then	
+		return "quick"
+	elseif private.currentPage == L["Custom Filter"] then	
+		return "custom"
+	elseif private.currentPage == OTHER then	
+		return "other"
+	end
+end

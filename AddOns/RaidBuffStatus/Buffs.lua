@@ -3,7 +3,7 @@ local L = vars.L
 local addon = RaidBuffStatus
 local report = addon.report
 local raid = addon.raid
-RBS_svnrev["Buffs.lua"] = select(3,string.find("$Revision: 646 $", ".* (.*) .*"))
+RBS_svnrev["Buffs.lua"] = select(3,string.find("$Revision: 675 $", ".* (.*) .*"))
 
 local profile
 function addon:UpdateProfileBuffs()
@@ -892,7 +892,7 @@ local BF = {
 						   caster = name -- caster is nil when out of range
 						end
 						-- only report each caster once
-						report.cheetahpacklist[caster] = caster
+						report.cheetahpacklist[caster] = caster.."("..v..")"
 					end
 				end
 			end
@@ -911,7 +911,7 @@ local BF = {
 			    end
 			  end
 			end
-			addon:SortNameBySuffix(l)
+			table.sort(l)
 		end,
 		icon = BSI[5118], -- Aspect of the Cheetah
 		update = function(self)
@@ -1268,21 +1268,15 @@ local BF = {
 		selfbuff = false,
 		timer = false,
 		chat = ITN[5512], -- Healthstone
+		itemcheck = {
+			item = "5512", -- Healthstone
+			min = 1,
+			frequency = 60 * 3,
+			frequencymissing = 30,
+		},
 		pre = function(self, raid, report)
 			if raid.ClassNumbers.WARLOCK < 1 or not raid.israid or raid.isbattle then
 				return
-			end
-			if not addon.itemcheck.healthstone then
-				addon.itemcheck.healthstone = {}
-				addon.itemcheck.healthstone.results = {}
-				addon.itemcheck.healthstone.list = "healthstonelist"
-				addon.itemcheck.healthstone.check = "healthstone"
-				addon.itemcheck.healthstone.next = 0
-				addon.itemcheck.healthstone.item = "5512" -- Healthstone
-				addon.itemcheck.healthstone.min = 1
-				addon.itemcheck.healthstone.frequency = 60 * 3
-				addon.itemcheck.healthstone.frequencymissing = 30
---				addon:Debug("addon.itemcheck.healthstone.item = " .. addon.itemcheck.healthstone.item)
 			end
 			initreporttable("healthstonelistunknown")
 			initreporttable("healthstonelistgotone")
@@ -1292,7 +1286,7 @@ local BF = {
 				return
 			end
 			report.checking.healthstone = true
-			local stones = addon.itemcheck.healthstone.results[name]
+			local stones = addon:ItemQuery("healthstone", name)
 			if stones == nil then
 				table.insert(report.healthstonelistunknown, name)
 			elseif stones < addon.itemcheck.healthstone.min then
@@ -1355,20 +1349,15 @@ local BF = {
 		selfbuff = false,
 		timer = false,
 		chat = nil,
+		itemcheck = {
+			item = "65455", -- Flask of Battle
+			min = 0,
+			frequency = 60 * 3,
+			frequencymissing = 60 * 3,
+		},
 		pre = function(self, raid, report)
 			if not raid.israid then
 				return
-			end
-			if not addon.itemcheck.flaskofbattle then
-				addon.itemcheck.flaskofbattle = {}
-				addon.itemcheck.flaskofbattle.results = {}
-				addon.itemcheck.flaskofbattle.list = "flaskofbattlelist"
-				addon.itemcheck.flaskofbattle.check = "flaskofbattle"
-				addon.itemcheck.flaskofbattle.next = 0
-				addon.itemcheck.flaskofbattle.item = "65455" -- Flask of Battle
-				addon.itemcheck.flaskofbattle.min = 0
-				addon.itemcheck.flaskofbattle.frequency = 60 * 3
-				addon.itemcheck.flaskofbattle.frequencymissing = 60 * 3
 			end
 			initreporttable("flaskofbattlelistunknown")
 			initreporttable("flaskofbattlelistgotone")
@@ -1378,7 +1367,7 @@ local BF = {
 				return
 			end
 			report.checking.flaskofbattle = true
-			local flasks = addon.itemcheck.flaskofbattle.results[name]
+			local flasks = addon:ItemQuery("flaskofbattle", name)
 			if flasks == nil then
 				table.insert(report.flaskofbattlelistunknown, name)
 			elseif flasks >= 1 then
@@ -1433,10 +1422,11 @@ local BF = {
 		main = function(self, name, class, unit, raid, report)
 			local missingbuff = true
 			local foodz = unit.hasbuff["foodz"]
+			local eating = unit.hasbuff["eating"]
 			if foodz then
 			   local statval = 0
 			   for v in string.gmatch(foodz, "%d+") do  -- assume largest number in tooltip is the statval
-			      statval = math.max(statval,tonumber(v))
+			      statval = math.max(statval,tonumber(v)) 
 			   end
 			   if select(2,UnitRace(unit.unitid)) == "Pandaren" then -- normalize for Epicurean racial
 			      statval = statval / 2
@@ -1447,6 +1437,33 @@ local BF = {
 			   if statval >= profile.foodlevel or
 			      select(11,UnitBuff(unit.unitid, foods[1])) == 66623 then -- bountiful feast
 			      missingbuff = false
+			   elseif statval > 0 then -- try to detect the stat on the slacking food
+			      addon.foodstats = addon.foodstats or {
+			        ITEM_MOD_STRENGTH_SHORT,
+			        ITEM_MOD_AGILITY_SHORT,
+			        ITEM_MOD_INTELLECT_SHORT,
+			        ITEM_MOD_PARRY_RATING_SHORT,
+			        ITEM_MOD_DODGE_RATING_SHORT,
+			        ITEM_MOD_CRIT_RATING_SHORT,
+			        ITEM_MOD_HASTE_RATING_SHORT,
+			        ITEM_MOD_MASTERY_RATING_SHORT,
+			        ITEM_MOD_EXPERTISE_RATING_SHORT,
+			        ITEM_MOD_HIT_RATING_SHORT,
+			        ITEM_MOD_ATTACK_POWER_SHORT,
+			        ITEM_MOD_SPELL_POWER_SHORT,
+			        ITEM_MOD_MANA_REGENERATION_SHORT,
+			        ITEM_MOD_SPIRIT_SHORT,  -- sometimes is secondary
+			        ITEM_MOD_STAMINA_SHORT, -- should come last, as often appears as secondary stat
+			      }
+			      local statstr = "" 
+			      foodz = " "..foodz.." "
+			      for _,stat in ipairs(addon.foodstats) do
+			        if foodz:upper():find(" "..stat:upper().." ") then
+				  statstr = " "..stat
+				  break
+				end
+			      end
+			      name = name.."("..statval..statstr..")"
 			   end
 			end
                         
@@ -1460,7 +1477,15 @@ local BF = {
 				end
 			end
 
+			if missingbuff and eating and profile.ignoreeating then
+				missingbuff = false -- assume they are eating acceptable food
+			end
+
 			if missingbuff then
+				if eating then
+					name = name.."("..L["Eating"]..")"
+					report.foodlist.notes = true
+				end
 				table.insert(report.foodlist, name)
 			end
 		end,
@@ -1811,7 +1836,7 @@ local BF = {
 			end
 		end,
 		post = function(self, raid, report)
-			addon:SortNameBySuffix(report.spbufflist)
+			table.sort(report.spbufflist)
 		end,
 		icon = BSI[109773], -- Dark Intent
 		update = function(self)
@@ -1860,7 +1885,7 @@ local BF = {
 			end
 		end,
 		post = function(self, raid, report)
-			addon:SortNameBySuffix(report.statbufflist)
+			table.sort(report.statbufflist)
 		end,
 		icon = BSI[1126], -- Mark of the Wild
 		update = function(self)
@@ -1910,7 +1935,7 @@ local BF = {
 			end
 		end,
 		post = function(self, raid, report)
-			addon:SortNameBySuffix(report.masterybufflist)
+			table.sort(report.masterybufflist)
 		end,
 		icon = BSI[19740], -- Blessing of Might
 		update = function(self)
@@ -1956,7 +1981,7 @@ local BF = {
 			end
 		end,
 		post = function(self, raid, report)
-			addon:SortNameBySuffix(report.fortitudelist)
+			table.sort(report.fortitudelist)
 		end,
 		icon = BSI[21562], -- Prayer of Fortitude
 		update = function(self)
@@ -2006,7 +2031,7 @@ local BF = {
 			end
 		end,
 		post = function(self, raid, report)
-			addon:SortNameBySuffix(report.critbufflist)
+			table.sort(report.critbufflist)
 		end,
 		icon = BSI[116781], -- Legacy of the White Tiger
 		update = function(self)
@@ -2047,22 +2072,17 @@ local BF = {
 			end
 			return false
 		end,
+		itemcheck = {
+			item = "79257", -- Runescroll of Fortitude
+			min = 0,
+			frequency = 60 * 5,
+			frequencymissing = 60 * 5,
+		},
 		pre = function(self, raid, report)
 			if raid.ClassNumbers.PRIEST > 0 or 
 			   raid.ClassNumbers.WARLOCK > 0 or 
 			   not raid.israid or raid.isbattle then
 				return
-			end
-			if not addon.itemcheck.runescrollfortitude then
-				addon.itemcheck.runescrollfortitude = {}
-				addon.itemcheck.runescrollfortitude.results = {}
-				addon.itemcheck.runescrollfortitude.list = "runescrollfortitudelist"
-				addon.itemcheck.runescrollfortitude.check = "runescrollfortitude"
-				addon.itemcheck.runescrollfortitude.next = 0
-				addon.itemcheck.runescrollfortitude.item = "79257" -- Runescroll of Fortitude
-				addon.itemcheck.runescrollfortitude.min = 0
-				addon.itemcheck.runescrollfortitude.frequency = 60 * 5
-				addon.itemcheck.runescrollfortitude.frequencymissing = 60 * 5
 			end
 		end,
 		main = function(self, name, class, unit, raid, report)
@@ -2117,18 +2137,15 @@ local BF = {
 			end
 		end,
 		buffers = function()
-			if not addon.itemcheck.runescrollfortitude then
-				return
-			end
 			local thebuffers = {}
-				for _,rc in pairs(raid.classes) do
-					for name,_ in pairs(rc) do
-						local items = addon.itemcheck.runescrollfortitude.results[name] or 0
-						if items > 0 then
-							table.insert(thebuffers, name .. "(" .. items .. ")")
-						end
+			for _,rc in pairs(raid.classes) do
+				for name,_ in pairs(rc) do
+					local items = addon:ItemQuery("runescrollfortitude", name) or 0
+					if items > 0 then
+						table.insert(thebuffers, name .. "(" .. items .. ")")
 					end
 				end
+			end
 			return thebuffers
 		end,
 		consumable = true,
@@ -2162,7 +2179,7 @@ local BF = {
 			end
 		end,
 		post = function(self, raid, report)
-			addon:SortNameBySuffix(report.levitatelist)
+			table.sort(report.levitatelist)
 		end,
 		icon = BSI[1706], -- Levitate
 		update = function(self)
@@ -2288,18 +2305,37 @@ local BF = {
 		chat = BS[110309], -- Symbiosis
 		pre = function(self, raid, report)
 			initreporttable("havesymbiosis")
+			initreporttable("gavesymbiosis")
 		end,
 		main = function(self, name, class, unit, raid, report)
+			-- Symbiosis is supposed to persist through death and only be "cancelled if the druid and target become too far apart"
+			-- in reality this cancellation often happens at zone boundaries (releasing upon death from inside an instance)
+			-- but more importantly it sometimes only cancels the buff on one of the two players (can happen either direction)
+			-- So we need to check every druid has the buff on themselves and a (non-druid) target
 			if class == "DRUID" then
 				report.checking.symbiosis = true
-				if not unit.hasbuff[BS[110309]] then -- symbiosis
+				if unit.hasbuff[BS[110309]] then -- druid has the buff
+					report.gavesymbiosis[name] = true
+				else -- druid missing the buff
 					table.insert(report.symbiosislist, name)
 				end
-			elseif unit.hasbuff[BS[110309]] then
-				report.havesymbiosis[name] = unit.hasbuff[BS[110309]].caster
+			elseif unit.hasbuff[BS[110309]] then -- non-druid received the buff
+				report.havesymbiosis[name] = unit.hasbuff[BS[110309]].caster or true
 			end
 		end,
-		post = nil,
+		post = function(self, raid, report)
+			local havecnt,gavecnt = 0,0
+			for _ in pairs(report.havesymbiosis) do havecnt = havecnt + 1 end
+			for _ in pairs(report.gavesymbiosis) do gavecnt = gavecnt + 1 end
+			if gavecnt ~= havecnt then -- a buff connection broke
+				for nondruid, druid in pairs(report.havesymbiosis) do
+					report.gavesymbiosis[druid] = nil -- remove druids accounted for
+				end
+				for druid in pairs(report.gavesymbiosis) do -- druids whose target lost it (or are not in zone)
+					table.insert(report.symbiosislist, druid.."("..L["Broken Link"]..")")
+				end
+			end
+		end,
 		icon = BSI[110309], -- Symbiosis
 		update = function(self)
 			addon:DefaultButtonUpdate(self, report.symbiosislist, profile.checksymbiosis, report.checking.symbiosis or false, report.symbiosislist)
@@ -2687,20 +2723,15 @@ local BF = {
 			end
 			return false
 		end,
+		itemcheck = {
+			item = "49633", -- Drums of Forgotten Kings
+			min = 0,
+			frequency = 60 * 5,
+			frequencymissing = 60 * 5,
+		},
 		pre = function(self, raid, report)
 			if not addon:UseDrumsKings(raid) or raid.isbattle then
 				return
-			end
-			if not addon.itemcheck.drumskings then
-				addon.itemcheck.drumskings = {}
-				addon.itemcheck.drumskings.results = {}
-				addon.itemcheck.drumskings.list = "drumskingslist"
-				addon.itemcheck.drumskings.check = "drumskings"
-				addon.itemcheck.drumskings.next = 0
-				addon.itemcheck.drumskings.item = "49633" -- Drums of Forgotten Kings
-				addon.itemcheck.drumskings.min = 0
-				addon.itemcheck.drumskings.frequency = 60 * 5
-				addon.itemcheck.drumskings.frequencymissing = 60 * 5
 			end
 		end,
 		main = function(self, name, class, unit, raid, report)
@@ -2734,18 +2765,15 @@ local BF = {
 			end
 		end,
 		buffers = function()
-			if not addon.itemcheck.drumskings then
-				return
-			end
 			local thebuffers = {}
-				for _,rc in pairs(raid.classes) do
-					for name,_ in pairs(rc) do
-						local items = addon.itemcheck.drumskings.results[name] or 0
-						if items > 0 then
-							table.insert(thebuffers, name .. "(" .. items .. ")")
-						end
+			for _,rc in pairs(raid.classes) do
+				for name,_ in pairs(rc) do
+					local items = addon:ItemQuery("drumskings", name) or 0
+					if items > 0 then
+						table.insert(thebuffers, name .. "(" .. items .. ")")
 					end
 				end
+			end
 			return thebuffers
 		end,
 		consumable = true,

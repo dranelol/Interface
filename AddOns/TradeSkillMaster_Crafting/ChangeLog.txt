@@ -1,3 +1,27 @@
+v2.6
+*Updated for patch 6.0.2
+
+v2.5.2
+*Cleaned up some code
+*The rows in the materials list in the queue will now respond to clicks like normal item links.
+*The quantity box in the profession frame will now highlight all of the text when you click into it.
+*Changed how subclasses are programmatically expanded to fix various issues with crafting costs disappearing when they are collapsed.
+
+v2.5.1
+*Added new "/tsm restock_help" slash command which will tell you why an item is not being queued.
+
+v2.5
+*Added mats require to craft an item to Crafting's tooltip.
+*Removed some old, unnecessary ItemTracker checks.
+*Added module API for getting Crafting frame status.
+*Fixed the frame strata of the queue frame to match the main profession frame.
+*Added events to the restock queue.
+*Added code to clean up crafts which are no longer known.
+*Added some extra checks to profession window code to prevent lua errors.
+
+v2.4.6
+*Changed tooltip description for min profit.
+
 v2.4.5
 *Fixed quantity display issue with gathering mail items.
 *Added module APIs for addQueue,removeQueue,getQueue,getCDCrafts

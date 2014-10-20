@@ -1,9 +1,10 @@
 ## Title: AAV - atrox Arena Viewer
 ## Author: zwacky
-## Interface: 50300
+## Interface: 50400
 ## SavedVariables: atroxArenaViewerData
 ## Notes: record and view arena replays.
 
+lib\lib-st\lib-st.xml
 lib\LibStub-1.0\LibStub-1.0.xml
 lib\CallbackHandler-1.0\CallbackHandler-1.0.xml
 lib\AceAddon-3.0\AceAddon-3.0.xml
@@ -27,9 +28,10 @@ aav.lua
 conf.lua
 class\matchstub.lua
 class\playstub.lua
+class\util.lua
+class\tablegui.lua
 class\gui.lua
 class\combattext.lua
-class\util.lua
 class\skills.lua
 class\entity.lua
 class\aura.lua

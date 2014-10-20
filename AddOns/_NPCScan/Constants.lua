@@ -17,7 +17,7 @@ local FOLDER_NAME, private = ...
 -- General constants.
 -------------------------------------------------------------------------------
 private.NPC_ID_MAX = 0xFFFFF -- Largest ID that will fit in a GUID's 20-bit NPC ID field.
-
+private.NUM_RAID_ICONS = 8
 
 -------------------------------------------------------------------------------
 -- Zones.
@@ -29,27 +29,49 @@ private.CONTINENT_IDS = {
 	NORTHREND = 4,
 	THE_MAELSTROM = 5,
 	PANDARIA = 6,
+	DRANOR = 7,
 }
+
+
+--Many map API calls now return both the map name and map id.  This extracts a table of just map
+--names from the returned data.
+local function extract_map_names(...)
+	local t = {}
+	for i=1, select("#", ...), 2 do
+	k = select(i, ...)
+	v = select(i+1, ...)
+	t[#t+1] = v
+	end
+	return t
+end
 
 
 do
 	local VIRTUAL_CONTINENTS = {
 		[private.CONTINENT_IDS.THE_MAELSTROM] = true
 	}
+ --13, 14,466,485,751,862,962
 
 
-	private.LOCALIZED_CONTINENT_NAMES = { _G.GetMapContinents() }
+	local MapContinents = { _G.GetMapContinents() }  --Now returns both mapid and World name
+	private.LOCALIZED_CONTINENT_NAMES = extract_map_names(_G.GetMapContinents())
+
+--[[
+	for continent_id, continent_name in pairs(MapContinents) do
+		if type(continent_name) == "string" then  --Weeds out the extra map id from names
+		_G.tinsert(private.LOCALIZED_CONTINENT_NAMES,  continent_name)
+		end
+	end
+--]]
 	for continent_id in pairs(VIRTUAL_CONTINENTS) do
 		private.LOCALIZED_CONTINENT_NAMES[continent_id] = nil
 	end
 
-
 	private.LOCALIZED_CONTINENT_IDS = {}
 	for continent_id, continent_name in pairs(private.LOCALIZED_CONTINENT_NAMES) do
-		private.LOCALIZED_CONTINENT_IDS[continent_name] = continent_id
+			private.LOCALIZED_CONTINENT_IDS[continent_name] = continent_id
 	end
 end -- do-block
-
 
 private.ZONE_IDS = {
 	DUROTAR = 4,
@@ -152,6 +174,21 @@ private.ZONE_IDS = {
 	ISLE_OF_GIANTS = 929,
 	THRONE_OF_THUNDER = 930,
 	TIMELESS_ISLE = 951,
+--WoD Areas 
+	FROSTFIRE_RIDGE = 941,
+	TANAAN_JUNGLE = 945,
+	TALADOR = 946,
+	SHADOWMOON_VALLEY = 947,
+	SPIRES_OF_ARAK = 948,
+	GORGROND = 949,
+	NAGRAND = 950,
+	DRAENOR = 962,
+	TANAAN_JUNGLE = 970, -- - ASSAULT ON THE DARK PORTAL
+	LUNARFALL = 971,
+	FROSTWALL = 976, 
+	ASHRAN = 978,
+	STORMSHIELD = 1009,
+	WARSPEAR = 1011,
 }
 
 
@@ -167,14 +204,14 @@ for label, id in pairs(private.ZONE_IDS) do
 end
 
 do
-	local continent_names = { _G.GetMapContinents() }
-
+	local continent_names = extract_map_names(_G.GetMapContinents())
 	private.ZONE_NAMES.KALIMDOR = continent_names[1]
 	private.ZONE_NAMES.EASTERN_KINGDOMS = continent_names[2]
 	private.ZONE_NAMES.OUTLAND = continent_names[3]
 	private.ZONE_NAMES.NORTHREND = continent_names[4]
 	private.ZONE_NAMES.THE_MAELSTROM = continent_names[5]
 	private.ZONE_NAMES.PANDARIA = continent_names[6]
+	private.ZONE_NAMES.DRAENOR = continent_names[7]
 end
 
 
@@ -188,22 +225,32 @@ private.ACHIEVEMENT_IDS = {
 	GLORIOUS = 7439,
 	CHAMPIONS_OF_LEI_SHEN = 8103,
 	TIMELESS_CHAMPION = 8714,
+	GORGROND_MONSTER_HUNTER = 9400,
+	HIGH_VALUE_TARGETS_ASHRAN = 9216,
+	CUT_OFF_THE_HEAD = 9633,
+	HERALDS_OF_THE_LEGION = 9638,
+	FIGHT_THE_POWER = 9655,
+	ANCIENT_NO_MORE = 9678,
 }
-
 
 do
 	private.ACHIEVEMENTS = {
-		[private.ACHIEVEMENT_IDS.BLOODY_RARE]		= { WorldID = private.ZONE_NAMES.OUTLAND },
-		[private.ACHIEVEMENT_IDS.FROSTBITTEN]		= { WorldID = private.ZONE_NAMES.NORTHREND },
-		[private.ACHIEVEMENT_IDS.ONE_MANY_ARMY]		= { WorldID = private.ZONE_NAMES.PANDARIA },
-		[private.ACHIEVEMENT_IDS.GLORIOUS]		= { WorldID = private.ZONE_NAMES.PANDARIA },
+		[private.ACHIEVEMENT_IDS.BLOODY_RARE]			= { WorldID = private.ZONE_NAMES.OUTLAND },
+		[private.ACHIEVEMENT_IDS.FROSTBITTEN]			= { WorldID = private.ZONE_NAMES.NORTHREND },
+		[private.ACHIEVEMENT_IDS.ONE_MANY_ARMY]			= { WorldID = private.ZONE_NAMES.PANDARIA },
+		[private.ACHIEVEMENT_IDS.GLORIOUS]				= { WorldID = private.ZONE_NAMES.PANDARIA },
 		[private.ACHIEVEMENT_IDS.CHAMPIONS_OF_LEI_SHEN]	= { WorldID = private.ZONE_NAMES.PANDARIA },
-		[private.ACHIEVEMENT_IDS.TIMELESS_CHAMPION]	= { WorldID = private.ZONE_NAMES.PANDARIA },
+		[private.ACHIEVEMENT_IDS.TIMELESS_CHAMPION]		= { WorldID = private.ZONE_NAMES.PANDARIA },
+		[private.ACHIEVEMENT_IDS.GORGROND_MONSTER_HUNTER]	= { WorldID = private.ZONE_NAMES.DRAENOR },
+		[private.ACHIEVEMENT_IDS.HIGH_VALUE_TARGETS_ASHRAN]	= { WorldID = private.ZONE_NAMES.DRAENOR },
+		[private.ACHIEVEMENT_IDS.CUT_OFF_THE_HEAD] 		= { WorldID = private.ZONE_NAMES.DRAENOR },
+		[private.ACHIEVEMENT_IDS.HERALDS_OF_THE_LEGION]	= { WorldID = private.ZONE_NAMES.DRAENOR },
+		[private.ACHIEVEMENT_IDS.FIGHT_THE_POWER]		= { WorldID = private.ZONE_NAMES.DRAENOR },
+		[private.ACHIEVEMENT_IDS.ANCIENT_NO_MORE]		= { WorldID = private.ZONE_NAMES.DRAENOR },
+
 	}
 
-
 	local CRITERIA_TYPE_NPC_KILL = 0
-
 
 	for achievement_id, achievement in pairs(private.ACHIEVEMENTS) do
 		achievement.ID = achievement_id
@@ -222,3 +269,15 @@ do
 		end
 	end
 end -- do-block
+
+-------------------------------------------------------------------------------
+-- Macro Items.
+-------------------------------------------------------------------------------
+private.macrotext = "/cleartarget"
+private.MACRO_FORMAT = "%s\n/targetexact %s"
+private.MACRO_FORMAT_CUSTOM_MOB = "%s\n/target %s"
+--Mobs that appear in more that one zone
+private.MANUAL_PANDARIA_ADDITIONS = {
+	69768, -- Zandalari Warscout
+	69769, -- Zandalari Warbringer
+}

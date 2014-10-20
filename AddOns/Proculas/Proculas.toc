@@ -2,12 +2,12 @@
 ## Title: Proculas |cff69ccf02|r
 ## Notes: Tracks Proc stats such as PPM and Uptime.
 ## Author: Idunno [US Hellscream]
-## Version: 2.5.2
+## Version: 2.5.3
 ## SavedVariables: ProculasDB
 ## SavedVariablesPerCharacter: ProculasDBPC
 ## Created by Idunno of US Hellscream
 ## OptionalDeps: LubStub, LibBlacklist, CallbackHandler-1.0, AceAddon-3.0, AceGUI-3.0, AceConfig-3.0, AceConsole-3.0, AceDB-3.0, AceEvent-3.0, AceDBOptions-3.0, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibSink-2.0, AceTimer-3.0, AceLocale-3.0, LibDataBroker-1.1, LibDBIcon-1.0, LibBars-1.0, LibEffects-1.0, LibQTip-1.0
-## X-Curse-Packaged-Version: 2.5.2
+## X-Curse-Packaged-Version: 2.5.3
 ## X-Curse-Project-Name: Proculas
 ## X-Curse-Project-ID: proculas
 ## X-Curse-Repository-ID: wow/proculas/mainline
@@ -15,6 +15,8 @@
 #@no-lib-strip@
 embeds.xml
 #@end-no-lib-strip@
+
+LibEffects-1.0\LibEffects-1.0.lua
 
 locale\enUS.lua
 

@@ -194,7 +194,7 @@ function private:CreateTabs(frame)
 	button:SetPoint("TOPLEFT", 70, -40)
 	button:SetHeight(20)
 	button:SetWidth(55)
-	button:SetText(L["Inbox"])
+	button:SetText(INBOX)
 	button:SetScript("OnClick", OnButtonClick)
 	frame.inboxBtn = button
 	
@@ -218,7 +218,7 @@ function private:CreateTabs(frame)
 	button:SetPoint("TOPLEFT", frame.quickSendBtn, "TOPRIGHT", 5, 0)
 	button:SetPoint("TOPRIGHT", -5, -40)
 	button:SetHeight(20)
-	button:SetText(L["Other"])
+	button:SetText(OTHER)
 	button:SetScript("OnClick", OnButtonClick)
 	frame.otherBtn = button
 	

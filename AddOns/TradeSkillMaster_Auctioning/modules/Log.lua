@@ -35,6 +35,7 @@ local info = {
 		notPostingWhitelist = {L["Lowest auction by whitelisted player."], ORANGE},
 		postingUndercut = {L["Undercutting competition."], GREEN},
 		invalidSeller = {L["Invalid seller data returned by server."], RED},
+		undercuttingBlacklist = {L["Undercutting blacklisted player."], GREEN},
 	},
 	cancel = {
 		bid = {L["Auction has been bid on."], CYAN},

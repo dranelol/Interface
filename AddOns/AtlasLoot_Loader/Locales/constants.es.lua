@@ -1,4 +1,4 @@
-﻿-- $Id: constants.es.lua 3264 2011-01-27 20:10:48Z dynaletik $
+﻿-- $Id: constants.es.lua 4212 2013-05-20 12:27:56Z dynaletik $
 --[[
 constants.es.lua --- Traduction ES por maqjav
 This file defines an AceLocale table for all the various text strings needed
@@ -29,7 +29,6 @@ if AL then
 	AL["Safe Chat Links"] = "Enlaces seguros en el chat";
 	AL["Comparison TT"] = "Comparaciones";
 	AL["Show Comparison Tooltips"] = "Mostrar bocadillos comparar";
-	AL["Supress item query text"] = "Suprimir texto petición objetos";
 	AL["Opaque"] = "Opaco";
 	AL["Make Loot Table Opaque"] = "Hacer opaca tabla botines";
 	AL["Treat Crafted Items:"] = "Tratar objetos creados";
@@ -274,13 +273,6 @@ if AL then
 	AL["Set"] = "Conjunto";
 	AL["Justice Points"] = "Puntos de justicia";
 	AL["Valor Points"] = "Puntos de valor";
-	AL["Badge of Justice"] = "Distintivo de justicia"; --should be removed
-	AL["Emblem Rewards"] = "Recompensas por emblemas"; --should be removed
-	AL["Emblem of Valor"] = "Emblema de valor"; --should be removed
-	AL["Emblem of Heroism"] = "Emblema de heroísmo"; --should be removed
-	AL["Emblem of Conquest"] = "Emblema de conquista"; --should be removed
-	AL["Emblem of Triumph"] = "Emblema de triunfo"; --should be removed
-	AL["Emblem of Frost"] = "Emblema de escarcha"; --should be removed
 	AL["BoE World Epics"] = "Épicos del mundo BoE";
 	AL["Legendary Items"] = "Objetos legendários";
 	AL["Misc Sets"] = "Conjuntos varios";
@@ -289,10 +281,8 @@ if AL then
 	AL["Tier 3 Set"] = "Conjunto 3";
 	AL["Tier 4/5/6 Set"] = "Conjunto 4/5/6";
 	AL["Tier 7/8 Set"] = "Conjunto 7/8";
-	AL["Tier 8 Set"] = "Conjunto 8";
 	AL["Tier 9 Set"] = "Conjunto 9";
 	AL["Tier 10 Set"] = "Conjunto 10";
-	AL["Tier 11 Set"] = "Conjunto 11";
 	AL["TCG Items"] = "Objetos TCG"; -- Trading Card Game Items
 	AL["Transformation Items"] = "Objetos de transformación";
 
@@ -303,11 +293,8 @@ if AL then
 	AL["PvP Weapons"] = "Armas JcJ";
 	AL["PvP Non-Set Epics"] = "Épicos JcJ No-Conjuntos";
 	AL["PvP Reputation Sets"] = "Conjuntos JcJ por reputación"
-	AL["Arena PvP Weapons"] = "Armas de Arenas JcJ";
 	AL["PvP Misc"] = "Diseños Joyería JcJ";
 	AL["PVP Gems/Enchants/Jewelcrafting Designs"] = "Diseños Gemas/Encantamientos/Joyería JcJ";
-	AL["PvP Class Items"] = "Objetos de clase JcJ";
-	--AL["NOT AVAILABLE ANYMORE"] = true;
 
 	-- World Events
 	AL["Abyssal Council"] = "Consejo abisal";
@@ -316,7 +303,6 @@ if AL then
 	AL["Brewfest"] = "Fiesta de la Cerveza";
 	AL["Children's Week"] = "Semana de los niños";
 	AL["Day of the Dead"] = "Festividad de los Muertos";
-	AL["Elemental Invasion"] = "Invasión de elementales";
 	AL["Ethereum Prison"] = "Prisión de los Etereum";
 	AL["Feast of Winter Veil"] = "Festival de Invierno";
 	AL["Gurubashi Arena Booty Run"] = "El cofre pirata de Gurubashi";
@@ -329,7 +315,6 @@ if AL then
 	AL["Pilgrim's Bounty"] = "Generosidad del Peregrino";
 	AL["Skettis"] = "Skettis";
 	AL["Stranglethorn Fishing Extravaganza"] = "Concurso de Pesca";
-	AL["Elemental Unrest"] = "Evento de los elementales";
 
 	--Minimap Button
 	AL["|cff1eff00Left-Click|r Browse Loot Tables"] = "|cff1eff00Click-izdo|r Navegar por las tablas de botines";
@@ -375,9 +360,6 @@ if AL then
 	AL["Banner"] = "Estandarte";
 	AL["Set"] = "Conjunto";
 	AL["Token"] = "Insignia";
-	AL["Tokens"] = "Insignias";	
-	--AL["Token Hand-Ins"] = true; --FALTA
-	AL["Skinning Knife"] = "Cuchillo para desollar";
 	AL["Combat Pet"] = "Mascota de combate"; --Comprobar
 	AL["Fireworks"] = "Fuegos artificiales";
 	AL["Transformation Item"] = "Objeto de transformación";
@@ -403,7 +385,7 @@ if AL then
 	AL["Enchant Cloak"] = "Encantamiento Capa";
 	AL["Enchant Gloves"] = "Encantamiento Guantes";
 	AL["Enchant Ring"] = "Encantamiento Anillo";
-	AL["Enchant Shield"] = "Encantamiento Escudo";
+	AL["Enchant Shield & Off-Hand"] = "Encantamiento Escudo";
 	AL["Enchant 2H Weapon"] = "Encantamiento Arma 2 Manos";
 	AL["Enchant Weapon"] = "Encantamiento Arma";
 	AL["Cataclysm Vendor Sold Formulas"] = "Vendedor de fórmulas de Cataclysm";
@@ -424,7 +406,6 @@ if AL then
 	AL["Drums, Bags and Misc."] = "Tambores, Bolsas y Misc.";
 
 	--Tailoring
-	AL["Cloth Armor"] = "Armadura de tela";
 	AL["Shirts"] = "Camisas";
 	AL["Bags"] = "Bolsas";
 
@@ -436,16 +417,9 @@ if AL then
 	AL["Quest Reward"] = "Recompensa de misión";
 	AL["Old Quest Reward"] = "Recompensas viejas de misiones";
 	AL["Shared"] = "Compartido";
-	AL["Unique"] = "Único";
 	AL["Right Half"] = "Parte derecha";
 	AL["Left Half"] = "Parte izquierda";
-	AL["28 Slot Soul Shard"] = "28 huecos para fragmentos de alma";
-	AL["20 Slot"] = "20 huecos";
-	AL["18 Slot"] = "18 huecos";
-	AL["16 Slot"] = "16 huecos";
-	AL["10 Slot"] = "10 huecos";
 	AL["Currency"] = "Utiliza recompensas para comprarlo";
-	AL["Conjured Item"] = "Objetos conjurados";
 	AL["Used to summon boss"] = "Utilizados para invocar jefe";
 	AL["Tradable for sunmote + item above"] = "Intercambiable";
 	AL["Card Game Item"] = "Juego de cartas";
@@ -454,8 +428,6 @@ if AL then
 	--AL["Random Heroic Reward"] = true;
 	--AL["Fishing Daily Reward"] = true;
 	--AL["Collector's Edition"] = true;
-	--AL["Blizzcon"] = true;
-	--AL["WoW Anniversary Celebration"] = true;
 	--AL["Daily Reward"] = true;
 
 	-- Minor Labels for loot table descriptions
@@ -483,15 +455,9 @@ if AL then
 	AL["10/25 Man"] = "10/25 Personas";
 	AL["Epic Set"] = "Conjunto épico";
 	AL["Rare Set"] = "Conjunto superior";
-	AL["Season 1"] = "Temporada 1";
-	AL["Season 2"] = "Temporada 2";
-	AL["Season 3"] = "Temporada 3";
-	AL["Season 4"] = "Temporada 4";
-	AL["Season 5"] = "Temporada 5";
-	AL["Season 6"] = "Temporada 6";
-	AL["Season 7"] = "Temporada 7";
-	AL["Season 8"] = "Temporada 8";
 	AL["Season 9"] = "Temporada 9";
+	AL["Season 10"] = "Temporada 10";
+	AL["Season 11"] = "Temporada 11";
 	AL["Fire"] = "Fuego";
 	AL["Water"] = "Agua";
 	AL["Wind"] = "Aire";
@@ -502,7 +468,6 @@ if AL then
 	AL["Nature Resistance Gear"] = "Equipamientos con resistencia a la naturaleza";
 	AL["Frost Resistance Gear"] = "Equipamientos con resistencia al hielo";
 	AL["Shadow Resistance Gear"] = "Equipamientos con resistencia a las sombras";
-	AL["Classic Sets"] = "Conjuntos clásicos";
 
 	-- Labels for loot table sections
 	AL["Additional Heroic Loot"] = "Botin heróico adicional";
@@ -522,8 +487,6 @@ if AL then
 	AL["Heirloom"] = "Reliquia";
 	AL["Weapons"] = "Armas";
 	AL["Accessories"] = "Accesorios";
-	AL["Low Level"] = "Nivel bajo";
-	AL["High Level"] = "Nivel alto";
 	AL["Rare"] = "Raras";
 
 	-- Loot Table Names
@@ -539,20 +502,17 @@ if AL then
 	AL["Agility"] = "Agilidad";
 	AL["Intellect"] = "Intelecto";
 	AL["Strength"] = "Fuerza";
-	AL["Agility, Intellect, Strength"] = "Agilidad, Intelecto, Fuerza";
 	AL["Spell Power"] = "Poder con hechizos";
 	AL["Attack Power"] = "Poder de ataque";
 	AL["Spell/Attack Power"] = "Poder de ataque/hechizos";
 	AL["Hit Rating"] = "Índice de golpe";
 	AL["Crit Rating"] = "Índice de crítico";
-	AL["Crit/Hit Rating"] = "Índice de golpe/crítico";
 	AL["Haste Rating"] = "Índice de celeridad";
 	AL["Dodge Rating"] = "Índice de esquivar";
 	AL["Expertise Rating"] = "Índice de pericia";
 	AL["Mastery Rating"] = "Índice de maestría";
 	AL["Parry Rating"] = "Índice de parada";
 	AL["Other Ratings"] = "Otros índices";
-	AL["Resistance"] = "Resistencia";
 	AL["Health / Second"] = "Vida / Segundo";
 	AL["Mana / Second"] = "Maná / Segundo";
 	AL["Tracking"] = "Rastreo";
@@ -568,43 +528,24 @@ if AL then
 	AL["Feasts"] = "Festividades";
 
 	-- Extra Text in Boss lists
-	AL["Set: Embrace of the Viper"] = "Conjunto: Abrazo de la víbora";
-	AL["Set: Defias Leather"] = "Conjunto: Cuero Defias";
-	AL["Set: The Gladiator"] = "Conjunto: El Gladiador";
-	AL["Set: Chain of the Scarlet Crusade"] = "Conjunto: Cadena de la Cruzada Escarlata";
-	AL["Set: The Postmaster"] = "Conjunto: El jefe de correos";
-	AL["Set: Necropile Raiment"] = "Conjunto: Vestiduras necrópilas";
-	AL["Set: Cadaverous Garb"] = "Conjunto: Atuendo de cadáver";
-	AL["Set: Bloodmail Regalia"] = "Conjunto: Atavío mallasangre";
-	AL["Set: Deathbone Guardian"] = "Conjunto: Guardia de hueso de muerto";
-	AL["Set: Dal'Rend's Arms"] = "Conjunto: Armas de Dal'Rend";
-	AL["Set: Spider's Kiss"] = "Beso de la araña";
 	AL["AQ20 Class Sets"] = "Conjuntos por Clase de AQ20";
 	AL["AQ Enchants"] = "Encantamientos AQ";
 	AL["AQ40 Class Sets"] = "Conjuntos por Clase de AQ40";
 	AL["AQ Opening Quest Chain"] = "Apertura de la misión de la cadena AQ";
-	AL["ZG Class Sets"] = "Conjuntos por Clase de ZG";
-	AL["ZG Enchants"] = "Encantamientos ZG";
-	AL["Class Books"] = "Libros de clase";
 	AL["Tribute Run"] = "Homenaje de carrera";
 	AL["Dire Maul Books"] = "Libros de La Masacre";
 	AL["Random Boss Loot"] = "Botín de jefes aleatorios";
-	AL["BT Patterns/Plans"] = "Recetas/Planos del Templo Oscuro";
-	AL["Hyjal Summit Designs"] = "Diseños de la Cumbre de Hyjal";
-	AL["SP Patterns/Plans"] = "Recinto de Esclavos Recetas/Planos";
-	AL["Ulduar Formula/Patterns/Plans"] = "Formulas/patrones/planos Ulduar";
-	AL["Trial of the Crusader Patterns/Plans"] = "Patrones/planos Prueba del Cruzado";
+	AL["Formula/Patterns/Plans"] = "Formulas/patrones/planos";
 	AL["BRD Blacksmithing Plans"] = "Planos de herrero BRD";
+	AL["Patterns/Plans"] = "Patrones/planos";
+
 	-- General titles
 	AL["Achievement"] = "Logro";
-	AL["Promotional & Card Game"] = "Cartas del juego promocionales";
 
 	-- Companions
 	AL["Achievement"] = "Logro";
-	AL["Achievement & Faction Reward Companions"] = "Mascotas de recompensa por logro y facción";
 	AL["Card Game Companions"] = "Mascotas por cartas del juego";
 	AL["Companion Accessories"] = "Accesorios para mascotas";
-	AL["Companion Store"] = "Tienda de mascotas";
 	AL["Crafted Companions"] = "Mascotas creadas";
 	AL["Dungeon/Raid"] = "Mazmorra/Banda";
 	AL["Faction"] = "Facción";
@@ -616,9 +557,7 @@ if AL then
 	AL["Unobtainable Companions"] = "Mascotas inconseguibles";
 
 	-- Mounts
-	AL["Alliance Flying Mounts"] = "Monturas voladoras Alianza";
 	AL["Alliance Mounts"] = "Monturas Alianza";
-	AL["Horde Flying Mounts"] = "Monturas voladoras Horda";
 	AL["Horde Mounts"] = "Monturas Horda";
 	AL["Card Game Mounts"] = "Monturas juegos de cartas";
 	AL["Crafted Mounts"] = "Monturas fabricadas";
@@ -637,18 +576,14 @@ if AL then
 	AL["Alliance Tabards"] = "Tabardos de la Alianza";
 	AL["Card Game Tabards"] = "Tabardos de cartas del juego";
 	AL["Horde Tabards"] = "Tabardos de la Horda";
-	AL["Neutral Faction Tabards"] = "Tabardos de facciones neutrales";
 	AL["PvP Tabards"] = "Tabardos JcJ";
 	AL["Unobtainable Tabards"] = "Tabardos inconseguibles";
 
 	--Darkmoon Faire
 	AL["Darkmoon Faire Rewards"] = "Recompensas Feria de la Luna Negra";
 	AL["Low Level Decks"] = "Bajaras de bajo nivel";
-	AL["Level 60 Trinkets"] = "Abaloríos nivel 60";
-	AL["Level 70 Trinkets"] = "Abaloríos nivel 70";
 	AL["Level 60 & 70 Trinkets"] = "Abaloríos nivel 60 y 70";
-	AL["Level 80 Trinkets"] = "Abaloríos nivel 80";
-	AL["Level 85 Trinkets"] = "Abaloríos nivel 85";
+	AL["Trinkets"] = "Abaloríos";
 
 	--Card Game Decks and descriptions
 	AL["Loot Card Items"] = "Objetos (juegos de cartas)";
@@ -772,7 +707,6 @@ if AL then
 	AL["Venture Bay"] = "Bahía Aventura"; --Check
 
 	--Karazhan Opera Event Headings
-	AL["Shared Drops"] = "Objetos compartidos";
 	AL["Wizard of Oz"] = "El mago de Oz";
 	AL["Red Riding Hood"] = "Caperucita roja";
 
@@ -780,17 +714,6 @@ if AL then
 	AL["Spider"] = "Araña";
 	AL["Darkhound"] = "Can oscuro";
 	AL["Bat"] = "Murciélago";
-
-	--ZG Tokens
-	AL["Primal Hakkari Kossack"] = "Casaca Hakkari primigenia";
-	AL["Primal Hakkari Shawl"] = "Primal Hakkari Shawl";
-	AL["Primal Hakkari Bindings"] = "Ataduras Hakkari primigenias";
-	AL["Primal Hakkari Sash"] = "Fajín Hakkari primigenio";
-	AL["Primal Hakkari Stanchion"] = "Puntal Hakkari primigenio";
-	AL["Primal Hakkari Aegis"] = "Égida Hakkari primigenia";
-	AL["Primal Hakkari Girdle"] = "Faja Hakkari primigenia";
-	AL["Primal Hakkari Armsplint"] = "Cabestrillo Hakkari primigenio";
-	AL["Primal Hakkari Tabard"] = "Tabardo Hakkari primigenio";
 
 	-- AQ20 Tokens
 	AL["Qiraji Ornate Hilt"] = "Empuñadura qiraji ornamentada";
@@ -810,19 +733,22 @@ if AL then
 	AL["Husk of the Old God"] = "Colmillo del dios antiguo";
 	AL["Carapace of the Old God"] = "Caparazón del dios antiguo";
 
-	-- Classic WoW Sets
-	AL["Zul'Gurub Rings"] = "Anillos de Zul'Gurub";
+	-- Faction related strings
+	-- AL["Neutral"] = true;
+	AL["Friendly"] = "Amistoso";
+	AL["Honored"] = "Honorable";
+	AL["Revered"] = "Reverenciado";
+	AL["Exalted"] = "Exaltado";
+	AL["Best Friend"] = "Mejor amigo";
+	AL["Winterfin Retreat"] = "Retiro Aleta Invernal";
 
-	--Recipe origin strings
+	-- Recipe origin strings
 	AL["Trainer"] = "Instructor";
 	AL["Discovery"] = "Descubierto";
 	AL["World Drop"] = "Botín del Mundo";
 	AL["Drop"] = "Botín"; 
 	AL["Vendor"] = "Vendedor";
 	AL["Crafted"] = "Fabricado";
-
-	--Level 80 PvP Weapons
-	AL["Wrathful Gladiator\'s Weapons"] = "Armas del Gladiador colérico";
 
 	-- Months
 	AL["January"] = "Enero";
@@ -870,12 +796,7 @@ if AL then
 	AL["Druid of the Fang"] = "Druida del Colmillo";
 	AL["Defias Strip Miner"] = "Cantero Defias";
 	AL["Defias Overseer/Taskmaster"] = "Sobrestante/Capataz Defias";
-	AL["Scarlet Defender/Myrmidon"] = "Defensor/Mirmidón Escarlata";
-	AL["Scarlet Champion"] = "Campeón Escarlata";
-	AL["Scarlet Centurion"] = "Centurión Escarlata";
 	AL["Scarlet Trainee"] = "Practicante Escarlata";
-	--AL["Herod/Mograine"] = true,
-	AL["Scarlet Protector/Guardsman"] = "Protector/Custodio Escarlata";
 	AL["Shadowforge Flame Keeper"] = "Vigilante de la Llama Forjatiniebla";
 	AL["Avatar of the Martyred"] = "Avatar de los Martirizados";
 	AL["Nexus Stalker"] = "Acechador nexo";
@@ -892,7 +813,6 @@ if AL then
 	AL["Scholomance Adept"] = "Adepto de Scholomance";
 	AL["Scholomance Dark Summoner"] = "Invocador Oscuro de Scholomance";
 	AL["Blackhand Elite"] = "Élite Puño Negro";
-	AL["Blackhand Assassin"] = "Asesino Puño Negro";
 	AL["Firebrand Pyromancer"] = "Piromántico Pirotigma";
 	AL["Firebrand Invoker"] = "Convocador Pirotigma";
 	AL["Firebrand Grunt"] = "Bruto Pirotigma";
@@ -905,7 +825,6 @@ if AL then
 	AL["Weapon Technician"] = "Técnico de armas";
 	AL["Doomforge Craftsman"] = "Artesano de la Forja Maldita";
 	AL["Murk Worm"] = "Gusano de la oscuridad";
-	AL["Atal'ai Witch Doctor"] = "Médico brujo Atal'ai";
 	AL["Raging Skeleton"] = "Esqueleto enfurecido";
 	AL["Ethereal Priest"] = "Sacerdote etéreo";
 	AL["Sethekk Ravenguard"] = "Guardia cuervo Sethekk";
@@ -931,33 +850,11 @@ if AL then
 	AL["Aether-tech Assistant"] = "Ayudante técnico aether";
 	AL["Aether-tech Adept"] = "Aether-tech Adept"; --FALTA
 	AL["Aether-tech Master"] = "Aether-tech Master"; --FALTA
-	AL["Trelopades"] = "Trelopades"; --FALTA
-	AL["King Dorfbruiser"] = "King Dorfbruiser"; --FALTA
-	AL["Gorgolon the All-seeing"] = "Gorgolon the All-seeing"; --FALTA
-	AL["Matron Li-sahar"] = "Matrona Li-sahar";
-	AL["Solus the Eternal"] = "Solus el Eterno";
 	AL["Smokywood Pastures Vendor"] = "Vendedor de Pastos de Bosquehumeante";
-	AL["Darkscreecher Akkarai"] = "Estridador oscuro Akkarai";
-	--AL["Karrog"] = true,
-	AL["Gezzarak the Huntress"] = "Gezzarak la Cazadora";
-	AL["Vakkiz the Windrager"] = "Vakkiz el Furibundo del Viento";
-	--AL["Terokk"] = true,
-	AL["Armbreaker Huffaz"] = "Partebrazos Huffaz";
-	AL["Fel Tinkerer Zortan"] = "Manitas vil Zortan";
-	--AL["Forgosh"] = true,
-	--AL["Gul'bor"] = true,
-	AL["Malevus the Mad"] = "Malevus el Loco";
-	AL["Porfus the Gem Gorger"] = "Porfus el Engullidor de gemas";
-	AL["Wrathbringer Laz-tarash"] = "Encolerizador Laz-tarash";
 	AL["Bash'ir Landing Stasis Chambers"] = "Cámaras de éxtasis del Alot Bash'ir";
 	AL["Templars"] = "Templarios";
 	AL["Dukes"] = "Duques";
 	AL["High Council"] = "Consejero mayor";
-	AL["Barleybrew Brewery"] = "Cervecería Cebadiz"; --Comprobar
-	AL["Thunderbrew Brewery"] = "Cervecería Cebatruenos"; --Comprobar
-	AL["Gordok Brewery"] = "Cervecería Gordok"; --Comprobar
-	AL["Drohn's Distillery"] = "Destilería de Drohn";
-	AL["T'chali's Voodoo Brewery"] = "Cervecería Voodoo de T'chali";
 	AL["Scarshield Quartermaster"] = "Intendente del Escudo del Estigma";
 	AL["Father Flame"] = "Padre llama";
 	--AL["Thomas Yance"] = true,
@@ -968,74 +865,41 @@ if AL then
 	AL["Razorfen Spearhide"] = "Lanceur de Tranchebauge";
 	AL["Magregan Deepshadow"] = "Magregan Sombraprofunda";
 	--AL["Don Carlos"] = true,
-	--AL["Thomas Yance"] = "Thomas Yance";
 	AL["Aged Dalaran Wizard"] = "Zahorí de Dalaran envejecido";
 	AL["Felsteed"] = "Corcel vil";
 	AL["Shattered Hand Executioner"] = "Verdugo Mano Destrozada";	 
-	AL["Time-Lost Proto Drake"] = "Protodraco Tiempo Perdido";
-	AL["Razzashi Raptor"] = "Razzashi presto";
 	AL["Deviate Ravager/Deviate Guardian"] = "Devastador descarriado/Guardián descarriado";
 	--AL["Servant's Quarter Animal Bosses"] = true; FALTA
-	AL["Jadefang"] = "Colmillo de Jade";
-	--AL["Aeonaxx"] = true;
-	AL["Prince Sarsarun"] = "Príncipe Sarsarun";
-	--AL["Highlord Kruul"] = true; -- added until decided if the set gets removed
-	AL["Dormus the Camel-Hoarder"] = "Dormus el Acaparacamellos";
-	AL["The Behemoth"] = "El Behemoth";
 	AL["Master Elemental Shaper Krixix"] = "Maestro de los elementos Formacio Krixix";
 
-	--Zones
-	AL["World Drop"] = "Hallazgos del Mundo";
-	AL["Trial of the Grand Crusader"] = "Prueba del Gran Cruzado";
+	-- Zone related strings
+	-- AL["Azeroth"] = true;
+	AL["Blackrock Mountain"] = "Montaña Roca Negra";
+	AL["Caverns of Time"] = "Cavernas del Tiempo";
 	AL["Crusader's Square"] = "Plaza de los Cruzados";
+	AL["Darkmoon Island"] = "Isla Luna Negra";
+	AL["East"] = "Este";
+	AL["North"] = "Norte";
 	AL["The Gauntlet"] = "El reto"; -- Comprobar
+	AL["Trial of the Grand Crusader"] = "Prueba del Gran Cruzado";
+	AL["West"] = "Oeste";
 
 	--Shortcuts for Bossname files
-	AL["LBRS"] = "CRNI";
-	AL["UBRS"] = "CRNS";
-	AL["CoT1"] = "CdT1";
-	AL["CoT2"] = "CdT2";
-	--  AL["Scholo"] = true,
-	--  AL["Strat"] = true,
-	AL["Serpentshrine"] = "Serpiente";
 	--AL["Avatar"] = true,	
 
 	--Chests, etc
-	--AL["Ring of Law"] = true; FALTA
-	AL["Monument of Franclorn Forgewright"] = "Monumento a Franclorn Forjador";
 	AL["The Grim Guzzler"] = "El Tragapenas";
-	AL["Summoner's Tomb"] = "La tumba de los invocadores"; --Comprobar
 	AL["The Secret Safe"] = "El secreto seguro";
 	AL["The Vault"] = "La caja fuerte";
 	AL["Ogre Tannin Basket"] = "Cesta de Ogro Tanino";
-	AL["Fengus's Chest"] = "Cofre de Fengus";
 	AL["Unfinished Painting"] = "Pintura sin terminar"; --Comprobar
 	AL["Felvine Shard"] = "Fragmento de gangrevid";
-	AL["Baelog's Chest"] = "Cofre de Baelog";
-	AL["Lorgalis Manuscript"] = "Manuscrito de Lorgalis";
-	AL["Fathom Core"] = "Núcleo de las profundidades";
 	AL["Gift of Adoration"] = "Ofrenda de adoración";
-	AL["Box of Chocolates"] = "Caja de bombones";
 	AL["Treat Bag"] = "Bolsa de premios";
-	AL["Gaily Wrapped Present"] = "Regalo con envoltorio alegre";
-	AL["Festive Gift"] = "Obsequio festivo";
-	AL["Ticking Present"] = "Obsequio que hace tic-tac";
-	AL["Gently Shaken Gift"] = "Regalo ligeramente agitado";
-	AL["Carefully Wrapped Present"] = "Presente envuelto con cuidado";
-	AL["Winter Veil Gift"] = "Regalo de Fiesta de Invierno";
-	AL["Smokywood Pastures Extra-Special Gift"] = "Obsequio megaespecial de Pastos de Bosquehumeante";
-	AL["Brightly Colored Egg"] = "Huevos de colores brillantes"; --Comprobar
-	AL["Lunar Festival Fireworks Pack"] = "Paquete de fuegos de artificio del Festival Lunar";
-	AL["Lucky Red Envelope"] = "Sobre rojo de la suerte";
-	AL["Small Rocket Recipes"] = "Recetas de cohetes pequeños";
-	AL["Large Rocket Recipes"] = "Recetas de cohetes grandes";
-	AL["Cluster Rocket Recipes"] = "Recetas de traca de cohetes";
-	AL["Large Cluster Rocket Recipes"] = "Recetas de traca de cohetes grandes";
 	AL["Timed Reward Chest"] = "Cofre de recompensa con tiempo"; --Comprobar
 	AL["Timed Reward Chest 1"] = "Cofre de recompensa con tiempo 1";
 	AL["Timed Reward Chest 2"] = "Cofre de recompensa con tiempo 2";
 	AL["Timed Reward Chest 3"] = "Cofre de recompensa con tiempo 3";
-	AL["Timed Reward Chest 4"] = "Cofre de recompensa con tiempo 4";
 	AL["The Talon King's Coffer"] = "El cofre del Rey Talon";
 	AL["Krom Stoutarm's Chest"] = "Tesoro de Krom Rudebras";
 	AL["Garrett Family Chest"] = "Tesoro de la familia Garrett";
@@ -1046,16 +910,6 @@ if AL then
 	AL["Second Fragment Guardian"] = "Guardián del segundo trozo";
 	AL["Third Fragment Guardian"] = "Guardián del tercer trozo";
 	AL["Overcharged Manacell"] = "Célula de maná sobrecargada";
-	AL["Mysterious Egg"] = "Huevo misterioso";
-	AL["Hyldnir Spoils"] = "Botín Hyldnir";
-	AL["Ripe Disgusting Jar"] = "Tarro desagradable maduro";
-	AL["Cracked Egg"] = "Huevo roto";
-	AL["Small Spice Bag"] = "Bolsa de especias pequeña";
-	AL["Handful of Candy"] = "Puñado de caramelos";
-	AL["Lovely Dress Box"] = "Caja de vestido precioso";
-	AL["Dinner Suit Box"] = "Caja de traje de noche";
-	AL["Bag of Heart Candies"] = "Bolsa de caramelos de corazón";
-	AL["Hidden Stash"] = "Alijos escondidos";
 
 	--Error Messages and warnings
 	AL["AtlasLoot Error!"] = "¡AtlasLoot error!";

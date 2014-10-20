@@ -1,11 +1,10 @@
--- Recount Locale 
--- Please use the Localization App on WoWAce to Update this 
+-- Recount Locale
+-- Please use the Localization App on WoWAce to Update this
 -- http://www.wowace.com/projects/recount/localization/
- 
-local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "deDE") 
-if not L then return end 
- 
--- Wer mit deutschem Client englische Texte wünscht, kann einfach alles unterhalb dieser Zeile löschen. (If you prefer English Recount with a German client, just delete everything below in this file.)
+
+local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "deDE")
+if not L then return end
+
 L["Ability"] = "Fähigkeit"
 L["Ability Name"] = "Name der Fähigkeit"
 L["Absorbed"] = "Absorbiert"
@@ -197,6 +196,7 @@ L["Mana Gained"] = "Mana bekommen"
 L["Mana Sources"] = "Mana (Quellen)"
 L["Max"] = "Max"
 L["Melee"] = "Nahkampf"
+L["Merge Absorbs w/ Heals"] = "Absorbierung w/ Heilung zusammenlegen"
 L["Merge Pets w/ Owners"] = "Begleiter/Besitzer zusammen"
 L["Messages"] = "Nachrichten"
 L["Min"] = "Min"
@@ -218,6 +218,7 @@ L["No"] = "Nein"
 L["No Absorb"] = "Nicht absorbiert"
 L["No Block"] = "Nicht geblockt"
 L["Non-Trivial"] = "Nicht Graue"
+L["No other Recount users found."] = "Keinen anderen Recount Benutzer gefunden."
 L["No Pet"] = "Kein Begleiter"
 L["No Resist"] = "Nicht widerstanden"
 L["Normalize"] = "Normalisiert"
@@ -311,6 +312,7 @@ L["'s Effective Healing"] = "s effektive Heilung"
 L["Self"] = "Selbst"
 L["'s Energy Gained"] = "s Energie bekommen"
 L["'s Energy Gained From"] = "s Energie bekommen von"
+L["Server Name"] = "Realm Name"
 L["Set Combat Log Range"] = "Kampflogreichw. einstellen"
 L["Set the maximum number of lines to report"] = "Setzt die maximale Anzahl der Zeilen des Berichts"
 L["Set the maximum number of recorded fight segments"] = "Die maximale Anzahl an aufgezeichneten Kampfsegmenten festlegen"
@@ -419,7 +421,6 @@ L["Window Color Selection"] = "Fensterfarbenauswahl"
 L["Window Options"] = "Fenster Optionen"
 L["Window Scaling"] = "Fensterskalierung"
 L["X Gridlines Represent"] = "X Gridlinien bedeuten"
-L["Yds"] = "m"
 L["Yes"] = "Ja"
- 
+
 

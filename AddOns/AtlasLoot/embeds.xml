@@ -2,13 +2,15 @@
 ..\FrameXML\UI.xsd">
 
 <!--@no-lib-strip@-->
+<Include file="Libs\LibAboutPanel\lib.xml"/>
+<Include file="Libs\LibStrataFix\lib.xml"/>
 
 <Include file="Libs\LibBabble-Boss-3.0\lib.xml"/>
-<Include file="Libs\LibBabble-Faction-3.0\lib.xml"/>
 <Include file="Libs\LibBabble-Inventory-3.0\lib.xml"/>
 <Include file="Libs\LibBabble-ItemSet-3.0\lib.xml"/>
-<Include file="Libs\LibBabble-Zone-3.0\lib.xml"/>
-
 <!--@end-no-lib-strip@-->
-
+<Include file="Libs\LibBabble-Rare-3.0\lib.xml"/> 
+<!--@debug@ 
+<Include file="Libs\LibHelpPlate\lib.xml"/>
+@end-debug@-->
 </Ui>

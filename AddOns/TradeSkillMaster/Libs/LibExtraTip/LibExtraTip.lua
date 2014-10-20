@@ -1296,13 +1296,13 @@ function lib:GenerateTooltipMethodTable() -- Sets up hooks to give the quantity 
 			reg.additional.eventIndex = index
 		end,
 
-		SetUnit = function(self, unit)
-			OnTooltipCleared(self)
-			local reg = tooltipRegistry[self]
-			reg.ignoreOnCleared = true
-			reg.additional.event = "SetUnit"
-			reg.additional.eventUnit= unit
-		end,
+		-- SetUnit = function(self, unit)
+			-- OnTooltipCleared(self)
+			-- local reg = tooltipRegistry[self]
+			-- reg.ignoreOnCleared = true
+			-- reg.additional.event = "SetUnit"
+			-- reg.additional.eventUnit= unit
+		-- end,
 
 		--[[ disabled due to taint issues
 		SetUnitAura = function(self, unit, index, filter)
@@ -1374,7 +1374,7 @@ function lib:GenerateTooltipMethodTable() -- Sets up hooks to give the quantity 
 		SetSpellBookItem = posthookClearIgnore,
 		SetTalent = posthookClearIgnore,
 		SetTrainerService = posthookClearIgnore,
-		SetUnit = posthookClearIgnore,
+		-- SetUnit = posthookClearIgnore,
 		--SetUnitAura = posthookClearIgnore,
 		SetUnitBuff = posthookClearIgnore,
 		SetUnitDebuff = posthookClearIgnore,

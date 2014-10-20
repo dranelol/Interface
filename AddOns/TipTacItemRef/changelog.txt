@@ -1,3 +1,7 @@
+TipTacItemRef Changes | 2014 May 24
+-----------------------------------
+- Updated the "GetUpgradedItemLevel.lua" library, to include the new upgrade IDs.
+
 TipTacItemRef Changes | 2013 Sep 21
 -----------------------------------
 - Changed the TOC version to 50400 for the 5.4 patch.

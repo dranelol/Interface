@@ -4,7 +4,7 @@
 ## Author: Raeli, Xadurk, Jenneth
 ## Dependencies: RSA
 ## LoadOnDemand: 1
-## X-Curse-Packaged-Version: r236
+## X-Curse-Packaged-Version: r237
 ## X-Curse-Project-Name: RSA - Raeli's Spell Announcer
 ## X-Curse-Project-ID: rsa
 ## X-Curse-Repository-ID: wow/rsa/mainline

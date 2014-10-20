@@ -7,6 +7,12 @@
 --  - Idunnô, Clorell, Mcstabin on US Hellscream
 --
 
+local LSM = LibStub("LibSharedMedia-3.0")
+
+-------------------------------------------------------
+-- Proc processor.
+-- Handles posting and updating stats of procs.
+
 function Proculas:postProc(spellID)
 	local procInfo = self.optpc.tracked[spellID]
 	--local procData = self.optpc.procs[procInfo.name..procInfo.rank]

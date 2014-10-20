@@ -1,5 +1,3 @@
-if select(6, GetAddOnInfo("PitBull4_" .. (debugstack():match("[o%.][d%.][u%.]les\\(.-)\\") or ""))) ~= "MISSING" then return end
-
 local PitBull4 = _G.PitBull4
 if not PitBull4 then
 	error("PitBull4_HideBlizzard requires PitBull4")
@@ -21,6 +19,7 @@ PitBull4_HideBlizzard:SetDefaults({}, {
 	aura = false,
 	runebar = true,
 	altpower = false,
+	boss = true,
 })
 
 function PitBull4_HideBlizzard:OnEnable()
@@ -136,11 +135,7 @@ end
 function showers:raid()
 	CompactRaidFrameManager:RegisterEvent("GROUP_ROSTER_UPDATE")	
 	CompactRaidFrameManager:RegisterEvent("PLAYER_ENTERING_WORLD")
-	if GetDisplayedAllyFrames then
-		if GetDisplayedAllyFrames() == "raid" then
-			CompactRaidFrameManager:Show()
-		end
-	elseif GetNumRaidMembers() > 0 then
+	if GetDisplayedAllyFrames() == "raid" then
 		CompactRaidFrameManager:Show()
 	end
 	if compact_raid and compact_raid ~= "0" then
@@ -232,6 +227,26 @@ function showers:altpower()
 	UnitPowerBarAlt_UpdateAll(PlayerPowerBarAlt)
 end
 
+function hiders:boss()
+	for i=1, MAX_BOSS_FRAMES do
+		local frame = _G["Boss"..i.."TargetFrame"]
+		frame:UnregisterAllEvents()
+		frame:Hide()
+	end
+end
+
+function showers:boss()
+	for i=1, MAX_BOSS_FRAMES do
+		local frame = _G["Boss"..i.."TargetFrame"]
+		if i == 1 then
+			BossTargetFrame_OnLoad(frame, "boss1", "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+		else
+			BossTargetFrame_OnLoad(frame, "boss"..i)
+		end
+		Target_Spellbar_OnEvent(frame.spellbar, "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+	end
+end
+
 for k, v in pairs(hiders) do
 	hiders[k] = PitBull4:OutOfCombatWrapper(v)
 end
@@ -320,6 +335,13 @@ PitBull4_HideBlizzard:SetGlobalOptionsFunction(function(self)
 		type = 'toggle',
 		name = L["Alternate power"],
 		desc = L["Hides the standard alternate power bar shown in some encounters and quests."],
+		get = get,
+		set = set,
+		hidden = hidden,
+	}, 'boss', {
+		type = 'toggle',
+		name = L["Boss"],
+		desc = L["Hides the standard boss frames."],
 		get = get,
 		set = set,
 		hidden = hidden,

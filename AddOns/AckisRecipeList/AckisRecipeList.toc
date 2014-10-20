@@ -5,7 +5,7 @@
 ## Title-itIT: Ackis Recipe List
 ## Title-koKR: Ackis의 제조법 리스트 2.0
 ## Title-esMX: Ackis Recipe List 2.0
-## Title-ruRU: Ackis Recipe List 2.0
+## Title-ruRU: Ackis Recipe List
 ## Title-zhCN: Ackis Recipe List
 ## Title-esES: Ackis Recipe List 2.0
 ## Title-zhTW: Ackis Recipe List
@@ -14,7 +14,7 @@
 #@debug@
 # ## Title: Ackis Recipe List - Development Version
 #@end-debug@
-## X-Curse-Packaged-Version: 2.5.13
+## X-Curse-Packaged-Version: 3.0.5
 ## X-Curse-Project-Name: Ackis Recipe List
 ## X-Curse-Project-ID: arl
 ## X-Curse-Repository-ID: wow/arl/mainline
@@ -26,7 +26,7 @@
 ## Notes-koKR: Ackis Recipe List|1은;는; 당신의 전문 기술들을 훑어서 제조법들을 얻는 방법에 대한 정보를 제공할 애드온입니다. 룬 벼리기를 포함하여 모든 전문 기술들에 작용합니다.
 ## Notes-itIT: Ackis Recipe List è un addon che scansiona le tue competenze nelle professioni e fornisce informazioni su come ottenere ricette. Funziona per tutte le professioni, inclusa Forgiarune.
 ## Notes-esMX: Muestra una lista de recetas inexistentes para sus Habilidades de Comercio. Funciona con todas las habilidades comerciales, incluidas venenos y entrenamiento de bestias del cazador.
-## Notes-ruRU: Сканирует ваши профессии и составляет список отсутствующих рецептов. Также отображает информацию о способах их приобретения.
+## Notes-ruRU: Сканирует ваши профессии, составляет список отсутствующих рецептов, отображает информацию о способах их получения.
 ## Notes-zhCN: 扫描并告知如何获取缺失配方的详细商业技能信息插件。
 ## Notes-esES: Ackis Recipe List es un addon que escanea tus habilidades comerciales y provee información de cómo obtener las recetas. Funciona para todas las habilidades comerciales, incluida Forja de Runas.
 ## Notes-zhTW: 掃描並告知如何獲取缺失配方的詳細商業技能訊息插件。
@@ -37,13 +37,12 @@
 #@end-debug@
 
 ## Author: Ackis, Torhal, Zhinjio
-## X-Donate: http://www.wowace.com/addons/arl/pages/donations/
 
 ## Interface: 50400
 ## X-Compatible-With: 50400
-## Version: 2.5.13
-## X-Revision: e8a8419
-## X-Date: 2013-11-02T02:23:08Z
+## Version: 3.0.5
+## X-Revision: 5b35dab
+## X-Date: 2014-08-05T23:43:09Z
 
 ## X-Credits: FGWarmonger, Kagaro, Speeddymon, Xinhuan, Aesir, BWMerlin, everyone who translated stuff and more!
 ## X-Category: Tradeskill
@@ -72,6 +71,9 @@ locale.xml
 
 # Constants should be loaded first - many files use them in their main chunk.
 Constants.lua
+
+# AcquireTypes should be loaded second.
+AcquireTypes.lua
 
 Core.lua
 Utilities.lua

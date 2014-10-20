@@ -544,10 +544,10 @@ end
 function psfontsliderf(i)
 if i then
 	if i==1 then
-		psfontsset[1] = PSFmainfontchange_slid1:GetValue()
+		psfontsset[1] = math.floor(PSFmainfontchange_slid1:GetValue())
 	end
 	if i==2 then
-		psfontsset[2] = PSFmainfontchange_slid2:GetValue()
+		psfontsset[2] = math.floor(PSFmainfontchange_slid2:GetValue())
 	end
 end
 
@@ -3390,7 +3390,7 @@ getglobal(psdeathrepscroll1:GetName().."Text"):SetText(psdeathrepsavemain[12])
 psdeathrepscroll1:SetMinMaxValues(1, 10)
 psdeathrepscroll1:SetValueStep(1)
 psdeathrepscroll1:SetValue(psdeathrepsavemain[12])
-psdeathrepscroll1:SetScript("OnValueChanged", function (self) psdeathrepsavemain[12]=self:GetValue() getglobal(self:GetName().."Text"):SetText(psdeathrepsavemain[12]) end )
+psdeathrepscroll1:SetScript("OnValueChanged", function (self) psdeathrepsavemain[12]=math.floor(self:GetValue()) getglobal(self:GetName().."Text"):SetText(psdeathrepsavemain[12]) end )
 
 
 local s = PSFdeathreport:CreateFontString()
@@ -3413,7 +3413,7 @@ getglobal(psdeathrepscroll2:GetName().."Text"):SetText(psdeathrepsavemain[13])
 psdeathrepscroll2:SetMinMaxValues(1, 20)
 psdeathrepscroll2:SetValueStep(1)
 psdeathrepscroll2:SetValue(psdeathrepsavemain[13])
-psdeathrepscroll2:SetScript("OnValueChanged", function (self) psdeathrepsavemain[13]=self:GetValue() getglobal(self:GetName().."Text"):SetText(psdeathrepsavemain[13]) end )
+psdeathrepscroll2:SetScript("OnValueChanged", function (self) psdeathrepsavemain[13]=math.floor(self:GetValue()) getglobal(self:GetName().."Text"):SetText(psdeathrepsavemain[13]) end )
 
 local s2 = PSFdeathreport:CreateFontString()
 s2:SetWidth(180)
@@ -3434,7 +3434,7 @@ getglobal(psdeathrepscroll3:GetName().."Text"):SetText(psdeathrepsavemain[16])
 psdeathrepscroll3:SetMinMaxValues(1, 20)
 psdeathrepscroll3:SetValueStep(1)
 psdeathrepscroll3:SetValue(psdeathrepsavemain[16])
-psdeathrepscroll3:SetScript("OnValueChanged", function (self) psdeathrepsavemain[16]=self:GetValue() getglobal(self:GetName().."Text"):SetText(psdeathrepsavemain[16]) end )
+psdeathrepscroll3:SetScript("OnValueChanged", function (self) psdeathrepsavemain[16]=math.floor(self:GetValue()) getglobal(self:GetName().."Text"):SetText(psdeathrepsavemain[16]) end )
 
 local s3 = PSFdeathreport:CreateFontString()
 s3:SetWidth(180)
@@ -3544,6 +3544,7 @@ end
 
 
 function psinvonwhisper(arg1,arg2,bnet)
+
 if (psautoinvsave[1]==1 or (pstempinv and pstempinv>GetTime())) and arg1 and arg2 then
 	local bil=0
 	if #psautoinvsave[6]>0 then
@@ -3555,7 +3556,7 @@ if (psautoinvsave[1]==1 or (pstempinv and pstempinv>GetTime())) and arg1 and arg
 	end
 	if bil==1 then
 		local friend=0
-		if psautoinvsave[2]==1 then
+		--if psautoinvsave[2]==1 then
 			for i=1, GetNumFriends() do
 				local a = select(1,GetFriendInfo(i))
 				if string.find(a, "%-") then a=string.sub(a,1,string.find(a, "%-")-1)
@@ -3591,7 +3592,7 @@ if (psautoinvsave[1]==1 or (pstempinv and pstempinv>GetTime())) and arg1 and arg
             end
           end
         end
-      end
+      --end
     end
       if UnitIsInMyGuild(arg2) then
         friend=1
@@ -3607,7 +3608,6 @@ if (psautoinvsave[1]==1 or (pstempinv and pstempinv>GetTime())) and arg1 and arg
           end
         end
       end    
-    
 		if friend==1 or psautoinvsave[2]==0 then
 			local ool=0
 			if GetNumGroupMembers()==5 and UnitIsGroupLeader("player") and UnitInRaid("player")==nil and psautoinvsave[3]==1 then

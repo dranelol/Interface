@@ -99,7 +99,7 @@ local AmplificationItems = {
 }
 function ReforgeLite:GetStatMultipliers()
   local result = {}
-  if playerRace == "Human" then
+  if playerRace == "HUMAN" then
     result[self.STATS.SPIRIT] = (result[self.STATS.SPIRIT] or 1) * 1.03
   end
   for i, v in ipairs (self.itemData) do
@@ -539,9 +539,6 @@ function ReforgeLite:ComputeReforgeCore (data, reforgeOptions)
         local nscore = score + o.score
         local nk = s1 + mfloor(o.d1 / data.cheat + mrandom()) + (s2 + mfloor(o.d2 / data.cheat + mrandom())) * TABLE_SIZE
         if newscores[nk] == nil or nscore > newscores[nk] then
-          if newscores[nk] == nil then
-            count = count + 1
-          end
           newscores[nk] = nscore
           newcodes[nk] = code .. schar(j)
         end
@@ -565,7 +562,7 @@ function ReforgeLite:ComputeReforge (initFunc, optionFunc, chooseFunc)
     local code = self[chooseFunc] (self, data, reforgeOptions, scores, codes)
     scores, codes = nil, nil
     collectgarbage ("collect")
-    self.methodDebug = "version = 1.32\n\n"
+    self.methodDebug = "version = 1.38\n\n"
     self.methodDebug = self.methodDebug .. "data = " .. FormatValue (data) .. "\n\n"
     for i = 1, #data.method.items do
       local opt = reforgeOptions[i][code:byte (i)]

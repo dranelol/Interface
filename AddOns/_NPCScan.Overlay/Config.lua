@@ -9,6 +9,8 @@ local panel = _G.CreateFrame("Frame")
 private.Config = panel
 
 panel.ShowAll = CreateFrame( "CheckButton", "_NPCScanOverlayConfigShowAllCheckbox", panel, "InterfaceOptionsCheckButtonTemplate" );
+panel.LockSwap = CreateFrame( "CheckButton", "_NPCScanOverlayConfigLoclSwapCheckbox", panel, "InterfaceOptionsCheckButtonTemplate" );
+panel.SetColor = CreateFrame( "Button", "_NPCScanOverlayConfigSetColorButton", panel, "UIPanelButtonTemplate" );
 
 local ModuleMethods = setmetatable( {}, getmetatable( panel ) );
 panel.ModuleMeta = { __index = ModuleMethods; };
@@ -69,6 +71,11 @@ end
 --- Sets the ShowAll option when its checkbox is clicked.
 function panel.ShowAll.setFunc ( Enable )
 	private.SetShowAll( Enable == "1" );
+end
+
+--- Sets the ShowAll option when its checkbox is clicked.
+function panel.LockSwap.setFunc ( Enable )
+	private.SetLockSwap( Enable == "1" );
 end
 
 --- Toggles the module when its checkbox is clicked.
@@ -173,9 +180,21 @@ _G[ panel.ShowAll:GetName().."Text" ]:SetText( L.CONFIG_SHOWALL );
 panel.ShowAll.tooltipText = L.CONFIG_SHOWALL_DESC;
 
 
+panel.LockSwap:SetPoint( "TOPLEFT", panel.ShowAll, "BOTTOMLEFT", -2, -8 );
+_G[ panel.LockSwap:GetName().."Text" ]:SetText( L.CONFIG_LOCKSWAP );
+panel.LockSwap.tooltipText = L.CONFIG_LOCKSWAP_DESC;
+
+panel.SetColor:SetPoint( "TOPLEFT", panel.LockSwap, "BOTTOMLEFT", -2, -8 );
+_G[ panel.SetColor:GetName().."Text" ]:SetText( L.CONFIG_SETCOLOR );
+panel.SetColor:SetScript( "OnClick", function() _NPCScanOverlayPathColorList:Show()end);
+panel.SetColor:SetHeight( 32 );
+panel.SetColor:SetWidth( 150 );
+panel.SetColor.tooltipText = L.CONFIG_SETCOLOR_DESC;
+
+
 -- Module options scrollframe
 local Background = CreateFrame( "Frame", nil, panel, "OptionsBoxTemplate" );
-Background:SetPoint( "TOPLEFT", panel.ShowAll, "BOTTOMLEFT", 0, -8 );
+Background:SetPoint( "TOPLEFT", panel.SetColor, "BOTTOMLEFT", 0, -8 );
 Background:SetPoint( "BOTTOMRIGHT", -32, 16 );
 local Texture = Background:CreateTexture( nil, "BACKGROUND" );
 Texture:SetTexture( 0, 0, 0, 0.5 );

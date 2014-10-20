@@ -9,7 +9,7 @@ local Config = LibStub("AceConfig-3.0")
 
 local db
 
-addon.svnrev["config.lua"] = tonumber(("$Revision: 365 $"):match("%d+"))
+addon.svnrev["config.lua"] = tonumber(("$Revision: 376 $"):match("%d+"))
 
 -- local (optimal) references to Blizzard's strings
 local COLOR = COLOR -- "Color"
@@ -389,6 +389,18 @@ function module:BuildOptions()
 					order = 33.80,
 					width = "double",
 					name = L["Track farm crops"],
+				},
+				TrackBonus = {
+					type = "toggle",
+					order = 33.85,
+					width = "double",
+					name = L["Track bonus loot rolls"],
+				},
+				AugmentBonus = {
+					type = "toggle",
+					order = 33.95,
+					width = "double",
+					name = L["Augment bonus loot frame"],
 				},
 				TrackLFG = {
 					type = "toggle",

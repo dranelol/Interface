@@ -1,11 +1,10 @@
 local mod	= DBM:NewMod(814, "DBM-Pandaria", nil, 322)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 11000 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 3 $"):sub(12, -3))
 mod:SetCreatureID(69099)
 mod:SetReCombatTime(20)
 mod:SetZone()
-mod:SetMinSyncRevision(10466)
 
 mod:RegisterCombat("combat_yell", L.Pull)
 
@@ -25,7 +24,7 @@ local specWarnArcNova				= mod:NewSpecialWarningRun(136338, mod:IsMelee())
 
 local timerStormcloudCD				= mod:NewCDTimer(24, 136340)
 local timerLightningTetherCD		= mod:NewCDTimer(35, 136339)--Needs more data, they may have tweaked it some.
-local timerArcNovaCD				= mod:NewNextTimer(42, 136338)
+local timerArcNovaCD				= mod:NewCDTimer(39, 136338)
 
 local soundArcNova					= mod:NewSound(136338, mod:IsMelee())
 

@@ -26,8 +26,6 @@ local function getthreatcolor(status)
     return { r = r, g = g, b = b, a = 1 }
 end
 
---{{{ AceDB defaults
-
 GridStatusAggro.defaultDB = {
 	alert_aggro = {
 		text =  L["Aggro"],
@@ -49,8 +47,6 @@ GridStatusAggro.defaultDB = {
 	},
 }
 
---}}}
-
 GridStatusAggro.options = false
 
 local function getstatuscolor(status)
@@ -67,32 +63,40 @@ local function setstatuscolor(status, r, g, b, a)
 end
 
 local aggroDynamicOptions = {
-    [1] = {
-        type = "color",
-        name = L["High Threat color"],
-        desc = L["Color for High Threat."],
-        order = 87, width = "double",
-        hasAlpha = true,
-        get = function() return getstatuscolor(1) end,
-        set = function(_, r, g, b, a) setstatuscolor(1, r, g, b, a) end,
-    },
-    [2] = {
-        type = "color",
-        name = L["Aggro color"],
-        desc = L["Color for Aggro."],
-        order = 88, width = "double",
-        hasAlpha = true,
-        get = function() return getstatuscolor(2) end,
-        set = function(_, r, g, b, a) setstatuscolor(2, r, g, b, a) end,
-    },
-    [3] = {
-        type = "color",
-        name = L["Tanking color"],
-        desc = L["Color for Tanking."],
-        order = 89, width = "double",
-        hasAlpha = true,
-        get = function() return getstatuscolor(3) end,
-        set = function(_, r, g, b, a) setstatuscolor(3, r, g, b, a) end,
+    ["threat_colors"] = {
+        type = "group",
+        dialogInline = true,
+        name = L["Threat colors"],
+        order = 87,
+        args = {
+            ["1"] = {
+                type = "color",
+                name = L["High Threat color"],
+                desc = L["Color for High Threat."],
+                order = 100, width = "double",
+                hasAlpha = true,
+                get = function() return getstatuscolor(1) end,
+                set = function(_, r, g, b, a) setstatuscolor(1, r, g, b, a) end,
+            },
+            ["2"] = {
+                type = "color",
+                name = L["Aggro color"],
+                desc = L["Color for Aggro."],
+                order = 101, width = "double",
+                hasAlpha = true,
+                get = function() return getstatuscolor(2) end,
+                set = function(_, r, g, b, a) setstatuscolor(2, r, g, b, a) end,
+            },
+            ["3"] = {
+                type = "color",
+                name = L["Tanking color"],
+                desc = L["Color for Tanking."],
+                order = 102, width = "double",
+                hasAlpha = true,
+                get = function() return getstatuscolor(3) end,
+                set = function(_, r, g, b, a) setstatuscolor(3, r, g, b, a) end,
+            },
+        },
     },
 }
 
@@ -106,14 +110,10 @@ local function setupmenu()
 
 	if threat then
         args.color = nil
-        args["1"] = aggroDynamicOptions[1]
-        args["2"] = aggroDynamicOptions[2]
-        args["3"] = aggroDynamicOptions[3]
+        args.threat_colors = aggroDynamicOptions.threat_colors
     else
         args.color = aggroDynamicOptions.aggroColor
-        args["1"] = nil
-        args["2"] = nil
-        args["3"] = nil
+        args.threat_colors = nil
     end
 end
 
@@ -122,6 +122,7 @@ local aggroOptions = {
         type = "toggle",
         name = L["Threat"],
         desc = L["Show more detailed threat levels."],
+        width = "full",
         get = function() return GridStatusAggro.db.profile.alert_aggro.threat end,
         set = function()
             GridStatusAggro.db.profile.alert_aggro.threat = not GridStatusAggro.db.profile.alert_aggro.threat
@@ -158,35 +159,35 @@ function GridStatusAggro:PostReset()
 end
 
 function GridStatusAggro:UpdateAllUnits()
-	for guid, unitid in GridRoster:IterateRoster() do
-		self:UpdateUnit("UpdateAllUnits", unitid)
+	for guid, unit in GridRoster:IterateRoster() do
+		self:UpdateUnit("UpdateAllUnits", unit)
 	end
 end
 
-do
-	local UnitGUID = UnitGUID
-	local UnitThreatSituation = UnitThreatSituation
+------------------------------------------------------------------------
 
-	function GridStatusAggro:UpdateUnit(event, unitid)
-		local guid = unitid and UnitGUID(unitid)
-		if not guid then return end -- because sometimes the unitid can be nil or invald... wtf?
+local UnitGUID, UnitIsVisible, UnitThreatSituation
+	 = UnitGUID, UnitIsVisible, UnitThreatSituation
 
-		local status = UnitThreatSituation(unitid)
+function GridStatusAggro:UpdateUnit(event, unit)
+	local guid = unit and UnitGUID(unit)
+	if not guid or not GridRoster:IsGUIDInRaid(guid) then return end -- sometimes unit can be nil or invalid, wtf?
 
-		local settings = self.db.profile.alert_aggro
-		local threat = settings.threat
+	local status = UnitIsVisible(unit) and UnitThreatSituation(unit) or 0
 
-		if status and ((threat and (status > 0)) or (status > 1)) then
-			GridStatusAggro.core:SendStatusGained(guid, "alert_aggro",
-				settings.priority,
-				settings.range,
-				(threat and settings.threatcolors[status] or settings.color),
-				(threat and settings.threattexts[status] or settings.text),
-				nil,
-				nil,
-				settings.icon)
-		else
-			GridStatusAggro.core:SendStatusLost(guid, "alert_aggro")
-		end
+	local settings = self.db.profile.alert_aggro
+	local threat = settings.threat
+
+	if status and ((threat and (status > 0)) or (status > 1)) then
+		GridStatusAggro.core:SendStatusGained(guid, "alert_aggro",
+			settings.priority,
+			settings.range,
+			(threat and settings.threatcolors[status] or settings.color),
+			(threat and settings.threattexts[status] or settings.text),
+			nil,
+			nil,
+			settings.icon)
+	else
+		GridStatusAggro.core:SendStatusLost(guid, "alert_aggro")
 	end
 end

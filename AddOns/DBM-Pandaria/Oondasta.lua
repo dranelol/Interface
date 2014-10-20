@@ -1,11 +1,10 @@
 local mod	= DBM:NewMod(826, "DBM-Pandaria", nil, 322)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10978 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 3 $"):sub(12, -3))
 mod:SetCreatureID(69161)
 mod:SetReCombatTime(20)
 mod:SetZone()
-mod:SetMinSyncRevision(10466)
 
 mod:RegisterCombat("combat_yell", L.Pull)
 
@@ -19,16 +18,16 @@ mod:RegisterEventsInCombat(
 
 local warnCrush					= mod:NewStackAnnounce(137504, 2, nil, mod:IsTank() or mod:IsHealer())--Cast every 30 seconds roughly, lasts 1 minute. you need 3 tanks to be able to tank the boss without debuff. 2 tanks CAN do but they will always have 1 stack and take 25% more damage
 local warnPiercingRoar			= mod:NewSpellAnnounce(137457, 2)
-local warnSpiritfireBeam		= mod:NewTargetAnnounce(137511, 3)
-local warnFrillBlast			= mod:NewSpellAnnounce(137505, 4, nil, mod:IsTank() or mod:IsHealer())
+local warnSpiritfireBeam		= mod:NewTargetAnnounce(137511, 3, nil, mod:IsHealer())
+local warnFrillBlast			= mod:NewSpellAnnounce(137505, 4)
 
-local specWarnCrush				= mod:NewSpecialWarningStack(137504, mod:IsTank(), 2)
-local specWarnCrushOther		= mod:NewSpecialWarningTarget(137504, mod:IsTank())
+local specWarnCrush				= mod:NewSpecialWarningStack(137504, nil, 2)
+local specWarnCrushOther		= mod:NewSpecialWarningTarget(137504, mod:IsTank())--Taunt immune, so not a taunt warning, just a warning that tank may die soon and to be ready
 local specWarnPiercingRoar		= mod:NewSpecialWarningCast(137457, mod:IsRanged() or mod:IsHealer())
 local specWarnFrillBlast		= mod:NewSpecialWarningSpell(137505, nil, nil, nil, 2)
 
-local timerCrush				= mod:NewTargetTimer(60, 137504, nil, mod:IsTank() or mod:IsHealer())
-local timerCrushCD				= mod:NewCDTimer(26, 137504)
+local timerCrush				= mod:NewTargetTimer(60, 137504, nil, false)
+local timerCrushCD				= mod:NewCDTimer(26, 137504, nil, mod:IsTank())
 local timerPiercingRoarCD		= mod:NewCDTimer(25, 137457)--25-60sec variation (i'm going to guess like all the rest of the variations, the timers are all types of fucked up when the boss is running around untanked, which delays casts of crush and frill blast, but makes him cast spitfire twice as often)
 local timerFrillBlastCD			= mod:NewCDTimer(25, 137505)--25-30sec variation
 
@@ -67,7 +66,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(137508, 137511) then
-		warnSpiritfireBeam:Show(args.destName)
+		warnSpiritfireBeam:CombinedShow(0.5, args.destName)
 	end
 end
 

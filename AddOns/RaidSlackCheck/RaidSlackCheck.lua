@@ -5,7 +5,7 @@ if GetLocale()=="deDE" or GetLocale()=="ruRU" or GetLocale()=="zhTW" or GetLocal
 rsclocalel()
 end
 
-rscversion=5.420
+rscversion=5.428
 
 
 --zone ID where addon check flasks
@@ -108,6 +108,7 @@ rscfoodtable={
   104280,
   104283, --450 sta
   
+ 
   
   --104281, -- 375 Sta
 
@@ -162,6 +163,9 @@ rscflasktable={
   105691, --Flask of the Warm Sun
   105696, --Flask of Winter's Bite
   
+  
+  127230, --crystal of insanity
+  
 }
 
 rscflasktableold={
@@ -184,7 +188,7 @@ rscflasktableold={
 	
 	105617,
 	
-	127230, --Visions of Insanity
+	
 }
 
 --=============ELIXIRS guard=========
@@ -263,9 +267,12 @@ rscfoodmanytable={
 126496,
 105193,
 104958,
+
+--Noodle Cart
 145166,
 145169,
 145196,
+  
 }
 
 rscfoodmanytable_add={
@@ -298,6 +305,7 @@ rscrobotsid={
 67826,
 22700,
 44389,
+54711,
 }
 
 
@@ -909,6 +917,13 @@ end
 end
 
 if event == "CHAT_MSG_ADDON" then
+
+--изменяем ник свой в чате
+if arg4 and string.find(arg4,"%-") then
+	if string.sub(arg4,1,string.find(arg4,"%-")-1) == UnitName("player") then
+		arg4=UnitName("player")
+	end
+end
 
 --tables
 if arg1=="RSCaddon" and arg2 and string.sub(arg2,1,1)=="c" then

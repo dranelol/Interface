@@ -88,6 +88,10 @@ function AAV_MatchStub:newDude(unit, team, max)
 	self.combatans.dudes[UnitGUID(unit)].ddone = 0
 	self.combatans.dudes[UnitGUID(unit)].hdone = 0
 	self.combatans.dudes[UnitGUID(unit)].hcrit = 0
+	self.combatans.dudes[UnitGUID(unit)].ratingChange = 0
+	self.combatans.dudes[UnitGUID(unit)].mmr = 0
+	self.combatans.dudes[UnitGUID(unit)].rating = 0
+	self.combatans.dudes[UnitGUID(unit)].hCritName = "Unknown"
 	
 	if (atroxArenaViewerData.current.broadcast) then
 		
@@ -109,6 +113,7 @@ function AAV_MatchStub:addDude(key, dude)
 	_, self.combatans.dudes[key].race = dude.race
 	self.combatans.dudes[key].team = dude.team
 	self.combatans.dudes[key].player = dude.player
+	self.combatans.dudes[key].spec = dude.spec
 	self.combatans.dudes[key].ID = dude.ID
 	self.combatans.dudes[key].mana = dude.mana
 	self.combatans.dudes[key].starthpmax = dude.starthpmax
@@ -117,6 +122,10 @@ function AAV_MatchStub:addDude(key, dude)
 	self.combatans.dudes[key].ddone = dude.ddone
 	self.combatans.dudes[key].hdone = dude.hdone
 	self.combatans.dudes[key].hcrit = dude.hcrit
+	self.combatans.dudes[key].ratingChange = dude.ratingChange
+	self.combatans.dudes[key].mmr = dude.mmr
+	self.combatans.dudes[key].rating = dude.rating
+	self.combatans.dudes[key].hCritName = dude.hCritName
 end
 
 ----
@@ -170,17 +179,34 @@ function AAV_MatchStub:getGUIDtoTarget(guid)
 	return nil
 end
 
-
+----
+-- converts the GUID and player name into a target like "raid1" or "arena3"
+-- @param guid GUID
+-- @return target
+function AAV_MatchStub:getNametoGUID(name)
+	local loc = {"raid", "arena"}
+	for k,v in pairs(loc) do
+		for i=1,5 do
+			if (UnitName(v .. i) == name) then
+				return UnitGUID(v .. i)
+			end
+		end
+	end
+	return nil
+end
 ----
 -- adds stats to the current match like damage done.
 -- @param way 1 = damage, 2 = healing
 -- @param key guid
 -- @param amount value
-function AAV_MatchStub:addStats(way, key, amount)
+function AAV_MatchStub:addStats(way, key, amount, spellname)
 	-- DAMAGE
 	if (way == 1) then
 		self.combatans.dudes[key].ddone = self.combatans.dudes[key].ddone + amount
-		if (amount > self.combatans.dudes[key].hcrit) then self.combatans.dudes[key].hcrit = amount end
+		if (amount > self.combatans.dudes[key].hcrit) then 
+			self.combatans.dudes[key].hcrit = amount 
+			self.combatans.dudes[key].hCritName = spellname 
+		end
 	-- HEALING
 	elseif (way == 2) then
 		self.combatans.dudes[key].hdone = self.combatans.dudes[key].hdone + amount
@@ -218,9 +244,49 @@ end
 -- @param mmr
 function AAV_MatchStub:setTeams(team, name, rating, diff, mmr)
 	self.teams[team].name = name
-	self.teams[team].rating = rating
-	self.teams[team].diff = diff
-	self.teams[team].mmr = mmr
+	self.teams[team].rating = rating --not used anymore now every player has its own rating 
+	self.teams[team].diff = diff --not used anymore now every player has its own ratingchange
+	self.teams[team].mmr = mmr --not used anymore
+end
+
+----
+-- sets the player at the end of an arena match.
+-- @param guids
+-- @param name
+-- @param rating
+-- @param damageDone
+-- @param healingDone
+-- @param personalRatingChange
+-- @param mmr
+-- @param spec
+function AAV_MatchStub:setPlayer(guids, name, rating, damageDone, healingDone, personalRatingChange, mmr, spec)
+	if( self:getNametoGUID(name) == nil ) then  --someone of your party already left
+		guid = guids[name]
+	else
+		guid = self:getNametoGUID(name) --enemey guid is still present even if they already left
+	end
+				
+	self.combatans.dudes[guid].rating = rating -- atm no api to get others rating
+	self.combatans.dudes[guid].ddone = damageDone
+	self.combatans.dudes[guid].hdone = healingDone
+	self.combatans.dudes[guid].ratingChange = personalRatingChange
+	self.combatans.dudes[guid].mmr = mmr
+	self.combatans.dudes[guid].spec = spec
+end
+
+----
+-- finds the spec of the arenaOpponent 1-5, corresponding to unit arena1 - arena5
+-- @param guid
+-- @param opponentNumber
+function AAV_MatchStub:SetOpponentSpec(guid, opponentNumber)
+	if(self.combatans.dudes[guid].spec == nil or strlen(self.combatans.dudes[guid].spec) == 0) then
+		local specID = GetArenaOpponentSpec(opponentNumber)
+		local _, specName = GetSpecializationInfoByID(specID)
+		if(specName) then 
+			--print("[debug] From M:SetOpponentSpec Update: " .. opponentNumber .. " spec set to " .. specName)
+			self.combatans.dudes[guid].spec = specName
+		end
+	end
 end
 
 ----

@@ -5,7 +5,7 @@ local addon = Arh
 addon.vars = vars
 vars.svnrev = vars.svnrev or {}
 local svnrev = vars.svnrev
-svnrev["Arh.lua"] = tonumber(("$Revision: 62 $"):match("%d+"))
+svnrev["Arh.lua"] = tonumber(("$Revision: 65 $"):match("%d+"))
 
 local MapData = nil
 local Config = nil -- AceConfig-3.0
@@ -127,6 +127,18 @@ function addon:HookArchy()
   end
 end
 
+local function DigsiteUpdate(self, elapsed)
+  if InCombatLockdown() then return end
+  local shown = CanScanResearchSite()
+  local follow = cfg and cfg.MainFrame and cfg.MainFrame.FollowDigsite
+  if follow and not cfg.MainFrame.Visible ~= not shown then 
+    addon:ToggleMainFrame(shown)
+  end
+end
+
+addon.hiddenFrame = CreateFrame("Button", "ArhHiddenFrame", UIParent)
+addon.hiddenFrame:SetScript("OnUpdate",DigsiteUpdate)
+
 function addon:ToggleMainFrame(enable)
 	if enable ~= nil then
 		cfg.MainFrame.Visible = enable
@@ -217,6 +229,7 @@ Arh_DefaultConfig =
 	{
 		Visible = true,
 		FollowArchy = true,
+		FollowDigsite = true,
 		HideCombat = true,
 		HideResting = true,
 		Locked = false,
@@ -408,6 +421,15 @@ local OptionsTable =
 								disabled = function(info) return not Archy end,
 								get = function(info) return cfg.MainFrame.FollowArchy end,
 								set = function(info, val) cfg.MainFrame.FollowArchy = val end,
+							},
+							digsite =
+							{
+								order = 2.5,
+								name = L["Toggle with digsite"],
+								desc = L["Show/Hide window when entering/leaving a digsite"],
+								type = "toggle",
+								get = function(info) return cfg.MainFrame.FollowDigsite end,
+								set = function(info, val) cfg.MainFrame.FollowDigsite = val end,
 							},
 							hidecombat =
 							{

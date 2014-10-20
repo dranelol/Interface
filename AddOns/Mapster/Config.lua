@@ -1,5 +1,5 @@
 --[[
-Copyright (c) 2009-2012, Hendrik "Nevcairiel" Leppkes < h.leppkes@gmail.com >
+Copyright (c) 2009-2014, Hendrik "Nevcairiel" Leppkes < h.leppkes@gmail.com >
 All rights reserved.
 ]]
 
@@ -201,7 +201,7 @@ function Mapster:SetupMapButton()
 	self.optionsButton:SetHeight(18)
 	self.optionsButton:SetText("Mapster")
 	self.optionsButton:ClearAllPoints()
-	self.optionsButton:SetPoint("TOPRIGHT", WorldMapPositioningGuide, "TOPRIGHT", -43, -2)
+	self.optionsButton:SetPoint("TOPRIGHT", WorldMapFrame, "TOPRIGHT", -45, -3)
 
 	if self.db.profile.hideMapButton then
 		self.optionsButton:Hide()

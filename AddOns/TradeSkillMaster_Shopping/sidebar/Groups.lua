@@ -74,6 +74,7 @@ function private.ScanCallback(event, ...)
 end
 
 function private.StartScan()
+	TSMAPI:FireEvent("SHOPPING:GROUPS:STARTSCAN")
 	wipe(private.itemOperations)
 	for groupName, data in pairs(private.groupTree:GetSelectedGroupInfo()) do
 		groupName = TSMAPI:FormatGroupPath(groupName, true)

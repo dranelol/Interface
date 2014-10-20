@@ -1,10 +1,10 @@
--- Recount Locale 
--- Please use the Localization App on WoWAce to Update this 
+-- Recount Locale
+-- Please use the Localization App on WoWAce to Update this
 -- http://www.wowace.com/projects/recount/localization/
- 
-local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "zhTW") 
-if not L then return end 
- 
+
+local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "zhTW")
+if not L then return end
+
 L["Ability"] = "技能"
 L["Ability Name"] = "技能名稱"
 L["Absorbed"] = "被吸收"
@@ -196,6 +196,7 @@ L["Mana Gained"] = "魔法獲取"
 L["Mana Sources"] = "法力來源"
 L["Max"] = "最大"
 L["Melee"] = "近戰"
+L["Merge Absorbs w/ Heals"] = "合併吸收和治療"
 L["Merge Pets w/ Owners"] = "將寵物和玩家合併"
 L["Messages"] = "訊息"
 L["Min"] = "最小"
@@ -217,6 +218,7 @@ L["No"] = "否"
 L["No Absorb"] = "未被吸收"
 L["No Block"] = "未被格擋"
 L["Non-Trivial"] = "有價值"
+L["No other Recount users found."] = "未找到其他 Recount 用戶。"
 L["No Pet"] = "無寵物"
 L["No Resist"] = "未被抵抗"
 L["Normalize"] = "正規化"
@@ -278,7 +280,7 @@ L["Report the Detail Window Data"] = "發送詳細的資料"
 L["Report the Main Window Data"] = "僅發送主視窗中顯示的統計資料"
 L["Report To"] = "報告給"
 L["Report Top"] = "報告人數"
-L["reset"] = "重置"
+L["reset"] = "reset"
 L["Reset"] = "重置"
 L["Reset Colors"] = "重置顏色"
 L["ResetPos"] = "重置位置"
@@ -310,6 +312,7 @@ L["'s Effective Healing"] = "的有效治療"
 L["Self"] = "自己"
 L["'s Energy Gained"] = "的能量獲取"
 L["'s Energy Gained From"] = "的能量獲取自"
+L["Server Name"] = "伺服器名稱"
 L["Set Combat Log Range"] = "設定戰鬥紀錄範圍"
 L["Set the maximum number of lines to report"] = "設定最大報告行數為："
 L["Set the maximum number of recorded fight segments"] = "設定戰鬥記錄部份的最大數量"
@@ -320,7 +323,7 @@ L["Shielded Who"] = "套盾於"
 L["Short"] = "簡短"
 L["'s Hostile Attacks"] = "的敵對攻擊"
 L["'s HOT Uptime"] = "的 HOT 持續時間"
-L["show"] = "顯示"
+L["show"] = "show"
 L["Show"] = "顯示"
 L["Show Buttons"] = "顯示按鈕"
 L["Show Death Track (Left Click)"] = "顯示死亡記錄（左鍵點擊）"
@@ -365,7 +368,7 @@ L["'s Time Spent Healing"] = "治療花費的時間"
 L["'s TPS"] = "的每秒仇恨"
 L["Summary Report for"] = "綜合報表："
 L["Swap Text and Bar Color"] = "文字與計量條顏色互換"
-L["sync"] = "同步"
+L["sync"] = "sync"
 L["Sync"] = "同步"
 L["Sync Data"] = "同步資料"
 L["Sync Options"] = "同步設定"
@@ -404,7 +407,7 @@ L["Unknown Spells"] = "未知法術"
 L["Unknown Spells:"] = "未知法術："
 L["Upstream Traffic"] = "上行傳輸"
 L["Up Traffic"] = "上傳流量"
-L["verChk"] = "版本檢查"
+L["verChk"] = "verChk"
 L["VerChk"] = "版本檢查"
 L["was Dispelled by"] = "被驅散自"
 L["was Healed by"] = "被治療自"
@@ -418,7 +421,6 @@ L["Window Color Selection"] = "視窗顏色選擇"
 L["Window Options"] = "視窗設定"
 L["Window Scaling"] = "視窗縮放"
 L["X Gridlines Represent"] = "X 軸每格代表"
-L["Yds"] = "碼"
 L["Yes"] = "是"
- 
+
 

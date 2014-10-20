@@ -20,7 +20,7 @@ Website: http://www.wowace.com/addons/accuratetime/
 --]]
 
 local _G = _G
-local AT_VERSION = 4
+local AT_VERSION = 5
 
 
 -- Check if we're already loaded
@@ -114,7 +114,7 @@ debugprofilestop = function() return AccurateTime:StopTimer(AccurateTime.DEFAULT
 -- theory never happen, but we'll do a best-effort correction if it does.
 local function OnUpdate(self)
 	local absTime = AccurateTime:GetAbsTime()
-	if absTime < self.lastUpdateTime then
+	if absTime < self.lastUpdateAbsTime then
 		-- debugprofilestart() was called and the back-end timer was reset
 		-- Estimate what the absolute time should be using GetTime() (converted
 		-- to ms) and add it to AccurateTime._errorTime.

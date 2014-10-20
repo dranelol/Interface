@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(824, "DBM-ThroneofThunder", nil, 362)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 10977 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 2 $"):sub(12, -3))
 mod:SetCreatureID(69427)
 mod:SetEncounterID(1576)
 mod:SetZone()
@@ -35,8 +35,8 @@ local specWarnCrimsonWakeYou		= mod:NewSpecialWarningRun(138480)--Kiter
 local specWarnCrimsonWake			= mod:NewSpecialWarningMove(138485)--Standing in stuff left behind by kiter
 local yellCrimsonWake				= mod:NewYell(138480)
 local specWarnMatterSwap			= mod:NewSpecialWarningYou(138609)
-local specWarnExplosiveSlam			= mod:NewSpecialWarningStack(138569, mod:IsTank(), 4)--Assumed value drycode, won't know until cd is observed
-local specWarnExplosiveSlamOther	= mod:NewSpecialWarningTarget(138569, mod:IsTank())
+local specWarnExplosiveSlam			= mod:NewSpecialWarningStack(138569, nil, 4)--Assumed value drycode, won't know until cd is observed
+local specWarnExplosiveSlamOther	= mod:NewSpecialWarningTarget(138569, mod:IsTank())--Not black and white, so not using Taunt type warning
 --Boss
 local specWarnAnimaRing				= mod:NewSpecialWarningYou(136954)
 local specWarnAnimaRingOther		= mod:NewSpecialWarningTarget(136954, false)
@@ -115,7 +115,7 @@ function mod:SPELL_CAST_START(args)
 		else
 			timerInterruptingJolt:Start()
 		end
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerInterruptingJoltCD:Start(nil, jolt+1)
 			countdownInterruptingJolt:Start()
 		else
@@ -126,7 +126,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local spellId = args.spellId
-	if spellId == 138644 and self:IsDifficulty("heroic10", "heroic25") then--Only start on heroic, on normal it's 6 second cd, not worth using timer there
+	if spellId == 138644 and self:IsHeroic() then--Only start on heroic, on normal it's 6 second cd, not worth using timer there
 		siphon = siphon + 1
 		timerSiphonAnimaCD:Start(nil, siphon+1)
 		self:Schedule(2, PowerDelay)
@@ -213,9 +213,9 @@ function mod:RAID_BOSS_WHISPER(msg, npc)
 end
 
 function mod:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-	if UnitExists("boss1") and tonumber(UnitGUID("boss1"):sub(6, 10), 16) == 69427 then
+	if UnitExists("boss1") and self:GetCIDFromGUID(UnitGUID("boss1")) == 69427 then
 		self:UnregisterShortTermEvents()--Once boss is out, unregister event, since we need it no longer.
-		if self:IsDifficulty("heroic10", "heroic25") then
+		if self:IsHeroic() then
 			timerAnimaFontCD:Start(14)
 			timerAnimaRingCD:Start(23)
 			countdownAnimaRing:Start(23)

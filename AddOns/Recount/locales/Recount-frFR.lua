@@ -1,10 +1,10 @@
--- Recount Locale 
--- Please use the Localization App on WoWAce to Update this 
+-- Recount Locale
+-- Please use the Localization App on WoWAce to Update this
 -- http://www.wowace.com/projects/recount/localization/
- 
-local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "frFR") 
-if not L then return end 
- 
+
+local L = LibStub("AceLocale-3.0"):NewLocale("Recount", "frFR")
+if not L then return end
+
 L["Ability"] = "Capacité"
 L["Ability Name"] = "Nom de la capacité"
 L["Absorbed"] = "Absorbé"
@@ -196,6 +196,7 @@ L["Mana Gained"] = "Mana gagné"
 L["Mana Sources"] = "des sources de mana"
 L["Max"] = "Max"
 L["Melee"] = "Mêlée"
+-- L["Merge Absorbs w/ Heals"] = "Merge Absorbs w/ Heals"
 L["Merge Pets w/ Owners"] = "Fusion fam. avec maîtres"
 L["Messages"] = "Messages"
 L["Min"] = "Min"
@@ -217,6 +218,7 @@ L["No"] = "Non"
 L["No Absorb"] = "Pas d'absorption"
 L["No Block"] = "Pas de blocage"
 L["Non-Trivial"] = "Non triviaux"
+-- L["No other Recount users found."] = "No other Recount users found."
 L["No Pet"] = "Pas de fam."
 L["No Resist"] = "Pas de résisté"
 L["Normalize"] = "Normaliser"
@@ -310,6 +312,7 @@ L["'s Effective Healing"] = " : soins effectifs"
 L["Self"] = "Soi-même"
 L["'s Energy Gained"] = " : énergie gagnée"
 L["'s Energy Gained From"] = " : sources de l'énergie gagnée"
+-- L["Server Name"] = "Server Name"
 L["Set Combat Log Range"] = "Régler la distance d'enregistrement"
 L["Set the maximum number of lines to report"] = "Définir le nombre maximal de lignes à signaler"
 L["Set the maximum number of recorded fight segments"] = "Définit le nombre maximal de segments de combat à garder."
@@ -418,7 +421,6 @@ L["Window Color Selection"] = "Couleurs des fenêtres"
 L["Window Options"] = "Options des fenêtres"
 L["Window Scaling"] = "Échelle"
 L["X Gridlines Represent"] = "Une colonne représente"
-L["Yds"] = "Yards"
 L["Yes"] = "Oui"
- 
+
 

@@ -15,8 +15,8 @@ if not L then return end
 
 -- L["2 to 12 hrs"] = ""
 -- L["30min to 2hrs"] = ""
--- L["Add a new player to your whitelist."] = ""
--- L["Add player"] = ""
+L["Add a new player to your whitelist."] = "Añadir un nuevo jugador a tu lista blanca." -- Needs review
+L["Add player"] = "Añadir un jugador." -- Needs review
 -- L["Any auctions at or below the selected duration will be ignored. Selecting \"<none>\" will cause no auctions to be ignored based on duration."] = ""
 -- L["At normal price and not undercut."] = ""
 -- L["Auction Buyout"] = ""
@@ -29,8 +29,8 @@ if not L then return end
 -- L["Auction Settings"] = ""
 -- L["auctions of|r %s"] = ""
 -- L["Below min price, posting at reset price."] = ""
--- L["Bid percent"] = ""
--- L["Cancel"] = ""
+L["Bid percent"] = "Porcentaje de puja." -- Needs review
+L["Cancel"] = "Cancelar" -- Needs review
 -- L["Cancel All Auctions"] = ""
 -- L["Cancel Auctions with Bids"] = ""
 -- L["Cancel Filter:"] = ""
@@ -50,10 +50,10 @@ if not L then return end
 -- L["Cheapest auction below min price."] = ""
 -- L["Click to show auctions for this item."] = ""
 -- L["Confirming %d / %d"] = ""
--- L["Create Macro and Bind ScrollWheel (with selected options)"] = ""
+L["Create Macro and Bind ScrollWheel (with selected options)"] = "Crear un Macro y ligar la rueda (con las opciones seleccionadas)" -- Needs review
 -- L["Currently Owned:"] = ""
 -- L["Default Operation Tab"] = ""
--- L["Delete"] = ""
+L["Delete"] = "Borrar" -- Needs review
 -- L["Did not cancel %s because your cancel to repost threshold (%s) is invalid. Check your settings."] = ""
 -- L["Did not cancel %s because your maximum price (%s) is invalid. Check your settings."] = ""
 -- L["Did not cancel %s because your maximum price (%s) is lower than your minimum price (%s). Check your settings."] = ""
@@ -75,8 +75,8 @@ if not L then return end
 -- L["Did not reset %s because your reset min profit (%s) is invalid. Check your settings."] = ""
 -- L["Did not reset %s because your reset resolution (%s) is invalid. Check your settings."] = ""
 -- L["Disable Invalid Price Warnings"] = ""
--- L["Done Canceling"] = ""
--- L["Done Posting"] = ""
+L["Done Canceling"] = "Cancelado terminado" -- Needs review
+L["Done Posting"] = "Subastado terminado" -- Needs review
 --[==[ L[ [=[Done Posting
 
 Total value of your auctions: %s
@@ -85,23 +85,23 @@ Incoming Gold: %s]=] ] = "" ]==]
 --[==[ L[ [=[Done Scanning!
 
 Could potentially reset %d items for %s profit.]=] ] = "" ]==]
--- L["Don't Post Items"] = ""
--- L["Down"] = ""
+L["Don't Post Items"] = "No subastar objetos" -- Needs review
+L["Down"] = "Abajo" -- Needs review
 -- L["Duration"] = ""
 -- L["Edit Post Price"] = ""
 -- L["Enable Reset Scan"] = ""
 -- L["Enable Sounds"] = ""
 -- L["Error creating operation. Operation with name '%s' already exists."] = ""
--- L["General"] = ""
+L["General"] = "General" -- Needs review
 -- L["General Operation Options"] = ""
 -- L["General Options"] = ""
 -- L["General Reset Settings"] = ""
--- L["General Settings"] = ""
+L["General Settings"] = "Opciones Generales" -- Needs review
 -- L["Give the new operation a name. A descriptive name will help you find this operation later."] = ""
--- L["Help"] = ""
--- L["How long auctions should be up for."] = ""
+L["Help"] = "Ayuda" -- Needs review
+L["How long auctions should be up for."] = "Cuanto tiempo deberian estar las subastas." -- Needs review
 -- L["How many auctions at the lowest price tier can be up at any one time. Setting this to 0 disables posting for any groups this operation is applied to."] = ""
--- L["How many items should be in a single auction, 20 will mean they are posted in stacks of 20."] = ""
+L["How many items should be in a single auction, 20 will mean they are posted in stacks of 20."] = "Cuantos objetos deberian estar en una sola subasta, 20 significaria que seran subastados en pilas de 20." -- Needs review
 -- L["How much to undercut other auctions by. Format is in \"#g#s#c\". For example, \"50g30s\" means 50 gold, 30 silver, and no copper."] = ""
 -- L["If an item can't be posted for at least this amount higher than its current value, it won't be canceled to repost higher."] = ""
 -- L["If checked, a cancel scan will cancel any auctions which can be reposted for a higher price."] = ""
@@ -112,7 +112,7 @@ Could potentially reset %d items for %s profit.]=] ] = "" ]==]
 -- L["If checked, TSM will not print out a chat message when you have an invalid price for an item. However, it will still show as invalid in the log."] = ""
 -- L["If checked, whenever you post an item at its normal price, the buyout will be rounded up to the nearest gold."] = ""
 -- L["If enabled, instead of not posting when a whitelisted player has an auction posted, Auctioning will match their price."] = ""
--- L["If you don't have enough items for a full post, it will post with what you have."] = ""
+L["If you don't have enough items for a full post, it will post with what you have."] = "Si no tienes suficientes objetos para subastar completo, subastaras con los que tengas." -- Needs review
 -- L["Ignore Low Duration Auctions"] = ""
 -- L["Info"] = ""
 -- L["Invalid scan data for item %s. Skipping this item."] = ""
@@ -126,8 +126,8 @@ Could potentially reset %d items for %s profit.]=] ] = "" ]==]
 -- L["Lowest auction by whitelisted player."] = ""
 -- L["Lowest Buyout"] = ""
 -- L["Lowest Buyout:"] = ""
--- L["Macro created and keybinding set!"] = ""
--- L["Macro Help"] = ""
+L["Macro created and keybinding set!"] = "¡Macro creada y ligada la tecla!" -- Needs review
+L["Macro Help"] = "Ayuda de Macro" -- Needs review
 -- L["Match Stack Size"] = ""
 -- L["Match Whitelist Players"] = ""
 -- L["Max Cost:"] = ""
@@ -144,7 +144,7 @@ Could potentially reset %d items for %s profit.]=] ] = "" ]==]
 -- L["Min Profit:"] = ""
 -- L["Min Reset Profit"] = ""
 -- L["Min (%s), Normal (%s), Max (%s)"] = ""
--- L["Modifiers:"] = ""
+L["Modifiers:"] = "Modificadores:" -- Needs review
 -- L["Move AH Shortfall To Bags"] = ""
 -- L["Move Group To Bags"] = ""
 -- L["Move Group To Bank"] = ""
