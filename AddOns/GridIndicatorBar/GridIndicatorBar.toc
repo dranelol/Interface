@@ -1,0 +1,18 @@
+## Interface: 60000
+## Title: GridIndicatorBar
+## Notes: Additionnal bar indicator for Grid
+## Dependencies: Grid
+## OptionalDeps: LibStub, LibSmoothStatusBar-1.0
+## X-Curse-Packaged-Version: 1.5.7
+## X-Curse-Project-Name: GridIndicatorBar
+## X-Curse-Project-ID: gridindicatorbar
+## X-Curse-Repository-ID: wow/gridindicatorbar/mainline
+
+#@no-lib-strip@
+LibStub\LibStub.lua
+LibSmoothStatusBar-1.0\LibSmoothStatusBar-1.0.xml
+#@end-no-lib-strip@
+
+GridIndicatorBar.lua
+GridStatusUnitPower.lua
+

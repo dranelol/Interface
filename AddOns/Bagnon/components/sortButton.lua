@@ -15,7 +15,6 @@ local FIRST_FLAG, LAST_FLAG = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, NUM_LE_BAG_FILT
 --[[ Constructor ]]--
 
 function SortButton:New(parent)
-
 	local b = self:Bind(CreateFrame('CheckButton', nil, parent))
 	b:RegisterForClicks('anyUp')
 	b:SetSize(SIZE, SIZE)
@@ -45,14 +44,12 @@ function SortButton:New(parent)
 	b:SetScript('OnLeave', b.OnLeave)
 
 	return b
-	
 end
 
 
 --[[ Frame Events ]]--
 
 function SortButton:OnClick(button)
---[[
 	local frameID = self:GetParent():GetFrameID()
 
 	-- Override blizz settings
@@ -89,7 +86,6 @@ function SortButton:OnClick(button)
 	else
 		SortBags()
 	end
-	]]--
 end
 
 function SortButton:OnEnter()

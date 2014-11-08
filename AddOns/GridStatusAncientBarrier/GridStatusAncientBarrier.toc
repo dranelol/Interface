@@ -1,0 +1,10 @@
+## Interface: 60000
+## Title: GridStatusAncientBarrier
+## Notes: Tracker for Ancient Barrier on Malkorok encounter
+## Dependencies: Grid
+## X-Curse-Packaged-Version: 1.0.2
+## X-Curse-Project-Name: GridStatusAncientBarrier (Malkorok)
+## X-Curse-Project-ID: gridstatusancientbarrier
+## X-Curse-Repository-ID: wow/gridstatusancientbarrier/mainline
+
+GridStatusAncientBarrier.lua

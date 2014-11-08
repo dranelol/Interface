@@ -1,0 +1,13 @@
+tag 4.6.4
+6cf1be0a8b081294d937d1eabcf7baa10b769767
+Alex Shubert <alex@shubert.ru>
+2014-10-29 20:33:40 +0400
+
+4.6.4
+
+
+--------------------
+
+Alex Shubert:
+	- italian locale beta
+	- italian translation, except quests

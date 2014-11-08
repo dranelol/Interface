@@ -1,0 +1,14 @@
+tag v6.0.0.141020-2
+e3ac224711cd761e7e8bb58a7bcbaea1357ebbef
+Vlad <vladix@gmail.com>
+2014-10-20 18:57:08 +0200
+
+Fixed minor issues.
+
+
+--------------------
+
+Vlad:
+	- Removed duplicate bucket. Cleaned up some code.
+	- Update README.md
+	- Tweaking node locations. Dalaran is being worked on, and it seems to properly show the icons.

@@ -135,6 +135,7 @@ do
 	ItemFrame.ITEM_FRAME_SPACING_UPDATE = LayoutEvent
 	ItemFrame.ITEM_FRAME_COLUMNS_UPDATE = LayoutEvent
 	ItemFrame.ITEM_FRAME_BAG_BREAK_UPDATE = LayoutEvent
+	ItemFrame.REAGENTBANK_PURCHASED = ItemFrame.UpdateEverything
 end
 
 
@@ -215,6 +216,7 @@ function ItemFrame:UpdateEvents()
 			if self:HasBankBags() then
 				self:RegisterItemEvent('BANK_OPENED')
 				self:RegisterItemEvent('BANK_CLOSED')
+				self:RegisterEvent('REAGENTBANK_PURCHASED')
 			end
 		else
 			self:RegisterEvent('GET_ITEM_INFO_RECEIVED')

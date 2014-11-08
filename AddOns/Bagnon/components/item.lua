@@ -564,7 +564,7 @@ function ItemSlot:GetPlayer()
 end
 
 function ItemSlot:GetFrameID()
-	return self:GetParent():GetParent():GetFrameID()
+	return self:GetParent():GetParent().frameID
 end
 
 

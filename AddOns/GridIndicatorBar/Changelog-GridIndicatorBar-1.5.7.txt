@@ -1,0 +1,13 @@
+tag 1.5.7
+40d6ef694e7938d05a5035574fc38b79c2c7db80
+galedric <g@ledric.me>
+2014-10-15 20:44:03 +0200
+
+Tagging as 1.5.7
+
+
+--------------------
+
+galedric:
+	- Bump for 6.0
+	- Strata cannot be negative
