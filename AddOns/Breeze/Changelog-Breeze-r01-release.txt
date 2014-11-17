@@ -1,0 +1,13 @@
+tag r01-release
+abf58d80a0fefbada29c5817cd82457854200918
+Znuff <znuffy@gmail.com>
+2014-11-13 11:41:12 +0200
+
+Tagging as r01-release
+
+
+--------------------
+
+Znuff:
+	- Removed unused events
+	- Initial commit.
