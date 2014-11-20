@@ -79,12 +79,19 @@ function move:getContainerTable(cnt)
 
 	if cnt == "bank" then
 		local numSlots, _ = GetNumBankSlots()
+		local maxSlot, increment = 1, 3
+		if IsReagentBankUnlocked() then
+			maxSlot = 2
+			increment = 2
+		end
 
-		for i = 1, numSlots + 1 do
+		for i = 1, numSlots + maxSlot do
 			if i == 1 then
 				t[i] = -1
+			elseif i == 2 and maxSlot == 2 then
+				t[i] = -3
 			else
-				t[i] = i + 3
+				t[i] = i + increment
 			end
 		end
 
@@ -102,7 +109,6 @@ function move:getContainerTable(cnt)
 	elseif cnt == "bags" then
 		for i = 1, NUM_BAG_SLOTS + 1 do t[i] = i - 1
 		end
-
 		return t
 	end
 end

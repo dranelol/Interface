@@ -403,6 +403,32 @@ data.disenchant = {
 				},
 			},
 		},
+		["item:109693:0:0:0:0:0:0"] = {
+			-- Draenic Dust
+			name = GetItemInfo("item:109693:0:0:0:0:0:0"),
+			minLevel = 90,
+			maxLevel = 100,
+			itemTypes = {
+				[ARMOR] = {
+					[2] = {
+						{
+							minItemLevel = 494,
+							maxItemLevel = 610,
+							amountOfMats = 2.125
+						},
+					},
+				},
+				[WEAPON] = {
+					[2] = {
+						{
+							minItemLevel = 494,
+							maxItemLevel = 610,
+							amountOfMats = 2.125
+						},
+					},
+				},
+			},
+		},
 	},
 	{
 		desc = L["Essences"],
@@ -1405,6 +1431,42 @@ data.disenchant = {
 				},
 			},
 		},
+		["item:111245:0:0:0:0:0:0"] = {
+			--Luminous Shard
+			name = GetItemInfo("item:111245:0:0:0:0:0:0"),
+			minLevel = 90,
+			maxLevel = 100,
+			itemTypes = {
+				[ARMOR] = {
+					[3] = {
+						{
+							minItemLevel = 384,
+							maxItemLevel = 429,
+							amountOfMats = 0.33
+						},
+						{
+							minItemLevel = 430,
+							maxItemLevel = 500,
+							amountOfMats = 1
+						},
+					},
+				},
+				[WEAPON] = {
+					[3] = {
+						{
+							minItemLevel = 384,
+							maxItemLevel = 429,
+							amountOfMats = 0.33
+						},
+						{
+							minItemLevel = 430,
+							maxItemLevel = 500,
+							amountOfMats = 1
+						},
+					},
+				},
+			},
+		},
 	},
 	{
 		desc = L["Crystals"],
@@ -1576,6 +1638,7 @@ data.notDisenchantable = {
 	["item:52486:0:0:0:0:0:0"] = true,
 	["item:52487:0:0:0:0:0:0"] = true,
 	["item:52488:0:0:0:0:0:0"] = true,
+	["item:75274:0:0:0:0:0:0"] = true,
 	["item:97826:0:0:0:0:0:0"] = true,
 	["item:97827:0:0:0:0:0:0"] = true,
 	["item:97828:0:0:0:0:0:0"] = true,
@@ -1583,6 +1646,7 @@ data.notDisenchantable = {
 	["item:97830:0:0:0:0:0:0"] = true,
 	["item:97831:0:0:0:0:0:0"] = true,
 	["item:97832:0:0:0:0:0:0"] = true,
+	["item:109262:0:0:0:0:0:0"] = true,
 }
 
 function TSMAPI:GetEnchantingConversionNum(targetID, matID)

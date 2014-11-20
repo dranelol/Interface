@@ -25,21 +25,30 @@ function Inventory:GetPlayerBagNum(itemString)
 end
 
 
--- gets the number of an item in the current player's reagent bank
-function Inventory:GetPlayerReagentBankNum(itemString)
+-- gets the number of an item in the current player's bank and reagent bank
+function Inventory:GetPlayerBankNum(itemString)
 	if not itemString then return end
 
 	if TSMAPI.SOULBOUND_MATS[itemString] then
 		return GetItemCount(itemString)
 	else
+		local tmp = {}
 		local reagentBank = TSMAPI:ModuleAPI("ItemTracker", "playerreagentbank", UnitName("player")) or {}
-		return reagentBank and reagentBank[itemString] or 0
+		--local bank = TSMAPI:ModuleAPI("ItemTracker", "playerbank", UnitName("player")) or {}
+		for itemString, quantity in pairs(reagentBank) do
+			tmp[itemString] = (tmp[itemString] or 0) + quantity
+		end
+		--		for itemString, quantity in pairs(bank) do
+		--			tmp[itemString] = (tmp[itemString] or 0) + quantity
+		--		end
+		return tmp and tmp[itemString] or 0
 	end
 end
 
 
 function Inventory:GetTotals()
 	local bagTotal, auctionTotal, otherTotal, total = {}, {}, {}, {}
+	local VELLUM_ID = "item:38682:0:0:0:0:0:0"
 
 	for _, player in pairs(TSMAPI:ModuleAPI("ItemTracker", "playerlist") or {}) do
 		if player == UnitName("player") or not TSM.db.global.ignoreCharacters[player] then
@@ -48,7 +57,6 @@ function Inventory:GetTotals()
 			local reagent = TSMAPI:ModuleAPI("ItemTracker", "playerreagentbank", player) or {}
 			local mail = TSMAPI:ModuleAPI("ItemTracker", "playermail", player) or {}
 			local auctions = TSMAPI:ModuleAPI("ItemTracker", "playerauctions", player) or {}
-			local reagentBank = TSMAPI:ModuleAPI("ItemTracker", "playerreagentbank", player) or {}
 			for itemString, quantity in pairs(bags) do
 				if player == UnitName("player") then
 					bagTotal[itemString] = (bagTotal[itemString] or 0) + quantity
@@ -59,12 +67,24 @@ function Inventory:GetTotals()
 				end
 			end
 			for itemString, quantity in pairs(bank) do
+				--				if player == UnitName("player") then
+				--					if itemString == VELLUM_ID then
+				--						otherTotal[itemString] = (otherTotal[itemString] or 0) + quantity
+				--					else
+				--						bagTotal[itemString] = (bagTotal[itemString] or 0) + quantity
+				--					end
+				--				else
 				otherTotal[itemString] = (otherTotal[itemString] or 0) + quantity
+				--end
 				total[itemString] = (total[itemString] or 0) + quantity
 			end
 			for itemString, quantity in pairs(reagent) do
 				if player == UnitName("player") then
-					bagTotal[itemString] = (bagTotal[itemString] or 0) + quantity
+					if itemString == VELLUM_ID then
+						otherTotal[itemString] = (otherTotal[itemString] or 0) + quantity
+					else
+						bagTotal[itemString] = (bagTotal[itemString] or 0) + quantity
+					end
 				else
 					otherTotal[itemString] = (otherTotal[itemString] or 0) + quantity
 				end
@@ -153,7 +173,8 @@ function Inventory:GetItemSources(crafter, neededMats)
 	local items = {}
 	for itemString, quantity in pairs(neededMats) do
 		if TSMAPI:GetVendorCost(itemString) then
-			local vendorNeed = quantity - ((crafterBags[itemString] or 0) + (crafterMail[itemString] or 0) + (crafterBank[itemString] or 0) + (crafterReagentBank[itemString] or 0))
+			--local vendorNeed = quantity - ((crafterBags[itemString] or 0) + (crafterMail[itemString] or 0) + (crafterBank[itemString] or 0) + (crafterReagentBank[itemString] or 0))
+			local vendorNeed = quantity - ((crafterBags[itemString] or 0) + (crafterMail[itemString] or 0) + (crafterReagentBank[itemString] or 0))
 			if vendorNeed > 0 then
 				items[itemString] = vendorNeed
 			end
@@ -180,7 +201,13 @@ function Inventory:GetItemSources(crafter, neededMats)
 		if TSMAPI.SOULBOUND_MATS[itemString] then
 			soulboundBagCount = GetItemCount(itemString)
 		end
-		local need = max(quantity - ((crafterBags[itemString] or 0) + (crafterReagentBank[itemString] or 0) + (soulboundBagCount or 0)), 0)
+		local need
+		if itemString == TSM.VELLUM_ID then
+			need = max(quantity - ((crafterBags[itemString] or 0) + (soulboundBagCount or 0)), 0)
+		else
+			--need = max(quantity - ((crafterBags[itemString] or 0) + (crafterBank[itemString] or 0) + (crafterReagentBank[itemString] or 0) + (soulboundBagCount or 0)), 0)
+			need = max(quantity - ((crafterBags[itemString] or 0) + (crafterReagentBank[itemString] or 0) + (soulboundBagCount or 0)), 0)
+		end
 		if need > 0 then
 			shortItems[itemString] = need
 		end
@@ -214,10 +241,12 @@ function Inventory:GetItemSources(crafter, neededMats)
 				if (bank[itemString] or reagent[itemString] or (soulboundBankCount and soulboundBankCount > 0)) and shortItems[itemString] then
 					if shortItems[itemString] - (crafterMail[itemString] or 0) - (player ~= crafter and bags[itemString] or 0) > 0 then
 						bankItems[itemString] = bank[itemString] or soulboundBankCount
-						if bankItems[itemString] and reagent[itemString] then
-							bankItems[itemString] = bankItems[itemString] + (reagent[itemString] or 0)
-						else
-							bankItems[itemString] = reagent[itemString]
+						if itemString == TSM.VELLUM_ID or crafter ~= player then
+							if bankItems[itemString] and reagent[itemString] then
+								bankItems[itemString] = bankItems[itemString] + (reagent[itemString] or 0)
+							elseif reagent[itemString] then
+								bankItems[itemString] = reagent[itemString]
+							end
 						end
 					end
 				end

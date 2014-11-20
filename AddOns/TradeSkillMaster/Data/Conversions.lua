@@ -88,6 +88,14 @@ local conversions = {
 		["item:8845:0:0:0:0:0:0"] = {rate=.6, source="mill"},
 		["item:8846:0:0:0:0:0:0"] = {rate=.6, source="mill"},
 	},
+	["item:114931:0:0:0:0:0:0"] = { -- Cerulean Pigment (Warbinder's Ink)
+		["item:109124:0:0:0:0:0:0"] = {rate=.5, source="mill"},
+		["item:109125:0:0:0:0:0:0"] = {rate=.5, source="mill"},
+		["item:109126:0:0:0:0:0:0"] = {rate=.5, source="mill"},
+		["item:109127:0:0:0:0:0:0"] = {rate=.5, source="mill"},
+		["item:109128:0:0:0:0:0:0"] = {rate=.5, source="mill"},
+		["item:109129:0:0:0:0:0:0"] = {rate=.5, source="mill"},
+	},
 	
 	-- rare pigments (inks)
 	["item:43109:0:0:0:0:0:0"] = { -- Icy Pigment (Snowfall Ink)
@@ -599,43 +607,43 @@ local conversions = {
 
 	--vendor trades
 	["item:37101:0:0:0:0:0:0"] = { -- Ivory Ink
-		["item:79254:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
+		["item:113111:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
 	},
 	["item:39469:0:0:0:0:0:0"] = { -- Moonglow Ink
-		["item:79254:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
+		["item:113111:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
 	},
 	["item:39774:0:0:0:0:0:0"] = { -- Midnight Ink
-		["item:79254:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
+		["item:113111:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
 	},
 	["item:43116:0:0:0:0:0:0"] = { -- Lion's Ink
-		["item:79254:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
+		["item:113111:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
 	},
 	["item:43118:0:0:0:0:0:0"] = { -- Jadefire Ink
-		["item:79254:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
+		["item:113111:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
 	},
 	["item:43120:0:0:0:0:0:0"] = { -- Celestial Ink
-		["item:79254:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
+		["item:113111:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
 	},
 	["item:43122:0:0:0:0:0:0"] = { -- Shimmering Ink
-		["item:79254:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
+		["item:113111:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
 	},
 	["item:43124:0:0:0:0:0:0"] = { -- Ethereal Ink
-		["item:79254:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
+		["item:113111:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
 	},
 	["item:43126:0:0:0:0:0:0"] = { -- Ink of the Sea
-		["item:79254:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
+		["item:113111:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
 	},
 	["item:43127:0:0:0:0:0:0"] = { -- Snowfall Ink
-		["item:79254:0:0:0:0:0:0"] = {rate=1/10, source="vendortrade"},
+		["item:113111:0:0:0:0:0:0"] = {rate=1/10, source="vendortrade"},
 	},
 	["item:61978:0:0:0:0:0:0"] = { -- Blackfallow Ink
-		["item:79254:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
+		["item:113111:0:0:0:0:0:0"] = {rate=1, source="vendortrade"},
 	},
 	["item:61981:0:0:0:0:0:0"] = { -- Inferno Ink
-		["item:79254:0:0:0:0:0:0"] = {rate=1/10, source="vendortrade"},
+		["item:113111:0:0:0:0:0:0"] = {rate=1/10, source="vendortrade"},
 	},
 	["item:79255:0:0:0:0:0:0"] = { -- Starlight Ink
-		["item:79254:0:0:0:0:0:0"] = {rate=1/10, source="vendortrade"},
+		["item:113111:0:0:0:0:0:0"] = {rate=1/10, source="vendortrade"},
 	},
 }
 TSMAPI.Conversions = conversions
@@ -654,6 +662,7 @@ local inks = {
 	["item:43126:0:0:0:0:0:0"] = {pigment="item:39343:0:0:0:0:0:0", pigmentPerInk=2}, -- Ink of the Sea
 	["item:61978:0:0:0:0:0:0"] = {pigment="item:61979:0:0:0:0:0:0", pigmentPerInk=2}, -- Blackfallow Ink
 	["item:79254:0:0:0:0:0:0"] = {pigment="item:79251:0:0:0:0:0:0", pigmentPerInk=2}, -- Ink of Dreams
+	["item:113111:0:0:0:0:0:0"] = {pigment="item:114931:0:0:0:0:0:0", pigmentPerInk=2}, -- Warbinder's Ink
 	
 	-- rare inks
 	["item:43115:0:0:0:0:0:0"] = {pigment="item:43103:0:0:0:0:0:0", pigmentPerInk=1}, -- Hunter's Ink

@@ -247,7 +247,14 @@ local methods = {
 			end
 			if aVal == bVal then
 				-- make this a stable sort (abitrarily) by using table reference strings
-				return tostring(a) < tostring(b)
+				local aSubVal = a[1].args[1] or 0
+				local bSubVal = b[1].args[1] or 0
+				if aSubVal == bSubVal then
+					local aSubVal2 = a[7].args[1] or 0
+					local bSubVal2 = b[7].args[1] or 0
+					return tostring(aSubVal2) < tostring(bSubVal2)
+				end
+				return tostring(aSubVal) < tostring(bSubVal)
 			end
 			if rt.sortInfo.ascending then
 				return aVal < bVal

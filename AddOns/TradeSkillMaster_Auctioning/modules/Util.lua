@@ -42,7 +42,7 @@ end
 
 function Util:GetItemPrices(operation, itemString, isResetScan, keys)
 	local prices = {}
-	keys = keys or {undercut=true, minPrice=true, maxPrice=true, normalPrice=true, cancelRepostThreshold=true, resetPrice=true, aboveMax=true}
+	keys = keys or { undercut = true, minPrice = true, maxPrice = true, normalPrice = true, cancelRepostThreshold = true, resetPrice = true, aboveMax = true }
 	if isResetScan then
 		keys.resetMaxCost = true
 		keys.resetMinProfit = true
@@ -55,7 +55,7 @@ function Util:GetItemPrices(operation, itemString, isResetScan, keys)
 	if keys.aboveMax and operation.aboveMax ~= "none" then
 		keys[operation.aboveMax] = true
 	end
-	
+
 	prices.undercut = keys.undercut and GetItemPrice(operation.undercut, itemString)
 	prices.minPrice = keys.minPrice and GetItemPrice(operation.minPrice, itemString)
 	prices.maxPrice = keys.maxPrice and GetItemPrice(operation.maxPrice, itemString)
@@ -239,7 +239,7 @@ function Util:groupTree(grpInfo, src, all, ah)
 		TSM:Print(L["Nothing to Move"])
 	else
 		TSM:Print(L["Preparing to Move"])
-		TSMAPI:MoveItems(newgrp, TSM.PrintMsg)
+		TSMAPI:MoveItems(newgrp, TSM.PrintMsg, false)
 	end
 end
 
@@ -311,6 +311,9 @@ function Util:getTotalItems(src)
 			ScanBankBag(bag)
 		end
 		ScanBankBag(-1)
+		if IsReagentBankUnlocked() then
+			ScanBankBag(-3)
+		end
 
 		return results
 	elseif src == "guildbank" then

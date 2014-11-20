@@ -76,6 +76,8 @@ function Util:ScanCurrentProfession()
 		local spellLink = GetTradeSkillRecipeLink(index)
 		if not itemLink then
 			local skillName, skillType = GetTradeSkillInfo(index)
+			-- workaround for Blizzard bug in 6.02
+			if index == 1 and skillType == "subheader" then skillType = "header" end
 			if skillType == "header" then
 				for j=1, #subClasses do
 					if skillName == subClasses[j] then

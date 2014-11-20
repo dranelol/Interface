@@ -712,7 +712,7 @@ function Options:LoadCraftsPage(container)
 				end
 				data.cols[1].value = craft.queued
 				data.cols[1].sortArg = craft.queued
-				st.updateSort = true
+				--st.updateSort = true
 				st:RefreshRows()
 				craftST = nil
 				TSM.CraftingGUI:UpdateQueue()

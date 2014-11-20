@@ -150,7 +150,7 @@ end
 function private:Stack()
 	local partialStacks = {}
 	for bag, slot, itemString, quantity in TSMAPI:GetBagIterator(nil, TSM.db.global.includeSoulbound) do
-		local spell, perDestroy = TSM:IsDestroyable(bag, slot, itemString)
+		local spell, perDestroy = TSM:IsDestroyable(itemString)
 		if spell and quantity % perDestroy ~= 0 and not private.ignore[itemString] and not TSM.db.global.ignore[itemString] then
 			partialStacks[itemString] = partialStacks[itemString] or {}
 			tinsert(partialStacks[itemString], {bag, slot})
@@ -190,7 +190,7 @@ function private:UpdateST(forceShow)
 	local stData = {}
 	for bag, slot, itemString, quantity in TSMAPI:GetBagIterator(nil, TSM.db.global.includeSoulbound) do
 		if not private.ignore[itemString] and not TSM.db.global.ignore[itemString] then
-			local spell, perDestroy = TSM:IsDestroyable(bag, slot, itemString)
+			local spell, perDestroy = TSM:IsDestroyable(itemString)
 			local link = GetContainerItemLink(bag, slot)
 			if spell and quantity >= perDestroy then
 				local row = {
@@ -242,7 +242,7 @@ function private:LootOpened()
 	if not private.currentSpell then return end
 	local temp = {result={}, time=time()}
 	for bag, slot, itemString, quantity, locked in TSMAPI:GetBagIterator(nil, TSM.db.global.includeSoulbound) do
-		if locked and TSM:IsDestroyable(bag, slot, itemString) then
+		if locked and TSM:IsDestroyable(itemString) then
 			temp.item = itemString
 			break
 		end

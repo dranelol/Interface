@@ -192,7 +192,7 @@ end
 function private:IsDisenchantable(itemString)
 	local _, link, quality, _, _, iType = TSMAPI:GetSafeItemInfo(itemString)
 	local WEAPON, ARMOR = GetAuctionItemClasses()
-	if itemString and not TSMAPI.DisenchantingData.notDisenchantable[itemString] and (iType == ARMOR or iType == WEAPON) and quality == ITEM_QUALITY_UNCOMMON then
+	if itemString and not TSMAPI.DisenchantingData.notDisenchantable[itemString] and (iType == ARMOR or iType == WEAPON) and quality == 2 then
 		return true
 	end
 end

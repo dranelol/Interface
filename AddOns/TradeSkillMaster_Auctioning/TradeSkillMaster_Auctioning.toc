@@ -2,10 +2,10 @@
 ## Title: |cff00ff00TradeSkillMaster_Auctioning|r
 ## Notes: Manages the posting, canceling, and resetting of auctions.
 ## Author: Sapu94, Bart39
-## Version: v2.4.2
+## Version: v2.4.3
 ## Dependency: TradeSkillMaster
 ## SavedVariables: TradeSkillMaster_AuctioningDB
-## X-Curse-Packaged-Version: v2.4.2
+## X-Curse-Packaged-Version: v2.4.3
 ## X-Curse-Project-Name: TradeSkillMaster_Auctioning
 ## X-Curse-Project-ID: tradeskillmaster_auctioning
 ## X-Curse-Repository-ID: wow/tradeskillmaster_auctioning/mainline

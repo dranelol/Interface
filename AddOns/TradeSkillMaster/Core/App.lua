@@ -78,7 +78,7 @@ function App:LoadData()
 	local shoppingTemp = TSM.AppData.shoppingSearches
 	TSM.AppData.shoppingSearches = nil
 	for key, data in pairs(shoppingTemp) do
-		if strlower(key) == strlower((GetRealmName() or "").."-"..(UnitFactionGroup("player") or "")) and time() - data.downloadTime < 24*60*60 then
+		if strlower(key) == strlower(GetRealmName() or "") and time() - data.downloadTime < 24*60*60 then
 			TSM.AppData.shoppingSearches = data
 			break
 		end

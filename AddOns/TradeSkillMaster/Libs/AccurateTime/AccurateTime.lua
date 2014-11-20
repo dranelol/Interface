@@ -20,7 +20,7 @@ Website: http://www.wowace.com/addons/accuratetime/
 --]]
 
 local _G = _G
-local AT_VERSION = 5
+local AT_VERSION = 6
 
 
 -- Check if we're already loaded
@@ -50,10 +50,7 @@ AccurateTime.version = AT_VERSION
 -- debugprofilestart should never be called, but we'll store it just in case.
 AccurateTime._debugprofilestop = debugprofilestop
 AccurateTime._debugprofilestart = debugprofilestart
-
--- key to use for direct, non-library calls to
--- debugprofilestart/debugprofilestop
-AccurateTime.DEFAULT_KEY = AccurateTime.DEFAULT_KEY or {}
+AccurateTime._currentDebugprofilestop = debugprofilestop
 
 -- other internal variables
 AccurateTime._errorTime = AccurateTime._errorTime or 0
@@ -90,14 +87,6 @@ end
 -- Removes a timer and returns its current value.
 -- Usage: local value = AccurateTime:StopTimer(key)
 function AccurateTime:StopTimer(key)
-	if key == AccurateTime.DEFAULT_KEY and not AccurateTime._timers[key] then
-		-- Don't assert if somebody calls debugprofilestop() without starting
-		-- This is a best-effort attempt to give them an accurate time
-		return AccurateTime:GetAbsTime()
-	end
-	assert(key, "No key specified.")
-	assert(AccurateTime._timers[key], "No timer currently running for the given key.")
-	
 	local value = AccurateTime:GetTimer(key)
 	AccurateTime._timers[key] = nil
 	return value
@@ -105,8 +94,8 @@ end
 
 
 -- apply hooks
-debugprofilestart = function() AccurateTime:StartTimer(AccurateTime.DEFAULT_KEY) end
-debugprofilestop = function() return AccurateTime:StopTimer(AccurateTime.DEFAULT_KEY) end
+debugprofilestart = function() error("You should never use debugprofilestart()!", 1) end
+debugprofilestop = function() return AccurateTime._currentDebugprofilestop() end
 
 
 -- Create an OnUpdate script to detect and attempt to correct other addons
@@ -120,6 +109,10 @@ local function OnUpdate(self)
 		-- to ms) and add it to AccurateTime._errorTime.
 		local realAbsTime = self.lastUpdateAbsTime + (GetTime() - self.lastUpdateTime) * 1000
 		AccurateTime._errorTime = AccurateTime._errorTime + (realAbsTime - absTime)
+		if AccurateTime._errorTime > 0 then
+			-- update AccurateTime._currentDebugprofilestop() to use our version of the function now that there is some error time
+			AccurateTime._currentDebugprofilestop = function() return AccurateTime:GetAbsTime() end
+		end
 	end
 	self.lastUpdateAbsTime = absTime
 	self.lastUpdateTime = GetTime()

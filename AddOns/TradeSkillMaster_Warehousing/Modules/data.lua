@@ -209,6 +209,9 @@ function data:getTotalItems(src)
 			ScanBankBag(bag)
 		end
 		ScanBankBag(-1)
+		if IsReagentBankUnlocked() then
+			ScanBankBag(-3)
+		end
 
 		return results
 	elseif src == "guildbank" then

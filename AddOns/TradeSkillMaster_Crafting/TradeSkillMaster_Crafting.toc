@@ -2,10 +2,10 @@
 ## Title: |cff00ff00TradeSkillMaster_Crafting|r
 ## Notes: Provides a rich profession interface complete with a powerful crafting queue.
 ## Author: Sapu94, Bart39
-## Version: v2.6
+## Version: v2.6.11
 ## SavedVariables: TradeSkillMaster_CraftingDB
 ## Dependency: TradeSkillMaster, TradeSkillMaster_ItemTracker
-## X-Curse-Packaged-Version: v2.6
+## X-Curse-Packaged-Version: v2.6.11
 ## X-Curse-Project-Name: TradeSkillMaster_Crafting
 ## X-Curse-Project-ID: tradeskillmaster_crafting
 ## X-Curse-Repository-ID: wow/tradeskillmaster_crafting/mainline

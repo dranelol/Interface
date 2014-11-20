@@ -1,3 +1,32 @@
+v2.9.19
+*Added WOD DE mats.
+*Fixed sorting on auction results tables.
+
+v2.9.18
+*Missed some of the WOD herbs for milling.
+
+v2.9.17
+*Updated Inscription item conversions / vendor trade inks for WOD
+
+v2.9.16
+*Fixed bug with upgrading from older version.
+*Updated some URLs.
+
+v2.9.15
+*Fixed bug with shopping search imports.
+
+v2.9.14
+*Spirit of Harmony no longer Soulbound.
+
+v2.9.13
+*Fix issues recognizing Auctioneer / Auctionator price sources.
+
+v2.9.12
+*Reverting previous change - bank bag counts are not updated correctly when the bank is not open.
+
+v2.9.11
+*Checking bank bags no longer requires the bank to be open
+
 v2.9.10
 *Fixed an issue with warehousing bank slots if the reagent bank has been purchased
 

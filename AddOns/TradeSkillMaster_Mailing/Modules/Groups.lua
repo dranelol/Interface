@@ -34,6 +34,7 @@ function Groups:CreateTab(parent)
 			private:StartSending()
 		end
 	end
+
 	Groups:RegisterEvent("MAIL_CLOSED", function() TSMAPI:CancelFrame("mailingResendDelay") end)
 
 	local button = TSMAPI.GUI:CreateButton(frame, 15)
@@ -83,13 +84,21 @@ function private:StartSending()
 				for itemString in pairs(data.items) do
 					local numAvailable = (inventoryItems[itemString] or 0) - operation.keepQty
 					if numAvailable > 0 then
-						local quantity = 0
+						local quantity, reserveQty = 0, 0
 						if operation.maxQtyEnabled then
-							if TSMAPI:IsPlayer(operation.target) or not operation.restock then
+							if not operation.restock then
 								quantity = min(numAvailable, operation.maxQty)
 							else
 								local targetQty = private:GetTargetQuantity(operation.target, itemString, operation.restockGBank)
-								quantity = min(numAvailable, operation.maxQty - targetQty)
+								if TSMAPI:IsPlayer(operation.target) and targetQty <= operation.maxQty then
+									quantity = numAvailable
+								else
+									quantity = min(numAvailable, operation.maxQty - targetQty)
+								end
+								if TSMAPI:IsPlayer(operation.target) then
+									-- if using restock and target == player ensure that subsequent operations don't take reserved bag inventory
+									reserveQty = numAvailable - (targetQty - operation.maxQty)
+								end
 							end
 						else
 							quantity = numAvailable
@@ -98,7 +107,11 @@ function private:StartSending()
 							inventoryItems[itemString] = inventoryItems[itemString] - quantity
 							targets[operation.target] = targets[operation.target] or {}
 							targets[operation.target][itemString] = quantity
+						elseif reserveQty > 0 then -- some of the bag inventory is reserved so make unavailable for next operation
+							inventoryItems[itemString] = inventoryItems[itemString] - reserveQty
 						end
+					else -- as available quantity was used up by this operation make sure its not available for any subsequent operations
+						inventoryItems[itemString] = nil
 					end
 				end
 			end
@@ -110,7 +123,7 @@ function private:StartSending()
 			targets[target] = nil
 		end
 	end
-	
+
 	private.targets = targets
 	private:SendNextTarget()
 end
@@ -120,6 +133,7 @@ function private:GetTargetQuantity(player, itemString, includeGBank)
 	num = num + ((TSMAPI:ModuleAPI("ItemTracker", "playerbags", player, true) or {})[itemString] or 0)
 	num = num + ((TSMAPI:ModuleAPI("ItemTracker", "playerbank", player, true) or {})[itemString] or 0)
 	num = num + ((TSMAPI:ModuleAPI("ItemTracker", "playermail", player, true) or {})[itemString] or 0)
+	num = num + ((TSMAPI:ModuleAPI("ItemTracker", "playerreagentbank", player, true) or {})[itemString] or 0)
 	num = num + ((TSMAPI:ModuleAPI("ItemTracker", "playerauctions", player, true) or {})[itemString] or 0)
 	if includeGBank then
 		num = num + (TSMAPI:ModuleAPI("ItemTracker", "playerguildtotal", itemString, player) or 0)

@@ -1,3 +1,24 @@
+v2.2.10
+*Fixed an issue with mailing groups where bag inventory was incorrectly being reserved when target not the current player.
+
+v2.2.9
+*Fixed another issue with mailing groups if current player = target player.
+
+v2.2.8
+*Fixed another issue with mailing groups.
+
+v2.2.7
+*Fixed issues with mailing groups.
+
+v2.2.6
+*Fixed issue with mailing disenchantables.
+
+v2.2.5
+*Count reagent bank items as well as bags when calculating current inventory.
+
+v2.2.4
+*Include reagent bank when restocking to target quantity
+
 v2.2.3
 *Updated for patch 6.0.2
 

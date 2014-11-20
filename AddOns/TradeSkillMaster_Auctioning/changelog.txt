@@ -1,3 +1,7 @@
+v2.4.3
+*Added reagent bank for auctioning bankui functions.
+*Ignore Soulbound items for auctioning bankui functions.
+
 v2.4.2
 *Updated for patch 6.0.2
 

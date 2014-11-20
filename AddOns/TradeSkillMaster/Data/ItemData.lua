@@ -21,7 +21,6 @@ TSMAPI.EquipLocLookup = {
 
 TSMAPI.SOULBOUND_MATS = {
 	["item:79731:0:0:0:0:0:0"] = true, -- Scroll of Wisdom
-	["item:76061:0:0:0:0:0:0"] = true, -- Spirit of Harmony
 	["item:82447:0:0:0:0:0:0"] = true, -- Imperial Silk
 	["item:54440:0:0:0:0:0:0"] = true, -- Dreamcloth
 	["item:94111:0:0:0:0:0:0"] = true, -- Lightning Steel Ingot

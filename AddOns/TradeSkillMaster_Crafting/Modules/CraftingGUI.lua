@@ -12,6 +12,7 @@ local GUI = TSM:NewModule("CraftingGUI", "AceEvent-3.0", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("TradeSkillMaster_Crafting") -- loads the localization table
 
 local priceTextCache = { lastClear = 0 }
+TSM.VELLUM_ID = "item:38682:0:0:0:0:0:0"
 local private = {}
 private.gather = {}
 private.shown = {}
@@ -240,21 +241,25 @@ function GUI:UpdateTradeSkills()
 		end
 	end
 
-	--tidy up crafts if player unlearned a profession
-	for spellid, data in pairs(TSM.db.factionrealm.crafts) do
-		for player in pairs(data.players) do
-			if not TSM.db.factionrealm.tradeSkills[player] or not TSM.db.factionrealm.tradeSkills[player][data.profession] then
-				TSM.db.factionrealm.crafts[spellid].players[player] = nil
-			end
-		end
+	if not next(TSM.db.factionrealm.tradeSkills[playerName]) then
+		TSM.db.factionrealm.tradeSkills[playerName] = old
 	end
 
+	--tidy up crafts if player unlearned a profession
+	--	for spellid, data in pairs(TSM.db.factionrealm.crafts) do
+	--		for player in pairs(data.players) do
+	--			if not TSM.db.factionrealm.tradeSkills[player] or not TSM.db.factionrealm.tradeSkills[player][data.profession] then
+	--				TSM.db.factionrealm.crafts[spellid].players[player] = nil
+	--			end
+	--		end
+	--	end
+
 	--remove craft if no players
-	for spellid, data in pairs(TSM.db.factionrealm.crafts) do
-		if not next(data.players) then
-			TSM.db.factionrealm.crafts[spellid] = nil
-		end
-	end
+	--	for spellid, data in pairs(TSM.db.factionrealm.crafts) do
+	--		if not next(data.players) then
+	--			TSM.db.factionrealm.crafts[spellid] = nil
+	--		end
+	--	end
 end
 
 function GUI:SaveFilters()
@@ -473,7 +478,10 @@ function GUI:CreateQueueFrame(parent)
 		end
 		for itemID, matQuantity in pairs(TSM.db.factionrealm.crafts[data.spellID].mats) do
 			local name = TSMAPI:GetSafeItemInfo(itemID) or (TSM.db.factionrealm.mats[itemID] and TSM.db.factionrealm.mats[itemID].name) or "?"
-			local inventory = TSM.Inventory:GetPlayerBagNum(itemID) + TSM.Inventory:GetPlayerReagentBankNum(itemID)
+			local inventory = TSM.Inventory:GetPlayerBagNum(itemID) + TSM.Inventory:GetPlayerBankNum(itemID)
+			if itemID == TSM.VELLUM_ID then
+				inventory = TSM.Inventory:GetPlayerBagNum(itemID)
+			end
 			local need = matQuantity * data.numQueued
 			local color
 			if inventory >= need then color = "|cff00ff00" else color = "|cffff0000" end
@@ -548,7 +556,7 @@ function GUI:CreateQueueFrame(parent)
 	local function MatOnLeave(_, data)
 		GameTooltip:Hide()
 	end
-	
+
 	local function MatOnClick(_, data)
 		if IsModifiedClick() then
 			local link = select(2, TSMAPI:GetSafeItemInfo(data.itemString))
@@ -1513,9 +1521,8 @@ function GUI:UpdateQueue()
 						end
 
 						local velName
-						local VELLUM_ID = "item:38682:0:0:0:0:0:0"
-						if TSM.db.factionrealm.crafts[spellID].mats[VELLUM_ID] then
-							velName = GetItemInfo(VELLUM_ID) or TSM.db.factionrealm.mats[VELLUM_ID].name
+						if TSM.db.factionrealm.crafts[spellID].mats[TSM.VELLUM_ID] then
+							velName = GetItemInfo(TSM.VELLUM_ID) or TSM.db.factionrealm.mats[TSM.VELLUM_ID].name
 						end
 
 						local color
@@ -1609,7 +1616,11 @@ function GUI:UpdateQueue()
 
 		local color, order
 		if need == 0 then
-			if (TSM.Inventory:GetPlayerBagNum(itemString) + TSM.Inventory:GetPlayerReagentBankNum(itemString)) >= quantity then
+			local bagQty = TSM.Inventory:GetPlayerBagNum(itemString) + TSM.Inventory:GetPlayerBankNum(itemString)
+			if itemString == TSM.VELLUM_ID then
+				bagQty = TSM.Inventory:GetPlayerBagNum(itemString)
+			end
+			if bagQty >= quantity then
 				color = "|cff00ff00"
 				order = 1
 			else
@@ -1647,7 +1658,7 @@ function GUI:UpdateQueue()
 		tinsert(stData, row)
 	end
 
-	sort(stData, function(a, b) return a.name < b.name end)
+	sort(stData, function(a, b) return a.order < b.order end)
 
 	GUI.frame.queue.matST:SetData(stData)
 	TSMAPI:CreateTimeDelay("gatheringUpdateThrottle", 0.3, GUI.UpdateGathering)
@@ -2113,9 +2124,14 @@ function GUI:UpdateGathering()
 	-- double check if crafter already has all the items needed
 	local shortItems = {}
 	local crafterBags = TSMAPI:ModuleAPI("ItemTracker", "playerbags", crafter) or {}
+	local crafterBank = TSMAPI:ModuleAPI("ItemTracker", "playerbank", crafter) or {}
 	local crafterReagentBank = TSMAPI:ModuleAPI("ItemTracker", "playerreagentbank", crafter) or {}
 	for itemString, quantity in pairs(neededMats) do
+		--local need = max(quantity - ((crafterBags[itemString] or 0) + (crafterBank[itemString] or 0) + (crafterReagentBank[itemString] or 0)), 0)
 		local need = max(quantity - ((crafterBags[itemString] or 0) + (crafterReagentBank[itemString] or 0)), 0)
+		if itemString == TSM.VELLUM_ID then
+			need = max(quantity - (crafterBags[itemString] or 0), 0)
+		end
 		if need > 0 then
 			shortItems[itemString] = need
 		end
@@ -2146,7 +2162,12 @@ function GUI:UpdateGathering()
 
 		local color, order
 		if need == 0 then
-			if (crafterBags[itemString] or 0) >= quantity then
+			--local crafterQty = (crafterBags[itemString] or 0) + (crafterBank[itemString] or 0) + (crafterReagentBank[itemString] or 0)
+			local crafterQty = (crafterBags[itemString] or 0) + (crafterReagentBank[itemString] or 0)
+			if itemString == TSM.VELLUM_ID then
+				crafterQty = (crafterBags[itemString] or 0)
+			end
+			if crafterQty >= quantity then
 				color = "|cff00ff00"
 				order = 1
 			else
@@ -2241,12 +2262,15 @@ function GUI:UpdateGathering()
 									needQty = quantity
 								end
 							else
-								needQty = neededMats[itemString] - (crafterBags[itemString] or 0) - (crafterReagentBank[itemString] or 0)
+								if itemString == TSM.VELLUM_ID then
+									needQty = neededMats[itemString] - (crafterBags[itemString] or 0)
+								else
+									--needQty = neededMats[itemString] - (crafterBags[itemString] or 0) - (crafterBank[itemString] or 0) - (crafterReagentBank[itemString] or 0)
+									needQty = neededMats[itemString] - (crafterBags[itemString] or 0) - (crafterReagentBank[itemString] or 0)
+								end
 							end
 							local name = TSMAPI:GetSafeItemInfo(itemString) or itemString
-							local row
-							--							if task.taskType == L["Search for Mats"] or task.taskType == L["Visit Vendor"] or task.taskType == L["Collect Mail"] or task.taskType == L["Mail Items"] then
-							row = {
+							local row = {
 								cols = {
 									{
 										value = format("    %s", color .. name .. " x" .. min(needQty, quantity))
@@ -2254,15 +2278,6 @@ function GUI:UpdateGathering()
 								},
 								itemText = format("    %s", color .. name .. " x" .. min(needQty, quantity))
 							}
-							--							else
-							--								row = {
-							--									cols = {
-							--										{
-							--											value = format("    %s", color .. name .. " x" .. needQty .. " (" .. quantity .. " Avail)")
-							--										}
-							--									},
-							--								}
-							--							end
 							tinsert(stData, row)
 						end
 					end
@@ -2297,13 +2312,12 @@ function GUI:UpdateGathering()
 										local availQty
 										if task.taskType == L["Search for Mats"] then
 											availQty = taskQuantity
-										end
-										if task.taskType == L["Mail Items"] then
+										elseif task.taskType == L["Mail Items"] then
 											availQty = min(need, taskQuantity)
-										elseif not crafter == UnitName("player") then
-											availQty = min(need, taskQuantity) - (playerBags[itemString] or 0)
+										elseif crafter ~= UnitName("player") then
+											availQty = min(need, taskQuantity) - (playerBags[itemString] or 0) - (crafterMail[itemString] or 0)
 										else
-											availQty = min(need, taskQuantity) -- (crafterBags[itemString] or 0)
+											availQty = min(need, taskQuantity)
 										end
 										availableMats[itemString] = availQty
 										local name = select(1, TSMAPI:GetSafeItemInfo(itemString))

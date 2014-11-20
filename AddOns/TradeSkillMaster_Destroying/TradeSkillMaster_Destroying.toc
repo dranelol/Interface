@@ -2,10 +2,10 @@
 ## Title: |cff00ff00TradeSkillMaster_Destroying|r
 ## Notes: Makes bulk and one-off milling, prospecting, and disenchanting easier.
 ## Author: Sapu94, Bart39
-## Version: v2.1.3
+## Version: v2.1.4
 ## SavedVariables: TradeSkillMaster_DestroyingDB
 ## Dependency: TradeSkillMaster
-## X-Curse-Packaged-Version: v2.1.3
+## X-Curse-Packaged-Version: v2.1.4
 ## X-Curse-Project-Name: TradeSkillMaster_Destroying
 ## X-Curse-Project-ID: tradeskillmaster_destroying
 ## X-Curse-Repository-ID: wow/tradeskillmaster_destroying/mainline

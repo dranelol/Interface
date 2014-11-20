@@ -316,7 +316,7 @@ L["Looks like no items were added to the queue. This may be because you are alre
 L["Looks like no items were found. You can either try searching for something else, or simply close the Assistant window if you're done."] = true
 L["Looks like no items were imported. This might be because they are already in another group in which case you might consider checking the 'Move Already Grouped Items' box to force them to move to this group."] = true
 L["Looks like TradeSkillMaster has detected an error with your configuration. Please address this in order to ensure TSM remains functional."] = true
-L["Looks like TradeSkillMaster has encountered an error. Please help the author fix this error by copying the entire error below and following the instructions for reporting bugs listed here (unless told elsewhere by the author):"] = true
+L["Looks like TradeSkillMaster has encountered an error. Please help the author fix this error by copying the entire error below and following the instructions for reporting lua errors listed here (unless told elsewhere by the author):"] = true
 L["Looks like TradeSkillMaster has encountered an error. Please help the author fix this error by following the instructions shown."] = true
 L["Loop detected in the following custom price:"] = true
 L["Make a new group from an import list I have"] = true

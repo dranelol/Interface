@@ -16,7 +16,6 @@ if not L then return end
 L[ [=[Automatically rechecks mail every 60 seconds when you have too much mail.
 
 If you loot all mail with this enabled, it will wait and recheck then keep auto looting.]=] ] = [=[当你有过多邮件时，每60秒自动重新检查邮件。
-
 若你启用此功能时打开所有邮件，插件将等待并重新检查以保持自动拾取。]=]
 L["Auto Recheck Mail"] = "自动复查邮件"
 L["BE SURE TO SPELL THE NAME CORRECTLY!"] = "请务必保证收件人姓名拼写的正确性!!!"

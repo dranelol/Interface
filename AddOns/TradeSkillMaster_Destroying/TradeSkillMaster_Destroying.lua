@@ -58,9 +58,8 @@ function TSM:RegisterModule()
 end
 
 -- determines if an item is millable or prospectable
-local scanTooltip
 local destroyCache = {}
-function TSM:IsDestroyable(bag, slot, itemString)
+function TSM:IsDestroyable(itemString)
 	if destroyCache[itemString] then
 		return unpack(destroyCache[itemString])
 	end
@@ -78,19 +77,20 @@ function TSM:IsDestroyable(bag, slot, itemString)
 		return unpack(destroyCache[itemString])
 	end
 	
-	if not scanTooltip then
-		scanTooltip = CreateFrame("GameTooltip", "TSMDestroyScanTooltip", UIParent, "GameTooltipTemplate")
-		scanTooltip:SetOwner(UIParent, "ANCHOR_NONE")
-	end
-	scanTooltip:ClearLines()
-	scanTooltip:SetBagItem(bag, slot)
 
-	for i=1, scanTooltip:NumLines() do
-		local text = _G["TSMDestroyScanTooltipTextLeft"..i] and _G["TSMDestroyScanTooltipTextLeft"..i]:GetText()
-		if text == ITEM_MILLABLE then
+	-- milling
+	for _, targetItem in ipairs(TSMAPI:GetConversionTargetItems("mill")) do
+		local herbs = TSMAPI:GetItemConversions(targetItem)
+		if herbs[itemString] then
 			destroyCache[itemString] = {IsSpellKnown(TSM.spells.milling) and GetSpellInfo(TSM.spells.milling), 5}
 			break
-		elseif text == ITEM_PROSPECTABLE then
+		end
+	end
+
+	-- prospecting
+	for _, targetItem in ipairs(TSMAPI:GetConversionTargetItems("prospect")) do
+		local gems = TSMAPI:GetItemConversions(targetItem)
+		if gems[itemString] then
 			destroyCache[itemString] = {IsSpellKnown(TSM.spells.prospect) and GetSpellInfo(TSM.spells.prospect), 5}
 			break
 		end

@@ -1,3 +1,38 @@
+v2.6.11
+*Change the workaround for the blizzard bug in GetTradeSkillInfo to avoid localization issues - ticket #511
+
+v2.6.10
+*Fixed bug with enchanting not allowing the queue'ing / grouping / viewing of enchanting scrolls.
+
+v2.6.9
+*Updated hard-coded enchanting scroll data to allow queue'ing of WoD enchants.
+
+v2.6.8
+*Workaround for learnt professions disappearing.
+
+v2.6.7
+*Temporarily disable clear-up of unlearned professions due to blizzard bug.
+
+v2.6.6
+*Fixed issues with sorting on crafting > crafts tab when adding or removing queue.
+*Fixed issues with queuing intermediate crafts.
+*Fixed available source quantities in gathering.
+
+v2.6.5
+*Fix issues with gathering counts and alts reagent bank.
+
+v2.6.4
+*Bank bag contents are not updated correctly when crafting from bank (reagent bank is fine) so gathering from bank has been re-added.
+
+v2.6.3
+*Fixed another issue with crafting from bank/reagent bank.
+
+v2.6.2
+*Fixed various issues with crafting from bank/reagent bank.
+
+v2.6.1
+*Don't add gathering tasks for items in the crafter's reagent bank.
+
 v2.6
 *Updated for patch 6.0.2
 
