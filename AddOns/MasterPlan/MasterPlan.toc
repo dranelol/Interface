@@ -1,0 +1,10 @@
+## Interface: 60000
+## Title: Master Plan
+## Notes: Garrision missions UI tweaks.
+## LoadOnDemand: 1
+## LoadWith: Blizzard_GarrisonUI
+## Version: 0.3
+## Author: foxlit
+GarrisonAPI.lua
+GarrisonMissions.lua
+GarrisonFollowers.lua

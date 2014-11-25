@@ -1,0 +1,8 @@
+2014-11-24  MMOSimca  <MMOSimca@gmail.com>
+
+[1119f9b3c48e] [v1.0]
+* MissionComplete.lua:
+
+Fixed error that could occur if the timer wasn't stopped after the missions were completed.
+
+
