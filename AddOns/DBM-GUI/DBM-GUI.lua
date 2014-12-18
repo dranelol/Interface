@@ -44,7 +44,7 @@
 
 
 
-local revision =("$Revision: 11729 $"):sub(12, -3)
+local revision =("$Revision: 11916 $"):sub(12, -3)
 local FrameTitle = "DBM_GUI_Option_"	-- all GUI frames get automatically a name FrameTitle..ID
 
 local PanelPrototype = {}
@@ -401,7 +401,7 @@ do
 		local spellName = GetSpellInfo(spellId)
 		if not spellName then
 			spellName = DBM_CORE_UNKNOWN
-			DBM:Debug("Spell ID not exists: "..spellId)
+			DBM:Debug("Spell ID does not exist: "..spellId)
 		end
 		return ("|cff71d5ff|Hspell:%d|h%s|h|r"):format(spellId, spellName)
 	end
@@ -409,7 +409,7 @@ do
 	local function replaceJournalLinks(id)
 		local check = EJ_GetSectionInfo(tonumber(id))
 		if not check then 
-			DBM:Debug("Journal ID not exists: "..id)
+			DBM:Debug("Journal ID does not exist: "..id)
 		end
 		local link = select(9, EJ_GetSectionInfo(tonumber(id))) or DBM_CORE_UNKNOWN
 		return link:gsub("|h%[(.*)%]|h", "|h%1|h")
@@ -1560,13 +1560,13 @@ local function CreateOptionsMenu()
 			{	text	= "Anshlun (ptBR Male)",value = "Anshlun"},
 			{	text	= "Neryssa (ptBR Female)",value = "Neryssa"},
 		}
-		local CountSoundDropDown2 = raidwarnoptions:CreateDropdown(L.CountdownVoice2, countSounds,
+		local CountSoundDropDown2 = raidwarnoptions:CreateDropdown(L.CountdownVoice2, countSounds2,
 		DBM.Options.CountdownVoice2, function(value)
 			DBM.Options.CountdownVoice2 = value
 			DBM:PlayCountSound(1, DBM.Options.CountdownVoice2)
 		end
 		)
-		CountSoundDropDown2:SetPoint("LEFT", CountSoundDropDown, "RIGHT", 60, 0)
+		CountSoundDropDown2:SetPoint("LEFT", CountSoundDropDown, "RIGHT", 30, 0)
 
 		local CountSoundDropDown3 = raidwarnoptions:CreateDropdown(L.CountdownVoice3, countSounds2,
 		DBM.Options.CountdownVoice3, function(value)
@@ -1575,6 +1575,14 @@ local function CreateOptionsMenu()
 		end
 		)
 		CountSoundDropDown3:SetPoint("TOPLEFT", CountSoundDropDown, "TOPLEFT", 0, -40)
+		
+		local VoiceDropDown = raidwarnoptions:CreateDropdown(L.VoicePackChoice, DBM.Voices,
+		DBM.Options.ChosenVoicePack, function(value)
+			DBM.Options.ChosenVoicePack = value
+			DBM:Debug("DBM.Options.ChosenVoicePack is set to "..DBM.Options.ChosenVoicePack)
+		end
+		)
+		VoiceDropDown:SetPoint("TOPLEFT", CountSoundDropDown2, "TOPLEFT", 0, -40)
 
 		--Raid Warning Colors
 		local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 150, true)
@@ -2382,15 +2390,15 @@ local function CreateOptionsMenu()
 
 		local spamPTArea = spamPanel:CreateArea(L.Area_PullTimer, nil, 160, true)
 		spamPTArea:CreateCheckButton(L.DontShowPTNoID, true, nil, "DontShowPTNoID")
-		spamPTArea:CreateCheckButton(L.DontShowPT, true, nil, "DontShowPT")
+		spamPTArea:CreateCheckButton(L.DontShowPT, true, nil, "DontShowPT2")
 		spamPTArea:CreateCheckButton(L.DontShowPTText, true, nil, "DontShowPTText")
 		spamPTArea:CreateCheckButton(L.DontPlayPTCountdown, true, nil, "DontPlayPTCountdown")
 		local SPTCDT = spamPTArea:CreateCheckButton(L.DontShowPTCountdownText, true, nil, "DontShowPTCountdownText")
 		
 		local PTSlider = spamPTArea:CreateSlider(L.PT_Threshold, 3, 30, 1, 300)   -- (text , min_value , max_value , step , width)
 		PTSlider:SetPoint('TOPLEFT', SPTCDT, "TOPLEFT", 62, -40)--Position seems based on text size so on diff locals it'll actually be in different places :\
-		PTSlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.PTCountThreshold) end)
-		PTSlider:HookScript("OnValueChanged", function(self) DBM.Options.PTCountThreshold = self:GetValue() end)
+		PTSlider:HookScript("OnShow", function(self) self:SetValue(math.floor(DBM.Options.PTCountThreshold)) end)
+		PTSlider:HookScript("OnValueChanged", function(self) DBM.Options.PTCountThreshold = math.floor(self:GetValue()) end)
 		
 		spamPTArea:AutoSetDimension()
 		spamArea:AutoSetDimension()
@@ -2538,16 +2546,16 @@ do
 			else
 				top2value1:SetText( stats.normal25Kills )
 				top2value2:SetText( stats.normal25Pulls - stats.normal25Kills )
-				top2value3:SetText( stats.normal25BestTime and ("%d:%02d"):format(math.floor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-" )
+				top2value3:SetText( stats.normal25BestTime and ("%d:%02d"):format(mfloor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-" )
 				top3value1:SetText( stats.lfr25Kills )
 				top3value2:SetText( stats.lfr25Pulls-stats.lfr25Kills )
-				top3value3:SetText( stats.lfr25BestTime and ("%d:%02d"):format(math.floor(stats.lfr25BestTime / 60), stats.lfr25BestTime % 60) or "-" )
+				top3value3:SetText( stats.lfr25BestTime and ("%d:%02d"):format(mfloor(stats.lfr25BestTime / 60), stats.lfr25BestTime % 60) or "-" )
 				bottom1value1:SetText( stats.heroicKills )
 				bottom1value2:SetText( stats.heroicPulls-stats.heroicKills )
-				bottom1value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
+				bottom1value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(mfloor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
 				bottom2value1:SetText( stats.heroic25Kills )
 				bottom2value2:SetText( stats.heroic25Pulls-stats.heroic25Kills )
-				bottom2value3:SetText( stats.heroic25BestTime and ("%d:%02d"):format(math.floor(stats.heroic25BestTime / 60), stats.heroic25BestTime % 60) or "-" )
+				bottom2value3:SetText( stats.heroic25BestTime and ("%d:%02d"):format(mfloor(stats.heroic25BestTime / 60), stats.heroic25BestTime % 60) or "-" )
 			end
 		end
 	end

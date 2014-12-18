@@ -1,7 +1,9 @@
-local oRA = LibStub("AceAddon-3.0"):GetAddon("oRA3")
+
+local addonName, scope = ...
+local oRA = scope.addon
 local module = oRA:NewModule("RoleIcons")
 
-module.VERSION = tonumber(("$Revision: 735 $"):sub(12, -3))
+module.VERSION = tonumber(("$Revision: 806 $"):sub(12, -3))
 
 local countIcons -- frame containing the totals by role
 

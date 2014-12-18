@@ -1,0 +1,136 @@
+------------------------------------------------------------------------
+r28 | tptbk | 2014-11-01 23:58:44 +0000 (Sat, 01 Nov 2014) | 1 line
+Changed paths:
+   A /tags/v1.5 (from /trunk:27)
+
+Fix Format Causing Some Debuffs Not to Show and Updated Boss/Trash Debuffs
+------------------------------------------------------------------------
+r27 | tptbk | 2014-11-01 23:56:08 +0000 (Sat, 01 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry.lua
+   M /trunk/Highmaul.lua
+
+Fix Updated Boss/Trash Debuffs
+------------------------------------------------------------------------
+r26 | tptbk | 2014-11-01 22:53:45 +0000 (Sat, 01 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul.lua
+
+Fix Updated Trash Debuffs
+------------------------------------------------------------------------
+r25 | tptbk | 2014-11-01 21:00:01 +0000 (Sat, 01 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry.lua
+   M /trunk/Highmaul.lua
+
+Merge Release Changes with Trunk
+------------------------------------------------------------------------
+r22 | tptbk | 2014-10-28 01:04:08 +0000 (Tue, 28 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry.lua
+   M /trunk/CheckCompat.lua
+   M /trunk/Highmaul.lua
+
+Fix Error Causing Addon to Not Load Properly
+------------------------------------------------------------------------
+r21 | tptbk | 2014-10-27 21:51:48 +0000 (Mon, 27 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry.lua
+   M /trunk/Highmaul.lua
+
+Add The Check For Compat
+------------------------------------------------------------------------
+r20 | tptbk | 2014-10-27 21:42:52 +0000 (Mon, 27 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/CheckCompat.lua
+
+Update Compat
+------------------------------------------------------------------------
+r19 | tptbk | 2014-10-27 21:17:15 +0000 (Mon, 27 Oct 2014) | 1 line
+Changed paths:
+   A /trunk/CheckCompat.lua
+
+Add Check Compat and Update for New Version of GSRD
+------------------------------------------------------------------------
+r16 | tptbk | 2014-10-24 14:31:41 +0000 (Fri, 24 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/GridStatusRD_WoD.toc
+
+Bump Version Number
+------------------------------------------------------------------------
+r15 | tptbk | 2014-10-24 14:30:12 +0000 (Fri, 24 Oct 2014) | 1 line
+Changed paths:
+   A /trunk/.pkgmeta
+   M /trunk/BlackrockFoundry.lua
+   M /trunk/GridStatusRD_WoD.toc
+   M /trunk/Highmaul.lua
+   A /trunk/LICENSE.txt
+
+Update Spell Priorities
+------------------------------------------------------------------------
+r13 | tptbk | 2014-10-23 15:15:50 +0000 (Thu, 23 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/GridStatusRD_WoD.toc
+
+v1.0
+------------------------------------------------------------------------
+r9 | tptbk | 2014-10-22 03:14:09 +0000 (Wed, 22 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/GridStatusRD_WoD.toc
+
+Bump Version Number Again For Beta Flag on Curse
+------------------------------------------------------------------------
+r8 | tptbk | 2014-10-22 03:12:01 +0000 (Wed, 22 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/GridStatusRD_WoD.toc
+
+Bump Version Number
+------------------------------------------------------------------------
+r7 | tptbk | 2014-10-22 03:10:12 +0000 (Wed, 22 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul.lua
+
+Update Highmaul Stackable Flags
+------------------------------------------------------------------------
+r6 | tptbk | 2014-10-22 03:05:23 +0000 (Wed, 22 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/Highmaul.lua
+
+Acttually Fix Highmaul ZoneID
+------------------------------------------------------------------------
+r5 | tptbk | 2014-10-22 03:04:21 +0000 (Wed, 22 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/GridStatusRD_WoD.toc
+
+Fix Highmaul ZoneID
+------------------------------------------------------------------------
+r4 | tptbk | 2014-10-22 02:53:40 +0000 (Wed, 22 Oct 2014) | 2 lines
+Changed paths:
+   M /trunk/BlackrockFoundry.lua
+   M /trunk/GridStatusRD_WoD.toc
+
+Fix Stackable Flag
+Bump Version Number
+------------------------------------------------------------------------
+r3 | tptbk | 2014-10-22 02:44:00 +0000 (Wed, 22 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/BlackrockFoundry.lua
+
+Fix Ordering
+------------------------------------------------------------------------
+r2 | tptbk | 2014-10-21 19:39:42 +0000 (Tue, 21 Oct 2014) | 1 line
+Changed paths:
+   A /trunk/BlackrockFoundry.lua
+   A /trunk/GridStatusRD_WoD.toc
+   A /trunk/Highmaul.lua
+
+initial start
+------------------------------------------------------------------------
+r1 | svn | 2014-10-21 19:35:08 +0000 (Tue, 21 Oct 2014) | 1 line
+Changed paths:
+   A /branches
+   A /tags
+   A /trunk
+
+gridstatusrd_wod/mainline: Initial Import
+------------------------------------------------------------------------

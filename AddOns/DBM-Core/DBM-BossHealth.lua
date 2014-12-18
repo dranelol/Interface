@@ -80,7 +80,7 @@ local function onMouseUp(self, button)
 	DBM.Options.HPFrameX = x
 	DBM.Options.HPFrameY = y
 	if button == "RightButton" then
-		EasyMenu(menu, dropdownFrame, "cursor", nil, nil, "MENU")
+		EasyMenu(menu, dropdownFrame, "cursor", nil, nil)
 	end
 end
 
@@ -123,7 +123,7 @@ end
 -- Create the Frame  --
 -----------------------
 local function createFrame(self)
-	anchor = CreateFrame("Frame", nil, UIParent)
+	anchor = CreateFrame("Frame", "DBMBossHealth", UIParent)
 	anchor:SetWidth(60)
 	anchor:SetHeight(10)
 	anchor:SetMovable(1)

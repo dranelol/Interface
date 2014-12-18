@@ -1,11 +1,12 @@
 local mod	= DBM:NewMod(1148, "DBM-Highmaul", nil, 477)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 11708 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 11953 $"):sub(12, -3))
 mod:SetCreatureID(78238, 78237)--Pol 78238, Phemos 78237
 mod:SetEncounterID(1719)
 mod:SetZone()
 mod:SetBossHPInfoToHighest()
+mod:SetHotfixNoticeRev(11939)
 
 mod:RegisterCombat("combat")
 
@@ -18,6 +19,7 @@ mod:RegisterEventsInCombat(
 )
 
 --TODO, figure out stack tanks swap at for Arcane Wound(or if they can avoid swapping somehow). (bugged, there were no swapps on mythic, in fact tank debuff was irrelevant
+--Note, watch to see if whirlwind returns to 60 60 86, repeating, or if the hotfix to make it old way, is perm
 --Phemos
 local warnEnfeeblingroar			= mod:NewCountAnnounce(158057, 3)
 local warnWhirlwind					= mod:NewCountAnnounce(157943, 3)
@@ -46,9 +48,9 @@ local specWarnPulverize				= mod:NewSpecialWarningSpell(158385, nil, nil, nil, 2
 local specWarnArcaneCharge			= mod:NewSpecialWarningSpell(163336, nil, nil, nil, 2)--Mythic. Seems not reliable timer, has a chance to happen immediately after a charge (but not always)
 
 --Phemos (100-106 second full rotation, 33-34 in between)
-local timerEnfeeblingRoarCD			= mod:NewNextCountTimer(66, 158057)
-local timerWhirlwindCD				= mod:NewNextCountTimer(60.5, 157943)--NOT BOSS POWER BASED ANYMORE. it's a flat 60 second timer of it's own (except when quake failsafe activated)
-local timerQuakeCD					= mod:NewNextCountTimer(33, 158200)
+local timerEnfeeblingRoarCD			= mod:NewNextCountTimer(33, 158057)
+local timerWhirlwindCD				= mod:NewNextCountTimer(33, 157943)
+local timerQuakeCD					= mod:NewNextCountTimer(34, 158200)
 --Pol (84 seconds full rotation, 28-29 seconds in between)
 local timerShieldChargeCD			= mod:NewNextTimer(28, 158134)
 local timerInterruptingShoutCD		= mod:NewNextTimer(28, 158093)
@@ -60,7 +62,6 @@ local timerArcaneVolatilityCD		= mod:NewNextTimer(60, 163372)--NOT BOSS POWER BA
 
 local countdownPhemos				= mod:NewCountdown(33, nil, nil, "PhemosSpecial")
 local countdownPol					= mod:NewCountdown("Alt28", nil, nil, "PolSpecial")
-local countdownWW					= mod:NewCountdown("AltTwo60.5", 157943)
 
 mod:AddRangeFrameOption(8, 163372)
 
@@ -71,6 +72,8 @@ mod.vb.WWCount = 0
 mod.vb.PulverizeCount = 0
 mod.vb.LastQuake = 0
 local GetTime = GetTime
+local PhemosEnergyRate = 33
+local polEnergyRate = 28
 
 function mod:OnCombatStart(delay)
 	self.vb.EnfeebleCount = 0
@@ -84,6 +87,13 @@ function mod:OnCombatStart(delay)
 	countdownPol:Start(37.5-delay)
 	if self:IsMythic() then
 		timerArcaneVolatilityCD:Start(65-delay)
+	end
+	if self:IsDifficulty("heroic", "mythic") then
+		PhemosEnergyRate = 31
+		polEnergyRate = 25
+	else
+		PhemosEnergyRate = 33
+		polEnergyRate = 28
 	end
 --[[	if not self:IsLFR() then
 		berserkTimer:Start(-delay)
@@ -103,50 +113,31 @@ function mod:SPELL_CAST_START(args)
 		self.vb.EnfeebleCount = self.vb.EnfeebleCount + 1
 		warnEnfeeblingroar:Show(self.vb.EnfeebleCount)
 		specWarnEnfeeblingRoar:Show(self.vb.EnfeebleCount)
-		if (self.vb.QuakeCount+1) % 2 == 0 then--Even ones have longer Cd than odds
-			timerQuakeCD:Start(39, self.vb.QuakeCount+1)--Next Special
-			countdownPhemos:Start(39)
-			DBM:Debug("Activating Quake Delay, next quake is an even one")
-		else
-			timerQuakeCD:Start(33, self.vb.QuakeCount+1)--Next Special
-			countdownPhemos:Start(33)	
-		end
+		timerQuakeCD:Start(PhemosEnergyRate+1, self.vb.QuakeCount+1)--Next Special
+		countdownPhemos:Start(PhemosEnergyRate+1)	
 	elseif spellId == 157943 then
 		self.vb.WWCount = self.vb.WWCount + 1
 		warnWhirlwind:Show(self.vb.WWCount)
 		specWarnWhirlWind:Show(self.vb.WWCount)
-		local nextQuakeTime
-		if (self.vb.QuakeCount+1) % 2 == 0 then
-			nextQuakeTime = 106
-		else
-			nextQuakeTime = 100
-		end
-		local timeRemaining = nextQuakeTime - (GetTime() - self.vb.LastQuake)
-		if timeRemaining < 60 then--Quake failsafe will activate and delay Whirlwind
-			timerWhirlwindCD:Start(timeRemaining+33, self.vb.WWCount+1)--Next Special
-			countdownWW:Start(timeRemaining+33)
-			DBM:Debug("Activating Whirlwind Delay, quake is less than 60 seconds away")
-		else
-			timerWhirlwindCD:Start(nil, self.vb.WWCount+1)--Next Special
-			countdownWW:Start()
-		end
+		timerEnfeeblingRoarCD:Start(PhemosEnergyRate, self.vb.EnfeebleCount+1)--Next Special
+		countdownPhemos:Start(PhemosEnergyRate)
 	elseif spellId == 158134 then
 		warnShieldCharge:Show()
 		specWarnShieldCharge:Show()
-		timerInterruptingShoutCD:Start()--Next Special
-		countdownPol:Start()
+		timerInterruptingShoutCD:Start(polEnergyRate)--Next Special
+		countdownPol:Start(polEnergyRate)
 	elseif spellId == 158093 then
 		warnInterruptingShout:Show()
 		specWarnInterruptingShout:Show()
-		timerPulverizeCD:Start()--Next Special
-		countdownPol:Start()
+		timerPulverizeCD:Start(polEnergyRate+1)--Next Special
+		countdownPol:Start(polEnergyRate+1)
 	elseif spellId == 158200 then
 		self.vb.LastQuake = GetTime()
 		self.vb.QuakeCount = self.vb.QuakeCount + 1
 		warnQuake:Show(self.vb.QuakeCount)
 		specWarnQuake:Show(self.vb.QuakeCount)
-		timerEnfeeblingRoarCD:Start(nil, self.vb.EnfeebleCount+1)--Next Special
-		countdownPhemos:Start(66)
+		timerWhirlwindCD:Start(PhemosEnergyRate, self.vb.WWCount+1)
+		countdownPhemos:Start(PhemosEnergyRate)	
 	elseif args:IsSpellID(157952, 158415, 158419) then--Pulverize channel IDs
 		self.vb.PulverizeCount = self.vb.PulverizeCount + 1
 		warnPulverize:Show(self.vb.PulverizeCount)
@@ -200,7 +191,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 158385 then--Activation
 		self.vb.PulverizeCount = 0
 		specWarnPulverize:Show()
-		timerShieldChargeCD:Start()--Next Special
-		countdownPol:Start(28)
+		timerShieldChargeCD:Start(polEnergyRate)--Next Special
+		countdownPol:Start(polEnergyRate)
 	end
 end

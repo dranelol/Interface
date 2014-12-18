@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(1196, "DBM-Highmaul", nil, 477)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 11728 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 11965 $"):sub(12, -3))
 mod:SetCreatureID(78491)
 mod:SetEncounterID(1720)
 mod:SetZone()
@@ -13,10 +13,6 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_SUCCESS 163594 163241",
 	"SPELL_AURA_APPLIED 163241 164125",
 	"SPELL_AURA_APPLIED_DOSE 163241",
-	"SPELL_DAMAGE",
-	"SPELL_PERIODIC_DAMAGE",
-	"RANGE_DAMAGE",
-	"SWING_DAMAGE",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
@@ -54,11 +50,11 @@ local timerRotCD					= mod:NewCDTimer(10, 163241, nil, false)--it's a useful tim
 local timerNecroticBreathCD			= mod:NewCDTimer(32, 159219, nil, mod:IsTank() or mod:IsHealer())
 --Adds (all adds are actually NEXT timers however they get dleayed by infesting spores and necrotic breath sometimes so i'm leaving as CD for now)
 local timerSporeShooterCD			= mod:NewCDTimer(57, 163594, nil, mod:IsRanged())
-local timerFungalFleshEaterCD		= mod:NewCDTimer(120, "ej9995", nil, nil, nil, 163142)
-local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, not mod:IsHealer())
+local timerFungalFleshEaterCD		= mod:NewCDTimer(120, "ej9995", nil, not mod:IsHealer(), nil, 163142)
+local timerDecayCD					= mod:NewCDTimer(9.5, 160013, nil, mod:IsMelee())
 local timerMindFungusCD				= mod:NewCDTimer(30, 163141, nil, mod:IsMelee() and not mod:IsTank())
-local timerLivingMushroomCD			= mod:NewCDTimer(55.5, 160022)
-local timerRejuvMushroomCD			= mod:NewCDTimer(150, 160021)
+local timerLivingMushroomCD			= mod:NewCDTimer(55.5, 160022, nil, mod:IsHealer())
+local timerRejuvMushroomCD			= mod:NewCDTimer(150, 160021, nil, mod:IsHealer())
 --local timerExplodingFungusCD		= mod:NewCDTimer(32, 163794)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
 local timerWavesCD					= mod:NewCDTimer(33, 160425)--Blizzard hotfixed timer so many times during testing, that I have no idea what final timer ended up being.
 
@@ -80,9 +76,18 @@ function mod:OnCombatStart(delay)
 	timerInfestingSporesCD:Start(45-delay)
 	countdownInfestingSpores:Start(45-delay)
 	timerRejuvMushroomCD:Start(80-delay)--Todo, verify 80 in all modes and not still 75 in mythic
+	if self.Options.RangeFrame then
+		self:RegisterShortTermEvents(
+			"SPELL_DAMAGE",
+			"SPELL_PERIODIC_DAMAGE",
+			"RANGE_DAMAGE",
+			"SWING_DAMAGE"
+		)
+	end
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end

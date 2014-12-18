@@ -6,7 +6,7 @@ L.MainFrame		 = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "翻譯:"
 L.TranslationBy 			= "Imbav@聖光之願"
-L.Website					= "拜訪我們新的討論與支援論壇:|cFF73C2FBwww.deadlybossmods.com|r (代管於Elitist Jerks!)"
+L.Website					= "拜訪我們的討論與支援論壇:|cFF73C2FBwww.deadlybossmods.com|r (代管於Elitist Jerks!)"
 L.WebsiteButton				= "論壇"
 
 L.OTabBosses	= "首領模組"
@@ -61,7 +61,7 @@ L.Latency_Text				= "設定最高延遲同步門檻:%d"
 -- Tab: General Timer Options
 L.TimerGeneral 				= "綜合DBM計時器選項"
 L.SKT_Enabled				= "永遠顯示快速戰勝計時器 (覆蓋首領特定的選項)"
-L.CRT_Enabled				= "為下一次戰復充能顯示計時器(只有6.0難度)"
+L.CRT_Enabled				= "為下一次戰復充能顯示計時器(只有6.x難度)"
 L.ChallengeTimerOptions		= "為挑戰模式設定最佳紀錄計時器"
 L.ChallengeTimerPersonal	= "個人"
 L.ChallengeTimerGuild		= GUILD
@@ -101,6 +101,8 @@ L.BarWhileMove 				= "可移動的團隊警告"
 L.RaidWarnSound				= "發出團隊警告時播放音效"
 L.CountdownVoice			= "設置主要的倒數計時聲音"
 L.CountdownVoice2			= "設置次要的倒數計時聲音"
+L.CountdownVoice3			= "設置第三種倒數計時聲音"
+L.VoicePackChoice			= "設置語音包作用在語音警告"
 L.SpecialWarnSound			= "設定只作用於你或你的角色天賦的特別警告的音效"
 L.SpecialWarnSound2			= "設定作用於全團的特別警告的音效"
 L.SpecialWarnSound3			= "設定作用於極度重要的特別警告的音效"
@@ -116,6 +118,7 @@ L.CombatMessages			= "戰鬥訊息選項"
 L.ShowEngageMessage 		= "在聊天視窗顯示開戰訊息"
 L.ShowKillMessage 			= "在聊天視窗顯示戰勝訊息"
 L.ShowWipeMessage 			= "在聊天視窗顯示滅團訊息"
+L.ShowGuildMessages 		= "在聊天視窗顯示公會的開戰/戰勝/滅團的訊息"
 L.ShowRecoveryMessage 		= "在聊天視窗顯示計時器恢復訊息"
 L.WhisperMessages			= "密語訊息選項"
 L.AutoRespond 				= "啟用戰鬥中自動密語回覆"
@@ -197,7 +200,7 @@ L.ShowBBOnCombatStart		= "戰鬥開始時顯示BigBrother(檢查團隊 增益/�
 L.BigBrotherAnnounceToRaid	= "通告BigBrother的結果給團隊"
 
 L.Area_SpecFilter			= "專精過濾選項"
-L.FilterTankSpec			= "非坦克專精時過濾掉坦克專精的特定警告"
+L.FilterTankSpec			= "非坦克專精時過濾掉坦克專精的特定警告 (註:不建議玩家關閉此選項因大多數的坦克嘲諷警告都是預設開啟。)"
 --Healer and Damager not in use yet. Tank is easily black and white. if not a tank, disable taunt warnings. Pretty obvious.
 --Healer and Damager a bit more tricky, since often times, Healer DO need to switch and kill adds designated a dps roll (hi disc attonement priest)
 --Or a dps does need to handle debuff dispels. Or a dps/tank need to know when aoe damage is going out just as much as healer for personal CDs
@@ -219,7 +222,7 @@ L.HideBossEmoteFrame		= "在首領戰鬥時隱藏團隊首領表情框架"
 L.HideWatchFrame			= "在首領戰鬥時隱藏注視(物件)框架"
 L.HideTooltips				= "首領戰鬥時隱藏滑鼠提示"
 L.SpamBlockSayYell			= "從聊天頻道隱藏聊天泡泡提示"
-L.DisableCinematics			= "禁用遊戲中的過場動畫"
+L.DisableCinematics			= "停用遊戲中的過場動畫"
 L.AfterFirst				= "在每次動畫播放一次之後"
 L.Always					= ALWAYS
 

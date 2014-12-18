@@ -1,9 +1,11 @@
-local oRA = LibStub("AceAddon-3.0"):GetAddon("oRA3")
+
+local addonName, scope = ...
+local oRA = scope.addon
 local module = oRA:NewModule("Invite", "AceTimer-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("oRA3")
+local L = scope.locale
 local AceGUI = LibStub("AceGUI-3.0")
 
-module.VERSION = tonumber(("$Revision: 753 $"):sub(12, -3))
+module.VERSION = tonumber(("$Revision: 838 $"):sub(12, -3))
 
 local frame = nil
 local db = nil
@@ -219,10 +221,8 @@ local function getBattleNetToon(presenceId)
 end
 
 local function shouldInvite(msg, sender)
-	local _, _, diff = GetInstanceInfo()
-	local isFlex = diff == 14 or diff == 15
-	if (IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and not isFlex) or inQueue() then
-		return false -- in lfr (not flex) or in queue
+	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) or inQueue() then
+		return false
 	end
 
 	msg = msg:trim():lower()
@@ -242,10 +242,10 @@ local function handleWhisper(msg, sender, _, _, _, _, _, _, _, _, _, _, presence
 	end
 	sender = Ambiguate(sender, "none")
 	if shouldInvite(msg, sender) then
-		local _, instanceType = IsInInstance()
-		if (instanceType == "party" and GetNumSubgroupMembers() == 4) or GetNumGroupMembers() == 40 then
+		local inInstance, instanceType = IsInInstance()
+		if (inInstance and instanceType == "party" and GetNumSubgroupMembers() == 4) or GetNumGroupMembers() == 40 then
 			if presenceId > 0 then
-				BNSendWhisper(L["<oRA3> Sorry, the group is full."], presenceId)
+				BNSendWhisper(presenceId, L["<oRA3> Sorry, the group is full."])
 			else
 				SendChatMessage(L["<oRA3> Sorry, the group is full."], "WHISPER", nil, sender)
 			end
@@ -329,7 +329,7 @@ function updateDifficultyDropdown()
 end
 
 local function difficultyCallback(widget, event, index, value)
-	SetRaidDifficultyID(index)
+	SetRaidDifficulties(true, index)
 end
 
 local function raidOnlyCallback(widget, event, value)
@@ -344,10 +344,9 @@ function module:CreateFrame()
 	frame:SetLayout("Flow")
 
 	local modes = {
-		[3] = RAID_DIFFICULTY1,
-		[4] = RAID_DIFFICULTY2,
-		[5] = RAID_DIFFICULTY3,
-		[6] = RAID_DIFFICULTY4,
+		[14] = PLAYER_DIFFICULTY1,
+		[15] = PLAYER_DIFFICULTY2,
+		[16] = PLAYER_DIFFICULTY6,
 	}
 	local difficulty = AceGUI:Create("Dropdown")
 	difficulty:SetMultiselect(false)

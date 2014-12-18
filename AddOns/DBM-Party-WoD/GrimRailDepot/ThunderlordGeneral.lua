@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(1133, "DBM-Party-WoD", 3, 536)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 11582 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 11896 $"):sub(12, -3))
 mod:SetCreatureID(80005)
 mod:SetEncounterID(1736)
 mod:SetZone()
@@ -25,6 +25,7 @@ local specWarnFreezingSnareNear	= mod:NewSpecialWarningClose(162066)
 local yellFreezingSnare			= mod:NewYell(162066)
 local specWarnDiffusedEnergy	= mod:NewSpecialWarningMove(161588)
 local specWarnMark				= mod:NewSpecialWarningMoveAway(163447)
+local yellMark					= mod:NewYell(163447)
 
 local timerFreezingSnareCD		= mod:NewNextTimer(20, 162066)
 local timerSpinningSpearCD		= mod:NewNextTimer(20, 162058)
@@ -56,6 +57,12 @@ end
 function mod:OnCombatStart(delay)
 end
 
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 163447 then
 		warnMark:Show(args.destName)
@@ -63,6 +70,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMarkCD:Start()
 		if args:IsPlayer() then
 			specWarnMark:Show()
+			yellMark:Yell()
 		end
 		if self.Options.RangeFrame then
 			if UnitDebuff("player", debuffCheck) then--You have debuff, show everyone

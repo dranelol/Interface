@@ -1,0 +1,119 @@
+tag 6.0.8
+4c214ecb9fe8720858bacee5d886e8ed8c7ce9c5
+subversion <svn@deadlybossmods.com>
+2014-12-10 00:03:11 +0100
+
+Tagging as 6.0.8
+
+
+--------------------
+
+subversion:
+	- increment version number to 6.0.8
+	- Omega via svn r11978: Bump alpha
+	- Omega via svn r11977: Dirty tag it is
+	- nbluewiz via svn r11976: # Archmage Sol : Comment out useless Firebloom stuff. # Health frame support for multi bosses. # little 5 man warning fix.
+	- Omega via svn r11975: Comment out for now, don't want unfinished stuff in tagged release
+	- nbluewiz via svn r11974: # kr locale bug fix.
+	- Omega via svn r11973: Tweaks
+	- Omega via svn r11972: Fix a stupid mistake on butcher. the update code for bounding cleave timer at frenzy, has been in wrong place this entire time. This is now fixed Scrapped complex Voice stuff in favor of simpler development. No sub folders, no naming conventions. Added some more examples
+	- Omega via svn r11971: Change range frame priority from branded > mark to mark > branded since not every group has competent tanks.
+	- ultrashining via svn r11970: zhTW update
+	- nbluewiz via svn r11969: # Fix Draenor world boss mod shows invalid difficulty. (also this causing many bugs.)
+	- nbluewiz via svn r11968: # fix Terongor kill detection.
+	- Omega via svn r11967: World boss quest IDs Comment out unused option for now.
+	- Omega via svn r11966: Fix two errors found by validator
+	- Omega via svn r11965: Don't register high cpu events if range frame isn't enabled on brackenspore.
+	- Omega via svn r11964: Redo branded rangefinder to use actual ranges now that code tested working. Add yell to fixate for non LFR difficulties
+	- Omega via svn r11963: Fixed a bug where force disable was still appearing as enabled in GUI Attempt to fix a rare issue where DBM is enabled, but acts like it isn't, this seems to be root cause of "load" or missing timer/warning issues.
+	- Omega via svn r11962: Clean up branded Speed up branded icons Fix timer bug Increase scan time for tectus icons.
+	- Omega via svn r11961: Fix error
+	- ebmor via svn r11960: deDE update
+	- Omega via svn r11959: Improve force nova warnings
+	- nbluewiz via svn r11958: # little 5 man fix. (Terongor kill detection untested.)
+	- Omega via svn r11957: That last fix had flaws, Garrison_update fires for too many things, it worked, but it also caused tripple checks on pretty much all loading screens. Don't want that. this fix works too. Added all 6 garrison mapids to draenor mod. Mouse over events will now register in garrison as part of draenor/outdoor.
+	- Omega via svn r11956: Fix world boss mods load issues tied to garrisons.
+	- Omega via svn r11955: Improve tectus HP reporting
+	- ebmor via svn r11954: deDE update
+	- Omega via svn r11953: Set revision notice on two mods
+	- Omega via svn r11952: add more debug, and reduce chance to fail by using both possible args stack could be stored in and using whichever one isn't nil. Will clean up after figuring out what's what. Fix range frame not showing up on dispel magic fire, for players that immune the debuff, since they still need frame to avoid other players.
+	- Omega via svn r11951: more accurate threat checks, boss target sometimes not the tank, threat target always is the tank, however we'll still use bosstarget for warning cause it's we really have, sometimes target name is wrong, but it warns correct tank to taunt at correct time, so targetname doesn't matter really.
+	- Omega via svn r11950: Speed up arcane warning, change to taunt warning too
+	- Omega via svn r11949: Fansy rangefinder stuff for Branded
+	- Omega via svn r11948: Remove rest of them
+	- nbluewiz via svn r11947: # koKR update + remove useless locals.
+	- Omega via svn r11946: Use GetBossTarget for targetname, for more accuracy, in case boss1target is nil Add extra check in applied as well for extra measure Fix missing creatureid as well, so this boss no longer reports as 0% at all times.
+	- Omega via svn r11945: Vastly improve branded behavior, if it works.
+	- TOM_RUS via svn r11944: ruRU update
+	- TOM_RUS via svn r11943: ruRU update
+	- nbluewiz via svn r11942: # Remove duplicated function.
+	- Omega via svn r11941: Add some debug for current stack announcing.
+	- Omega via svn r11940: replacing an invalid 0 with an invalid 100 is not good fix. instead, ignore 0 values and return last valid value in it's place. I can't think of a single place we actually would ever return a valid 0 value, we don't check boss HP on kills, only wipes or status messages and that value will always be above 0. therefor, last non 0 value should be closest to correct.
+	- Omega via svn r11939: *Fix heroic twin ogron timers *Fix tectus icon setting *Margok Fix Branded icon setting Fix kick to the face lua error Fix branded alerts not working Fix range frame showing wrong type to tanks in cases where a last second taunt made debuff go on target that didn't register as highest threat at time of SPELL_CAST_START
+	- Omega via svn r11938: bump packager?
+	- Omega via svn r11937: Change version debug to 3, at least for now, cause I can't diagnose load problems with debug2 if all I see are 1563474532q56347436 version messages.
+	- Omega via svn r11936: Change branding warning behavior too
+	- Omega via svn r11935: Fix branded icons to work better with replication
+	- Omega via svn r11934: Force option default change for icon option.
+	- nbluewiz via svn r11933: # fix bug.
+	- nbluewiz via svn r11932: # Add Quills end to Rukhran. # koKR update.
+	- nbluewiz via svn r11931: # Fix DBM sometimes reporting 0% health on auto whisper.
+	- Omega via svn r11930: Add tectus 10 min berserk to normal and heroic
+	- Omega via svn r11929: extended debug for load problem diagnostics.
+	- Omega via svn r11928: *Update Impale timer for live changes on Kargath *Update Twin Ogron whirlwind timer for live changes (it was reverted back to energy based). *Fixed timer bug on Butcher not showing count correctly for bounding cleave. *Fix range finder not showing any dots for tanks affected by Mark of Chaos on Margok. *Slowed load mod delay even more for for some user reports STILL reporting loadmod issues. Also added more debug to print mapid on combat start in case for some reason mapid is still wrong for users there which would effectively also break timers/warnings. *CN update
+	- nbluewiz via svn r11927: # Fix warning bug in Tarlna. # Switch Genesis warning to normal warning. confusing.
+	- ebmor via svn r11926: deDE update
+	- ultrashining via svn r11925: zhTW update
+	- Omega via svn r11924: Option clarity
+	- Omega via svn r11923: move countdown to sound as well
+	- Omega via svn r11922: Sound category for order
+	- nbluewiz via svn r11921: # Remove UnitExists check from IEEU detection.
+	- nbluewiz via svn r11920: # Try to fix Xeritac combat detection.
+	- Omega via svn r11919: Add GTFO for crystal barrage
+	- nbluewiz via svn r11918: # Little fix.
+	- nbluewiz via svn r11917: # Fix shit spams. # koKR update.
+	- Omega via svn r11916: Debug cleanup
+	- Omega via svn r11915: Note
+	- Omega via svn r11914: Support global sounds in voice packs.
+	- Omega via svn r11913: Add another voice pack note, ## X-DBM-Voice: 1 must be present, then works 100%
+	- Omega via svn r11912: Fix spellid error on Tectus Added Trash module for BloodmaulSlagMines Disabled Trash modules on normal (normal very easy, often pull multiple groups, warnings too spammy for more than one group at a time, and spells aren't important in normal)
+	- Omega via svn r11911: restore 5 min berserk for "herioc". doesn't exist in "normal" though. normal and LFR probably same, whatever they are
+	- Omega via svn r11910: Couple timers
+	- ultrashining via svn r11909: zhTW update
+	- Omega via svn r11908: More debug
+	- Omega via svn r11907: Add some debug
+	- Omega via svn r11906: Better sound object for voices
+	- Omega via svn r11905: More voices work
+	- nbluewiz via svn r11904: # koKR update.
+	- Omega via svn r11903: Tweak
+	- Omega via svn r11902: First steps toward a more extendable API for voice packs. GUI already supports selecting voice pack. core already supports registering voice packs that GUI will automatically detect. TODO, folder structures, and where to put PlaySoundFile.
+	- Omega via svn r11901: Complete Auchindoun Update Fix bugs in Rank7 and Rank 1 brawlers purges Fix bug in blackrock Assault commander
+	- Omega via svn r11900: Grim Rail update
+	- ultrashining via svn r11899: zhTW update
+	- nbluewiz via svn r11898: # Re-arranged ranks to match with wod.
+	- nbluewiz via svn r11897: # disable Dark Communion countdown temporarily.
+	- nbluewiz via svn r11896: # fix little bug.
+	- Omega via svn r11895: Fix some spam
+	- Omega via svn r11894: Add a GTFO for bramble too
+	- Omega via svn r11893: Fix slash warning (wrong spellid) Add Noxious warning/timer Fix missing event on Xeritac Remove a bad interrupt warning that is never right thing to do.
+	- Omega via svn r11892: Fixed IEEU not working on Xeritac (still have no idea why emote pull doesn't work, string matches, events match, that'll need debug. However may no longer be needed, seems blizz fixed missing IEEU so may change to "combat") Added count and timer for Parasitit Growth On Sol
+	- Omega via svn r11891: Do it this way instead
+	- Omega via svn r11890: Don't hide objectives frame if any achievements are being tracked, as that makes doing achievements for THAT boss more difficult.
+	- nbluewiz via svn r11889: # some little fix.
+	- Omega via svn r11888: put dispel check, only warn if on players
+	- Omega via svn r11887: couple changes from minidragon
+	- Omega via svn r11886: Add eruption to trash module, Fix spam on gorashan
+	- Omega via svn r11885: err, move it here
+	- Omega via svn r11884: Move that line
+	- Omega via svn r11883: more loadmod debug, cause still getting impossible reports
+	- Omega via svn r11882: test push
+James D. Callahan III:
+	- Removed LibChatAnims from .pkgmeta so there aren't two copies in the zip - it's already hard-embedded in the repository, and apparently this won't change.
+subversion:
+	- Omega via svn r11881: Try again, i have no idea why that last commit pushed everything BUT dbm to curse.
+	- Omega via svn r11879: Fix missing personal cyclone warning on Zaela Add a run away sound to it as well Added eruption warnings/timers to Kyrak Added audio countdown and timer for fixation interrupt on Kyrak Added several trash warnings
+	- ebmor via svn r11880: deDE update
+	- nbluewiz via svn r11878: # small fix. seems many update needed.
+	- nbluewiz via svn r11877: # Fix rare version check lua error.
+	- Omega via svn r11876: Poke
+	- tandanu via svn r11875: increment version number

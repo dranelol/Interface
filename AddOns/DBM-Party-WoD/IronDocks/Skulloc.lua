@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(1238, "DBM-Party-WoD", 4, 558)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 11689 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 11865 $"):sub(12, -3))
 mod:SetCreatureID(83612)
 mod:SetEncounterID(1754)
 mod:SetZone()
@@ -29,7 +29,7 @@ local specWarnCannonBarrage	= mod:NewSpecialWarningSpell(168929, nil, nil, nil, 
 local specWarnCannonBarrageE= mod:NewSpecialWarningEnd(168929)
 
 local timerRapidFireCD		= mod:NewNextTimer(12, 168398)
-local timerGronSmashCD		= mod:NewCDTimer(67, 168227)--Still don't know timer for second one. just know first one is always 30
+local timerGronSmashCD		= mod:NewCDTimer(67, 168227)--too variable, 58-71, I believe health based, except first, which always seems to be 30 seconds no matter what.
 local timerBackdraft		= mod:NewCastTimer(3, 169129)
 
 function mod:OnCombatStart(delay)
@@ -38,7 +38,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 168398 then
-		warnRapidFire:Show(args.destname)
+		warnRapidFire:Show(args.destName)
 		timerRapidFireCD:Start()
 		if args:IsPlayer() then
 			specWarnRapidFire:Show()

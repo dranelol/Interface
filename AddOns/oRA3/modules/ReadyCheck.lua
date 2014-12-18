@@ -1,8 +1,10 @@
-local oRA = LibStub("AceAddon-3.0"):GetAddon("oRA3")
-local module = oRA:NewModule("ReadyCheck", "AceTimer-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("oRA3")
 
-module.VERSION = tonumber(("$Revision: 754 $"):sub(12, -3))
+local addonName, scope = ...
+local oRA = scope.addon
+local module = oRA:NewModule("ReadyCheck", "AceTimer-3.0")
+local L = scope.locale
+
+module.VERSION = tonumber(("$Revision: 839 $"):sub(12, -3))
 
 local readycheck = {} -- table containing ready check results
 local frame -- will be filled with our GUI frame
@@ -192,6 +194,8 @@ local function updateWindow()
 			highgroup = 6
 		elseif diff == 16 then -- 20 man
 			highgroup = 5
+		elseif diff == 14 or diff == 15 then
+			highgroup = 7
 		else -- 40 man
 			highgroup = 9
 		end

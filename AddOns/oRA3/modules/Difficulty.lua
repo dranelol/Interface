@@ -1,50 +1,51 @@
-local oRA = LibStub("AceAddon-3.0"):GetAddon("oRA3")
+
+local addonName, scope = ...
+local oRA = scope.addon
 local module = oRA:NewModule("Difficulty", "AceTimer-3.0")
 
-module.VERSION = tonumber(("$Revision: 692 $"):sub(12, -3))
-
-local db = nil
+module.VERSION = tonumber(("$Revision: 814 $"):sub(12, -3))
 
 function module:OnRegister()
+	local defaults = {
+		profile = {
+		}
+	}
+
+	self.db = oRA.db:RegisterNamespace("Difficulty", defaults)
 	oRA.RegisterCallback(self, "OnShutdown")
-	oRA.RegisterCallback(self, "OnProfileUpdate", function()
-		db = oRA.db.char
-	end)
-	db = oRA.db.char
 
 	hooksecurefunc("SetRaidDifficultyID", function(difficultyID)
-		if difficultyID > 2 and difficultyID < 7 then
-			db.lastRaidDifficulty = difficultyID
+		if difficultyID > 13 and difficultyID < 17 then
+			module.db.profile.prevRaidDifficulty = difficultyID
 		end
 	end)
 end
 
-local function restoreDifficulty()
-	if not IsInGroup() then
-		local diff = db.lastRaidDifficulty
-		if GetRaidDifficultyID() ~= diff then
-			SetRaidDifficultyID(diff)
+do
+	local function restoreDifficulty()
+		if not IsInGroup() then
+			local diff = module.db.profile.prevRaidDifficulty
+			if GetRaidDifficultyID() ~= diff then
+				SetRaidDifficulties(true, diff)
+			end
 		end
 	end
-end
-
-function module:OnEnable()
-	if not IsInGroup() then
-		-- GROUP_JOINED fires ~3s after PLAYER_LOGIN when you first login, so IsInGroup() is false until then
-		self:ScheduleTimer(restoreDifficulty, 4)
+	function module:OnEnable()
+		if module.db.profile.prevRaidDifficulty and not IsInGroup() then
+			-- GROUP_JOINED fires ~3s after PLAYER_LOGIN when you first login, so IsInGroup() is false until then
+			self:ScheduleTimer(restoreDifficulty, 4)
+		end
 	end
 end
 
 function module:OnShutdown()
-	if not IsInInstance() then -- don't change on leaving group while still in the instance
-		SetRaidDifficultyID(db.lastRaidDifficulty)
-	else
-		self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	if self.db.profile.prevRaidDifficulty then
+		if not IsInInstance() then -- don't change on leaving group while still in the instance
+			SetRaidDifficulties(true, self.db.profile.prevRaidDifficulty)
+			self:UnregisterEvent("ZONE_CHANGED_NEW_AREA")
+		else
+			self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "OnShutdown")
+		end
 	end
-end
-
-function module:ZONE_CHANGED_NEW_AREA()
-	self:UnregisterEvent("ZONE_CHANGED_NEW_AREA")
-	self:OnShutdown()
 end
 

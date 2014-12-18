@@ -1,0 +1,115 @@
+------------------------------------------------------------------------
+r848 | funkydude | 2014-12-07 14:18:06 +0000 (Sun, 07 Dec 2014) | 1 line
+Changed paths:
+   A /tags/r848-release (from /trunk:847)
+
+Tagging as r848-release
+------------------------------------------------------------------------
+r847 | jongt23 | 2014-12-05 23:19:26 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/locales/esES.lua
+
+esES update
+------------------------------------------------------------------------
+r846 | eusi | 2014-12-05 21:36:00 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Cooldowns.lua
+
+Added a monk timer: Guard.
+------------------------------------------------------------------------
+r845 | funkydude | 2014-12-05 18:41:36 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Cooldowns.lua
+
+Cooldowns: Remove check for "locked" variable when locking/unlocking the display which was breaking the initial unlock when showing the frame.
+------------------------------------------------------------------------
+r844 | jongt23 | 2014-12-05 17:16:42 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/locales/esES.lua
+
+esES update
+------------------------------------------------------------------------
+r843 | jongt23 | 2014-12-05 17:02:21 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/locales/esES.lua
+
+esES update
+------------------------------------------------------------------------
+r842 | funkydude | 2014-12-05 11:03:38 +0000 (Fri, 05 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Cooldowns.lua
+
+Cooldowns: Merge all the warlock interrupts into "Spell Lock".
+------------------------------------------------------------------------
+r841 | funkydude | 2014-12-04 22:33:21 +0000 (Thu, 04 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Cooldowns.lua
+
+Cooldowns: Add missing warlock interrupts.
+------------------------------------------------------------------------
+r839 | funkydude | 2014-12-03 22:47:12 +0000 (Wed, 03 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/modules/ReadyCheck.lua
+
+ReadyCheck: Fix normal/heroic grouping in ready check window.
+------------------------------------------------------------------------
+r838 | funkydude | 2014-12-03 22:41:43 +0000 (Wed, 03 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Invite.lua
+
+Invite: Fix auto inviting people when you're in your garrison.
+------------------------------------------------------------------------
+r837 | pettigrow | 2014-12-03 21:49:19 +0000 (Wed, 03 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/locales/frFR.lua
+
+frFR Update
+------------------------------------------------------------------------
+r836 | funkydude | 2014-12-03 19:32:48 +0000 (Wed, 03 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Gear.lua
+
+Gear: Remove the +1 gem from the former belt buckle.
+------------------------------------------------------------------------
+r835 | funkydude | 2014-12-03 19:02:53 +0000 (Wed, 03 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Gear.lua
+
+Gear: Fix enchants which are now: Cloak, Neck, Ring1, Ring2, Main hand weapon.
+------------------------------------------------------------------------
+r833 | nebula169 | 2014-12-02 23:32:38 +0000 (Tue, 02 Dec 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Cooldowns.lua
+
+add Hunter Moth and Crane brezes
+------------------------------------------------------------------------
+r832 | nebula169 | 2014-11-26 08:27:32 +0000 (Wed, 26 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Cooldowns.lua
+
+Cooldowns: battle res don't use the charge system in dungeons
+------------------------------------------------------------------------
+r831 | nebula169 | 2014-11-26 07:48:11 +0000 (Wed, 26 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Cooldowns.lua
+
+Cooldowns: cds aren't reset in dungeons
+------------------------------------------------------------------------
+r830 | nebula169 | 2014-11-24 20:00:29 +0000 (Mon, 24 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Cooldowns.lua
+
+readd combat res spells, fix hunter pet bloodlust, add spell lock/shadow lock for warlock pets
+------------------------------------------------------------------------
+r829 | nebula169 | 2014-11-24 16:27:35 +0000 (Mon, 24 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/modules/Cooldowns.lua
+
+Cooldowns: Shield Wall cd to 2min
+------------------------------------------------------------------------
+r827 | funkydude | 2014-11-05 10:05:25 +0000 (Wed, 05 Nov 2014) | 1 line
+Changed paths:
+   M /trunk/modules/BattleRes.lua
+
+BattleRes: add shaman Reincarnation to res log.
+------------------------------------------------------------------------

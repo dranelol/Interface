@@ -6,14 +6,6 @@ local L
 ---------------
 L= DBM:GetModLocalization(1128)
 
-L:SetTimerLocalization({
-	timerCrowdCD	= "Crowd CD"
-})
-
-L:SetOptionLocalization({
-	timerCrowdCD	= "Show timer for when the crowd will spawn new adds"
-})
-
 ---------------------------
 -- The Butcher --
 ---------------------------
@@ -25,7 +17,7 @@ L= DBM:GetModLocalization(971)
 L= DBM:GetModLocalization(1195)
 
 L:SetMiscLocalization({
-	pillarSpawn	= "RISE, MOUNTAINS!"
+	pillarSpawn	= "ВОССТАНЬТЕ, ГОРЫ!"
 })
 
 ------------------
@@ -39,8 +31,8 @@ L= DBM:GetModLocalization(1196)
 L= DBM:GetModLocalization(1148)
 
 L:SetOptionLocalization({
-	PhemosSpecial	= "Play countdown sound for Phemos' cooldowns",
-	PolSpecial		= "Play countdown sound for Pol's cooldowns"
+	PhemosSpecial	= "Звуковой обратный отсчет для кулдаунов Фем'а",
+	PolSpecial		= "Звуковой обратный отсчет для кулдаунов Пол'а"
 })
 
 --------------------
@@ -49,10 +41,10 @@ L:SetOptionLocalization({
 L= DBM:GetModLocalization(1153)
 
 L:SetMiscLocalization({
-	supressionTarget1	= "I will crush you!",
-	supressionTarget2	= "Silence!",
-	supressionTarget3	= "Quiet!",
-	supressionTarget4	= "I will tear you in half!"
+	supressionTarget1	= "Я сокрушу вас!",
+	supressionTarget2	= "Молчать!",
+	supressionTarget3	= "Тихо!",
+	supressionTarget4	= "Я разорву вас на части!"
 })
 
 --------------------------

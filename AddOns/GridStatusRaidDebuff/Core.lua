@@ -63,7 +63,6 @@ local dispelMap = {
 -- Spells to ignore detecting
 local ignore_ids = {
 	[1604] = true, -- Dazed
-	[6307] = true, -- Blood Pact
 }
 
 local clientVersion
@@ -77,7 +76,7 @@ end
 --	Core
 ---------------------------------------------------------
 
-GridStatusRaidDebuff = Grid:GetModule("GridStatus"):NewModule("GridStatusRaidDebuff", "AceTimer-3.0")
+GridStatusRaidDebuff = Grid:NewStatusModule("GridStatusRaidDebuff", "AceTimer-3.0")
 GridStatusRaidDebuff.menuName = L["Raid Debuff"]
 
 local GridFrame = Grid:GetModule("GridFrame")
@@ -171,11 +170,18 @@ function GridStatusRaidDebuff:ZoneCheck()
 	-- localzone and realzone should be the same, but sometimes they are not
 	-- For example, in German Throne of Thunders
 	-- localzone = "Der Thron des Donners"
-	-- realzone = "Thron des Donners"
+	-- instzone = "Thron des Donners"
 	local instzone
+
+	-- The mapid returned by UnitPosition is not the same used by GetMapNameByID
+	-- local mapid = select(4, UnitPosition("player"))
+
+	-- Force map to right zone
+	SetMapToCurrentZone()
 	local mapid = GetCurrentMapAreaID()
 	local localzone = GetMapNameByID(mapid)
 
+	-- zonetype is a module variable
 	instzone, zonetype = GetInstanceInfo()
 
 	-- Preference is for localzone, but fall back to instzone if it is all that exists
@@ -252,12 +258,27 @@ function GridStatusRaidDebuff:UpdateAllUnit()
 end
 
 function GridStatusRaidDebuff:ScanNewDebuff(e, ts, event, hideCaster, srcguid, srcname, srcflg, srcraidflg, dstguid, dstname, dstflg, dstraidflg, spellId, name)
+	if not name then return end
 	local settings = self.db.profile["alert_RaidDebuff"]
 	if (settings.enable and debuff_list[realzone]) then
 		if event == "SPELL_AURA_APPLIED" and srcguid and not GridRoster:IsGUIDInRaid(srcguid) and GridRoster:IsGUIDInRaid(dstguid)
 			and not debuff_list[realzone][name] then
 			if ignore_ids[spellId] then return end --Ignore Dazed
-			self:Debug("New Debuff", srcname, dstname, name)
+
+			-- Filter out non-debuff effects, only debuff effects are shown
+			-- No reason to detect buffs too
+			local unitid, debuff
+			unitid = GridRoster:GetUnitidByGUID(dstguid)
+			debuff = false
+			if (UnitDebuff(unitid, name)) then
+				debuff = true
+			-- else
+			-- 	self:Debug("Debuff not found", name)
+			end
+			if not debuff then return end
+
+			self:Debug("New Debuff", srcname, dstname, name, unitid, tostring(debuff))
+			-- self:Debug("New Debuff", srcname, dstname, name)
 
 			self:DebuffLocale(realzone, name, spellId, 5, 5, true, true)
 			if not self.db.profile.detected_debuff[realzone] then self.db.profile.detected_debuff[realzone] = {} end
@@ -736,8 +757,12 @@ function GridStatusRaidDebuff:CreateZoneMenu(zone)
 					usage = "SpellID",
 					set = function(_, v)
 						local name = GetSpellInfo(v)
+						-- self:Debug("Import", zone, name, v)
 						if name then						  
         						self:DebuffLocale(zone, name, v, 5, 5, true, true)
+							if not self.db.profile.detected_debuff[zone] then
+								self.db.profile.detected_debuff[zone] = {}
+							end
 							if not self.db.profile.detected_debuff[zone][name] then 
 								self.db.profile.detected_debuff[zone][name] = v
 								self:LoadZoneDebuff(zone, name)

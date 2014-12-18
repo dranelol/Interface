@@ -2,12 +2,13 @@
 -- Latency is requested/transmitted when opening the list.
 -- Latency information will be available from the oRA3 gui for everyone.
 
-local oRA = LibStub("AceAddon-3.0"):GetAddon("oRA3")
+local addonName, scope = ...
+local oRA = scope.addon
 local util = oRA.util
 local module = oRA:NewModule("Latency")
-local L = LibStub("AceLocale-3.0"):GetLocale("oRA3")
+local L = scope.locale
 
-module.VERSION = tonumber(("$Revision: 712 $"):sub(12, -3))
+module.VERSION = tonumber(("$Revision: 806 $"):sub(12, -3))
 
 local latency = {}
 
@@ -22,12 +23,17 @@ function module:OnRegister()
 	oRA.RegisterCallback(self, "OnShutdown")
 	oRA.RegisterCallback(self, "OnListSelected")
 	oRA.RegisterCallback(self, "OnCommReceived")
+	oRA.RegisterCallback(self, "OnGroupChanged")
 
 	SLASH_ORALATENCY1 = "/ralag"
 	SLASH_ORALATENCY2 = "/ralatency"
 	SlashCmdList.ORALATENCY = function()
 		oRA:OpenToList(L["Latency"])
 	end
+end
+
+function module:OnGroupChanged()
+	oRA:UpdateList(L["Latency"])
 end
 
 function module:OnShutdown()

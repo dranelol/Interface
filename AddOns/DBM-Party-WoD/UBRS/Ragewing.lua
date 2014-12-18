@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(1229, "DBM-Party-WoD", 8, 559)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 11758 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 11864 $"):sub(12, -3))
 mod:SetCreatureID(76585)
 mod:SetEncounterID(1760)
 mod:SetZone()
@@ -27,13 +27,11 @@ local specWarnEngulfingFire	= mod:NewSpecialWarningSpell(154996, nil, nil, nil, 
 
 local timerEngulfingFireCD	= mod:NewCDTimer(22, 154996)
 local timerSwirlingWinds	= mod:NewBuffActiveTimer(20, 167203)
-local timerSwirlingWindsCD	= mod:NewNextTimer(45, 167203)--Verify this isn't health based.
 
 mod.vb.firstBreath = false
 
 function mod:OnCombatStart(delay)
 	timerEngulfingFireCD:Start(13-delay)--Needs more data
-	timerSwirlingWindsCD:Start(40-delay)--Needs more data
 	self.vb.firstBreath = false
 end
 
@@ -51,7 +49,6 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 167203 then
-		timerSwirlingWindsCD:Start()
 		self.vb.firstBreath = false
 	end
 end

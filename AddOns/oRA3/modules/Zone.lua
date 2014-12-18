@@ -1,9 +1,11 @@
-local oRA = LibStub("AceAddon-3.0"):GetAddon("oRA3")
+
+local addonName, scope = ...
+local oRA = scope.addon
 local util = oRA.util
 local module = oRA:NewModule("Zone")
-local L = LibStub("AceLocale-3.0"):GetLocale("oRA3")
+local L = scope.locale
 
-module.VERSION = tonumber(("$Revision: 645 $"):sub(12, -3))
+module.VERSION = tonumber(("$Revision: 806 $"):sub(12, -3))
 
 local zones = {}
 local factionList = {}
@@ -118,7 +120,7 @@ function module:UPDATE_FACTION()
 				end
 				CollapseFactionHeader(i)
 			end
-		else
+		elseif name then
 			factionList[name] = true
 		end
 	end
@@ -150,6 +152,7 @@ function module:UpdateZoneList()
 	elseif IsInGroup() then
 		if not tip then
 			createTooltip()
+			createTooltip = nil
 		end
 		addPlayer(UnitName("player"), GetRealZoneText())
 		for i = 1, MAX_PARTY_MEMBERS do

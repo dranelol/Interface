@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(1236, "DBM-Party-WoD", 4, 558)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 11689 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 11976 $"):sub(12, -3))
 mod:SetCreatureID(80805, 80816, 80808)
 mod:SetEncounterID(1748)
 mod:SetZone()
@@ -16,6 +16,16 @@ mod:RegisterEventsInCombat(
 	"UNIT_DIED"
 )
 
+local Dugru = EJ_GetSectionInfo(10449)
+local Makogg = EJ_GetSectionInfo(10453)
+local Nox = EJ_GetSectionInfo(10456)
+
+mod:SetBossHealthInfo(
+	80816, Dugru,
+	80805, Makogg,
+	80808, Nox
+)
+
 local warnSanguineSphere		= mod:NewTargetAnnounce(163689, 3)
 local warnFlamingSlash			= mod:NewCastAnnounce(163665, 4)
 local warnOgreTraps				= mod:NewCastAnnounce(163390, 3)
@@ -26,14 +36,14 @@ local specWarnOgreTraps			= mod:NewSpecialWarningSpell(163390, mod:IsRanged())--
 
 local timerSanguineSphere      	= mod:NewTargetTimer(15, 163689)
 local timerSanguineSphereCD    	= mod:NewCDTimer(43.5, 163689)
-local timerFlamingSlashCD      	= mod:NewCDTimer(43.5, 163665)
-local timerOgreTrapsCD      	= mod:NewCDTimer(41, 163390)--41-45 variation. Usually 43, makes me wonder if those other 43s CAN be sooner. will have to see with more data.
+local timerFlamingSlashCD      	= mod:NewCDTimer(29, 163665)
+local timerOgreTrapsCD      	= mod:NewCDTimer(25, 163390)--25-30 variation.
 
-local countdownFlamingSlash		= mod:NewCountdown(43.5, 163665)
+local countdownFlamingSlash		= mod:NewCountdown(29, 163665)
 
 function mod:OnCombatStart(delay)
-	timerFlamingSlashCD:Start(8-delay)
-	countdownFlamingSlash:Start(8-delay)
+	timerFlamingSlashCD:Start(5-delay)
+	countdownFlamingSlash:Start(5-delay)
 	timerOgreTrapsCD:Start(19.5-delay)
 	timerSanguineSphereCD:Start(47-delay)--Cast is technically 45 but 47 is how long you have to kill before first shield which is what matters for high ranking CMs
 end

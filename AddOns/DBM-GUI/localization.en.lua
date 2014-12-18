@@ -6,7 +6,7 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Translated by "
 L.TranslationBy 			= nil -- your name here, localizers!
-L.Website					= "Visit our new discussion and support forums at |cFF73C2FBwww.deadlybossmods.com|r (hosted by Elitist Jerks!)"
+L.Website					= "Visit our discussion and support forums at |cFF73C2FBwww.deadlybossmods.com|r. Follow main dev on twitter @MysticalOS"
 L.WebsiteButton				= "Forums"
 
 L.OTabBosses	= "Bosses"
@@ -102,6 +102,7 @@ L.RaidWarnSound				= "Play sound on raid warning"
 L.CountdownVoice			= "Set primary voice for count sounds"
 L.CountdownVoice2			= "Set secondary voice for count sounds"
 L.CountdownVoice3			= "Set tertiary voice for count sounds"
+L.VoicePackChoice			= "Set voice pack for spoken alerts"
 L.SpecialWarnSound			= "Set sound for special warnings affecting you or your specific role"
 L.SpecialWarnSound2			= "Set sound for special warnings affecting everyone"
 L.SpecialWarnSound3			= "Set sound for VERY important special warnings"
@@ -199,7 +200,7 @@ L.ShowBBOnCombatStart		= "Perform Big Brother buff check on combat start"
 L.BigBrotherAnnounceToRaid	= "Announce Big Brother results to raid"
 
 L.Area_SpecFilter			= "Spec Filter Options"
-L.FilterTankSpec			= "Filter warnings designated for Tank role when not tank spec"
+L.FilterTankSpec			= "Filter warnings designated for Tank role when not tank spec. (Note: Disabling this is not recommended for most users as 'taunt' warnings are now all on by default.)"
 --Healer and Damager not in use yet. Tank is easily black and white. if not a tank, disable taunt warnings. Pretty obvious.
 --Healer and Damager a bit more tricky, since often times, Healer DO need to switch and kill adds designated a dps roll (hi disc attonement priest)
 --Or a dps does need to handle debuff dispels. Or a dps/tank need to know when aoe damage is going out just as much as healer for personal CDs
@@ -218,7 +219,7 @@ L.PT_Threshold				= "Do not show Pull/Break/Combat/Custom Timer countdown text a
 L.Panel_HideBlizzard		= "Hide Blizzard"
 L.Area_HideBlizzard			= "Hide Blizzard Options"
 L.HideBossEmoteFrame		= "Hide raid boss emote frame during boss fights"
-L.HideWatchFrame			= "Hide watch (objectives) frame during boss fights"
+L.HideWatchFrame			= "Hide watch (objectives) frame during boss fights if no achievements are being tracked"
 L.HideTooltips				= "Hide tooltips during boss fights"
 L.SpamBlockSayYell			= "Hide chat bubbles announces from the chat frame"
 L.DisableCinematics			= "Hide in-game cinematics"

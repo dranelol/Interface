@@ -1,18 +1,18 @@
-## Interface: 50400
+## Interface: 60000
 ## Title: GridStatusRaidDebuff
 ## Notes: Adds a status to Grid for debuffs applied by Raid Bosses.
 ## Notes-ruRU: Дополнительный модуль для Gridа, отображает дебаффы рейдовых боссов.
 ## Notes-zhCN: [Grid] 在 Grid 添加团队减益状态提示。
 ## Notes-zhTW: [Grid] 在 Grid 添加團隊減益狀態提示。
 ## Author: Azelkeeber(KR-Tirion),Toadkiller,Stassart
-## Version: 5.41
+## Version: 6.00
 ## Grid Author: Pastamancer & Maia
 ## Dependencies: Grid
 ## OptionalDeps: LibBabble-Zone-3.0, LibBabble-Boss-3.0, AceLocale-3.0
 ## X-Category: UnitFrame
 ## X-GridStatusModule: GridStatusRaidDebuff
-## X-Curse-Packaged-Version: r21
-## X-Curse-Project-Name: GridStatusRaidDebuff MoP
+## X-Curse-Packaged-Version: r24
+## X-Curse-Project-Name: GridStatusRaidDebuff2
 ## X-Curse-Project-ID: gridstatusraiddebuff-mop
 ## X-Curse-Repository-ID: wow/gridstatusraiddebuff-mop/mainline
 

@@ -1,0 +1,9 @@
+## Interface: 60000
+## Title: ToyPlus
+## Version: 1.3.5
+## Author: distnz
+## SavedVariables: ToyPlusDB
+## Notes: Launcher for your favourite toys.
+
+embeds.xml
+toyplus.lua

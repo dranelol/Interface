@@ -6,7 +6,7 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TranslationByPrefix		= "Übersetzt von "
 L.TranslationBy 			= "Ebmor@EU-Malorne"
-L.Website					= "Besuche unsere neuen Diskussions- und Support-Foren: |cFF73C2FBwww.deadlybossmods.com|r (gehostet von Elitist Jerks!)"
+L.Website					= "Besuche die Diskussions- und Support-Foren: |cFF73C2FBwww.deadlybossmods.com|r. Folge dem Hauptentwickler auf Twitter: @MysticalOS"
 L.WebsiteButton				= "Foren"
 
 L.OTabBosses	= "Bosse"
@@ -102,6 +102,7 @@ L.RaidWarnSound				= "Sound für Schlachtzugwarnung"
 L.CountdownVoice			= "Primäre Stimme für akustische Zählungen"
 L.CountdownVoice2			= "Sekundäre Stimme für akustische Zählungen"
 L.CountdownVoice3			= "Tertiäre Stimme für akustische Zählungen"
+L.VoicePackChoice			= "Setze Sprachpack für gesprochene Warnungen"
 L.SpecialWarnSound			= "Sound für Spezialwarnungen, die dich oder deine Rolle betreffen"
 L.SpecialWarnSound2			= "Sound für Spezialwarnungen, die jeden betreffen"
 L.SpecialWarnSound3			= "Sound für SEHR wichtige Spezialwarnungen"
@@ -199,7 +200,7 @@ L.ShowBBOnCombatStart		= "Führe bei Kampfbeginn eine \"BigBrother\"-Buffprüfun
 L.BigBrotherAnnounceToRaid	= "Verkünde Ergebnis der \"BigBrother\"-Buffprüfung zum Schlachtzug"
 
 L.Area_SpecFilter			= "Filtereinstellungen für Spezialisierungen"
-L.FilterTankSpec			= "Unterdrücke Warnungen für Tanks, falls deine aktuelle Spezialisierung keine \"Schutz\"-Spezialisierung ist"
+L.FilterTankSpec			= "Unterdrücke Warnungen für Tanks, falls deine aktuelle Spezialisierung keine \"Schutz\"-Spezialisierung ist (Hinweis: Diese Filterung sollte normalerweise nicht deaktiviert werden, da alle individuellen \"Spott\"-Warnungen nun standardmäßig aktiviert sind.)"
 
 
 
@@ -218,7 +219,7 @@ L.PT_Threshold				= "Zeige keinen opt. Countd. f. Pull-/Pausen-/Kampf-/Nutzer-Ti
 L.Panel_HideBlizzard		= "Verberge Spielelemente"
 L.Area_HideBlizzard			= "Einstellungen zum Verbergen von Spielelementen"
 L.HideBossEmoteFrame		= "Verberge das Fenster \"RaidBossEmoteFrame\" während Bosskämpfen"
-L.HideWatchFrame			= "Verberge das Fenster für die Questverfolgung während Bosskämpfen"
+L.HideWatchFrame			= "Verberge das Fenster für die Questverfolgung während Bosskämpfen, falls keine Erfolge verfolgt werden"
 L.HideTooltips				= "Verberge Tooltips während Bosskämpfen"
 L.SpamBlockSayYell			= "Sprechblasen-Ansagen im Chatfenster ausblenden"
 L.DisableCinematics			= "Verberge Videosequenzen"

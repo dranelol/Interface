@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(1234, "DBM-Party-WoD", 8, 559)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 11758 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 11889 $"):sub(12, -3))
 mod:SetCreatureID(77120)
 mod:SetEncounterID(1762)
 mod:SetZone()
@@ -18,7 +18,7 @@ mod:RegisterEventsInCombat(
 local warnDestructiveSmite		= mod:NewSpellAnnounce(155673, 4, nil, mod:IsTank())
 local warnReboundingBlade		= mod:NewSpellAnnounce(155705, 2, nil, false)--More for completion than anything.
 local warnBlackIronCyclone		= mod:NewTargetAnnounce(155721, 3)
-local warnZaela					= mod:NewSpellAnnounce("ej10312", 3)
+local warnZaela					= mod:NewSpellAnnounce("ej10312", 3, "Interface\\ICONS\\INV_Misc_Head_Orc_01.blp")
 
 local specWarnBlackIronCyclone	= mod:NewSpecialWarningRun(155721)
 local specWarnZaela				= mod:NewSpecialWarningSwitch("ej10312", mod:IsTank())
@@ -28,7 +28,9 @@ local timerReboundingBladeCD	= mod:NewNextTimer(10.5, 155705, nil, false)
 local timerBlackIronCycloneCD	= mod:NewCDTimer(19.5, 155721)--19.5-23sec variation in phase 2. phase 1 seems diff
 local timerZaelaReturns			= mod:NewTimer(26.5, "timerZaelaReturns", 166041)
 
-local countdownDestructiveSmite	= mod:NewCountdown(15.5, 155673)
+local countdownDestructiveSmite	= mod:NewCountdown("OptionVersion2", 15.5, 155673, mod:IsTank())
+
+local soundCyclone				= mod:NewSound(155721)
 
 function mod:OnCombatStart(delay)
 	timerReboundingBladeCD:Start(-delay)
@@ -49,6 +51,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 155721 then
 		warnBlackIronCyclone:Show(args.destName)
 		timerBlackIronCycloneCD:Start()
+		if args:IsPlayer() then
+			specWarnBlackIronCyclone:Show()
+			soundCyclone:Play()
+		end
 	end
 end
 
@@ -63,6 +69,7 @@ function mod:UNIT_TARGETABLE_CHANGED()
 	if UnitExists("boss1") then--Returning from air phase
 		warnZaela:Show()
 		specWarnZaela:Show()
+		timerBlackIronCycloneCD:Start(10)
 	else--Leaving for air phase, may need to delay by a sec or so if boss1 still exists.
 		timerZaelaReturns:Start()
 		timerBlackIronCycloneCD:Cancel()

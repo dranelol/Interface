@@ -1,0 +1,17 @@
+## Interface: 60000
+## Title: GridStatusRaidDebuff(WoD)
+## Notes: Debuff List for WoD
+## Author: Doadin (Malorne-US)
+## Version: v1.2
+## Grid Author: Pastamancer & Maia
+## Dependencies: GridStatusRaidDebuff
+## X-Curse-Packaged-Version: v1.5
+## X-Curse-Project-Name: GridStatusRD_WoD
+## X-Curse-Project-ID: gridstatusrd_wod
+## X-Curse-Repository-ID: wow/gridstatusrd_wod/mainline
+
+
+CheckCompat.lua
+BlackrockFoundry.lua
+Highmaul.lua
+

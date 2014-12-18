@@ -1,0 +1,36 @@
+------------------------------------------------------------------------
+r24 | stassart | 2014-11-03 06:33:33 +0000 (Mon, 03 Nov 2014) | 6 lines
+Changed paths:
+   M /trunk/Core.lua
+
+BUGFIX: Fixed two issues in Ticket #5:
+Issue 1) Import debuff doesn't work if there are currently no detected debuffs
+for that zone.
+Issue 2) Under some conditions the detected debuffs were being placed in the wrong zone, usually the zone you were joining the instance from.
+
+
+------------------------------------------------------------------------
+r23 | stassart | 2014-11-02 07:57:12 +0000 (Sun, 02 Nov 2014) | 5 lines
+Changed paths:
+   M /trunk/Core.lua
+
+Prior to this version the detected debuffs would show debuffs and buffs
+applied from outside the raid to raid members.  The icon would only show
+debuffs, so there is no reason for this addon to detect buffs from outside the raid. Now only debuffs are added to the detected list.
+
+
+------------------------------------------------------------------------
+r22 | stassart | 2014-10-20 08:49:35 +0000 (Mon, 20 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/GridStatusRaidDebuff.toc
+
+Updated ToC. Removed Blood Pact debuff.
+------------------------------------------------------------------------
+r21 | stassart | 2013-09-12 07:44:10 +0000 (Thu, 12 Sep 2013) | 1 line
+Changed paths:
+   M /trunk/Core.lua
+   M /trunk/GridStatusRaidDebuff.toc
+
+Fix lua error that can occur the first time a character zones into Proving Grounds (nil zone name on initial zone in).
+------------------------------------------------------------------------

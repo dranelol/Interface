@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(1262, "DBM-Draenor", nil, 557)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 11743 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 11967 $"):sub(12, -3))
 mod:SetCreatureID(83746)
 mod:SetReCombatTime(20)
 mod:SetZone()
@@ -34,7 +34,7 @@ local timerSolarRadiationCD		= mod:NewNextTimer(15, 167710)--15 seconds accordin
 --local timerSharpBeakCD		= mod:NewCDTimer(15, 167614)
 --local timerSolarBreathCD		= mod:NewCDTimer(15, 167687)
 
---mod:AddReadyCheckOption(33117, false)
+--mod:AddReadyCheckOption(37474, false)
 
 function mod:OnCombatStart(delay, yellTriggered)
 --	if yellTriggered then
